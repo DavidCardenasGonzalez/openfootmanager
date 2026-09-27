@@ -1874,6 +1874,8 @@
   "match": {
     "live": "Canlı",
     "paused": "Duraklatıldı",
+    "matchView": "Maç",
+    "visualReconstruction": "Canlı maç olaylarına dayalı temsili hareketler.",
     "events": "Olaylar",
     "stats": "İstatistikler",
     "lineups": "Dizilişler",
@@ -2001,6 +2003,9 @@
     "delivering": "İletiliyor...",
     "teamTalkFailed": "Takım konuşması başarısız oldu. Lütfen tekrar deneyin.",
     "delivered": "İletildi",
+    "teamTalkImproved": "İyileşti",
+    "teamTalkWorsened": "Kötüleşti",
+    "teamTalkUnchanged": "Değişmedi",
     "spectatorMode": "Seyirci Modu",
     "spectatorHT": "İki menajer de soyunma odasında takımlarıyla konuşuyor.",
     "makeSubstitution": "Oyuncu Değişikliği Yap",

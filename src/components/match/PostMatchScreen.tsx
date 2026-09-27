@@ -285,7 +285,7 @@ export default function PostMatchScreen({
                 }}
               />
               <p className="font-heading font-bold text-base text-gray-800 dark:text-gray-200">
-                {snapshot.home_team.name}
+                {homeFullTeam?.short_name || snapshot.home_team.name}
               </p>
             </div>
 
@@ -313,7 +313,7 @@ export default function PostMatchScreen({
 
             <div className="flex items-center gap-4">
               <p className="font-heading font-bold text-base text-gray-800 dark:text-gray-200">
-                {snapshot.away_team.name}
+                {awayFullTeam?.short_name || snapshot.away_team.name}
               </p>
               <TeamLogo
                 team={awayFullTeam ?? makeTeamFallback(snapshot.away_team.name)}
@@ -578,8 +578,8 @@ export default function PostMatchScreen({
                 <PossessionDonut
                   homePct={snapshot.home_possession_pct}
                   awayPct={snapshot.away_possession_pct}
-                  homeTeamName={snapshot.home_team.name}
-                  awayTeamName={snapshot.away_team.name}
+                  homeTeamName={homeFullTeam?.short_name || snapshot.home_team.name}
+                  awayTeamName={awayFullTeam?.short_name || snapshot.away_team.name}
                   homeColor={homeTeamColor}
                   awayColor={awayTeamColor}
                   label={t("match.possession")}
@@ -620,8 +620,8 @@ export default function PostMatchScreen({
                         </span>
                         <Badge variant={evt.side === "Home" ? "primary" : "accent"} size="sm">
                           {evt.side === "Home"
-                            ? snapshot.home_team.name.substring(0, 3)
-                            : snapshot.away_team.name.substring(0, 3)}
+                            ? homeFullTeam?.short_name || snapshot.home_team.name.substring(0, 3)
+                            : awayFullTeam?.short_name || snapshot.away_team.name.substring(0, 3)}
                         </Badge>
                       </div>
                     );

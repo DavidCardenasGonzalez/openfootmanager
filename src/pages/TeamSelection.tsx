@@ -1,10 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useGameStore } from "../store/gameStore";
-import { buildRegionLabel } from "../lib/teamRegions";
-import { Badge, Card, CardBody, ThemeToggle } from "../components/ui";
+import { Card, CardBody, ThemeToggle } from "../components/ui";
 import { ArrowLeft, ChevronRight, Loader2 } from "lucide-react";
-import TeamSelectionScopePanel from "./TeamSelectionScopePanel";
 import TeamSelectionGrid from "./TeamSelectionGrid";
 import TeamSelectionSidebar from "./TeamSelectionSidebar";
 import { useTeamSelection } from "./useTeamSelection";
@@ -17,21 +15,9 @@ export default function TeamSelection() {
   const {
     clubSearch,
     setClubSearch,
-    scopeExpanded,
-    setScopeExpanded,
-    selectedHomeRegionId,
-    setSelectedHomeRegionId,
-    selectedCountryCode,
-    setSelectedCountryCode,
-    regionSelection,
     setSelectedTeamId,
     scopeMessage,
-    setScopeMessage,
     isConfirming,
-    regions,
-    regionCountries,
-    activeRegionIds,
-    availableCompetitions,
     filteredTeams,
     teamGroups,
     getTeamPlayers,
@@ -39,11 +25,6 @@ export default function TeamSelection() {
     selectedTeam,
     selectedTeamXi,
     selectedTeamCompetitions,
-    mandatoryCompetitionIds,
-    competitionSelection,
-    enabledCompetitionIds,
-    handleRegionToggle,
-    handleCompetitionToggle,
     handleConfirm,
   } = useTeamSelection({ gameState, setGameState, setGameActive, navigate });
 
@@ -109,27 +90,6 @@ export default function TeamSelection() {
           </Card>
         )}
 
-        <TeamSelectionScopePanel
-          scopeExpanded={scopeExpanded}
-          onToggleScopeExpanded={() => setScopeExpanded((value) => !value)}
-          regions={regions}
-          selectedHomeRegionId={selectedHomeRegionId}
-          onSelectHomeRegion={(regionId) => {
-            setSelectedHomeRegionId(regionId);
-            setScopeMessage(null);
-          }}
-          selectedCountryCode={selectedCountryCode}
-          onSelectCountry={setSelectedCountryCode}
-          regionCountries={regionCountries}
-          regionSelection={regionSelection}
-          onRegionToggle={handleRegionToggle}
-          availableCompetitions={availableCompetitions}
-          competitionSelection={competitionSelection}
-          mandatoryCompetitionIds={mandatoryCompetitionIds}
-          activeRegionIds={activeRegionIds}
-          onCompetitionToggle={handleCompetitionToggle}
-        />
-
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1.2fr)_minmax(340px,0.8fr)]">
           <TeamSelectionGrid
             clubSearch={clubSearch}
@@ -150,23 +110,6 @@ export default function TeamSelection() {
           />
         </div>
 
-        <Card>
-          <CardBody className="flex flex-wrap items-center justify-between gap-3 py-3">
-            <div className="text-sm text-gray-600 dark:text-gray-300">
-              {t("teamSelect.scopeSummary", {
-                regionsCount: activeRegionIds.length,
-                competitionsCount: enabledCompetitionIds.length,
-              })}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {activeRegionIds.map((regionId) => (
-                <Badge key={regionId} variant="neutral">
-                  {buildRegionLabel(t, regionId)}
-                </Badge>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
       </div>
     </div>
   );

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "eafc26-league-13",
+    "name": "Premier League",
+    "country": "England",
+    "countryCode": "EN",
+    "sourceId": "13.0",
+    "sourceData": {
+      "league_id": 13,
+      "league_name": "Premier League",
+      "league_level": 1
+    }
+  },
+  {
+    "id": "eafc26-league-53",
+    "name": "La Liga",
+    "country": "Spain",
+    "countryCode": "ES",
+    "sourceId": "53.0",
+    "sourceData": {
+      "league_id": 53,
+      "league_name": "La Liga",
+      "league_level": 1
+    }
+  },
+  {
+    "id": "eafc26-league-31",
+    "name": "Serie A",
+    "country": "Italy",
+    "countryCode": "IT",
+    "sourceId": "31.0",
+    "sourceData": {
+      "league_id": 31,
+      "league_name": "Serie A",
+      "league_level": 1
+    }
+  },
+  {
+    "id": "eafc26-league-19",
+    "name": "Bundesliga",
+    "country": "Germany",
+    "countryCode": "DE",
+    "sourceId": "19.0",
+    "sourceData": {
+      "league_id": 19,
+      "league_name": "Bundesliga",
+      "league_level": 1
+    }
+  },
+  {
+    "id": "eafc26-league-16",
+    "name": "Ligue 1",
+    "country": "France",
+    "countryCode": "FR",
+    "sourceId": "16.0",
+    "sourceData": {
+      "league_id": 16,
+      "league_name": "Ligue 1",
+      "league_level": 1
+    }
+  }
+]

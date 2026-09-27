@@ -1874,6 +1874,8 @@
   "match": {
     "live": "Langsung",
     "paused": "Dijeda",
+    "matchView": "Pertandingan",
+    "visualReconstruction": "Gerakan ilustratif berdasarkan kejadian pertandingan langsung.",
     "events": "Peristiwa",
     "stats": "Statistik",
     "lineups": "Susunan Pemain",
@@ -2001,6 +2003,9 @@
     "delivering": "Menyampaikan...",
     "teamTalkFailed": "Sesi tim gagal disampaikan. Silakan coba lagi.",
     "delivered": "Tersampaikan",
+    "teamTalkImproved": "Meningkat",
+    "teamTalkWorsened": "Menurun",
+    "teamTalkUnchanged": "Tidak berubah",
     "spectatorMode": "Mode Penonton",
     "spectatorHT": "Kedua manajer sedang berbicara dengan timnya di ruang ganti.",
     "makeSubstitution": "Lakukan Pergantian",

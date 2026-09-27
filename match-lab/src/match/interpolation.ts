@@ -48,6 +48,6 @@ export function sampleReplay(replay: ReplayData, timeMs: number): RenderSample {
     frameIndex: low,
     nextFrameIndex,
     alpha: a === b ? 0 : (time - a.timeMs) / (b.timeMs - a.timeMs),
-    event: replay.events.findLast((e) => e.timeMs <= time),
+    event: [...replay.events].reverse().find((e) => e.timeMs <= time),
   };
 }

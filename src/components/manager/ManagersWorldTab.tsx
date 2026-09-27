@@ -196,7 +196,7 @@ export default function ManagersWorldTab({ gameState, onSelectTeam }: ManagersWo
                           onClick={() => onSelectTeam?.(team.id)}
                           className="mt-2 text-left text-xl font-heading font-bold uppercase tracking-wide text-primary-500 transition-colors hover:text-primary-400"
                         >
-                          {team.name}
+                          {team.short_name || team.name}
                         </button>
                       ) : (
                         <p className="mt-2 text-xl font-heading font-bold uppercase tracking-wide text-gray-700 dark:text-gray-200">

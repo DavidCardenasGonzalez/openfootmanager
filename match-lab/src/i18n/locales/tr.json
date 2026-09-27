@@ -30,5 +30,12 @@
   "shot": "Kaleye şut",
   "goal": "Gol!",
   "resetEvent": "Başlama vuruşuna dönüş",
-  "progress": "Oynatma ilerlemesi"
+  "progress": "Oynatma ilerlemesi",
+  "sequence": "Sekans",
+  "attackingGoalSequence": "Mevcut hücum sekansı",
+  "counterAttackSaveSequence": "Top kapma → Kontratak → Ara pas → Kurtarış",
+  "interception": "Top kapma",
+  "counterAttack": "Kontratak",
+  "throughBall": "Ara pas",
+  "save": "Kurtarış"
 }

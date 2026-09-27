@@ -611,6 +611,23 @@ describe("MainMenu", () => {
     expect(screen.queryByText("validation.minStartYear")).not.toBeInTheDocument();
   });
 
+  it("shows a visible error when the imported world cannot start", async () => {
+    mockedInvoke.mockImplementation(async (command: string) => {
+      if (command === "start_new_game") throw "be.error.worldReadFileFailed";
+      if (command === "list_installed_packages") return [];
+      return null;
+    });
+    render(<MainMenu />);
+    await openCreateManagerForm();
+    fillManagerDetails();
+    await selectNationality("en", "ES");
+    fireEvent.click(screen.getByText("createManager.chooseWorld"));
+    await advanceThroughPackages();
+    fireEvent.click(screen.getByText("start-world"));
+    expect(await screen.findByRole("alert")).toHaveTextContent("menu.failedStartGame");
+    expect(navigateMock).not.toHaveBeenCalledWith("/select-team");
+  });
+
   it("passes the activated world package ids when starting a new career", async () => {
     mockedInvoke.mockImplementation(async (command: string) => {
       if (command === "list_installed_packages") {

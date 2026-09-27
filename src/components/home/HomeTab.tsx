@@ -110,22 +110,41 @@ export default function HomeTab({
   // League position — sort a copy: sorting the store's array in place is a
   // state mutation during render. Tiebreak matches the standings table
   // (points → goal difference → goals for).
-  const myStandingIndex =
-    !isPreseason && league && myTeam
-      ? [...league.standings]
-          .sort(
-            (a, b) =>
-              b.points - a.points ||
-              b.goals_for - b.goals_against - (a.goals_for - a.goals_against) ||
-              b.goals_for - a.goals_for,
-          )
-          .findIndex((s) => s.team_id === myTeam.id)
-      : -1;
+  const sortedLeagueStandings =
+    !isPreseason && league
+      ? [...league.standings].sort(
+          (a, b) =>
+            b.points - a.points ||
+            b.goals_for - b.goals_against - (a.goals_for - a.goals_against) ||
+            b.goals_for - a.goals_for,
+        )
+      : [];
+  const myStandingIndex = myTeam
+    ? sortedLeagueStandings.findIndex((standing) => standing.team_id === myTeam.id)
+    : -1;
   const myStanding = myStandingIndex >= 0 ? myStandingIndex + 1 : null;
   const myStandingData =
     !isPreseason && league && myTeam
       ? (league.standings.find((s) => s.team_id === myTeam.id) ?? null)
       : null;
+  const standingsWindowStart = Math.max(
+    0,
+    Math.min(myStandingIndex - 2, sortedLeagueStandings.length - 5),
+  );
+  const standingsSummary =
+    myStandingIndex >= 0
+      ? sortedLeagueStandings
+          .slice(standingsWindowStart, standingsWindowStart + 5)
+          .map((standing) => {
+            const team = gameState.teams.find((item) => item.id === standing.team_id);
+            return {
+              rank: sortedLeagueStandings.findIndex((row) => row.team_id === standing.team_id) + 1,
+              teamId: standing.team_id,
+              teamName: team?.short_name || team?.name || standing.team_id,
+              points: standing.points,
+            };
+          })
+      : [];
 
   const recentResults = getRecentResultsForTeam(gameState, myTeam?.id ?? null);
 
@@ -238,6 +257,7 @@ export default function HomeTab({
               seasonStartLabel={seasonStartLabel}
               myStanding={myStanding}
               myStandingData={myStandingData}
+              standingsSummary={standingsSummary}
               teamForm={myTeam?.form ?? []}
               onNavigate={onNavigate}
             />
@@ -344,6 +364,7 @@ export default function HomeTab({
             seasonStartLabel={seasonStartLabel}
             myStanding={myStanding}
             myStandingData={myStandingData}
+            standingsSummary={standingsSummary}
             teamForm={[]}
             onNavigate={onNavigate}
           />

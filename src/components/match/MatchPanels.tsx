@@ -10,11 +10,15 @@ export function EventFeed({
   snapshot,
   feedRef,
   playerJerseyMap,
+  homeTeamName = snapshot.home_team.name,
+  awayTeamName = snapshot.away_team.name,
 }: {
   events: MatchEvent[];
   snapshot: MatchSnapshot;
   feedRef: React.RefObject<HTMLDivElement | null>;
   playerJerseyMap?: Map<string, number>;
+  homeTeamName?: string;
+  awayTeamName?: string;
 }) {
   function displayName(playerId: string | null): string {
     const name = getPlayerName(snapshot, playerId);
@@ -55,7 +59,7 @@ export function EventFeed({
                         {commentary.headline}
                       </span>
                       <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {isHome ? snapshot.home_team.name : snapshot.away_team.name}
+                        {isHome ? homeTeamName : awayTeamName}
                       </span>
                     </div>
                     <p className="text-sm text-gray-700 dark:text-gray-300">{commentary.line}</p>
@@ -73,7 +77,7 @@ export function EventFeed({
                       <span
                         className={`font-heading font-bold text-xs uppercase tracking-wider ${isHome ? "text-primary-400" : "text-indigo-400"}`}
                       >
-                        {isHome ? snapshot.home_team.name : snapshot.away_team.name}
+                        {isHome ? homeTeamName : awayTeamName}
                       </span>
                       <span className="text-xs text-gray-500 dark:text-gray-400">
                         {getEventTypeLabel(evt.event_type, t)}
@@ -192,7 +196,15 @@ export function MatchStats({ snapshot }: { snapshot: MatchSnapshot }) {
   );
 }
 
-export function Lineups({ snapshot }: { snapshot: MatchSnapshot }) {
+export function Lineups({
+  snapshot,
+  homeTeamName = snapshot.home_team.name,
+  awayTeamName = snapshot.away_team.name,
+}: {
+  snapshot: MatchSnapshot;
+  homeTeamName?: string;
+  awayTeamName?: string;
+}) {
   const { t } = useTranslation();
   const renderTeam = (
     team: MatchSnapshot["home_team"],
@@ -213,7 +225,7 @@ export function Lineups({ snapshot }: { snapshot: MatchSnapshot }) {
         <h4
           className={`font-heading font-bold text-sm uppercase tracking-wider mb-3 ${side === "Home" ? "text-primary-400" : "text-indigo-400"}`}
         >
-          {team.name}{" "}
+          {(side === "Home" ? homeTeamName : awayTeamName)}{" "}
           <span className="text-gray-600 dark:text-gray-500 font-normal text-xs">
             ({team.formation})
           </span>

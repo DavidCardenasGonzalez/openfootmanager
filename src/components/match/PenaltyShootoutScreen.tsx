@@ -121,7 +121,7 @@ export default function PenaltyShootoutScreen({
           <div className="flex flex-col items-center gap-2 flex-1">
             {homeFullTeam && <TeamLogo team={homeFullTeam} />}
             <span className="font-heading font-semibold text-gray-900 dark:text-white text-sm text-center">
-              {snapshot.home_team.name}
+              {homeFullTeam?.short_name || snapshot.home_team.name}
             </span>
             <span className="text-3xl font-heading font-bold text-gray-900 dark:text-white tabular-nums">
               {ps?.home_scored ?? 0}
@@ -135,7 +135,7 @@ export default function PenaltyShootoutScreen({
           <div className="flex flex-col items-center gap-2 flex-1">
             {awayFullTeam && <TeamLogo team={awayFullTeam} />}
             <span className="font-heading font-semibold text-gray-900 dark:text-white text-sm text-center">
-              {snapshot.away_team.name}
+              {awayFullTeam?.short_name || snapshot.away_team.name}
             </span>
             <span className="text-3xl font-heading font-bold text-gray-900 dark:text-white tabular-nums">
               {ps?.away_scored ?? 0}
@@ -147,13 +147,13 @@ export default function PenaltyShootoutScreen({
         {ps && (
           <div className="mt-6 space-y-3">
             <KickRow
-              label={snapshot.home_team.name}
+              label={homeFullTeam?.short_name || snapshot.home_team.name}
               taken={ps.home_taken}
               scored={ps.home_scored}
               maxRounds={ps.sudden_death ? ps.home_taken + 1 : 5}
             />
             <KickRow
-              label={snapshot.away_team.name}
+              label={awayFullTeam?.short_name || snapshot.away_team.name}
               taken={ps.away_taken}
               scored={ps.away_scored}
               maxRounds={ps.sudden_death ? ps.away_taken + 1 : 5}
@@ -182,7 +182,7 @@ export default function PenaltyShootoutScreen({
               >
                 {evt.event_type === "ShootoutGoal" ? "⚽" : "✗"}
               </span>
-              <span>{evt.side === "Home" ? snapshot.home_team.name : snapshot.away_team.name}</span>
+              <span>{evt.side === "Home" ? homeFullTeam?.short_name || snapshot.home_team.name : awayFullTeam?.short_name || snapshot.away_team.name}</span>
             </div>
           ))}
         </div>

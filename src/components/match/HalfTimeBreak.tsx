@@ -170,7 +170,7 @@ export default function HalfTimeBreak({
                 }}
               />
               <p className="font-heading font-bold text-gray-800 dark:text-gray-200">
-                {snapshot.home_team.name}
+                {homeFullTeam?.short_name || snapshot.home_team.name}
               </p>
             </div>
 
@@ -195,7 +195,7 @@ export default function HalfTimeBreak({
 
             <div className="flex items-center gap-3">
               <p className="font-heading font-bold text-gray-800 dark:text-gray-200">
-                {snapshot.away_team.name}
+                {awayFullTeam?.short_name || snapshot.away_team.name}
               </p>
               <TeamLogo
                 team={awayFullTeam ?? makeTeamFallback(snapshot.away_team.name)}
@@ -262,8 +262,8 @@ export default function HalfTimeBreak({
                         </span>
                         <Badge variant={evt.side === "Home" ? "primary" : "accent"} size="sm">
                           {evt.side === "Home"
-                            ? snapshot.home_team.name.substring(0, 3)
-                            : snapshot.away_team.name.substring(0, 3)}
+                            ? homeFullTeam?.short_name || snapshot.home_team.name.substring(0, 3)
+                            : awayFullTeam?.short_name || snapshot.away_team.name.substring(0, 3)}
                         </Badge>
                       </div>
                     );
@@ -351,10 +351,20 @@ export default function HalfTimeBreak({
                               {r.player_name}
                             </span>
                             <span
-                              className={`font-heading font-bold tabular-nums ${r.delta > 0 ? "text-green-400" : r.delta < 0 ? "text-red-400" : "text-gray-500 dark:text-gray-400"}`}
+                              className={`shrink-0 font-medium ${r.delta > 0 ? "text-green-400" : r.delta < 0 ? "text-red-400" : "text-gray-500 dark:text-gray-400"}`}
                             >
-                              {r.delta > 0 ? "+" : ""}
-                              {r.delta}
+                              {t(
+                                r.delta > 0
+                                  ? "match.teamTalkImproved"
+                                  : r.delta < 0
+                                    ? "match.teamTalkWorsened"
+                                    : "match.teamTalkUnchanged",
+                              )}
+                            </span>
+                            <span
+                              className={`w-7 text-right font-heading font-bold tabular-nums ${r.delta > 0 ? "text-green-400" : r.delta < 0 ? "text-red-400" : "text-gray-500 dark:text-gray-400"}`}
+                            >
+                              {r.delta > 0 ? "+" : ""}{r.delta}
                             </span>
                             <div className="w-12 h-1.5 bg-gray-300 dark:bg-navy-600 rounded-full overflow-hidden transition-colors duration-300">
                               <div

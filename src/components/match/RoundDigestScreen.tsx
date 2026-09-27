@@ -264,7 +264,7 @@ export default function RoundDigestScreen({
                   }}
                 />
                 <p className="font-heading font-bold text-gray-800 dark:text-gray-200">
-                  {snapshot.home_team.name}
+                  {homeFullTeam?.short_name || snapshot.home_team.name}
                 </p>
               </div>
               <div className="flex items-center gap-4">
@@ -278,7 +278,7 @@ export default function RoundDigestScreen({
               </div>
               <div className="flex items-center gap-3">
                 <p className="font-heading font-bold text-gray-800 dark:text-gray-200">
-                  {snapshot.away_team.name}
+                  {awayFullTeam?.short_name || snapshot.away_team.name}
                 </p>
                 <TeamLogo
                   team={awayFullTeam ?? makeTeamFallback(snapshot.away_team.name)}

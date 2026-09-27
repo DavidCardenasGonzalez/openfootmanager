@@ -38,7 +38,7 @@ export function TeamLogo({
     <div className={className} style={style}>
       <AssetImage
         src={logoSrc}
-        alt={t("common.teamLogoAlt", { team: team.name })}
+        alt={t("common.teamLogoAlt", { team: team.short_name || team.name })}
         className={imageClassName}
         fallback={
           fallback ?? (

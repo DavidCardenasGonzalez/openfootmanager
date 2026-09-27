@@ -2,9 +2,13 @@ import type { DragEvent, JSX } from "react";
 import { useTranslation } from "react-i18next";
 import type { PlayerData, TeamMatchRolesData } from "../../store/gameStore";
 import type { DragState, SquadSection } from "../squad/SquadTab.helpers";
-import { translatePositionAbbreviation } from "../squad/SquadTab.helpers";
+import {
+  normalisePosition,
+  translatePositionAbbreviation,
+} from "../squad/SquadTab.helpers";
 import { getPlayerOvr } from "../../lib/helpers";
-import { Badge, InjuryBadge } from "../ui";
+import { getPositionColor } from "../../lib/positionColors";
+import { InjuryBadge } from "../ui";
 import ContextMenu from "../ContextMenu";
 import { buildTacticsPlayerContextMenuItems } from "./TacticsContextMenu.helpers";
 import TacticsFilters from "./TacticsFilters";
@@ -79,10 +83,10 @@ function PlayerRow({
   const isCompare = comparePlayerId === player.id;
   // Starters show the slot they are deployed in (issue #272); the natural
   // position remains for bench players, who have no deployed slot.
-  const position = translatePositionAbbreviation(
-    t,
-    deployedPosition || player.natural_position || player.position,
-  );
+  const currentPosition = deployedPosition || player.natural_position || player.position;
+  const position = translatePositionAbbreviation(t, currentPosition);
+  const positionColor = getPositionColor(normalisePosition(currentPosition));
+  const positionBadgeClassName = `inline-flex items-center rounded-md px-2 py-0.5 text-xs font-bold font-heading uppercase tracking-wider text-white ${positionColor}`;
   const contextItems = buildTacticsPlayerContextMenuItems({
     isSelected,
     matchRoles,
@@ -116,9 +120,9 @@ function PlayerRow({
           onClick={() => onTacticalSelect(player.id, "xi")}
           className={rowClassName}
         >
-          <Badge variant="neutral" size="sm">
+          <span className={positionBadgeClassName}>
             {position}
-          </Badge>
+          </span>
           <span className="w-6 shrink-0 rounded-md bg-gray-100 py-0.5 text-center text-[11px] font-heading font-bold tabular-nums text-gray-600 dark:bg-navy-700 dark:text-gray-300">
             {player.jersey_number ?? "–"}
           </span>
@@ -157,9 +161,9 @@ function PlayerRow({
           onDragEnd={onDragEnd}
           className={`${rowClassName} flex-wrap gap-y-1`}
         >
-          <Badge variant="neutral" size="sm">
+          <span className={positionBadgeClassName}>
             {position}
-          </Badge>
+          </span>
           <span className="w-6 shrink-0 rounded-md bg-gray-100 py-0.5 text-center text-[11px] font-heading font-bold tabular-nums text-gray-600 dark:bg-navy-700 dark:text-gray-300">
             {player.jersey_number ?? "–"}
           </span>

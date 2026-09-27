@@ -100,6 +100,23 @@ pub struct Player {
 pub struct PlayerMedia {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub face: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub source_age: Option<u8>,
+    /// Appearance metadata imported from external player databases. These are
+    /// intentionally optional: old saves and fictional players do not have it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub skin_tone: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hair_color: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hair_length: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub height: Option<f32>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub weight: Option<f32>,
+    /// Unmodified provider fields retained for future simulator/visual work.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub source_data: Option<serde_json::Value>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]

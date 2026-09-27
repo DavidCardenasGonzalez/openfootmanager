@@ -30,5 +30,12 @@
   "shot": "Shot on goal",
   "goal": "Goal!",
   "resetEvent": "Returning to kickoff",
-  "progress": "Replay progress"
+  "progress": "Replay progress",
+  "sequence": "Sequence",
+  "attackingGoalSequence": "Existing attacking sequence",
+  "counterAttackSaveSequence": "Interception → Counter attack → Through ball → Save",
+  "interception": "Interception",
+  "counterAttack": "Counter attack",
+  "throughBall": "Through ball",
+  "save": "Save"
 }

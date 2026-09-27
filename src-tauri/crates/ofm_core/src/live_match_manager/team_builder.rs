@@ -437,7 +437,9 @@ fn to_engine_player(
         id: p.id.clone(),
         name: p.match_name.clone(),
         position: pos,
-        ovr: p.ovr,
+        // Recompute on the live-match boundary so legacy/imported saves with a
+        // stale derived OVR do not show an incorrect GEN in the substitution UI.
+        ovr: natural_ovr(p).round() as u8,
         condition: p.condition,
         fitness: p.fitness,
         pace: p.attributes.pace,

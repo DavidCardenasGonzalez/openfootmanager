@@ -36,7 +36,11 @@ export type EventKind =
   | "attack"
   | "shot"
   | "goal"
-  | "reset";
+  | "reset"
+  | "interception"
+  | "counterAttack"
+  | "throughBall"
+  | "save";
 export interface MatchEvent {
   id: string;
   timeMs: number;

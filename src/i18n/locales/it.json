@@ -1893,6 +1893,8 @@
   "match": {
     "live": "Diretta",
     "paused": "In pausa",
+    "matchView": "Partita",
+    "visualReconstruction": "Movimenti illustrativi basati sugli eventi della partita in diretta.",
     "events": "Eventi",
     "stats": "Statistiche",
     "lineups": "Formazioni",
@@ -1986,6 +1988,9 @@
     "delivering": "In corso...",
     "teamTalkFailed": "Il discorso è fallito. Riprova.",
     "delivered": "Consegnato",
+    "teamTalkImproved": "Migliorato",
+    "teamTalkWorsened": "Peggiorato",
+    "teamTalkUnchanged": "Nessun cambiamento",
     "spectatorMode": "Modalità spettatore",
     "spectatorHT": "Entrambi gli allenatori stanno parlando alle loro squadre nello spogliatoio.",
     "makeSubstitution": "Effettua sostituzione",

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "audit:i18n": "node scripts/audit-i18n.mjs",
+    "import:top5": "node scripts/import-top5.mjs",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",

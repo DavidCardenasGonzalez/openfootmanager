@@ -32,8 +32,10 @@ export {
   getLocale,
 } from "./dateFormatting";
 export {
+  formatContractEndDate,
   getContractRiskBadgeVariant,
   getContractRiskLevel,
+  getContractDurationRemaining,
   getContractYearsRemaining,
 } from "./contractUtils";
 export {

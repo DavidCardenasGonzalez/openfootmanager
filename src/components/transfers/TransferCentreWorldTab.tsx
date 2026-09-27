@@ -231,13 +231,13 @@ function CompletedDealsSection({
                       <TeamLine
                         label={t("transferCentreWorld.sourceClub")}
                         teamId={deal.from_team_id}
-                        teamName={fromTeam?.name ?? deal.from_team_id}
+                        teamName={fromTeam?.short_name || fromTeam?.name || deal.from_team_id}
                         onSelectTeam={onSelectTeam}
                       />
                       <TeamLine
                         label={t("transferCentreWorld.destinationClub")}
                         teamId={deal.to_team_id}
-                        teamName={toTeam?.name ?? deal.to_team_id}
+                        teamName={toTeam?.short_name || toTeam?.name || deal.to_team_id}
                         onSelectTeam={onSelectTeam}
                       />
                     </div>

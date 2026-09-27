@@ -30,5 +30,12 @@
   "shot": "Tiro a puerta",
   "goal": "¡Gol!",
   "resetEvent": "Volviendo al saque inicial",
-  "progress": "Progreso de reproducción"
+  "progress": "Progreso de reproducción",
+  "sequence": "Secuencia",
+  "attackingGoalSequence": "Secuencia de ataque existente",
+  "counterAttackSaveSequence": "Intercepción → Contraataque → Pase al espacio → Parada",
+  "interception": "Intercepción",
+  "counterAttack": "Contraataque",
+  "throughBall": "Pase al espacio",
+  "save": "Parada"
 }

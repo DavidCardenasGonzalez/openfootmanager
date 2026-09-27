@@ -21,6 +21,7 @@ import { TraitList } from "../TraitBadge";
 import {
   calcAge,
   getPlayerOvr,
+  formatContractEndDate,
   getContractRiskBadgeVariant,
   getContractRiskLevel,
   getContractYearsRemaining,
@@ -936,8 +937,10 @@ export default function SquadRosterView({
                             </Badge>
                           </div>
                           <div className="text-gray-500 dark:text-gray-400">
-                            {player.contract_end
-                              ? t("finances.contractExpiresOn", { date: player.contract_end })
+                            {formatContractEndDate(player.contract_end)
+                              ? t("finances.contractExpiresOn", {
+                                  date: formatContractEndDate(player.contract_end),
+                                })
                               : "—"}
                           </div>
                           {player.transfer_listed || player.loan_listed || player.injury ? (

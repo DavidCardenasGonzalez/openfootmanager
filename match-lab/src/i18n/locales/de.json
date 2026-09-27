@@ -30,5 +30,12 @@
   "shot": "Torschuss",
   "goal": "Tor!",
   "resetEvent": "Zurück zum Anstoß",
-  "progress": "Wiedergabefortschritt"
+  "progress": "Wiedergabefortschritt",
+  "sequence": "Sequenz",
+  "attackingGoalSequence": "Bestehende Angriffssequenz",
+  "counterAttackSaveSequence": "Abfangen → Konter → Steilpass → Parade",
+  "interception": "Abfangen",
+  "counterAttack": "Konter",
+  "throughBall": "Steilpass",
+  "save": "Parade"
 }

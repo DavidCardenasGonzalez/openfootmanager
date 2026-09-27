@@ -111,7 +111,7 @@ export default function TeamSelectionGrid({
                               />
                               <div>
                                 <h3 className="font-heading text-sm font-bold uppercase tracking-wide text-white">
-                                  {team.name}
+                                  {team.short_name || team.name}
                                 </h3>
                                 <TeamLocation
                                   city={team.city}

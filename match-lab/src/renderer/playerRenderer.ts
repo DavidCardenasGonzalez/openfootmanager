@@ -35,11 +35,12 @@ export function drawPlayer(
   const timeMs = frame.timeMs;
   const age = Math.max(0, timeMs - (event?.timeMs ?? timeMs));
   const nearBall = Math.hypot(player.x - frame.ball.x, player.y - frame.ball.y);
-  const defending = player.goalkeeper && player.team !== event?.team && nearBall < 20;
+  const saved = player.goalkeeper && event?.kind === "save" && frame.ball.ownerId === player.id;
+  const defending = player.goalkeeper && (player.team !== event?.team || saved) && nearBall < 20;
   const dive =
     defending && frame.ball.motion === "shot"
       ? Math.max(0, Math.min(1, (age - 600) / 300))
-      : defending && event?.kind === "goal"
+      : defending && (event?.kind === "goal" || saved)
         ? Math.max(0, 1 - Math.max(0, age - 1200) / 500)
         : 0;
   const celebrate =
@@ -57,7 +58,12 @@ export function drawPlayer(
   const phase = Math.floor(timeMs / 110 + player.shirtNumber) % 4;
   const stride = running ? [-2, 0, 2, 0][phase] : 0;
   // One wind-up/contact/follow-through per event, never a looping kick.
-  const releaseDelay = event?.kind === "shot" ? 400 : event?.kind === "attack" ? 300 : 0;
+  const releaseDelay =
+    event?.kind === "shot"
+      ? 400
+      : event?.kind === "attack" || event?.kind === "throughBall"
+        ? 300
+        : 0;
   const followThrough = Math.max(0, 1 - Math.max(0, age - releaseDelay) / 300);
   const kick = windup
     ? -3 * Math.min(1, age / Math.max(1, releaseDelay))

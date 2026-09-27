@@ -41,9 +41,15 @@ it("keeps the keeper set until the shot, then reacts toward the target corner", 
   expect(frame(25000).score.home).toBe(1);
 });
 
-it('plays both passes through clear lanes rather than through a defender', () => {
-  for (const f of replay.frames.filter(f => f.timeMs >= 20000 && f.timeMs < 24000 && f.ball.motion === 'pass')) {
-    const nearest = Math.min(...f.players.filter(p => p.team === 'away').map(p => Math.hypot(p.x - f.ball.x, p.y - f.ball.y)));
+it("plays both passes through clear lanes rather than through a defender", () => {
+  for (const f of replay.frames.filter(
+    (f) => f.timeMs >= 20000 && f.timeMs < 24000 && f.ball.motion === "pass",
+  )) {
+    const nearest = Math.min(
+      ...f.players
+        .filter((p) => p.team === "away")
+        .map((p) => Math.hypot(p.x - f.ball.x, p.y - f.ball.y)),
+    );
     expect(nearest).toBeGreaterThan(2);
   }
 });

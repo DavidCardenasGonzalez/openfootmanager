@@ -58,7 +58,8 @@ export default function EndOfSeasonScreen({ gameState, onGameUpdate }: EndOfSeas
   const userStanding = standings[userStandingIdx];
   const userPosition = userStandingIdx + 1;
   const champion = standings[0];
-  const championName = gameState.teams.find((t) => t.id === champion?.team_id)?.name || "";
+  const championTeam = gameState.teams.find((team) => team.id === champion?.team_id);
+  const championName = championTeam?.short_name || championTeam?.name || "";
   const isChampion = champion?.team_id === userTeamId;
 
   const handleAdvance = async () => {
@@ -132,7 +133,7 @@ export default function EndOfSeasonScreen({ gameState, onGameUpdate }: EndOfSeas
             <CardBody>
               <div className="text-center">
                 <p className="text-xs font-heading font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-1">
-                  {userTeam?.name}
+                  {userTeam?.short_name || userTeam?.name}
                 </p>
                 <div className="flex items-center justify-center gap-6 mb-4">
                   <div>

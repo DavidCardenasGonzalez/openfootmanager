@@ -270,6 +270,7 @@ export default function MainMenu() {
   const [loadingSaveId, setLoadingSaveId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [isStarting, setIsStarting] = useState(false);
+  const [startError, setStartError] = useState<string | null>(null);
 
   const [profiles, setProfiles] = useState<ManagerProfile[]>([]);
   const [loadedProfile, setLoadedProfile] = useState<ManagerProfile | null>(null);
@@ -498,6 +499,7 @@ export default function MainMenu() {
     }
 
     setIsStarting(true);
+    setStartError(null);
     try {
       const game = await invoke<GameStateData>("start_new_game", {
         firstName: formData.firstName,
@@ -505,6 +507,7 @@ export default function MainMenu() {
         dob: formData.dob,
         nationality: formData.nationality,
         startupOptions,
+        worldSource: "open-manager",
         packageIds: activePackageIds.length > 0 ? activePackageIds : undefined,
       });
       applyExtraTranslations(game.extra_translations);
@@ -512,7 +515,7 @@ export default function MainMenu() {
       navigate("/select-team");
     } catch (error) {
       console.error("Failed to start game:", error);
-      alert(
+      setStartError(
         t("menu.failedStartGame", {
           error: resolveBackendError(error),
         }),
@@ -821,6 +824,9 @@ export default function MainMenu() {
           )}
 
           {/* Step 2b: Generation & Completion */}
+          {menuState === "generation" && startError && (
+            <p role="alert" className="text-red-700 dark:text-red-400">{startError}</p>
+          )}
           {menuState === "generation" && (
             <Suspense fallback={<MenuPanelFallback />}>
               <GenerationStep

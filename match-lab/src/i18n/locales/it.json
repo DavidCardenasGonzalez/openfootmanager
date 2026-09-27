@@ -30,5 +30,12 @@
   "shot": "Tiro in porta",
   "goal": "Gol!",
   "resetEvent": "Ritorno al calcio d’inizio",
-  "progress": "Avanzamento riproduzione"
+  "progress": "Avanzamento riproduzione",
+  "sequence": "Sequenza",
+  "attackingGoalSequence": "Sequenza offensiva esistente",
+  "counterAttackSaveSequence": "Intercetto → Contropiede → Passaggio filtrante → Parata",
+  "interception": "Intercetto",
+  "counterAttack": "Contropiede",
+  "throughBall": "Passaggio filtrante",
+  "save": "Parata"
 }

@@ -30,5 +30,12 @@
   "shot": "Střela na bránu",
   "goal": "Gól!",
   "resetEvent": "Návrat k výkopu",
-  "progress": "Průběh přehrávání"
+  "progress": "Průběh přehrávání",
+  "sequence": "Sekvence",
+  "attackingGoalSequence": "Stávající útočná sekvence",
+  "counterAttackSaveSequence": "Zachycení → Protiútok → Průniková přihrávka → Zákrok",
+  "interception": "Zachycení",
+  "counterAttack": "Protiútok",
+  "throughBall": "Průniková přihrávka",
+  "save": "Zákrok"
 }

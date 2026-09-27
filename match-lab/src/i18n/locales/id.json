@@ -30,5 +30,12 @@
   "shot": "Tembakan ke gawang",
   "goal": "Gol!",
   "resetEvent": "Kembali ke sepak mula",
-  "progress": "Progres pemutaran"
+  "progress": "Progres pemutaran",
+  "sequence": "Urutan",
+  "attackingGoalSequence": "Urutan serangan yang ada",
+  "counterAttackSaveSequence": "Intersepsi → Serangan balik → Umpan terobosan → Penyelamatan",
+  "interception": "Intersepsi",
+  "counterAttack": "Serangan balik",
+  "throughBall": "Umpan terobosan",
+  "save": "Penyelamatan"
 }

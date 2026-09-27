@@ -5,7 +5,7 @@
 //! competition layer will need from it: which region a club belongs to, which
 //! clubs represent a nation, and how a country's clubs divide into tiers.
 
-use domain::league::{CompetitionScope, League};
+use domain::league::{CompetitionScope, CompetitionType, FixtureCompetition, League};
 use domain::manager::Manager;
 use domain::national_team::NationalTeam;
 use domain::stats::StatsState;
@@ -13,8 +13,8 @@ use ofm_core::clock::GameClock;
 use ofm_core::game::Game;
 
 use super::{
-    apply_generated_past_history, ensure_multi_competition_foundations, preseason_league_year,
-    StartupOptions,
+    StartupOptions, apply_generated_past_history, ensure_multi_competition_foundations,
+    preseason_league_year, preseason_season_start,
 };
 
 pub(super) fn build_game_from_world_data(
@@ -96,6 +96,9 @@ pub(super) fn build_game_from_world_data(
                     .filter(|existing_manager| existing_manager.id != game.manager.id),
             );
             game.competitions = competitions;
+            if metadata.world_id.starts_with("open-manager-") && game.competitions.is_empty() {
+                game.competitions = build_open_manager_pyramid(&game);
+            }
             game.national_teams = national_teams;
             game.active_region_ids = default_active_regions;
             game.active_competition_ids = default_active_competitions;
@@ -112,6 +115,9 @@ pub(super) fn build_game_from_world_data(
             // Authored definitions, if any, become the world's competitions;
             // otherwise ensure_multi_competition_foundations auto-builds them.
             game.competitions = competitions;
+            if metadata.world_id.starts_with("open-manager-") && game.competitions.is_empty() {
+                game.competitions = build_open_manager_pyramid(&game);
+            }
             game.extra_translations = extra_translations;
             // Build the league/division foundations *before* generating history so
             // each club's past seasons are attributed to its real ~20-team
@@ -122,6 +128,69 @@ pub(super) fn build_game_from_world_data(
             (game, StatsState::default())
         }
     }
+}
+
+/// Build the game's single real-world-independent pyramid from an imported
+/// Open Manager roster. Source competitions remain metadata in the import
+/// step; gameplay only sees these divisions.
+pub(super) fn build_open_manager_pyramid(game: &Game) -> Vec<League> {
+    const MAX_CLUBS_PER_DIVISION: usize = 20;
+    let player_strength: std::collections::HashMap<&str, u32> = game
+        .players
+        .iter()
+        .map(|player| (player.id.as_str(), u32::from(player.ovr)))
+        .collect();
+    let mut teams = game.teams.iter().collect::<Vec<_>>();
+    teams.sort_by(|left, right| {
+        let strength = |team: &domain::team::Team| {
+            let mut values = game
+                .players
+                .iter()
+                .filter(|player| player.team_id.as_deref() == Some(team.id.as_str()))
+                .map(|player| {
+                    player_strength
+                        .get(player.id.as_str())
+                        .copied()
+                        .unwrap_or(0)
+                })
+                .collect::<Vec<_>>();
+            values.sort_unstable_by(|a, b| b.cmp(a));
+            let count = values.len().min(11);
+            values.iter().take(count).sum::<u32>()
+        };
+        right
+            .reputation
+            .cmp(&left.reputation)
+            .then_with(|| strength(right).cmp(&strength(left)))
+            .then_with(|| left.id.cmp(&right.id))
+    });
+
+    let season = preseason_league_year(&game.clock);
+    let start = preseason_season_start(&game.clock);
+    teams
+        .chunks(MAX_CLUBS_PER_DIVISION)
+        .enumerate()
+        .map(|(index, chunk)| {
+            let ids = chunk.iter().map(|team| team.id.clone()).collect::<Vec<_>>();
+            let mut division = League::new(
+                format!("open-manager-division-{}", index + 1),
+                format!("Open Manager Division {}", index + 1),
+                season,
+                &ids,
+            );
+            division.kind = CompetitionType::League;
+            division.scope = CompetitionScope::Regional;
+            division.region_id = Some("europe".to_string());
+            division.priority = (index + 1) as u32;
+            division.fixtures = ofm_core::schedule::build_round_robin_fixtures(
+                &division.id,
+                &ids,
+                start,
+                FixtureCompetition::League,
+            );
+            division
+        })
+        .collect()
 }
 
 pub(super) fn infer_region_id(country_code: &str) -> String {
@@ -306,6 +375,7 @@ pub(super) fn brazil_state_region(city: &str) -> Option<&'static str> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::commands::game::{start_date_for_year, testkit::nation_team};
 
     #[test]
     fn select_continental_entrants_takes_top_clubs_per_region_by_reputation() {
@@ -452,6 +522,39 @@ mod tests {
             brazil_state_region("Vitória"),
             Some("southeast"),
             "Vitória (ES) belongs in the southeast region, not northeast"
+        );
+    }
+
+    #[test]
+    fn open_manager_pyramid_is_deterministic_and_keeps_a_small_final_division() {
+        let clock = GameClock::new(start_date_for_year(2032).unwrap());
+        let manager = Manager::new(
+            "mgr-user".to_string(),
+            "A".to_string(),
+            "B".to_string(),
+            "1980-01-01".to_string(),
+            "EN".to_string(),
+        );
+        let teams = (0..41)
+            .map(|index| nation_team(&format!("club-{index:02}"), "EN", 1000 - index))
+            .collect::<Vec<_>>();
+        let game = Game::new(clock, manager, teams, vec![], vec![], vec![]);
+
+        let divisions = build_open_manager_pyramid(&game);
+
+        assert_eq!(
+            divisions
+                .iter()
+                .map(|d| d.participant_ids.len())
+                .collect::<Vec<_>>(),
+            vec![20, 20, 1]
+        );
+        assert_eq!(divisions[0].participant_ids[0], "club-00");
+        assert_eq!(divisions[2].participant_ids[0], "club-40");
+        assert!(
+            divisions
+                .iter()
+                .all(|division| division.id.starts_with("open-manager-division-"))
         );
     }
 }

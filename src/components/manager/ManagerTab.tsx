@@ -48,12 +48,12 @@ export default function ManagerTab({ gameState, onSelectTeam }: ManagerTabProps)
                   onClick={() => onSelectTeam(myTeam.id)}
                   className="text-primary-400 text-sm font-semibold mt-0.5 hover:text-primary-300 transition-colors"
                 >
-                  {t("manager.managerOf", { team: myTeam.name })}
+                  {t("manager.managerOf", { team: myTeam.short_name || myTeam.name })}
                 </button>
               </ContextMenu>
             ) : myTeam ? (
               <p className="text-primary-400 text-sm font-semibold mt-0.5">
-                {t("manager.managerOf", { team: myTeam.name })}
+                {t("manager.managerOf", { team: myTeam.short_name || myTeam.name })}
               </p>
             ) : null}
           </div>

@@ -1,6 +1,6 @@
 import { useState, type KeyboardEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { type MatchSnapshot, FORMATIONS, PLAY_STYLES } from "./types";
+import { type EnginePlayerData, type MatchSnapshot, FORMATIONS, PLAY_STYLES } from "./types";
 import { getPlayerName } from "./helpers";
 import { FormationPitch } from "./FormationPitch";
 import { condBgColor, condColor } from "../../lib/playerConditionDisplay";
@@ -13,14 +13,88 @@ import {
   Shield,
   Swords,
   Sparkles,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import ContextMenu from "../ContextMenu";
-import { translatePositionAbbreviation } from "../squad/SquadTab.helpers";
+import { canonicalPosition, translatePositionAbbreviation } from "../squad/SquadTab.helpers";
+import { getPositionColor } from "../../lib/positionColors";
 import {
   buildRecommendedSubstitutions,
   getMatchScenario,
   type MatchScenarioId,
 } from "./SubPanel.helpers";
+
+type SortColumn = "name" | "position" | "ovr" | "condition";
+type SortState = { column: SortColumn; direction: "asc" | "desc" } | null;
+const POSITION_SORT_ORDER: Record<string, number> = {
+  Goalkeeper: 0,
+  Defender: 1,
+  Midfielder: 2,
+  Forward: 3,
+};
+
+function SortableHeader({
+  column,
+  label,
+  sortState,
+  onSort,
+  className = "",
+}: {
+  column: SortColumn;
+  label: string;
+  sortState: SortState;
+  onSort: (column: SortColumn) => void;
+  className?: string;
+}) {
+  const active = sortState?.column === column;
+  return (
+    <th
+      className={`py-2 ${className}`}
+      aria-sort={active ? (sortState.direction === "asc" ? "ascending" : "descending") : "none"}
+    >
+      <button
+        type="button"
+        onClick={() => onSort(column)}
+        className={`inline-flex cursor-pointer items-center gap-1 hover:text-primary-400 ${active ? "text-primary-400" : ""}`}
+      >
+        {label}
+        {active ? (
+          sortState.direction === "asc" ? (
+            <ChevronUp className="h-3 w-3" />
+          ) : (
+            <ChevronDown className="h-3 w-3" />
+          )
+        ) : null}
+      </button>
+    </th>
+  );
+}
+
+function sortPlayers(players: EnginePlayerData[], sortState: SortState): EnginePlayerData[] {
+  if (!sortState) return players;
+  const direction = sortState.direction === "asc" ? 1 : -1;
+  return [...players].sort((left, right) => {
+    let comparison = 0;
+    switch (sortState.column) {
+      case "name":
+        comparison = left.name.localeCompare(right.name);
+        break;
+      case "position":
+        comparison =
+          (POSITION_SORT_ORDER[canonicalPosition(left.position)] ?? 99) -
+          (POSITION_SORT_ORDER[canonicalPosition(right.position)] ?? 99);
+        break;
+      case "ovr":
+        comparison = left.ovr - right.ovr;
+        break;
+      case "condition":
+        comparison = left.condition - right.condition;
+        break;
+    }
+    return comparison * direction || left.name.localeCompare(right.name);
+  });
+}
 
 const CompareBar = ({ label, valA, valB }: { label: string; valA: number; valB: number }) => {
   const diff = valB - valA;
@@ -63,6 +137,8 @@ export function SubPanel({
   const { t } = useTranslation();
   const [selectedOff, setSelectedOff] = useState<string | null>(null);
   const [selectedBench, setSelectedBench] = useState<string | null>(null);
+  const [offSort, setOffSort] = useState<SortState>(null);
+  const [benchSort, setBenchSort] = useState<SortState>(null);
 
   const team = side === "Home" ? snapshot.home_team : snapshot.away_team;
   const bench = side === "Home" ? snapshot.home_bench : snapshot.away_bench;
@@ -120,6 +196,54 @@ export function SubPanel({
     if (!selectedOff) return;
     setSelectedBench((cur) => (cur === playerId ? null : playerId));
   };
+
+  const toggleSort = (
+    setter: (state: SortState) => void,
+    current: SortState,
+    column: SortColumn,
+  ) => {
+    const defaultDirection = column === "ovr" || column === "condition" ? "desc" : "asc";
+    setter({
+      column,
+      direction:
+        current?.column === column
+          ? current.direction === "asc"
+            ? "desc"
+            : "asc"
+          : defaultDirection,
+    });
+  };
+
+  const handlePlayerDragStart = (event: React.DragEvent<HTMLTableRowElement>, playerId: string) => {
+    event.dataTransfer.setData("text/player-id", playerId);
+    event.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleDropOnOff = (event: React.DragEvent<HTMLTableRowElement>, playerId: string) => {
+    event.preventDefault();
+    const draggedId = event.dataTransfer.getData("text/player-id");
+    if (!draggedId || draggedId === playerId) return;
+    const draggedFromBench = availableBench.some((player) => player.id === draggedId);
+    if (!draggedFromBench) return;
+    setSelectedOff(playerId);
+    setSelectedBench(draggedId);
+  };
+
+  const handleDropOnBench = (event: React.DragEvent<HTMLTableRowElement>, playerId: string) => {
+    event.preventDefault();
+    const draggedId = event.dataTransfer.getData("text/player-id");
+    if (!draggedId || draggedId === playerId) return;
+    const draggedFromField = team.players.some((player) => player.id === draggedId);
+    if (!draggedFromField) return;
+    setSelectedOff(draggedId);
+    setSelectedBench(playerId);
+  };
+
+  const sortedFieldPlayers = sortPlayers(
+    team.players.filter((player) => !snapshot.sent_off.includes(player.id)),
+    offSort,
+  );
+  const sortedBenchPlayers = sortPlayers(availableBench, benchSort);
 
   const handleConfirmSubstitution = () => {
     if (!selectedOff || !selectedBench) return;
@@ -285,102 +409,116 @@ export function SubPanel({
                   <table className="w-full text-left">
                     <thead>
                       <tr className="border-b border-gray-200 font-heading text-[10px] uppercase tracking-widest text-gray-600 dark:border-navy-700 dark:text-gray-500">
-                        <th className="py-2 pr-2">{t("match.player")}</th>
-                        <th className="w-12 py-2 text-center">{t("common.position")}</th>
-                        <th className="w-12 py-2 text-center">{t("common.ovr")}</th>
-                        <th className="w-24 py-2">{t("match.fitness")}</th>
+                        <SortableHeader
+                          column="name"
+                          label={t("match.player")}
+                          sortState={offSort}
+                          onSort={(column) => toggleSort(setOffSort, offSort, column)}
+                          className="pr-2"
+                        />
+                        <SortableHeader
+                          column="position"
+                          label={t("common.position")}
+                          sortState={offSort}
+                          onSort={(column) => toggleSort(setOffSort, offSort, column)}
+                          className="w-12 text-center"
+                        />
+                        <SortableHeader
+                          column="ovr"
+                          label={t("common.ovr")}
+                          sortState={offSort}
+                          onSort={(column) => toggleSort(setOffSort, offSort, column)}
+                          className="w-12 text-center"
+                        />
+                        <SortableHeader
+                          column="condition"
+                          label={t("match.fitness")}
+                          sortState={offSort}
+                          onSort={(column) => toggleSort(setOffSort, offSort, column)}
+                          className="w-24 text-left"
+                        />
                       </tr>
                     </thead>
                     <tbody>
-                      {team.players
-                        .filter((p) => !snapshot.sent_off.includes(p.id))
-                        .sort((a, b) => {
-                          const ord: Record<string, number> = {
-                            Goalkeeper: 1,
-                            Defender: 2,
-                            Midfielder: 3,
-                            Forward: 4,
-                          };
-                          return (
-                            (ord[a.position] ?? 99) - (ord[b.position] ?? 99) ||
-                            a.name.localeCompare(b.name)
-                          );
-                        })
-                        .map((p) => {
-                          const isSelected = selectedOff === p.id;
-                          const isSubOn = subbedOnIds.has(p.id);
-                          const row = (
-                            <tr
-                              key={p.id}
-                              data-testid={`sub-panel-off-${p.id}`}
-                              onClick={() => handleSelectOffPlayer(p.id)}
-                              onKeyDown={(e) =>
-                                handleInteractiveRowKeyDown(e, () => handleSelectOffPlayer(p.id))
-                              }
-                              role="button"
-                              tabIndex={0}
-                              aria-pressed={isSelected}
-                              className={`cursor-pointer text-sm transition-colors ${
-                                isSelected
-                                  ? "bg-red-500/10"
-                                  : "hover:bg-gray-100 dark:hover:bg-navy-700/50"
-                              }`}
-                            >
-                              <td className="py-2 pr-2">
-                                <div className="flex items-center gap-1.5">
-                                  {isSelected && (
-                                    <UserMinus className="h-3.5 w-3.5 shrink-0 text-red-400" />
-                                  )}
-                                  {isSubOn && <span className="text-[10px] text-green-400">▲</span>}
-                                  <span
-                                    className={`truncate font-medium ${isSelected ? "text-red-400" : "text-gray-700 dark:text-gray-300"}`}
-                                  >
-                                    {p.name}
-                                  </span>
-                                </div>
-                              </td>
-                              <td className="w-12 py-2 text-center">
-                                <span className="font-heading text-xs text-gray-500 dark:text-gray-400">
-                                  {translatePositionAbbreviation(t, p.position)}
+                      {sortedFieldPlayers.map((p) => {
+                        const isSelected = selectedOff === p.id;
+                        const isSubOn = subbedOnIds.has(p.id);
+                        const row = (
+                          <tr
+                            key={p.id}
+                            data-testid={`sub-panel-off-${p.id}`}
+                            draggable
+                            onDragStart={(event) => handlePlayerDragStart(event, p.id)}
+                            onDragOver={(event) => event.preventDefault()}
+                            onDrop={(event) => handleDropOnOff(event, p.id)}
+                            onClick={() => handleSelectOffPlayer(p.id)}
+                            onKeyDown={(e) =>
+                              handleInteractiveRowKeyDown(e, () => handleSelectOffPlayer(p.id))
+                            }
+                            role="button"
+                            tabIndex={0}
+                            aria-pressed={isSelected}
+                            className={`cursor-grab text-sm transition-colors active:cursor-grabbing ${
+                              isSelected
+                                ? "bg-red-500/10"
+                                : "hover:bg-gray-100 dark:hover:bg-navy-700/50"
+                            }`}
+                          >
+                            <td className="py-2 pr-2">
+                              <div className="flex items-center gap-1.5">
+                                {isSelected && (
+                                  <UserMinus className="h-3.5 w-3.5 shrink-0 text-red-400" />
+                                )}
+                                {isSubOn && <span className="text-[10px] text-green-400">▲</span>}
+                                <span
+                                  className={`truncate font-medium ${isSelected ? "text-red-400" : "text-gray-700 dark:text-gray-300"}`}
+                                >
+                                  {p.name}
                                 </span>
-                              </td>
-                              <td className="w-12 py-2 text-center font-heading font-bold text-gray-500 dark:text-gray-400">
-                                {p.ovr}
-                              </td>
-                              <td className="w-24 py-2">
-                                <div className="flex items-center gap-1.5">
-                                  <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-300 dark:bg-navy-600">
-                                    <div
-                                      className={`h-full rounded-full ${condBgColor(p.condition)}`}
-                                      style={{ width: `${p.condition}%` }}
-                                    />
-                                  </div>
-                                  <span
-                                    className={`w-7 text-right font-heading text-xs tabular-nums ${condColor(p.condition)}`}
-                                  >
-                                    {Math.round(p.condition)}
-                                  </span>
+                              </div>
+                            </td>
+                            <td className="w-12 py-2 text-center">
+                              <span
+                                className={`inline-flex rounded px-1.5 py-0.5 font-heading text-[10px] font-bold uppercase tracking-wider text-white ${getPositionColor(canonicalPosition(p.position))}`}
+                              >
+                                {translatePositionAbbreviation(t, p.position)}
+                              </span>
+                            </td>
+                            <td className="w-12 py-2 text-center font-heading font-bold text-gray-500 dark:text-gray-400">
+                              {p.ovr}
+                            </td>
+                            <td className="w-24 py-2">
+                              <div className="flex items-center gap-1.5">
+                                <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-300 dark:bg-navy-600">
+                                  <div
+                                    className={`h-full rounded-full ${condBgColor(p.condition)}`}
+                                    style={{ width: `${p.condition}%` }}
+                                  />
                                 </div>
-                              </td>
-                            </tr>
-                          );
-                          return (
-                            <ContextMenu
-                              key={p.id}
-                              items={[
-                                {
-                                  label: isSelected
-                                    ? t("common.cancel")
-                                    : t("match.selectToTakeOff"),
-                                  icon: <UserMinus className="h-4 w-4" />,
-                                  onClick: () => handleSelectOffPlayer(p.id),
-                                },
-                              ]}
-                            >
-                              {row}
-                            </ContextMenu>
-                          );
-                        })}
+                                <span
+                                  className={`w-7 text-right font-heading text-xs tabular-nums ${condColor(p.condition)}`}
+                                >
+                                  {Math.round(p.condition)}
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                        return (
+                          <ContextMenu
+                            key={p.id}
+                            items={[
+                              {
+                                label: isSelected ? t("common.cancel") : t("match.selectToTakeOff"),
+                                icon: <UserMinus className="h-4 w-4" />,
+                                onClick: () => handleSelectOffPlayer(p.id),
+                              },
+                            ]}
+                          >
+                            {row}
+                          </ContextMenu>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
@@ -405,14 +543,38 @@ export function SubPanel({
                     <table className="w-full text-left">
                       <thead>
                         <tr className="border-b border-gray-200 font-heading text-[10px] uppercase tracking-widest text-gray-600 dark:border-navy-700 dark:text-gray-500">
-                          <th className="py-2 pr-2">{t("match.player")}</th>
-                          <th className="w-12 py-2 text-center">{t("common.position")}</th>
-                          <th className="w-12 py-2 text-center">{t("common.ovr")}</th>
-                          <th className="w-24 py-2">{t("match.fitness")}</th>
+                          <SortableHeader
+                            column="name"
+                            label={t("match.player")}
+                            sortState={benchSort}
+                            onSort={(column) => toggleSort(setBenchSort, benchSort, column)}
+                            className="pr-2"
+                          />
+                          <SortableHeader
+                            column="position"
+                            label={t("common.position")}
+                            sortState={benchSort}
+                            onSort={(column) => toggleSort(setBenchSort, benchSort, column)}
+                            className="w-12 text-center"
+                          />
+                          <SortableHeader
+                            column="ovr"
+                            label={t("common.ovr")}
+                            sortState={benchSort}
+                            onSort={(column) => toggleSort(setBenchSort, benchSort, column)}
+                            className="w-12 text-center"
+                          />
+                          <SortableHeader
+                            column="condition"
+                            label={t("match.fitness")}
+                            sortState={benchSort}
+                            onSort={(column) => toggleSort(setBenchSort, benchSort, column)}
+                            className="w-24 text-left"
+                          />
                         </tr>
                       </thead>
                       <tbody>
-                        {availableBench.map((p) => {
+                        {sortedBenchPlayers.map((p) => {
                           const posMatch = selectedPlayer
                             ? p.position === selectedPlayer.position
                             : true;
@@ -420,6 +582,10 @@ export function SubPanel({
                             <tr
                               key={p.id}
                               data-testid={`sub-panel-bench-${p.id}`}
+                              draggable
+                              onDragStart={(event) => handlePlayerDragStart(event, p.id)}
+                              onDragOver={(event) => event.preventDefault()}
+                              onDrop={(event) => handleDropOnBench(event, p.id)}
                               onClick={() => handleSelectBenchPlayer(p.id)}
                               onKeyDown={(e) =>
                                 handleInteractiveRowKeyDown(e, () => handleSelectBenchPlayer(p.id))
@@ -427,13 +593,12 @@ export function SubPanel({
                               role="button"
                               tabIndex={0}
                               aria-pressed={selectedBench === p.id}
-                              aria-disabled={!selectedOff}
-                              className={`text-sm transition-colors ${
+                              className={`cursor-grab text-sm transition-colors active:cursor-grabbing ${
                                 selectedOff
                                   ? selectedBench === p.id
                                     ? "cursor-pointer bg-green-500/15 ring-1 ring-green-500/30"
                                     : "cursor-pointer hover:bg-green-500/10"
-                                  : "opacity-60"
+                                  : "hover:bg-green-500/10"
                               }`}
                             >
                               <td className="py-2 pr-2">
@@ -447,11 +612,17 @@ export function SubPanel({
                                 </div>
                               </td>
                               <td className="w-12 py-2 text-center">
-                                <span
-                                  className={`font-heading text-xs ${!posMatch && selectedOff ? "text-yellow-400" : "text-gray-500 dark:text-gray-400"}`}
-                                >
-                                  {translatePositionAbbreviation(t, p.position)}
-                                  {!posMatch && selectedOff && " !"}
+                                <span className="inline-flex items-center gap-1">
+                                  <span
+                                    className={`inline-flex rounded px-1.5 py-0.5 font-heading text-[10px] font-bold uppercase tracking-wider text-white ${getPositionColor(canonicalPosition(p.position))}`}
+                                  >
+                                    {translatePositionAbbreviation(t, p.position)}
+                                  </span>
+                                  {!posMatch && selectedOff && (
+                                    <span className="font-heading text-xs font-bold text-yellow-400">
+                                      !
+                                    </span>
+                                  )}
                                 </span>
                               </td>
                               <td className="w-12 py-2 text-center font-heading font-bold text-gray-500 dark:text-gray-400">

@@ -30,5 +30,12 @@
   "shot": "射门",
   "goal": "进球！",
   "resetEvent": "返回开球位置",
-  "progress": "回放进度"
+  "progress": "回放进度",
+  "sequence": "片段",
+  "attackingGoalSequence": "现有进攻片段",
+  "counterAttackSaveSequence": "拦截 → 反击 → 直塞 → 扑救",
+  "interception": "拦截",
+  "counterAttack": "反击",
+  "throughBall": "直塞",
+  "save": "扑救"
 }

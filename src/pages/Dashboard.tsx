@@ -534,6 +534,10 @@ export default function Dashboard(): JSX.Element {
         isDigestAborting={isDigestAborting}
         onDigestContinueAfterBlocker={resumeAfterBlocker}
         onDigestResume={resumeDigest}
+        onContinueAdvancing={() => {
+          dismissDigest();
+          void handleContinue();
+        }}
         onDismissDigest={dismissDigest}
         onDigestStop={abortDigest}
       />

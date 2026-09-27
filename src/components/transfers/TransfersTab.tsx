@@ -950,7 +950,7 @@ export default function TransfersTab({
                 </Badge>
               </div>
               <p className="text-gray-400 text-xs mt-0.5">
-                {t("transfers.transferWindow", { team: myTeam.name })}
+                {t("transfers.transferWindow", { team: myTeam.short_name || myTeam.name })}
               </p>
               <p className="text-gray-500 text-xs mt-1">{transferWindowSummary}</p>
             </div>

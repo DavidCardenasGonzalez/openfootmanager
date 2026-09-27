@@ -507,6 +507,27 @@ pub fn replenish_available_staff_market(
 
 pub fn normalize_imported_world_for_career_start(world: &mut WorldData, opening_year: u32) {
     generate_missing_team_staff(world, opening_year);
+    for team in &mut world.teams {
+        if team.wage_budget > 0 {
+            continue;
+        }
+        let player_wages: i64 = world
+            .players
+            .iter()
+            .filter(|player| player.team_id.as_deref() == Some(team.id.as_str()))
+            .map(|player| player.wage.max(0) as i64)
+            .sum();
+        let staff_wages: i64 = world
+            .staff
+            .iter()
+            .filter(|staff| staff.team_id.as_deref() == Some(team.id.as_str()))
+            .map(|staff| staff.wage.max(0) as i64)
+            .sum();
+        let annual_wage_bill = player_wages.saturating_add(staff_wages);
+        if annual_wage_bill > 0 {
+            team.wage_budget = normalized_wage_budget(annual_wage_bill, team.reputation);
+        }
+    }
     let _ = replenish_available_staff_market(&mut world.staff, &world.teams, opening_year);
 }
 
@@ -2752,6 +2773,40 @@ mod tests {
                 .count(),
             12
         );
+    }
+
+    #[test]
+    fn normalize_imported_world_fills_missing_wage_budget_from_contracts() {
+        let mut world = make_roster_baseline_world_without_staff();
+        world.teams[0].wage_budget = 0;
+        world.teams[1].wage_budget = 75_000;
+        for player in world
+            .players
+            .iter_mut()
+            .filter(|player| player.team_id.as_deref() == Some("team-1"))
+        {
+            player.wage = 100_000;
+        }
+
+        normalize_imported_world_for_career_start(&mut world, TEST_OPENING_YEAR);
+
+        let team_one_wages: i64 = world
+            .players
+            .iter()
+            .filter(|player| player.team_id.as_deref() == Some("team-1"))
+            .map(|player| player.wage.max(0) as i64)
+            .sum::<i64>()
+            + world
+                .staff
+                .iter()
+                .filter(|staff| staff.team_id.as_deref() == Some("team-1"))
+                .map(|staff| staff.wage.max(0) as i64)
+                .sum::<i64>();
+        assert_eq!(
+            world.teams[0].wage_budget,
+            normalized_wage_budget(team_one_wages, world.teams[0].reputation)
+        );
+        assert_eq!(world.teams[1].wage_budget, 75_000);
     }
 
     #[test]

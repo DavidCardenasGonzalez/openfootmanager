@@ -30,5 +30,12 @@
   "shot": "Chute a gol",
   "goal": "Gol!",
   "resetEvent": "Voltando à saída de bola",
-  "progress": "Progresso da reprodução"
+  "progress": "Progresso da reprodução",
+  "sequence": "Sequência",
+  "attackingGoalSequence": "Sequência de ataque existente",
+  "counterAttackSaveSequence": "Interceptação → Contra-ataque → Passe em profundidade → Defesa",
+  "interception": "Interceptação",
+  "counterAttack": "Contra-ataque",
+  "throughBall": "Passe em profundidade",
+  "save": "Defesa"
 }

@@ -209,7 +209,7 @@ export default function HallOfFameWorldTab({
                       onClick={() => onSelectTeam?.(champion.team.id)}
                       className="mt-1 text-left text-xl font-heading font-bold uppercase tracking-wide text-accent-500 transition-colors hover:text-accent-400"
                     >
-                      {champion.team.name}
+                      {champion.team.short_name || champion.team.name}
                     </button>
                     <div className="mt-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                       <CountryFlag

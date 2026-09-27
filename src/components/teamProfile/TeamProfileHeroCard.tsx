@@ -36,7 +36,7 @@ export default function TeamProfileHeroCard({
           />
           <div className="flex-1">
             <h2 className="text-3xl font-heading font-bold text-white uppercase tracking-wide drop-shadow">
-              {team.name}
+              {team.short_name || team.name}
             </h2>
             <div className="flex items-center gap-4 mt-2 text-white/80 text-sm">
               <TeamLocation

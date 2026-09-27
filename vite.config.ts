@@ -125,6 +125,8 @@ function manualChunks(id: string): string | undefined {
 // https://vite.dev/config/
 export default defineConfig(async ({ command }) => ({
   plugins: [react(), tailwindcss()],
+  // The application and standalone Match Lab share Canvas components.
+  resolve: { dedupe: ["react", "react-dom"] },
   define: (() => {
     const version = readBaseVersion();
 

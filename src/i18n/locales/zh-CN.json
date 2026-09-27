@@ -1874,6 +1874,8 @@
   "match": {
     "live": "直播中",
     "paused": "已暂停",
+    "matchView": "比赛画面",
+    "visualReconstruction": "根据实时比赛事件示意球员移动。",
     "events": "事件",
     "stats": "数据",
     "lineups": "首发名单",
@@ -1967,6 +1969,9 @@
     "delivering": "正在发表...",
     "teamTalkFailed": "更衣室讲话失败，请重试.",
     "delivered": "已发表",
+    "teamTalkImproved": "提升",
+    "teamTalkWorsened": "下降",
+    "teamTalkUnchanged": "无变化",
     "spectatorMode": "观众模式",
     "spectatorHT": "两位经理正在更衣室内与球队谈话。",
     "makeSubstitution": "进行换人",

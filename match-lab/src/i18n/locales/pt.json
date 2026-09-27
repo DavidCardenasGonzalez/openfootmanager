@@ -30,5 +30,12 @@
   "shot": "Remate à baliza",
   "goal": "Golo!",
   "resetEvent": "Regresso ao pontapé de saída",
-  "progress": "Progresso da reprodução"
+  "progress": "Progresso da reprodução",
+  "sequence": "Sequência",
+  "attackingGoalSequence": "Sequência de ataque existente",
+  "counterAttackSaveSequence": "Interceção → Contra-ataque → Passe em profundidade → Defesa",
+  "interception": "Interceção",
+  "counterAttack": "Contra-ataque",
+  "throughBall": "Passe em profundidade",
+  "save": "Defesa"
 }

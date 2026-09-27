@@ -7,7 +7,6 @@ import {
   type MatchEvent,
   type MinuteResult,
   type SimSpeed,
-  SPEED_MS,
   MINUTES_PER_TICK,
   FORMATIONS,
   isPersistableSpeed,
@@ -16,6 +15,8 @@ import { getEventDisplay, getPlayerName, makeTeamFallback, phaseLabel } from "./
 import { Badge, TeamLogo } from "../ui";
 import { useSettingsStore } from "../../store/settingsStore";
 import { EventFeed, MatchStats, Lineups } from "./MatchPanels";
+import { LiveMatchView } from "./LiveMatchView";
+import { LIVE_SPEED_MS } from "./livePresentation";
 import MatchScreenLayout from "./MatchScreenLayout";
 import { SubPanel } from "./SubPanel";
 import {
@@ -36,7 +37,7 @@ import {
   Flag,
 } from "lucide-react";
 
-type ActivePanel = "events" | "stats" | "lineups";
+type ActivePanel = "match" | "events" | "stats" | "lineups";
 
 interface MatchLiveProps {
   snapshot: MatchSnapshot;
@@ -75,10 +76,17 @@ export default function MatchLive({
       ? settings.match_speed
       : "normal");
   const [speed, setSpeed] = useState<SimSpeed>(initialSpeed);
-  const [activePanel, setActivePanel] = useState<ActivePanel>("events");
+  const [activePanel, setActivePanel] = useState<ActivePanel>("match");
   const [isRunning, setIsRunning] = useState(true);
   const [showSubPanel, setShowSubPanel] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const transitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (transitionTimerRef.current) clearTimeout(transitionTimerRef.current);
+    },
+    [],
+  );
   const eventFeedRef = useRef<HTMLDivElement>(null);
   // Track phases we've already signaled to avoid double-firing
   const signaledRef = useRef<Set<string>>(new Set());
@@ -129,8 +137,11 @@ export default function MatchLive({
             signaledRef.current.add("HalfTime");
             setIsRunning(false);
             setSpeed("paused");
-            // Small delay so the last event renders before transitioning
-            setTimeout(() => onHalfTime("HalfTime"), 600);
+            // Let the final presentation clip finish before leaving the live screen.
+            transitionTimerRef.current = setTimeout(
+              () => onHalfTime("HalfTime"),
+              LIVE_SPEED_MS[speed] || LIVE_SPEED_MS.normal,
+            );
             return;
           }
 
@@ -138,7 +149,10 @@ export default function MatchLive({
             signaledRef.current.add("ExtraTimeHalfTime");
             setIsRunning(false);
             setSpeed("paused");
-            setTimeout(() => onHalfTime("ExtraTimeHalfTime"), 600);
+            transitionTimerRef.current = setTimeout(
+              () => onHalfTime("ExtraTimeHalfTime"),
+              LIVE_SPEED_MS[speed] || LIVE_SPEED_MS.normal,
+            );
             return;
           }
 
@@ -146,7 +160,10 @@ export default function MatchLive({
             signaledRef.current.add("PenaltyShootout");
             setIsRunning(false);
             setSpeed("paused");
-            setTimeout(() => onPenaltyShootout?.(), 600);
+            transitionTimerRef.current = setTimeout(
+              () => onPenaltyShootout?.(),
+              LIVE_SPEED_MS[speed] || LIVE_SPEED_MS.normal,
+            );
             return;
           }
 
@@ -154,7 +171,10 @@ export default function MatchLive({
             signaledRef.current.add("Finished");
             setIsRunning(false);
             setSpeed("paused");
-            setTimeout(() => onFullTime(), 600);
+            transitionTimerRef.current = setTimeout(
+              () => onFullTime(),
+              LIVE_SPEED_MS[speed] || LIVE_SPEED_MS.normal,
+            );
             return;
           }
         }
@@ -163,7 +183,7 @@ export default function MatchLive({
         setIsRunning(false);
       }
     },
-    [onSnapshotUpdate, onImportantEvent, onHalfTime, onFullTime, onPenaltyShootout],
+    [onSnapshotUpdate, onImportantEvent, onHalfTime, onFullTime, onPenaltyShootout, speed],
   );
 
   // Auto-step timer
@@ -176,7 +196,7 @@ export default function MatchLive({
     if (isRunning && speed !== "paused" && !isFinished && !showSubPanel) {
       timerRef.current = setTimeout(async () => {
         await stepMatch(MINUTES_PER_TICK[speed]);
-      }, SPEED_MS[speed]);
+      }, LIVE_SPEED_MS[speed]);
     }
 
     return () => {
@@ -265,7 +285,7 @@ export default function MatchLive({
               <div className="flex items-center gap-3">
                 <div className="text-right">
                   <p className="font-heading font-bold text-sm uppercase tracking-wider text-gray-800 dark:text-gray-200">
-                    {snapshot.home_team.name}
+                    {homeFullTeam?.short_name || snapshot.home_team.name}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     {snapshot.home_team.formation}
@@ -313,7 +333,7 @@ export default function MatchLive({
                 />
                 <div className="text-left">
                   <p className="font-heading font-bold text-sm uppercase tracking-wider text-gray-800 dark:text-gray-200">
-                    {snapshot.away_team.name}
+                    {awayFullTeam?.short_name || snapshot.away_team.name}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     {snapshot.away_team.formation}
@@ -361,6 +381,11 @@ export default function MatchLive({
           <div className="flex bg-white dark:bg-navy-800 border-b border-gray-200 dark:border-navy-700 transition-colors duration-300">
             {[
               {
+                id: "match" as ActivePanel,
+                label: t("match.matchView"),
+                icon: <Play className="w-4 h-4" />,
+              },
+              {
                 id: "events" as ActivePanel,
                 label: t("match.events"),
                 icon: <MessageSquare className="w-4 h-4" />,
@@ -380,7 +405,8 @@ export default function MatchLive({
                 type="button"
                 key={tab.id}
                 onClick={() => setActivePanel(tab.id)}
-                className={`flex items-center gap-2 px-5 py-3 font-heading font-bold text-xs uppercase tracking-wider transition-colors border-b-2 ${
+                aria-pressed={activePanel === tab.id}
+                className={`focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset flex items-center gap-2 px-5 py-3 font-heading font-bold text-xs uppercase tracking-wider transition-colors border-b-2 ${
                   activePanel === tab.id
                     ? "text-primary-500 dark:text-primary-400 border-primary-500 bg-primary-50 dark:bg-navy-700/50"
                     : "text-gray-500 dark:text-gray-400 border-transparent hover:text-gray-700 dark:hover:text-gray-300"
@@ -393,16 +419,38 @@ export default function MatchLive({
           </div>
 
           <div className="flex-1 overflow-auto p-4">
+            <div hidden={activePanel !== "match"}>
+              <LiveMatchView
+                snapshot={snapshot}
+                numbers={playerJerseyMap}
+                speed={speed}
+                paused={
+                  (speed === "paused" &&
+                    !["HalfTime", "ExtraTimeHalfTime", "PenaltyShootout", "Finished"].includes(
+                      snapshot.phase,
+                    )) ||
+                  showSubPanel
+                }
+              />
+            </div>
             {activePanel === "events" && (
               <EventFeed
                 events={importantEvents}
                 snapshot={snapshot}
                 feedRef={eventFeedRef}
                 playerJerseyMap={playerJerseyMap}
+                homeTeamName={homeFullTeam?.short_name || snapshot.home_team.name}
+                awayTeamName={awayFullTeam?.short_name || snapshot.away_team.name}
               />
             )}
             {activePanel === "stats" && <MatchStats snapshot={snapshot} />}
-            {activePanel === "lineups" && <Lineups snapshot={snapshot} />}
+            {activePanel === "lineups" && (
+              <Lineups
+                snapshot={snapshot}
+                homeTeamName={homeFullTeam?.short_name || snapshot.home_team.name}
+                awayTeamName={awayFullTeam?.short_name || snapshot.away_team.name}
+              />
+            )}
           </div>
         </div>
 
@@ -581,8 +629,8 @@ export default function MatchLive({
                       </span>
                       <Badge variant={evt.side === "Home" ? "primary" : "accent"} size="sm">
                         {evt.side === "Home"
-                          ? snapshot.home_team.name.substring(0, 3)
-                          : snapshot.away_team.name.substring(0, 3)}
+                          ? homeFullTeam?.short_name || snapshot.home_team.name.substring(0, 3)
+                          : awayFullTeam?.short_name || snapshot.away_team.name.substring(0, 3)}
                       </Badge>
                     </div>
                   );

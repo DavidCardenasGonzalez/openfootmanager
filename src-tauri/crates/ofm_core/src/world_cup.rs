@@ -276,8 +276,8 @@ fn group_admits(group: &[String], code: &str, regions: &HashMap<String, String>)
 }
 
 /// Place each team of one pot into a distinct group (one per group) without
-/// breaching the confederation cap, by backtracking. Returns whether it found a
-/// full assignment.
+/// breaching the confederation cap, using bipartite matching. Eligibility depends
+/// only on earlier pots, so factorial backtracking is unnecessary.
 fn place_pot(
     pot: &[String],
     used: &mut [bool],
@@ -285,22 +285,48 @@ fn place_pot(
     groups: &mut [Vec<String>],
     regions: &HashMap<String, String>,
 ) -> bool {
-    if group_index == groups.len() {
-        return true;
-    }
-    for (i, code) in pot.iter().enumerate() {
-        if used[i] || !group_admits(&groups[group_index], code, regions) {
-            continue;
+    fn assign(
+        group: usize,
+        edges: &[Vec<usize>],
+        seen: &mut [bool],
+        owners: &mut [Option<usize>],
+    ) -> bool {
+        for &player in &edges[group] {
+            if seen[player] {
+                continue;
+            }
+            seen[player] = true;
+            if owners[player].is_none() || assign(owners[player].unwrap(), edges, seen, owners) {
+                owners[player] = Some(group);
+                return true;
+            }
         }
-        groups[group_index].push(code.clone());
-        used[i] = true;
-        if place_pot(pot, used, group_index + 1, groups, regions) {
-            return true;
-        }
-        used[i] = false;
-        groups[group_index].pop();
+        false
     }
-    false
+    let edges = groups
+        .iter()
+        .map(|group| {
+            pot.iter()
+                .enumerate()
+                .filter_map(|(i, code)| {
+                    (!used[i] && group_admits(group, code, regions)).then_some(i)
+                })
+                .collect::<Vec<_>>()
+        })
+        .collect::<Vec<_>>();
+    let mut owners = vec![None; pot.len()];
+    for group in group_index..groups.len() {
+        if !assign(group, &edges, &mut vec![false; pot.len()], &mut owners) {
+            return false;
+        }
+    }
+    for (i, owner) in owners.into_iter().enumerate() {
+        if let Some(group) = owner {
+            groups[group].push(pot[i].clone());
+            used[i] = true;
+        }
+    }
+    true
 }
 
 /// Draw the field into groups of four following FIFA rules: pots seeded by world
@@ -2310,6 +2336,24 @@ mod tests {
             qualifying.fixtures.iter().all(|f| block.contains(&f.date)),
             "qualifying matches must stay inside the window span blocks"
         );
+    }
+
+    #[test]
+    fn impossible_pot_leaves_groups_unchanged() {
+        let pot = (0..12).map(|i| format!("nation-{i}")).collect::<Vec<_>>();
+        let mut regions = pot
+            .iter()
+            .map(|code| (code.clone(), "europe".to_string()))
+            .collect::<HashMap<_, _>>();
+        regions.insert("existing-a".into(), "europe".into());
+        regions.insert("existing-b".into(), "europe".into());
+        let mut groups = vec![Vec::new(); 12];
+        groups[11] = vec!["existing-a".into(), "existing-b".into()];
+        let before = groups.clone();
+        let mut used = vec![false; 12];
+        assert!(!place_pot(&pot, &mut used, 0, &mut groups, &regions));
+        assert_eq!(groups, before);
+        assert!(used.iter().all(|used| !used));
     }
 
     #[test]

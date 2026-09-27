@@ -93,10 +93,19 @@ describe("DashboardSimulatingModal batch resume", () => {
   });
 
   it("returns to the done state with Close once the batch lands", () => {
-    render(<DashboardSimulatingModal digestEntries={[entryWith([match()])]} onDismiss={vi.fn()} />);
+    const onContinueAdvancing = vi.fn();
+    render(
+      <DashboardSimulatingModal
+        digestEntries={[entryWith([match()])]}
+        onDismiss={vi.fn()}
+        onContinueAdvancing={onContinueAdvancing}
+      />,
+    );
 
     expect(screen.getByText("dashboard.digestDone")).toBeInTheDocument();
     expect(screen.getByText("common.close")).toBeInTheDocument();
+    fireEvent.click(screen.getByText("dashboard.digestContinue"));
+    expect(onContinueAdvancing).toHaveBeenCalledOnce();
   });
 });
 

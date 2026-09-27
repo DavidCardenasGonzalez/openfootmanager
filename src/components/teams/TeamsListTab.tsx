@@ -250,7 +250,7 @@ function TeamCardView({
           />
           <div className="flex-1 min-w-0">
             <h3 className="font-heading font-bold text-lg text-white uppercase tracking-wide truncate drop-shadow">
-              {team.name}
+              {team.short_name || team.name}
               {isUser && (
                 <Badge variant="accent" size="sm" className="ml-2 align-middle">
                   {t("teams.yourTeam")}

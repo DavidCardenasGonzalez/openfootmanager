@@ -612,6 +612,20 @@ describe("TacticsTab", () => {
     expect(screen.getByTestId("xi-player-f1")).toBeInTheDocument();
   });
 
+  it("colors sidebar position badges by position group", () => {
+    render(
+      <TacticsTab gameState={makeGameState()} onSelectPlayer={vi.fn()} onGameUpdate={vi.fn()} />,
+    );
+
+    const badgeFor = (rowId: string, label: string) =>
+      within(screen.getByTestId(rowId)).getByText(label).closest("span");
+
+    expect(badgeFor("xi-player-gk1", "common.posAbbr.Goalkeeper")).toHaveClass("bg-amber-500");
+    expect(badgeFor("bench-player-d5", "common.posAbbr.Defender")).toHaveClass("bg-blue-600");
+    expect(badgeFor("xi-player-m1", "common.posAbbr.LeftMidfielder")).toHaveClass("bg-green-600");
+    expect(badgeFor("xi-player-f1", "common.posAbbr.Striker")).toHaveClass("bg-red-600");
+  });
+
   // A natural striker occupying the right-midfield slot (index 8 in 4-4-2).
   // Issue #272: the left panel and the pitch role picker must follow the
   // deployed slot, which is also what the backend validates roles against.

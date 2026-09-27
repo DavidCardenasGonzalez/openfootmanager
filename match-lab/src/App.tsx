@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { demoReplay } from "./mock/demoReplay";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { sequences, type SequenceId } from "./mock/sequences";
 import { PlaybackController } from "./match/playbackController";
 import { sampleReplay } from "./match/interpolation";
 import { MatchCanvas } from "./renderer/MatchCanvas";
@@ -9,10 +9,19 @@ import { languages, messages, type Language } from "./i18n";
 import type { ReplayData } from "./match/types";
 
 /** Swap this input to change data source; the viewer and renderer stay unchanged. */
-export function MatchLab({ replay }: { replay: ReplayData }) {
+export function MatchLab({
+  replay,
+  language,
+  onLanguageChange,
+  sequenceSelector,
+}: {
+  replay: ReplayData;
+  language: Language;
+  onLanguageChange: (language: Language) => void;
+  sequenceSelector: ReactNode;
+}) {
   const [controller] = useState(() => new PlaybackController(replay));
   const [sample, setSample] = useState(() => sampleReplay(replay, 0));
-  const [language, setLanguage] = useState<Language>("en");
   const [numbers, setNumbers] = useState(true);
   const [coordinates, setCoordinates] = useState(false);
   const previous = useRef<number | null>(null);
@@ -63,7 +72,7 @@ export function MatchLab({ replay }: { replay: ReplayData }) {
           {t.language}
           <select
             value={language}
-            onChange={(e) => setLanguage(e.target.value as Language)}
+            onChange={(e) => onLanguageChange(e.target.value as Language)}
             className="ml-3 max-w-44 cursor-pointer border border-lab-border bg-lab-panel px-3 py-2 text-lab-text"
           >
             {Object.entries(languages).map(([code, label]) => (
@@ -74,6 +83,7 @@ export function MatchLab({ replay }: { replay: ReplayData }) {
           </select>
         </label>
       </header>
+      {sequenceSelector}
       <div className="mb-3 flex items-center justify-between text-xs text-lab-muted">
         <span>{t.replay}</span>
         <span className="flex items-center gap-2">
@@ -110,5 +120,36 @@ export function MatchLab({ replay }: { replay: ReplayData }) {
   );
 }
 export function App() {
-  return <MatchLab key={demoReplay.id} replay={demoReplay} />;
+  const [selectedSequence, setSelectedSequence] = useState<SequenceId>("attackingGoal");
+  const [language, setLanguage] = useState<Language>("en");
+  const t = messages[language];
+  const sequence = sequences[selectedSequence];
+  return (
+    <MatchLab
+      key={selectedSequence}
+      replay={sequence.replay}
+      language={language}
+      onLanguageChange={setLanguage}
+      sequenceSelector={
+        <label className="mb-5 flex flex-wrap items-center gap-3 text-xs text-lab-muted">
+          {t.sequence}
+          <select
+            aria-label={t.sequence}
+            value={selectedSequence}
+            onChange={(e) => {
+              const id = e.target.value;
+              if (id in sequences) setSelectedSequence(id as SequenceId);
+            }}
+            className="min-w-0 max-w-full flex-1 cursor-pointer border border-lab-border bg-lab-panel px-3 py-3 text-lab-text focus-visible:outline-lab-home"
+          >
+            {Object.entries(sequences).map(([id, entry]) => (
+              <option key={id} value={id}>
+                {t[entry.labelKey]}
+              </option>
+            ))}
+          </select>
+        </label>
+      }
+    />
+  );
 }

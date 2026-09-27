@@ -30,5 +30,12 @@
   "shot": "Удар по воротам",
   "goal": "Гол!",
   "resetEvent": "Возврат к начальному удару",
-  "progress": "Ход воспроизведения"
+  "progress": "Ход воспроизведения",
+  "sequence": "Эпизод",
+  "attackingGoalSequence": "Существующая атакующая комбинация",
+  "counterAttackSaveSequence": "Перехват → Контратака → Пас вразрез → Сейв",
+  "interception": "Перехват",
+  "counterAttack": "Контратака",
+  "throughBall": "Пас вразрез",
+  "save": "Сейв"
 }

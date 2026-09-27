@@ -304,13 +304,13 @@ fn footedness_penalty(player: &Player, slot_position: &Position) -> f64 {
 fn weighted_score(attrs: &PlayerAttributes, position: &Position) -> f64 {
     match position {
         Position::Goalkeeper => weighted_average(&[
-            (attrs.handling, 28),
-            (attrs.reflexes, 28),
-            (attrs.aerial, 14),
-            (attrs.positioning, 10),
-            (attrs.decisions, 10),
-            (attrs.composure, 5),
-            (attrs.strength, 5),
+            (attrs.handling, 25),
+            (attrs.reflexes, 24),
+            (attrs.positioning, 18),
+            (attrs.agility, 16),
+            (attrs.passing, 13),
+            (attrs.composure, 2),
+            (attrs.strength, 2),
         ]),
         Position::RightBack | Position::LeftBack => weighted_average(&[
             (attrs.pace, 18),
@@ -323,13 +323,15 @@ fn weighted_score(attrs: &PlayerAttributes, position: &Position) -> f64 {
             (attrs.decisions, 5),
         ]),
         Position::CenterBack => weighted_average(&[
-            (attrs.defending, 24),
+            (attrs.defending, 20),
             (attrs.tackling, 18),
-            (attrs.positioning, 18),
-            (attrs.strength, 14),
+            (attrs.strength, 13),
             (attrs.aerial, 12),
-            (attrs.decisions, 8),
-            (attrs.composure, 6),
+            (attrs.pace, 12),
+            (attrs.positioning, 10),
+            (attrs.decisions, 7),
+            (attrs.composure, 5),
+            (attrs.aggression, 3),
         ]),
         Position::RightWingBack | Position::LeftWingBack => weighted_average(&[
             (attrs.pace, 18),
@@ -533,6 +535,40 @@ mod tests {
         assert!(
             rating >= 80.0,
             "an elite keeper must rate as elite, got {rating}",
+        );
+    }
+
+    #[test]
+    fn keeper_rating_ignores_outfield_decisions() {
+        let keeper = make_specialist_keeper();
+        let mut low_outfield_decisions = keeper.clone();
+        low_outfield_decisions.attributes.decisions = 10;
+
+        assert_eq!(
+            ovr_from_attributes(&keeper.attributes, &Position::Goalkeeper),
+            ovr_from_attributes(&low_outfield_decisions.attributes, &Position::Goalkeeper),
+        );
+    }
+
+    #[test]
+    fn center_back_rating_prioritizes_defending_profile_over_field_positioning() {
+        let mut player = make_player(Position::CenterBack);
+        player.natural_position = Position::CenterBack;
+        player.attributes.defending = 88;
+        player.attributes.tackling = 86;
+        player.attributes.strength = 82;
+        player.attributes.aerial = 84;
+        player.attributes.pace = 78;
+        player.attributes.positioning = 52;
+        player.attributes.decisions = 80;
+        player.attributes.composure = 78;
+        player.attributes.aggression = 80;
+
+        let rating = natural_ovr(&player);
+
+        assert!(
+            rating >= 80.0,
+            "a strong centre-back profile should not be dragged below 80 by field positioning, got {rating}",
         );
     }
 

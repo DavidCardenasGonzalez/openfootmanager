@@ -42,7 +42,8 @@ export function getUnreadMessagesCount(gameState: GameStateData): number {
 }
 
 export function getManagerTeamName(gameState: GameStateData): string | null {
-  return gameState.teams.find((team) => team.id === gameState.manager.team_id)?.name ?? null;
+  const team = gameState.teams.find((item) => item.id === gameState.manager.team_id);
+  return team?.short_name || team?.name || null;
 }
 
 export function getDashboardSearchResults(

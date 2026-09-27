@@ -1874,6 +1874,8 @@
   "match": {
     "live": "Live",
     "paused": "Paused",
+    "matchView": "Match",
+    "visualReconstruction": "Illustrative movement based on live match events.",
     "events": "Events",
     "stats": "Stats",
     "lineups": "Lineups",
@@ -2001,6 +2003,9 @@
     "delivering": "Delivering...",
     "teamTalkFailed": "Team talk failed. Please try again.",
     "delivered": "Delivered",
+    "teamTalkImproved": "Improved",
+    "teamTalkWorsened": "Worsened",
+    "teamTalkUnchanged": "No change",
     "spectatorMode": "Spectator Mode",
     "spectatorHT": "Both managers are talking to their teams in the dressing room.",
     "makeSubstitution": "Make Substitution",

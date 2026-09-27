@@ -1817,6 +1817,8 @@
   "match": {
     "live": "Ao Vivo",
     "paused": "Pausado",
+    "matchView": "Partida",
+    "visualReconstruction": "Movimentos ilustrativos baseados nos eventos da partida ao vivo.",
     "events": "Eventos",
     "stats": "Estatísticas",
     "lineups": "Escalações",
@@ -1910,6 +1912,9 @@
     "delivering": "Entregando...",
     "teamTalkFailed": "A preleção falhou. Por favor, tente novamente.",
     "delivered": "Feito",
+    "teamTalkImproved": "Melhorou",
+    "teamTalkWorsened": "Piorou",
+    "teamTalkUnchanged": "Sem alteração",
     "spectatorMode": "Modo Espectador",
     "spectatorHT": "Ambos os treinadores estão conversando com seus times no vestiário.",
     "makeSubstitution": "Fazer Substituição",

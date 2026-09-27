@@ -155,13 +155,13 @@ afterEach(() => {
 
 describe("getTeamName", () => {
   const teams = [
-    makeTeam({ id: "t1", name: "Alpha FC" }),
-    makeTeam({ id: "t2", name: "Beta United" }),
+    makeTeam({ id: "t1", name: "Alpha FC", short_name: "ALP" }),
+    makeTeam({ id: "t2", name: "Beta United", short_name: "BET" }),
   ];
 
   it("returns team name for valid id", () => {
-    expect(getTeamName(teams, "t1")).toBe("Alpha FC");
-    expect(getTeamName(teams, "t2")).toBe("Beta United");
+    expect(getTeamName(teams, "t1")).toBe("ALP");
+    expect(getTeamName(teams, "t2")).toBe("BET");
   });
 
   it("returns 'Free Agent' for null id", () => {

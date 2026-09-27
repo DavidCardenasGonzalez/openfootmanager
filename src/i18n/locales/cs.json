@@ -1874,6 +1874,8 @@
   "match": {
     "live": "Živě",
     "paused": "Pozastaveno",
+    "matchView": "Zápas",
+    "visualReconstruction": "Ilustrační pohyb podle událostí probíhajícího zápasu.",
     "events": "Události",
     "stats": "Statistiky",
     "lineups": "Sestavy",
@@ -2001,6 +2003,9 @@
     "delivering": "Pronešení proslovu...",
     "teamTalkFailed": "Proslov se nezdařil. Zkuste to prosím znovu.",
     "delivered": "Proslov dokončen",
+    "teamTalkImproved": "Zlepšení",
+    "teamTalkWorsened": "Zhoršení",
+    "teamTalkUnchanged": "Beze změny",
     "spectatorMode": "Divácký režim",
     "spectatorHT": "Oba manažeři právě mluví ke svým týmům v šatně.",
     "makeSubstitution": "Střídat",

@@ -1,0 +1,517 @@
+[
+  {
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "sourceId": "13.0",
+    "teams": [
+      {
+        "clubId": "9.0",
+        "clubName": "Liverpool",
+        "rank": null
+      },
+      {
+        "clubId": "10.0",
+        "clubName": "Manchester City",
+        "rank": null
+      },
+      {
+        "clubId": "11.0",
+        "clubName": "Manchester United",
+        "rank": null
+      },
+      {
+        "clubId": "13.0",
+        "clubName": "Newcastle United",
+        "rank": null
+      },
+      {
+        "clubId": "1.0",
+        "clubName": "Arsenal",
+        "rank": null
+      },
+      {
+        "clubId": "5.0",
+        "clubName": "Chelsea",
+        "rank": null
+      },
+      {
+        "clubId": "18.0",
+        "clubName": "Tottenham Hotspur",
+        "rank": null
+      },
+      {
+        "clubId": "2.0",
+        "clubName": "Aston Villa",
+        "rank": null
+      },
+      {
+        "clubId": "1808.0",
+        "clubName": "Brighton & Hove Albion",
+        "rank": null
+      },
+      {
+        "clubId": "14.0",
+        "clubName": "Nottingham Forest",
+        "rank": null
+      },
+      {
+        "clubId": "19.0",
+        "clubName": "West Ham United",
+        "rank": null
+      },
+      {
+        "clubId": "106.0",
+        "clubName": "Sunderland",
+        "rank": null
+      },
+      {
+        "clubId": "1796.0",
+        "clubName": "Burnley",
+        "rank": null
+      },
+      {
+        "clubId": "1925.0",
+        "clubName": "Brentford",
+        "rank": null
+      },
+      {
+        "clubId": "1799.0",
+        "clubName": "Crystal Palace",
+        "rank": null
+      },
+      {
+        "clubId": "1943.0",
+        "clubName": "AFC Bournemouth",
+        "rank": null
+      },
+      {
+        "clubId": "7.0",
+        "clubName": "Everton",
+        "rank": null
+      },
+      {
+        "clubId": "144.0",
+        "clubName": "Fulham FC",
+        "rank": null
+      },
+      {
+        "clubId": "8.0",
+        "clubName": "Leeds United",
+        "rank": null
+      },
+      {
+        "clubId": "110.0",
+        "clubName": "Wolverhampton Wanderers",
+        "rank": null
+      }
+    ]
+  },
+  {
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "sourceId": "53.0",
+    "teams": [
+      {
+        "clubId": "243.0",
+        "clubName": "Real Madrid",
+        "rank": null
+      },
+      {
+        "clubId": "240.0",
+        "clubName": "Atlético Madrid",
+        "rank": null
+      },
+      {
+        "clubId": "448.0",
+        "clubName": "Athletic Club",
+        "rank": null
+      },
+      {
+        "clubId": "241.0",
+        "clubName": "FC Barcelona",
+        "rank": null
+      },
+      {
+        "clubId": "449.0",
+        "clubName": "Real Betis Balompié",
+        "rank": null
+      },
+      {
+        "clubId": "453.0",
+        "clubName": "RCD Mallorca",
+        "rank": null
+      },
+      {
+        "clubId": "483.0",
+        "clubName": "Villarreal CF",
+        "rank": null
+      },
+      {
+        "clubId": "1860.0",
+        "clubName": "Getafe CF",
+        "rank": null
+      },
+      {
+        "clubId": "450.0",
+        "clubName": "RC Celta",
+        "rank": null
+      },
+      {
+        "clubId": "457.0",
+        "clubName": "Real Sociedad",
+        "rank": null
+      },
+      {
+        "clubId": "461.0",
+        "clubName": "Valencia CF",
+        "rank": null
+      },
+      {
+        "clubId": "110062.0",
+        "clubName": "Girona FC",
+        "rank": null
+      },
+      {
+        "clubId": "481.0",
+        "clubName": "Sevilla FC",
+        "rank": null
+      },
+      {
+        "clubId": "480.0",
+        "clubName": "Rayo Vallecano",
+        "rank": null
+      },
+      {
+        "clubId": "110827.0",
+        "clubName": "Real Oviedo",
+        "rank": null
+      },
+      {
+        "clubId": "452.0",
+        "clubName": "RCD Espanyol",
+        "rank": null
+      },
+      {
+        "clubId": "1853.0",
+        "clubName": "Levante UD",
+        "rank": null
+      },
+      {
+        "clubId": "479.0",
+        "clubName": "CA Osasuna",
+        "rank": null
+      },
+      {
+        "clubId": "468.0",
+        "clubName": "Elche CF",
+        "rank": null
+      },
+      {
+        "clubId": "463.0",
+        "clubName": "Deportivo Alavés",
+        "rank": null
+      }
+    ]
+  },
+  {
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "sourceId": "31.0",
+    "teams": [
+      {
+        "clubId": "44.0",
+        "clubName": "Inter",
+        "rank": null
+      },
+      {
+        "clubId": "47.0",
+        "clubName": "AC Milan",
+        "rank": null
+      },
+      {
+        "clubId": "48.0",
+        "clubName": "Napoli",
+        "rank": null
+      },
+      {
+        "clubId": "45.0",
+        "clubName": "Juventus",
+        "rank": null
+      },
+      {
+        "clubId": "52.0",
+        "clubName": "Roma",
+        "rank": null
+      },
+      {
+        "clubId": "46.0",
+        "clubName": "Lazio",
+        "rank": null
+      },
+      {
+        "clubId": "189.0",
+        "clubName": "Bologna",
+        "rank": null
+      },
+      {
+        "clubId": "39.0",
+        "clubName": "Atalanta",
+        "rank": null
+      },
+      {
+        "clubId": "110374.0",
+        "clubName": "Fiorentina",
+        "rank": null
+      },
+      {
+        "clubId": "110556.0",
+        "clubName": "Genoa",
+        "rank": null
+      },
+      {
+        "clubId": "54.0",
+        "clubName": "Torino",
+        "rank": null
+      },
+      {
+        "clubId": "1842.0",
+        "clubName": "Cagliari",
+        "rank": null
+      },
+      {
+        "clubId": "1745.0",
+        "clubName": "Como",
+        "rank": null
+      },
+      {
+        "clubId": "110738.0",
+        "clubName": "Pisa",
+        "rank": null
+      },
+      {
+        "clubId": "111974.0",
+        "clubName": "Sassuolo",
+        "rank": null
+      },
+      {
+        "clubId": "50.0",
+        "clubName": "Parma",
+        "rank": null
+      },
+      {
+        "clubId": "206.0",
+        "clubName": "Hellas Verona FC",
+        "rank": null
+      },
+      {
+        "clubId": "55.0",
+        "clubName": "Udinese",
+        "rank": null
+      },
+      {
+        "clubId": "111434.0",
+        "clubName": "Cremonese",
+        "rank": null
+      },
+      {
+        "clubId": "347.0",
+        "clubName": "Lecce",
+        "rank": null
+      }
+    ]
+  },
+  {
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "sourceId": "19.0",
+    "teams": [
+      {
+        "clubId": "21.0",
+        "clubName": "FC Bayern München",
+        "rank": null
+      },
+      {
+        "clubId": "22.0",
+        "clubName": "Borussia Dortmund",
+        "rank": null
+      },
+      {
+        "clubId": "32.0",
+        "clubName": "Bayer 04 Leverkusen",
+        "rank": null
+      },
+      {
+        "clubId": "175.0",
+        "clubName": "VfL Wolfsburg",
+        "rank": null
+      },
+      {
+        "clubId": "1831.0",
+        "clubName": "1. FC Union Berlin",
+        "rank": null
+      },
+      {
+        "clubId": "112172.0",
+        "clubName": "RB Leipzig",
+        "rank": null
+      },
+      {
+        "clubId": "38.0",
+        "clubName": "SV Werder Bremen",
+        "rank": null
+      },
+      {
+        "clubId": "169.0",
+        "clubName": "1. FSV Mainz 05",
+        "rank": null
+      },
+      {
+        "clubId": "1824.0",
+        "clubName": "Eintracht Frankfurt",
+        "rank": null
+      },
+      {
+        "clubId": "100409.0",
+        "clubName": "FC Augsburg",
+        "rank": null
+      },
+      {
+        "clubId": "36.0",
+        "clubName": "VfB Stuttgart",
+        "rank": null
+      },
+      {
+        "clubId": "31.0",
+        "clubName": "1. FC Köln",
+        "rank": null
+      },
+      {
+        "clubId": "23.0",
+        "clubName": "Borussia Mönchengladbach",
+        "rank": null
+      },
+      {
+        "clubId": "10029.0",
+        "clubName": "TSG 1899 Hoffenheim",
+        "rank": null
+      },
+      {
+        "clubId": "111235.0",
+        "clubName": "1. FC Heidenheim 1846",
+        "rank": null
+      },
+      {
+        "clubId": "110329.0",
+        "clubName": "FC St. Pauli",
+        "rank": null
+      },
+      {
+        "clubId": "28.0",
+        "clubName": "Hamburger SV",
+        "rank": null
+      },
+      {
+        "clubId": "25.0",
+        "clubName": "SC Freiburg",
+        "rank": null
+      }
+    ]
+  },
+  {
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "sourceId": "16.0",
+    "teams": [
+      {
+        "clubId": "73.0",
+        "clubName": "Paris Saint-Germain",
+        "rank": null
+      },
+      {
+        "clubId": "66.0",
+        "clubName": "Olympique Lyonnais",
+        "rank": null
+      },
+      {
+        "clubId": "219.0",
+        "clubName": "Olympique de Marseille",
+        "rank": null
+      },
+      {
+        "clubId": "72.0",
+        "clubName": "OGC Nice",
+        "rank": null
+      },
+      {
+        "clubId": "69.0",
+        "clubName": "AS Monaco",
+        "rank": null
+      },
+      {
+        "clubId": "65.0",
+        "clubName": "Lille OSC",
+        "rank": null
+      },
+      {
+        "clubId": "74.0",
+        "clubName": "Stade Rennais FC",
+        "rank": null
+      },
+      {
+        "clubId": "64.0",
+        "clubName": "RC Lens",
+        "rank": null
+      },
+      {
+        "clubId": "111817.0",
+        "clubName": "Paris FC",
+        "rank": null
+      },
+      {
+        "clubId": "76.0",
+        "clubName": "RC Strasbourg Alsace",
+        "rank": null
+      },
+      {
+        "clubId": "378.0",
+        "clubName": "Stade Brestois 29",
+        "rank": null
+      },
+      {
+        "clubId": "1530.0",
+        "clubName": "Angers SCO",
+        "rank": null
+      },
+      {
+        "clubId": "1809.0",
+        "clubName": "Toulouse FC",
+        "rank": null
+      },
+      {
+        "clubId": "71.0",
+        "clubName": "FC Nantes",
+        "rank": null
+      },
+      {
+        "clubId": "68.0",
+        "clubName": "FC Metz",
+        "rank": null
+      },
+      {
+        "clubId": "1738.0",
+        "clubName": "Le Havre AC",
+        "rank": null
+      },
+      {
+        "clubId": "217.0",
+        "clubName": "FC Lorient",
+        "rank": null
+      },
+      {
+        "clubId": "57.0",
+        "clubName": "AJ Auxerre",
+        "rank": null
+      }
+    ]
+  }
+]

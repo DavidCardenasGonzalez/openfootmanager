@@ -138,6 +138,7 @@ export function DebugControls({
           <pre className="mt-3 max-h-72 overflow-auto bg-lab-bg p-4 text-lab-home">
             {JSON.stringify(
               {
+                replayId: c.replay.id,
                 frameIndex: sample.frameIndex,
                 nextFrameIndex: sample.nextFrameIndex,
                 alpha: Number(sample.alpha.toFixed(3)),

@@ -37,6 +37,7 @@ interface DashboardOverlaysProps {
   isDigestAborting?: boolean;
   onDigestContinueAfterBlocker?: () => void;
   onDigestResume?: () => void;
+  onContinueAdvancing?: () => void;
   onDismissDigest?: () => void;
   onDigestStop?: () => void;
 }
@@ -67,6 +68,7 @@ export default function DashboardOverlays({
   isDigestAborting,
   onDigestContinueAfterBlocker,
   onDigestResume,
+  onContinueAdvancing,
   onDismissDigest,
   onDigestStop,
 }: DashboardOverlaysProps) {
@@ -87,6 +89,7 @@ export default function DashboardOverlays({
           onNavigate={handleNavigate}
           onContinueAfterBlocker={onDigestContinueAfterBlocker}
           onResume={onDigestResume}
+          onContinueAdvancing={onContinueAdvancing}
         />
       ) : null}
 

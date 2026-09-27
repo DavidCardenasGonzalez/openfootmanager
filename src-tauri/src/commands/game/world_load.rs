@@ -16,7 +16,7 @@ use log::warn;
 use ofm_core::clock::GameClock;
 
 use super::{
-    current_date_for_phase, first_package_error_message, start_date_for_year, StartupOptions,
+    StartupOptions, current_date_for_phase, first_package_error_message, start_date_for_year,
 };
 
 pub(super) fn load_world_data_from_path(
@@ -67,6 +67,26 @@ pub(super) fn load_world_data(
 ) -> Result<ofm_core::generator::WorldData, String> {
     match world_source {
         None | Some("random") => Ok(ofm_core::generator::generate_world_data(sources)),
+        Some("open-manager") => {
+            let mut candidates = vec![std::path::PathBuf::from("data/open-manager/world.json")];
+            if cfg!(debug_assertions) {
+                candidates.push(
+                    std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                        .join("../data/open-manager/world.json"),
+                );
+            }
+            candidates.extend(
+                sources
+                    .data_dirs()
+                    .iter()
+                    .map(|path| path.join("open-manager/world.json")),
+            );
+            let path = candidates
+                .into_iter()
+                .find(|path| path.is_file())
+                .ok_or_else(|| "be.error.worldReadFileFailed".to_string())?;
+            load_world_data_from_path(path.to_string_lossy().as_ref())
+        }
         Some(source) => {
             let raw = source.strip_prefix("file:").unwrap_or(source);
             if std::path::Path::new(raw).is_dir() {
@@ -184,7 +204,104 @@ pub(super) fn game_clock_for_world(
 mod tests {
     use super::*;
     use crate::commands::game::testkit::{make_historical_snapshot_world, temp_pkg_dir};
-    use crate::commands::game::{StartPhase, DEFAULT_GENERATED_HISTORY_DEPTH_YEARS};
+    use crate::commands::game::{DEFAULT_GENERATED_HISTORY_DEPTH_YEARS, StartPhase};
+
+    #[test]
+    fn open_manager_generated_world_matches_runtime_schema() {
+        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../data/open-manager/world.json");
+        let json = std::fs::read_to_string(path).unwrap();
+        let world: ofm_core::generator::WorldData = serde_json::from_str(&json)
+            .expect("imported world must deserialize into the actual runtime types");
+        assert_eq!(world.teams.len(), 96);
+        assert_eq!(world.players.len(), 2679);
+        let loaded = load_world_data(
+            Some("open-manager"),
+            &ofm_core::generator::DefinitionSources::embedded_only(),
+        )
+        .unwrap();
+        assert_eq!(loaded.teams.len(), world.teams.len());
+        let options = StartupOptions {
+            start_year: 2026,
+            start_phase: StartPhase::SeasonStart,
+            history_depth_years: 0,
+        };
+        let mut loaded = loaded;
+        ofm_core::generator::normalize_imported_world_for_career_start(&mut loaded, 2026);
+        let manager = domain::manager::Manager::new(
+            "test-manager".into(),
+            "Test".into(),
+            "Career".into(),
+            "1980-01-01".into(),
+            "ES".into(),
+        );
+        let clock = game_clock_for_world(&options, &loaded.metadata).unwrap();
+        let (mut game, stats) =
+            crate::commands::game::build_game_from_world_data(clock, manager, &options, loaded);
+        let divisions = game
+            .competitions
+            .iter()
+            .filter(|c| c.id.starts_with("open-manager-division-"))
+            .collect::<Vec<_>>();
+        assert_eq!(divisions.len(), 5);
+        let team_id = game
+            .teams
+            .iter()
+            .find(|t| t.name == "Real Madrid")
+            .unwrap()
+            .id
+            .clone();
+        crate::commands::game::bootstrap_team_selection(
+            &mut game,
+            &team_id,
+            StartPhase::SeasonStart,
+            stats,
+        )
+        .unwrap();
+        assert_eq!(game.manager.team_id.as_deref(), Some(team_id.as_str()));
+        let player = game
+            .players
+            .iter()
+            .find(|p| p.id == "top5-player-252371")
+            .unwrap();
+        assert_eq!(player.attributes.stamina, 94);
+        assert_eq!(player.attributes.strength, 80);
+        assert_eq!(player.team_id.as_deref(), Some(team_id.as_str()));
+        let metadata = player.media.source_data.clone();
+        let dir = tempfile::tempdir().unwrap();
+        let mut saves = db::save_manager::SaveManager::init(dir.path()).unwrap();
+        let save_id = saves
+            .create_save(&game, "Imported world regression")
+            .unwrap();
+        let restored = saves.load_game(&save_id).unwrap();
+        let restored_player = restored
+            .players
+            .iter()
+            .find(|p| p.id == "top5-player-252371")
+            .unwrap();
+        assert_eq!(restored_player.team_id.as_deref(), Some(team_id.as_str()));
+        assert_eq!(restored_player.media.source_data, metadata);
+        let date = game
+            .competitions
+            .iter()
+            .find(|c| c.id == "open-manager-division-1")
+            .unwrap()
+            .fixtures[0]
+            .date
+            .clone();
+        game.clock.current_date = chrono::DateTime::parse_from_rfc3339(&format!("{date}T12:00:00Z"))
+            .unwrap().with_timezone(&Utc);
+        ofm_core::turn::process_day(&mut game);
+        assert!(
+            game.competitions
+                .iter()
+                .find(|c| c.id == "open-manager-division-1")
+                .unwrap()
+                .fixtures
+                .iter()
+                .any(|f| f.result.is_some())
+        );
+    }
 
     #[test]
     fn loads_a_world_from_a_package_directory() {

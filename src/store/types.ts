@@ -241,6 +241,15 @@ export type PlayerSquadRole = "Senior" | "Youth";
 export interface PlayerMediaData {
   /** Local path to a player face image; remote URLs and data URIs are ignored. */
   face?: string;
+  source_age?: number;
+  /** Appearance metadata imported from the source dataset; absent on legacy/generated players. */
+  skin_tone?: string;
+  hair_color?: string;
+  hair_length?: string;
+  height?: number;
+  weight?: number;
+  /** Original provider fields retained for future systems. */
+  source_data?: Record<string, unknown>;
 }
 
 export interface PlayerData {

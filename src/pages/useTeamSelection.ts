@@ -54,6 +54,11 @@ export function useTeamSelection({
     [gameState],
   );
 
+  const isOpenManagerWorld = useMemo(
+    () => (gameState?.teams ?? []).some((team) => team.id.startsWith("top5-club-")),
+    [gameState?.teams],
+  );
+
   const regions = useMemo(
     () =>
       gameState
@@ -65,7 +70,7 @@ export function useTeamSelection({
   );
 
   useEffect(() => {
-    if (regions.length === 0) {
+    if (isOpenManagerWorld || regions.length === 0) {
       if (selectedHomeRegionId !== null) {
         setSelectedHomeRegionId(null);
       }
@@ -76,7 +81,7 @@ export function useTeamSelection({
     if (!hasCurrentSelection) {
       setSelectedHomeRegionId(regions[0].id);
     }
-  }, [regions, selectedHomeRegionId]);
+  }, [isOpenManagerWorld, regions, selectedHomeRegionId]);
 
   const regionCountries = useMemo(() => {
     const region = regions.find((candidate) => candidate.id === selectedHomeRegionId);
@@ -84,7 +89,7 @@ export function useTeamSelection({
   }, [regions, selectedHomeRegionId]);
 
   useEffect(() => {
-    if (regionCountries.length === 0) {
+    if (isOpenManagerWorld || regionCountries.length === 0) {
       if (selectedCountryCode !== null) {
         setSelectedCountryCode(null);
       }
@@ -94,10 +99,10 @@ export function useTeamSelection({
     if (!selectedCountryCode || !regionCountries.includes(selectedCountryCode)) {
       setSelectedCountryCode(regionCountries[0]);
     }
-  }, [regionCountries, selectedCountryCode]);
+  }, [isOpenManagerWorld, regionCountries, selectedCountryCode]);
 
   useEffect(() => {
-    if (regions.length === 0) {
+    if (isOpenManagerWorld || regions.length === 0) {
       return;
     }
 
@@ -110,10 +115,10 @@ export function useTeamSelection({
       }
       return next;
     });
-  }, [regions, selectedHomeRegionId]);
+  }, [isOpenManagerWorld, regions, selectedHomeRegionId]);
 
   useEffect(() => {
-    if (competitions.length === 0) {
+    if (isOpenManagerWorld || competitions.length === 0) {
       return;
     }
 
@@ -122,7 +127,7 @@ export function useTeamSelection({
         competitions.map((competition) => [competition.id, current[competition.id] ?? true]),
       ),
     );
-  }, [competitions]);
+  }, [competitions, isOpenManagerWorld]);
 
   const activeRegionIds = regions
     .filter((region) => region.id === selectedHomeRegionId || Boolean(regionSelection[region.id]))
@@ -151,6 +156,9 @@ export function useTeamSelection({
   });
 
   const teams = (gameState?.teams ?? []).filter((team) => {
+    if (isOpenManagerWorld) {
+      return true;
+    }
     if (selectedCountryCode) {
       return team.country === selectedCountryCode;
     }
@@ -175,7 +183,10 @@ export function useTeamSelection({
   const teamGroups = useMemo(() => {
     const leagueByTeam = new Map<string, LeagueData>();
     for (const competition of competitions) {
-      if (competition.kind !== "League" || competition.scope !== "Domestic") {
+      if (
+        competition.kind !== "League" ||
+        (competition.scope !== "Domestic" && !competition.id.startsWith("open-manager-division-"))
+      ) {
         continue;
       }
       for (const teamId of competition.participant_ids ?? []) {

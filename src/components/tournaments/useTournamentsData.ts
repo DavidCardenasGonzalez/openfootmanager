@@ -58,7 +58,7 @@ export function useTournamentsData(gameState: GameStateData): UseTournamentsData
   // the `??` below ends up using it — and it walks every team in the world
   // (~440). useMemo cuts that to one build per change of the underlying list.
   const fallbackTeamNames = useMemo<Record<string, string>>(
-    () => Object.fromEntries((gameState.teams ?? []).map((t) => [t.id, t.name])),
+    () => Object.fromEntries((gameState.teams ?? []).map((team) => [team.id, team.short_name || team.name])),
     [gameState.teams],
   );
   const teamNames = competitionsView?.team_names ?? fallbackTeamNames;

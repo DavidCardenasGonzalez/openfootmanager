@@ -48,6 +48,13 @@ impl DefinitionSources {
         }
     }
 
+    /// Directories used by the runtime when resolving bundled definitions.
+    /// Consumers that ship an additional transformed database can use the same
+    /// search roots without duplicating platform-specific path discovery.
+    pub fn data_dirs(&self) -> &[PathBuf] {
+        &self.dirs
+    }
+
     /// Load `stem` from the first tier that yields a *usable* definition,
     /// falling back to `embedded`.
     ///

@@ -45,6 +45,8 @@ export default function PreMatchSetup({
   onStart,
   onUpdateSnapshot,
 }: PreMatchSetupProps) {
+  const displayTeamName = (teamId: string, name: string) =>
+    gameState.teams.find((team) => team.id === teamId)?.short_name || name;
   const { t } = useTranslation();
   const [selectedStarterId, setSelectedStarterId] = useState<string | null>(null);
   const [isAutoSelecting, setIsAutoSelecting] = useState(false);
@@ -499,7 +501,7 @@ export default function PreMatchSetup({
       <div className="flex min-h-0 flex-col gap-2 overflow-hidden">
         <div>
           <p className="text-[10px] font-heading font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
-            {oppTeam.name}
+            {displayTeamName(oppTeam.id, oppTeam.name)}
           </p>
           <p className="text-[10px] text-gray-500 dark:text-gray-400 font-heading mt-0.5">
             {oppTeam.formation} · {t(`common.playStyles.${oppTeam.play_style}`, oppTeam.play_style)}
@@ -627,7 +629,7 @@ export default function PreMatchSetup({
             />
             <div className="min-w-0">
               <p className="font-heading font-bold text-lg text-gray-900 dark:text-white truncate">
-                {homeTeam.name}
+                {displayTeamName(homeTeam.id, homeTeam.name)}
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                 {homeTeam.formation} ·{" "}
@@ -668,7 +670,7 @@ export default function PreMatchSetup({
             />
             <div className="min-w-0 text-right">
               <p className="font-heading font-bold text-lg text-gray-900 dark:text-white truncate">
-                {awayTeam.name}
+                {displayTeamName(awayTeam.id, awayTeam.name)}
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                 {awayTeam.formation} ·{" "}
@@ -686,8 +688,8 @@ export default function PreMatchSetup({
       {/* Your Team / Opponent tabs */}
       <div className="shrink-0 flex items-center gap-1 border-b border-gray-200 dark:border-navy-700 bg-gray-50/80 dark:bg-navy-800/50 px-4">
         {[
-          { id: "team" as const, label: userTeam.name },
-          { id: "opponent" as const, label: `${t("match.opponent")} · ${oppTeam.name}` },
+          { id: "team" as const, label: displayTeamName(userTeam.id, userTeam.name) },
+          { id: "opponent" as const, label: `${t("match.opponent")} · ${displayTeamName(oppTeam.id, oppTeam.name)}` },
         ].map((tab) => (
           <button
             key={tab.id}

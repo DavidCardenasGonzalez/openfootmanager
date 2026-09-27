@@ -14,12 +14,20 @@ interface LeagueStandingSnapshot {
   points: number;
 }
 
+interface LeagueStandingSummaryRow {
+  rank: number;
+  teamId: string;
+  teamName: string;
+  points: number;
+}
+
 interface HomeLeaguePositionCardProps {
   isPreseason: boolean;
   phase: string;
   seasonStartLabel: string | null;
   myStanding: number | null;
   myStandingData: LeagueStandingSnapshot | null;
+  standingsSummary?: LeagueStandingSummaryRow[];
   teamForm: string[];
   onNavigate?: (tab: string) => void;
 }
@@ -30,6 +38,7 @@ export default function HomeLeaguePositionCard({
   seasonStartLabel,
   myStanding,
   myStandingData,
+  standingsSummary = [],
   teamForm,
   onNavigate,
 }: HomeLeaguePositionCardProps) {
@@ -95,30 +104,29 @@ export default function HomeLeaguePositionCard({
                 </p>
               </div>
             </div>
-            <div className="w-full grid grid-cols-4 text-center gap-1">
-              <div>
-                <p className="text-xs text-gray-400 dark:text-gray-500 font-heading uppercase">P</p>
-                <p className="text-sm font-heading font-bold text-gray-700 dark:text-gray-300">
-                  {myStandingData.played}
-                </p>
+            {standingsSummary.length > 0 && (
+              <div className="w-full overflow-hidden rounded-lg border border-gray-200 dark:border-navy-700">
+                <div className="grid grid-cols-[2rem_minmax(0,1fr)_2.5rem] gap-2 border-b border-gray-200 bg-gray-50 px-2 py-1 font-heading text-[9px] font-bold uppercase tracking-wider text-gray-500 dark:border-navy-700 dark:bg-navy-900/40 dark:text-gray-400">
+                  <span>{t("common.rank")}</span>
+                  <span>{t("common.team")}</span>
+                  <span className="text-right">{t("common.pts")}</span>
+                </div>
+                {standingsSummary.map((row) => (
+                  <div
+                    key={row.teamId}
+                    className={`grid grid-cols-[2rem_minmax(0,1fr)_2.5rem] items-center gap-2 px-2 py-1 text-[11px] ${
+                      row.rank === myStanding
+                        ? "bg-primary-500/10 font-bold text-primary-600 dark:text-primary-300"
+                        : "text-gray-600 dark:text-gray-300"
+                    }`}
+                  >
+                    <span className="tabular-nums">{row.rank}</span>
+                    <span className="truncate">{row.teamName}</span>
+                    <span className="text-right font-heading tabular-nums">{row.points}</span>
+                  </div>
+                ))}
               </div>
-              <div>
-                <p className="text-xs text-gray-400 dark:text-gray-500 font-heading uppercase">W</p>
-                <p className="text-sm font-heading font-bold text-green-500">
-                  {myStandingData.won}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-400 dark:text-gray-500 font-heading uppercase">D</p>
-                <p className="text-sm font-heading font-bold text-gray-500">
-                  {myStandingData.drawn}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-400 dark:text-gray-500 font-heading uppercase">L</p>
-                <p className="text-sm font-heading font-bold text-red-500">{myStandingData.lost}</p>
-              </div>
-            </div>
+            )}
             {teamForm.length > 0 && (
               <div className="flex flex-col items-center gap-1.5 mt-1">
                 <div className="flex gap-1.5">

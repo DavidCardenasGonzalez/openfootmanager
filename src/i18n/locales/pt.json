@@ -1874,6 +1874,8 @@
   "match": {
     "live": "Ao Vivo",
     "paused": "Pausado",
+    "matchView": "Jogo",
+    "visualReconstruction": "Movimentos ilustrativos baseados nos eventos do jogo em direto.",
     "events": "Eventos",
     "stats": "Estatísticas",
     "lineups": "Equipas",
@@ -1967,6 +1969,9 @@
     "delivering": "A entregar...",
     "teamTalkFailed": "A palestra falhou. Por favor, tente novamente.",
     "delivered": "Entregue",
+    "teamTalkImproved": "Melhorou",
+    "teamTalkWorsened": "Piorou",
+    "teamTalkUnchanged": "Sem alterações",
     "spectatorMode": "Modo Espetador",
     "spectatorHT": "Ambos os treinadores estão a falar com as suas equipas no balneário.",
     "makeSubstitution": "Fazer Substituição",

@@ -30,5 +30,12 @@
   "shot": "Tir au but",
   "goal": "But !",
   "resetEvent": "Retour au coup d’envoi",
-  "progress": "Progression de la lecture"
+  "progress": "Progression de la lecture",
+  "sequence": "Séquence",
+  "attackingGoalSequence": "Séquence offensive existante",
+  "counterAttackSaveSequence": "Interception → Contre-attaque → Passe en profondeur → Arrêt",
+  "interception": "Interception",
+  "counterAttack": "Contre-attaque",
+  "throughBall": "Passe en profondeur",
+  "save": "Arrêt"
 }

@@ -40,6 +40,7 @@ interface DashboardSimulatingModalProps {
   onContinueAfterBlocker?: () => void;
   /** Resume the advance after an attention-event pause. */
   onResume?: () => void;
+  onContinueAdvancing?: () => void;
 }
 
 const EVENT_LABEL_KEYS: Record<AttentionEventKind, string> = {
@@ -270,6 +271,7 @@ export default function DashboardSimulatingModal({
   onNavigate,
   onContinueAfterBlocker,
   onResume,
+  onContinueAdvancing,
 }: DashboardSimulatingModalProps): JSX.Element {
   const { t } = useTranslation();
   const listEndRef = useRef<HTMLDivElement>(null);
@@ -358,7 +360,16 @@ export default function DashboardSimulatingModal({
 
         {/* Close button when digest finished with no specific stop reason (natural end or user-aborted) */}
         {!isInProgress && !stopReason && digestEntries && digestEntries.length > 0 && (
-          <div className="border-t border-gray-200 dark:border-navy-700 pt-4 shrink-0">
+          <div className="flex flex-col gap-2 border-t border-gray-200 dark:border-navy-700 pt-4 shrink-0">
+            {onContinueAdvancing && (
+              <button
+                type="button"
+                onClick={onContinueAdvancing}
+                className="w-full rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-700"
+              >
+                {t("dashboard.digestContinue")}
+              </button>
+            )}
             <button
               type="button"
               onClick={onDismiss}

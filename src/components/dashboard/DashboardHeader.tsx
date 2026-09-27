@@ -204,7 +204,7 @@ function renderSearchResults(props: {
                     style={{ backgroundColor: team.colors.primary }}
                   />
                   <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                    {team.name}
+                    {team.short_name || team.name}
                   </span>
                   <span className="ml-auto text-xs text-gray-400">{team.city}</span>
                 </button>

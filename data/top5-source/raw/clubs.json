@@ -1,0 +1,1442 @@
+[
+  {
+    "id": "243.0",
+    "name": "Real Madrid",
+    "shortName": "Real Madrid",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 243,
+      "club_name": "Real Madrid",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "21.0",
+    "name": "FC Bayern München",
+    "shortName": "FC Bayern München",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 21,
+      "club_name": "FC Bayern München",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "73.0",
+    "name": "Paris Saint-Germain",
+    "shortName": "Paris Saint-Germain",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 73,
+      "club_name": "Paris Saint-Germain",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "44.0",
+    "name": "Inter",
+    "shortName": "Inter",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 44,
+      "club_name": "Inter",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "9.0",
+    "name": "Liverpool",
+    "shortName": "Liverpool",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 9,
+      "club_name": "Liverpool",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "10.0",
+    "name": "Manchester City",
+    "shortName": "Manchester City",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 10,
+      "club_name": "Manchester City",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "240.0",
+    "name": "Atlético Madrid",
+    "shortName": "Atlético Madrid",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 240,
+      "club_name": "Atlético Madrid",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "11.0",
+    "name": "Manchester United",
+    "shortName": "Manchester United",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 11,
+      "club_name": "Manchester United",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "448.0",
+    "name": "Athletic Club",
+    "shortName": "Athletic Club",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 448,
+      "club_name": "Athletic Club",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "47.0",
+    "name": "AC Milan",
+    "shortName": "AC Milan",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 47,
+      "club_name": "AC Milan",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "13.0",
+    "name": "Newcastle United",
+    "shortName": "Newcastle United",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 13,
+      "club_name": "Newcastle United",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "22.0",
+    "name": "Borussia Dortmund",
+    "shortName": "Borussia Dortmund",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 22,
+      "club_name": "Borussia Dortmund",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "1.0",
+    "name": "Arsenal",
+    "shortName": "Arsenal",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 1,
+      "club_name": "Arsenal",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "241.0",
+    "name": "FC Barcelona",
+    "shortName": "FC Barcelona",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 241,
+      "club_name": "FC Barcelona",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "48.0",
+    "name": "Napoli",
+    "shortName": "Napoli",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 48,
+      "club_name": "Napoli",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "45.0",
+    "name": "Juventus",
+    "shortName": "Juventus",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 45,
+      "club_name": "Juventus",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "32.0",
+    "name": "Bayer 04 Leverkusen",
+    "shortName": "Bayer 04 Leverkusen",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 32,
+      "club_name": "Bayer 04 Leverkusen",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "5.0",
+    "name": "Chelsea",
+    "shortName": "Chelsea",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 5,
+      "club_name": "Chelsea",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "18.0",
+    "name": "Tottenham Hotspur",
+    "shortName": "Tottenham Hotspur",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 18,
+      "club_name": "Tottenham Hotspur",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "2.0",
+    "name": "Aston Villa",
+    "shortName": "Aston Villa",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 2,
+      "club_name": "Aston Villa",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "52.0",
+    "name": "Roma",
+    "shortName": "Roma",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 52,
+      "club_name": "Roma",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "449.0",
+    "name": "Real Betis Balompié",
+    "shortName": "Real Betis Balompié",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 449,
+      "club_name": "Real Betis Balompié",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "453.0",
+    "name": "RCD Mallorca",
+    "shortName": "RCD Mallorca",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 453,
+      "club_name": "RCD Mallorca",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "66.0",
+    "name": "Olympique Lyonnais",
+    "shortName": "Olympique Lyonnais",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 66,
+      "club_name": "Olympique Lyonnais",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "1808.0",
+    "name": "Brighton & Hove Albion",
+    "shortName": "Brighton & Hove Albion",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 1808,
+      "club_name": "Brighton & Hove Albion",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "14.0",
+    "name": "Nottingham Forest",
+    "shortName": "Nottingham Forest",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 14,
+      "club_name": "Nottingham Forest",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "483.0",
+    "name": "Villarreal CF",
+    "shortName": "Villarreal CF",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 483,
+      "club_name": "Villarreal CF",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "46.0",
+    "name": "Lazio",
+    "shortName": "Lazio",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 46,
+      "club_name": "Lazio",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "19.0",
+    "name": "West Ham United",
+    "shortName": "West Ham United",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 19,
+      "club_name": "West Ham United",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "1860.0",
+    "name": "Getafe CF",
+    "shortName": "Getafe CF",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 1860,
+      "club_name": "Getafe CF",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "219.0",
+    "name": "Olympique de Marseille",
+    "shortName": "Olympique de Marseille",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 219,
+      "club_name": "Olympique de Marseille",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "450.0",
+    "name": "RC Celta",
+    "shortName": "RC Celta",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 450,
+      "club_name": "RC Celta",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "189.0",
+    "name": "Bologna",
+    "shortName": "Bologna",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 189,
+      "club_name": "Bologna",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "457.0",
+    "name": "Real Sociedad",
+    "shortName": "Real Sociedad",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 457,
+      "club_name": "Real Sociedad",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "39.0",
+    "name": "Atalanta",
+    "shortName": "Atalanta",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 39,
+      "club_name": "Atalanta",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "175.0",
+    "name": "VfL Wolfsburg",
+    "shortName": "VfL Wolfsburg",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 175,
+      "club_name": "VfL Wolfsburg",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "1831.0",
+    "name": "1. FC Union Berlin",
+    "shortName": "1. FC Union Berlin",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 1831,
+      "club_name": "1. FC Union Berlin",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "110374.0",
+    "name": "Fiorentina",
+    "shortName": "Fiorentina",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 110374,
+      "club_name": "Fiorentina",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "112172.0",
+    "name": "RB Leipzig",
+    "shortName": "RB Leipzig",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 112172,
+      "club_name": "RB Leipzig",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "110556.0",
+    "name": "Genoa",
+    "shortName": "Genoa",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 110556,
+      "club_name": "Genoa",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "54.0",
+    "name": "Torino",
+    "shortName": "Torino",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 54,
+      "club_name": "Torino",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "106.0",
+    "name": "Sunderland",
+    "shortName": "Sunderland",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 106,
+      "club_name": "Sunderland",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "38.0",
+    "name": "SV Werder Bremen",
+    "shortName": "SV Werder Bremen",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 38,
+      "club_name": "SV Werder Bremen",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "72.0",
+    "name": "OGC Nice",
+    "shortName": "OGC Nice",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 72,
+      "club_name": "OGC Nice",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "1796.0",
+    "name": "Burnley",
+    "shortName": "Burnley",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 1796,
+      "club_name": "Burnley",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "169.0",
+    "name": "1. FSV Mainz 05",
+    "shortName": "1. FSV Mainz 05",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 169,
+      "club_name": "1. FSV Mainz 05",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "461.0",
+    "name": "Valencia CF",
+    "shortName": "Valencia CF",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 461,
+      "club_name": "Valencia CF",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "1925.0",
+    "name": "Brentford",
+    "shortName": "Brentford",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 1925,
+      "club_name": "Brentford",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "1799.0",
+    "name": "Crystal Palace",
+    "shortName": "Crystal Palace",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 1799,
+      "club_name": "Crystal Palace",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "1842.0",
+    "name": "Cagliari",
+    "shortName": "Cagliari",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 1842,
+      "club_name": "Cagliari",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "1943.0",
+    "name": "AFC Bournemouth",
+    "shortName": "AFC Bournemouth",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 1943,
+      "club_name": "AFC Bournemouth",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "69.0",
+    "name": "AS Monaco",
+    "shortName": "AS Monaco",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 69,
+      "club_name": "AS Monaco",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "1824.0",
+    "name": "Eintracht Frankfurt",
+    "shortName": "Eintracht Frankfurt",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 1824,
+      "club_name": "Eintracht Frankfurt",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "110062.0",
+    "name": "Girona FC",
+    "shortName": "Girona FC",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 110062,
+      "club_name": "Girona FC",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "65.0",
+    "name": "Lille OSC",
+    "shortName": "Lille OSC",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 65,
+      "club_name": "Lille OSC",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "100409.0",
+    "name": "FC Augsburg",
+    "shortName": "FC Augsburg",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 100409,
+      "club_name": "FC Augsburg",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "1745.0",
+    "name": "Como",
+    "shortName": "Como",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 1745,
+      "club_name": "Como",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "36.0",
+    "name": "VfB Stuttgart",
+    "shortName": "VfB Stuttgart",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 36,
+      "club_name": "VfB Stuttgart",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "481.0",
+    "name": "Sevilla FC",
+    "shortName": "Sevilla FC",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 481,
+      "club_name": "Sevilla FC",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "110738.0",
+    "name": "Pisa",
+    "shortName": "Pisa",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 110738,
+      "club_name": "Pisa",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "7.0",
+    "name": "Everton",
+    "shortName": "Everton",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 7,
+      "club_name": "Everton",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "74.0",
+    "name": "Stade Rennais FC",
+    "shortName": "Stade Rennais FC",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 74,
+      "club_name": "Stade Rennais FC",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "31.0",
+    "name": "1. FC Köln",
+    "shortName": "1. FC Köln",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 31,
+      "club_name": "1. FC Köln",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "480.0",
+    "name": "Rayo Vallecano",
+    "shortName": "Rayo Vallecano",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 480,
+      "club_name": "Rayo Vallecano",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "110827.0",
+    "name": "Real Oviedo",
+    "shortName": "Real Oviedo",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 110827,
+      "club_name": "Real Oviedo",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "144.0",
+    "name": "Fulham FC",
+    "shortName": "Fulham FC",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 144,
+      "club_name": "Fulham FC",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "8.0",
+    "name": "Leeds United",
+    "shortName": "Leeds United",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 8,
+      "club_name": "Leeds United",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "64.0",
+    "name": "RC Lens",
+    "shortName": "RC Lens",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 64,
+      "club_name": "RC Lens",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "23.0",
+    "name": "Borussia Mönchengladbach",
+    "shortName": "Borussia Mönchengladbach",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 23,
+      "club_name": "Borussia Mönchengladbach",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "10029.0",
+    "name": "TSG 1899 Hoffenheim",
+    "shortName": "TSG 1899 Hoffenheim",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 10029,
+      "club_name": "TSG 1899 Hoffenheim",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "111817.0",
+    "name": "Paris FC",
+    "shortName": "Paris FC",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 111817,
+      "club_name": "Paris FC",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "111974.0",
+    "name": "Sassuolo",
+    "shortName": "Sassuolo",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 111974,
+      "club_name": "Sassuolo",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "50.0",
+    "name": "Parma",
+    "shortName": "Parma",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 50,
+      "club_name": "Parma",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "110.0",
+    "name": "Wolverhampton Wanderers",
+    "shortName": "Wolverhampton Wanderers",
+    "competitionId": "eafc26-league-13",
+    "competitionName": "Premier League",
+    "countryCode": "EN",
+    "country": "England",
+    "sourceData": {
+      "club_team_id": 110,
+      "club_name": "Wolverhampton Wanderers",
+      "league_id": 13,
+      "league_name": "Premier League"
+    }
+  },
+  {
+    "id": "206.0",
+    "name": "Hellas Verona FC",
+    "shortName": "Hellas Verona FC",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 206,
+      "club_name": "Hellas Verona FC",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "452.0",
+    "name": "RCD Espanyol",
+    "shortName": "RCD Espanyol",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 452,
+      "club_name": "RCD Espanyol",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "111235.0",
+    "name": "1. FC Heidenheim 1846",
+    "shortName": "1. FC Heidenheim 1846",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 111235,
+      "club_name": "1. FC Heidenheim 1846",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "76.0",
+    "name": "RC Strasbourg Alsace",
+    "shortName": "RC Strasbourg Alsace",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 76,
+      "club_name": "RC Strasbourg Alsace",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "110329.0",
+    "name": "FC St. Pauli",
+    "shortName": "FC St. Pauli",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 110329,
+      "club_name": "FC St. Pauli",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "378.0",
+    "name": "Stade Brestois 29",
+    "shortName": "Stade Brestois 29",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 378,
+      "club_name": "Stade Brestois 29",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "28.0",
+    "name": "Hamburger SV",
+    "shortName": "Hamburger SV",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 28,
+      "club_name": "Hamburger SV",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "55.0",
+    "name": "Udinese",
+    "shortName": "Udinese",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 55,
+      "club_name": "Udinese",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "25.0",
+    "name": "SC Freiburg",
+    "shortName": "SC Freiburg",
+    "competitionId": "eafc26-league-19",
+    "competitionName": "Bundesliga",
+    "countryCode": "DE",
+    "country": "Germany",
+    "sourceData": {
+      "club_team_id": 25,
+      "club_name": "SC Freiburg",
+      "league_id": 19,
+      "league_name": "Bundesliga"
+    }
+  },
+  {
+    "id": "1853.0",
+    "name": "Levante UD",
+    "shortName": "Levante UD",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 1853,
+      "club_name": "Levante UD",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "1530.0",
+    "name": "Angers SCO",
+    "shortName": "Angers SCO",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 1530,
+      "club_name": "Angers SCO",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "1809.0",
+    "name": "Toulouse FC",
+    "shortName": "Toulouse FC",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 1809,
+      "club_name": "Toulouse FC",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "479.0",
+    "name": "CA Osasuna",
+    "shortName": "CA Osasuna",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 479,
+      "club_name": "CA Osasuna",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "71.0",
+    "name": "FC Nantes",
+    "shortName": "FC Nantes",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 71,
+      "club_name": "FC Nantes",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "468.0",
+    "name": "Elche CF",
+    "shortName": "Elche CF",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 468,
+      "club_name": "Elche CF",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "68.0",
+    "name": "FC Metz",
+    "shortName": "FC Metz",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 68,
+      "club_name": "FC Metz",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "111434.0",
+    "name": "Cremonese",
+    "shortName": "Cremonese",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 111434,
+      "club_name": "Cremonese",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "347.0",
+    "name": "Lecce",
+    "shortName": "Lecce",
+    "competitionId": "eafc26-league-31",
+    "competitionName": "Serie A",
+    "countryCode": "IT",
+    "country": "Italy",
+    "sourceData": {
+      "club_team_id": 347,
+      "club_name": "Lecce",
+      "league_id": 31,
+      "league_name": "Serie A"
+    }
+  },
+  {
+    "id": "1738.0",
+    "name": "Le Havre AC",
+    "shortName": "Le Havre AC",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 1738,
+      "club_name": "Le Havre AC",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "463.0",
+    "name": "Deportivo Alavés",
+    "shortName": "Deportivo Alavés",
+    "competitionId": "eafc26-league-53",
+    "competitionName": "La Liga",
+    "countryCode": "ES",
+    "country": "Spain",
+    "sourceData": {
+      "club_team_id": 463,
+      "club_name": "Deportivo Alavés",
+      "league_id": 53,
+      "league_name": "La Liga"
+    }
+  },
+  {
+    "id": "217.0",
+    "name": "FC Lorient",
+    "shortName": "FC Lorient",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 217,
+      "club_name": "FC Lorient",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  },
+  {
+    "id": "57.0",
+    "name": "AJ Auxerre",
+    "shortName": "AJ Auxerre",
+    "competitionId": "eafc26-league-16",
+    "competitionName": "Ligue 1",
+    "countryCode": "FR",
+    "country": "France",
+    "sourceData": {
+      "club_team_id": 57,
+      "club_name": "AJ Auxerre",
+      "league_id": 16,
+      "league_name": "Ligue 1"
+    }
+  }
+]

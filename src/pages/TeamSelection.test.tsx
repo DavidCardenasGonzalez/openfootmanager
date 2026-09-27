@@ -80,16 +80,16 @@ describe("TeamSelection", () => {
     } as unknown as ReturnType<typeof useGameStore>);
   });
 
-  it("renders the scope panel, the club grid, and the selected-team sidebar", () => {
+  it("renders the unified club grid and selected-team sidebar without league scope", () => {
     render(
       <ThemeProvider>
         <TeamSelection />
       </ThemeProvider>,
     );
 
-    // Page chrome + scope panel
+    // Page chrome; league selection is intentionally absent from onboarding.
     expect(screen.getByText("teamSelect.title")).toBeInTheDocument();
-    expect(screen.getByText("teamSelect.simulationScope")).toBeInTheDocument();
+    expect(screen.queryByText("teamSelect.simulationScope")).not.toBeInTheDocument();
 
     // Club grid renders the team; sidebar auto-selects the first team, so the
     // club name appears in both the card and the sidebar header.

@@ -33,7 +33,7 @@ export default function TeamSelectionSidebar({
                 {t("teamSelect.selectedClub")}
               </p>
               <h2 className="mt-1 font-heading text-2xl font-bold text-gray-900 dark:text-white">
-                {selectedTeam.name}
+                {selectedTeam.short_name || selectedTeam.name}
               </h2>
               <TeamLocation
                 city={selectedTeam.city}
