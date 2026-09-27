@@ -4,6 +4,7 @@ import type {
   ReplayData,
   EventKind,
 } from "../../../match-lab/src/match/types";
+import { easeMovement, supportingPaths } from "./presentationMovement";
 import { buildPitchRows } from "../squad/SquadTab.helpers";
 import type { MatchSnapshot, MatchEvent, SimSpeed, EngineTeamData } from "./types";
 
@@ -140,80 +141,132 @@ export function buildLiveReplay(
       to: receiver?.shirtNumber,
     };
     events.push(visualEvent);
+    if (shot || pass) events.push({ ...visualEvent, timeMs: start + segment * 0.4 });
     if (kind === "goal" || kind === "save")
       events.push({ ...visualEvent, timeMs: start + segment * 0.8, kind });
-    for (const fraction of [0.2, 0.4, 0.65, 0.8, 1]) {
+    const origin = frames[frames.length - 1].players;
+    const paths = supportingPaths(
+      players,
+      origin,
+      { x, y },
+      team,
+      actor?.id,
+      pass ? receiver?.id : undefined,
+      segment,
+    );
+    const actorOrigin = origin.find((p) => p.id === actor?.id);
+    const receiverLanding = receiver ? paths.get(receiver.id)?.(0.8) : undefined;
+    const active = actor && kind !== "reposition" && kind !== "kickoff";
+    const crossesLine =
+      kind === "goal" ||
+      event?.event_type === "ShotOffTarget" ||
+      event?.event_type === "PenaltyMiss";
+    const targetX = shot
+      ? team === "home"
+        ? crossesLine
+          ? 102
+          : 97
+        : crossesLine
+          ? -2
+          : 3
+      : (receiverLanding?.x ?? x + sign * 7);
+    const targetY =
+      event?.event_type === "ShotOffTarget" || event?.event_type === "PenaltyMiss"
+        ? 45
+        : shot
+          ? 34
+          : (receiverLanding?.y ?? y);
+    const blocked = event?.event_type === "ShotBlocked";
+    // Dense samples preserve eased movement under the existing linear interpolator.
+    const samples = Math.max(20, Math.ceil(segment / 100 / 20) * 20);
+    for (let step = 1; step <= samples; step++) {
+      const fraction = step / samples;
       const isRelease = fraction >= 0.4;
       const flight = Math.max(0, Math.min(1, (fraction - 0.4) / 0.4));
-      const crossesLine =
-        kind === "goal" ||
-        event?.event_type === "ShotOffTarget" ||
-        event?.event_type === "PenaltyMiss";
-      const targetX = shot
-        ? team === "home"
-          ? crossesLine
-            ? 102
-            : 97
-          : crossesLine
-            ? -2
-            : 3
-        : receiver
-          ? Math.max(4, Math.min(96, receiver.x + (x - 50) * 0.18))
-          : x + sign * 7;
-      const targetY =
-        event?.event_type === "ShotOffTarget" || event?.event_type === "PenaltyMiss"
-          ? 45
-          : shot
-            ? 34
-            : (receiver?.y ?? y);
       const save = kind === "save" && flight === 1 && keeper;
-      const blocked = event?.event_type === "ShotBlocked";
-      const active = actor && kind !== "reposition" && kind !== "kickoff";
+      const last = frames[frames.length - 1];
       const staged = players.map((p) => {
-        if (active && p.id === actor.id)
-          return {
-            ...p,
-            x,
-            y,
-            direction: Math.atan2(targetY - y, targetX - x),
-            action: shot ? ("shoot" as const) : pass ? ("pass" as const) : ("run" as const),
+        let position = paths.get(p.id)?.(fraction) ?? p;
+        if (active && p.id === actor.id && actorOrigin) {
+          const t = easeMovement(fraction / (shot || pass ? 0.32 : 1));
+          position = {
+            x: actorOrigin.x + (x - actorOrigin.x) * t,
+            y: actorOrigin.y + (y - actorOrigin.y) * t,
           };
-        if (shot && keeper?.id === p.id)
-          return { ...p, x: team === "home" ? 97 : 3, y: 34, action: "idle" as const };
+        }
+        if (shot && p.id === keeper?.id) {
+          const from = origin.find((q) => q.id === p.id) ?? p;
+          const t = easeMovement(fraction / 0.8);
+          position = {
+            x: from.x + ((team === "home" ? 97 : 3) - from.x) * t,
+            y: from.y + (34 - from.y) * t,
+          };
+        }
+        const old = last.players.find((q) => q.id === p.id) ?? p;
+        const dx = position.x - old.x;
+        const dy = position.y - old.y;
+        const moving = Math.hypot(dx, dy) / (segment / samples / 1000) > 0.15;
+        const kicking =
+          active && p.id === actor.id && (shot || pass) && fraction >= 0.3 && fraction <= 0.48;
+        const receiving = pass && p.id === receiver?.id && fraction >= 0.8;
         return {
           ...p,
-          x: p.goalkeeper ? p.x : Math.max(4, Math.min(96, p.x + (x - 50) * 0.18)),
-          action: fraction < 0.8 ? ("run" as const) : ("idle" as const),
+          ...position,
+          direction:
+            kicking || (active && p.id === actor.id && !moving)
+              ? Math.atan2(targetY - position.y, targetX - position.x)
+              : moving
+                ? Math.atan2(dy, dx)
+                : Math.atan2(y - position.y, x - position.x),
+          action: kicking
+            ? shot
+              ? ("shoot" as const)
+              : ("pass" as const)
+            : receiving
+              ? ("idle" as const)
+              : moving
+                ? ("run" as const)
+                : ("idle" as const),
         };
       });
+      const carrier = staged.find((p) => p.id === actor?.id);
+      const recipient = staged.find((p) => p.id === receiver?.id);
       const ball: MatchFrame["ball"] = !active
         ? { x, y: kind === "kickoff" ? 34 : y, height: 0, motion: "reset" }
-        : !shot && !pass
-          ? { x, y, height: 0, ownerId: actor.id, motion: "possession" }
-          : save
+        : ((!shot && !pass) || !isRelease) && carrier
+          ? { x: carrier.x, y: carrier.y, height: 0, ownerId: actor.id, motion: "possession" }
+          : pass && flight === 1 && recipient
             ? {
-                x: team === "home" ? 97 : 3,
-                y: 34,
+                x: recipient.x,
+                y: recipient.y,
                 height: 0,
-                ownerId: keeper.id,
+                ownerId: recipient.id,
                 motion: "possession",
               }
-            : {
-                x: x + (targetX - x) * (blocked ? flight * 0.3 : flight),
-                y: y + (targetY - y) * flight,
-                height: isRelease
-                  ? Math.sin(flight * Math.PI) * (shot ? 1.7 : kind === "longPass" ? 3 : 0.3)
-                  : 0,
-                ownerId: !isRelease ? actor.id : !shot && flight === 1 ? receiver?.id : undefined,
-                motion:
-                  !isRelease || (!shot && flight === 1 && !!receiver)
-                    ? "possession"
-                    : kind === "goal" && flight === 1
-                      ? "goal"
-                      : shot
-                        ? "shot"
-                        : "pass",
-              };
+            : save
+              ? {
+                  x: team === "home" ? 97 : 3,
+                  y: 34,
+                  height: 0,
+                  ownerId: keeper.id,
+                  motion: "possession",
+                }
+              : {
+                  x: x + (targetX - x) * (blocked ? flight * 0.3 : flight),
+                  y: y + (targetY - y) * flight,
+                  height: isRelease
+                    ? Math.sin(flight * Math.PI) * (shot ? 1.7 : kind === "longPass" ? 3 : 0.3)
+                    : 0,
+                  ownerId: !isRelease ? actor.id : !shot && flight === 1 ? receiver?.id : undefined,
+                  motion:
+                    !isRelease || (!shot && flight === 1 && !!receiver)
+                      ? "possession"
+                      : kind === "goal" && flight === 1
+                        ? "goal"
+                        : shot
+                          ? "shot"
+                          : "pass",
+                };
       frames.push({
         timeMs: start + segment * fraction,
         matchTimeSeconds: snapshot.current_minute * 60,

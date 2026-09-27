@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { BadgeEuro, CalendarClock, CalendarDays, Percent } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -92,7 +93,7 @@ export function LoanOfferForm({
           </Badge>
           <div>
             <p className="font-semibold text-sm text-gray-800 dark:text-gray-200">
-              {loanTarget.full_name}
+              {getPlayerDisplayName(loanTarget)}
             </p>
             <p className="text-xs text-gray-400">
               {getTeamName(teams, loanTarget.team_id)} •{" "}

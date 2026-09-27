@@ -76,3 +76,86 @@ describe("live match presentation adapter", () => {
     );
   });
 });
+
+it("keeps supporting players moving through the middle of a passage, with plausible speed and facing", () => {
+  const replay = buildLiveReplay(snapshot(), [event("PassCompleted")], new Map());
+  const middle = replay.frames.filter((f) => f.timeMs >= 1600 && f.timeMs <= 2800);
+  const moving = middle[0].players.filter(
+    (p) =>
+      !p.goalkeeper &&
+      p.id !== "h9" &&
+      p.id !== "h10" &&
+      Math.hypot(
+        p.x - (middle[middle.length - 1].players.find((q) => q.id === p.id)?.x ?? Number.NaN),
+        p.y - (middle[middle.length - 1].players.find((q) => q.id === p.id)?.y ?? Number.NaN),
+      ) > 0.3,
+  );
+  expect(moving.length).toBeGreaterThanOrEqual(10);
+  for (let i = 1; i < replay.frames.length; i++) {
+    const a = replay.frames[i - 1];
+    const b = replay.frames[i];
+    for (const p of b.players.filter((p) => !p.goalkeeper && p.id !== "h9")) {
+      const old = a.players.find((q) => q.id === p.id);
+      if (!old) throw new Error("Missing player");
+      const speed = Math.hypot(p.x - old.x, p.y - old.y) / ((b.timeMs - a.timeMs) / 1000);
+      expect(speed).toBeLessThanOrEqual(8.1);
+      if (p.action === "run") {
+        expect(speed).toBeGreaterThan(0.1);
+        expect(
+          Math.cos(p.direction) * (p.x - old.x) + Math.sin(p.direction) * (p.y - old.y),
+        ).toBeGreaterThan(0);
+      }
+    }
+  }
+});
+it("keeps possession attached to the carrier, receives a pass on the moving player, and is deterministic", () => {
+  const replay = buildLiveReplay(snapshot(), [event("PassCompleted")], new Map());
+  for (const frame of replay.frames.slice(1)) {
+    if (!frame.ball.ownerId) continue;
+    const owner = frame.players.find((p) => p.id === frame.ball.ownerId);
+    if (!owner) throw new Error("Missing ball owner");
+    expect(Math.hypot(frame.ball.x - owner.x, frame.ball.y - owner.y)).toBeLessThan(1.5);
+  }
+  expect(replay.frames[replay.frames.length - 1].ball.ownerId).toBe("h10");
+  expect(buildLiveReplay(snapshot(), [event("PassCompleted")], new Map())).toEqual(replay);
+  const next = buildLiveReplay(
+    snapshot(),
+    [event("Dribble")],
+    new Map(),
+    replay.frames[replay.frames.length - 1],
+  );
+  expect(next.frames[0].players.map((p) => [p.id, p.x, p.y])).toEqual(
+    replay.frames[replay.frames.length - 1].players.map((p) => [p.id, p.x, p.y]),
+  );
+});
+
+it("handles an away attack and eases supporting runs without changing the engine score", () => {
+  const data = snapshot();
+  const replay = buildLiveReplay(
+    data,
+    [
+      {
+        ...event("ShotSaved"),
+        side: "Away",
+        player_id: "a9",
+        secondary_player_id: null,
+        zone: "HomeBox",
+      },
+    ],
+    new Map(),
+  );
+  expect(replay.frames[replay.frames.length - 1].ball.ownerId).toBe("h0");
+  expect(
+    replay.frames.every(
+      (f) => f.score.home === data.home_score && f.score.away === data.away_score,
+    ),
+  ).toBe(true);
+  const positions = replay.frames.map((f) => f.players.find((p) => p.id === "a5"));
+  const travel = (i: number) =>
+    Math.hypot(
+      (positions[i]?.x ?? 0) - (positions[i - 1]?.x ?? 0),
+      (positions[i]?.y ?? 0) - (positions[i - 1]?.y ?? 0),
+    );
+  expect(travel(20)).toBeGreaterThan(travel(2));
+  expect(travel(20)).toBeGreaterThan(travel(39));
+});

@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import type { ReactNode } from "react";
 import { ArrowLeft, ArrowRightLeft, Gavel, UserPlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -177,7 +178,7 @@ export default function PlayerDealWorkspace({
                     id="player-deal-workspace-title"
                     className="truncate font-heading text-2xl font-bold uppercase tracking-wide text-gray-950 dark:text-white"
                   >
-                    {player.full_name}
+                    {getPlayerDisplayName(player)}
                   </h2>
                   <Badge
                     variant={positionBadgeVariant(player.natural_position || player.position)}

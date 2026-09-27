@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   GameStateData,
@@ -1337,7 +1338,7 @@ export default function TransfersTab({
                             <PlayerAvatar player={player} />
                             <div className="min-w-0">
                               <span className="block truncate font-semibold text-sm text-gray-800 dark:text-gray-200 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                                {player.full_name}
+                                {getPlayerDisplayName(player)}
                               </span>
                               <div className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 flex items-center gap-1">
                                 <CountryFlag

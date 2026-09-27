@@ -654,6 +654,21 @@ pub fn compute_traits(attrs: &PlayerAttributes, _position: &Position) -> Vec<Pla
 }
 
 impl Player {
+    /// Restore the provider's authored short name in imported worlds and older saves.
+    pub fn apply_source_short_name(&mut self) {
+        let short_name = self.media.source_data.as_ref().and_then(|source| {
+            source
+                .get("shortName")
+                .or_else(|| source.get("short_name"))
+                .and_then(serde_json::Value::as_str)
+                .map(str::trim)
+                .filter(|name| !name.is_empty())
+        });
+        if let Some(short_name) = short_name {
+            self.match_name = short_name.to_string();
+        }
+    }
+
     pub fn new(
         id: String,
         match_name: String,
@@ -753,6 +768,25 @@ mod tests {
         assert_eq!(player.weak_foot, 2);
         assert_eq!(player.squad_role, SquadRole::Senior);
         assert_eq!(player.squad_role, SquadRole::Senior);
+    }
+
+    #[test]
+    fn imported_short_name_replaces_legacy_full_match_name() {
+        let mut player = Player::new(
+            "p-243715".to_string(),
+            "William Alain André Gabriel Saliba".to_string(),
+            "William Alain André Gabriel Saliba".to_string(),
+            "2001-03-24".to_string(),
+            "FR".to_string(),
+            Position::Defender,
+            sample_attributes(),
+        );
+        player.media.source_data = Some(serde_json::json!({"short_name": "W. Saliba"}));
+
+        player.apply_source_short_name();
+
+        assert_eq!(player.match_name, "W. Saliba");
+        assert_eq!(player.full_name, "William Alain André Gabriel Saliba");
     }
 
     #[test]

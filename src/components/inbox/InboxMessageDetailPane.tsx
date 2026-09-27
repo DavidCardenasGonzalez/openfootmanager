@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { ArrowLeft, CheckCircle2, MailOpen, MessageCircle, Trash2 } from "lucide-react";
 import type { TFunction } from "i18next";
 import type { JSX } from "react";
@@ -245,7 +246,7 @@ export default function InboxMessageDetailPane({
                             <div className="min-w-0">
                               <div className="flex flex-wrap items-center gap-2">
                                 <p className="font-heading font-bold text-base text-gray-900 dark:text-gray-100">
-                                  {prospect.full_name}
+                                  {getPlayerDisplayName(prospect)}
                                 </p>
                                 <Badge variant={positionBadgeVariant(prospect.position)} size="sm">
                                   {translatePositionAbbreviation(t, prospect.position)}

@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { AlertTriangle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -51,7 +52,7 @@ export default function HomeUnavailablePlayersCard({
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="truncate text-sm font-heading font-bold text-gray-800 dark:text-gray-200">
-                      {player.full_name}
+                      {getPlayerDisplayName(player)}
                     </span>
                     <Badge variant="danger" size="sm">
                       {t("common.injured")}

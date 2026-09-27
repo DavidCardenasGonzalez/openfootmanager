@@ -1874,6 +1874,7 @@
   "match": {
     "live": "Langsung",
     "paused": "Dijeda",
+    "cinematicPause": "Pertandingan dijeda. Lanjutkan saat kamu siap.",
     "matchView": "Pertandingan",
     "visualReconstruction": "Gerakan ilustratif berdasarkan kejadian pertandingan langsung.",
     "events": "Peristiwa",

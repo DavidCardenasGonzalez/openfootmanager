@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { useTranslation } from "react-i18next";
 import { AlertTriangle } from "lucide-react";
 
@@ -73,7 +74,7 @@ export default function TransferCounterOfferModal({
           </Badge>
           <div>
             <p className="font-semibold text-sm text-gray-800 dark:text-gray-200">
-              {counterTarget.player.full_name}
+              {getPlayerDisplayName(counterTarget.player)}
             </p>
             <p className="text-xs text-gray-400">
               {getTeamName(teams, counterTarget.fromTeamId)} •

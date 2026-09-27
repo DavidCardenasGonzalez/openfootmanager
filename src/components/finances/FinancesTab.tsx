@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { FinanceCashFlowChart } from "./FinanceCashFlowChart";
@@ -718,13 +719,13 @@ function FinancesTabContent({
                           checked={selectedRiskPlayerIds.includes(player.id)}
                           onChange={() => handleToggleRiskPlayer(player.id)}
                           aria-label={t("finances.selectRiskPlayer", {
-                            player: player.full_name,
+                            player: getPlayerDisplayName(player),
                           })}
                           className="mt-1"
                         />
                         <div className="space-y-1">
                           <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">
-                            {player.full_name}
+                            {getPlayerDisplayName(player)}
                           </p>
                           <p className="text-xs text-gray-600 dark:text-gray-400">
                             {t("finances.contractExpiresOn", {

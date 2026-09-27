@@ -95,14 +95,32 @@ pub fn check_random_events(game: &mut Game) {
     // --- 1. Sponsor offer (1% chance per day) ---
     {
         let msg_id = format!("sponsor_{}", today);
-        if !existing_ids.contains(&msg_id) && rng.random_range(0..100) == 0 {
+        let has_active_sponsor = game.teams.iter().any(|team| {
+            team.id == user_team_id
+                && team
+                    .sponsorship
+                    .as_ref()
+                    .is_some_and(|deal| deal.remaining_weeks > 0)
+        });
+        let has_pending_offer = game.messages.iter().any(|message| {
+            message.id.starts_with("sponsor_")
+                && message.actions.iter().any(|action| !action.resolved)
+        });
+        if !has_active_sponsor
+            && !has_pending_offer
+            && !existing_ids.contains(&msg_id)
+            && rng.random_range(0..100) == 0
+        {
             let team_name = game
                 .teams
                 .iter()
                 .find(|t| t.id == user_team_id)
                 .map(|t| t.name.as_str())
                 .unwrap_or(fallback_club_name());
-            let amount = rng.random_range(5..=30) * 10_000; // 50k - 300k
+            let weekly_wages = crate::finances::calc_wages(game, &user_team_id);
+            let amount =
+                crate::finances::scaled_sponsor_amount(weekly_wages, rng.random_range(65..=85))
+                    as u64;
             let sponsor = sponsor_offer_name(rng.random_range(0..8));
 
             new_messages.push(message_builders::sponsor_offer_message(

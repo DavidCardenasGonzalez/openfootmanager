@@ -1817,6 +1817,7 @@
   "match": {
     "live": "Ao Vivo",
     "paused": "Pausado",
+    "cinematicPause": "Partida pausada. Continue quando quiser.",
     "matchView": "Partida",
     "visualReconstruction": "Movimentos ilustrativos baseados nos eventos da partida ao vivo.",
     "events": "Eventos",

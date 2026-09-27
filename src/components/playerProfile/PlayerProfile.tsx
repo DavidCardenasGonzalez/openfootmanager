@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { getContractRiskLevel, getPlayerOvr } from "../../lib/helpers";
 import type { PlayerData, GameStateData } from "../../store/gameStore";
 import { ArrowLeft } from "lucide-react";
@@ -395,7 +396,7 @@ export default function PlayerProfile({
 
       <PlayerProfileRenewalModal
         show={showRenewalModal}
-        playerName={player.full_name}
+        playerName={getPlayerDisplayName(player)}
         t={t}
         weeklySuffix={weeklySuffix}
         renewalWage={renewalWage}
@@ -419,7 +420,7 @@ export default function PlayerProfile({
 
       <PlayerProfileTerminationModal
         show={showTerminationModal}
-        playerName={player.full_name}
+        playerName={getPlayerDisplayName(player)}
         t={t}
         preview={terminationPreview}
         errorMessage={contractActionError}

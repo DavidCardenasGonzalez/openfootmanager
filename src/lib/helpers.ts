@@ -1,5 +1,6 @@
 export { positionBadgeVariant } from "./playerRating";
 export { getPlayerOvr } from "./playerOvr";
+export { getPlayerDisplayName } from "./playerName";
 export {
   getTeamName,
   getTeamShort,

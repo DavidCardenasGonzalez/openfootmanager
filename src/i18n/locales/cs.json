@@ -1874,6 +1874,7 @@
   "match": {
     "live": "Živě",
     "paused": "Pozastaveno",
+    "cinematicPause": "Zápas je pozastaven. Pokračujte, až budete chtít.",
     "matchView": "Zápas",
     "visualReconstruction": "Ilustrační pohyb podle událostí probíhajícího zápasu.",
     "events": "Události",

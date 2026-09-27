@@ -1874,6 +1874,7 @@
   "match": {
     "live": "Live",
     "paused": "Pausiert",
+    "cinematicPause": "Spiel pausiert. Fahre fort, sobald du bereit bist.",
     "matchView": "Spiel",
     "visualReconstruction": "Veranschaulichte Bewegungen auf Grundlage der Live-Spielereignisse.",
     "events": "Ereignisse",

@@ -138,3 +138,23 @@ preserved. Movement is an illustrative reconstruction from zones, not continuous
 tracking data from Rust. Unmapped events receive neutral staging. The existing
 penalty shootout screen remains separate. Presentation speeds are 8/4/1 seconds
 per simulated minute (slow/normal/fast); instant retains the ten-minute batches.
+
+The live adapter now stages continuous, eased off-ball trajectories from the previous
+presentation frame: support runs and receiver anticipation, nearby defensive pressure,
+team shape shifts and goalkeeper adjustments. Visual speed is capped for supporting
+players; facing and running poses follow displacement. These deterministic staging
+rules never decide tackles, possession changes, shots or results. Sparse engine zones
+still cannot supply exact real-world player tracking or collision avoidance.
+
+The shared Canvas uses a bounded 1.25× action framing with gentle ball-weighted pan.
+Camera composition depends only on the current frame, so seeking and pausing remain
+reproducible. Coordinates/debug mode and reduced-motion preferences use the fixed,
+full-scene view. Goal overlays remain in screen space.
+
+Confirmed live goals (including penalties), fouls and yellow/red/second-yellow cards
+now receive a presentation pause after the current passage. `MatchLive` queues only
+new engine results and blocks further simulation steps until each `MatchCinematic`
+is acknowledged. The native dialog supports keyboard focus, Enter and Escape and
+honors reduced motion. Manual pause and selected speed are preserved; half-time,
+full-time and shootout transitions wait for the queue. This applies to all live
+panels and instant-speed batches, without changing the Rust simulation or lab replays.

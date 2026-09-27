@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { useTranslation } from "react-i18next";
 import type { PlayerData } from "../../store/gameStore";
 import { Badge, Button, Card, CountryFlag } from "../ui";
@@ -75,7 +76,7 @@ function PlayerSummary({ label, player }: { label: string; player: PlayerData })
             {label}
           </p>
           <p className="text-base font-heading font-bold text-gray-900 dark:text-gray-100 mt-1">
-            {player.full_name}
+            {getPlayerDisplayName(player)}
           </p>
           <div className="flex items-center gap-2 mt-2 flex-wrap">
             <Badge variant={positionBadgeVariant(normalizedPosition)} size="sm">

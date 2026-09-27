@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { Clock } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -72,7 +73,7 @@ export default function ScoutingAssignmentsList({
                     onClick={() => onSelectPlayer?.(player.id)}
                     className="font-heading font-bold text-sm text-gray-800 dark:text-gray-100 hover:text-primary-500 transition-colors truncate block"
                   >
-                    {player.full_name}
+                    {getPlayerDisplayName(player)}
                   </button>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     {translatePositionLabel(t, player.natural_position || player.position)} · {team}

@@ -5,6 +5,7 @@ import { drawPlayer } from "./playerRenderer";
 import { drawBall } from "./ballRenderer";
 import { drawForeground, drawStadium } from "./stadiumRenderer";
 import { palette } from "./palette";
+import { actionCamera } from "./actionCamera";
 import { project, sortByDepth, viewport } from "./projection";
 interface Props {
   sample: RenderSample;
@@ -40,6 +41,13 @@ export function MatchCanvas({ sample, showNumbers, showCoordinates, label, goalL
     ctx.save();
     ctx.scale(1 / viewport.pixelScale, 1 / viewport.pixelScale);
     ctx.imageSmoothingEnabled = false;
+    ctx.save();
+    const framing = actionCamera(
+      sample.frame.ball,
+      !showCoordinates && !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
+    );
+    ctx.translate(framing.x, framing.y);
+    ctx.scale(framing.zoom, framing.zoom);
     ctx.drawImage(background.current, 0, 0, viewport.width, viewport.height);
     const { frame, event } = sample;
     if (showCoordinates) {
@@ -83,6 +91,7 @@ export function MatchCanvas({ sample, showNumbers, showCoordinates, label, goalL
     }
     // Deliberate readability priority over sprites, nets, and debug labels.
     drawBall(ctx, frame.ball, frame.timeMs);
+    ctx.restore(); // Keep overlays in screen space, independent of pitch framing.
     if (event?.kind === "goal") {
       const elapsed = (frame.timeMs - event.timeMs) / 1000;
       for (let i = 0; i < 42; i++) {

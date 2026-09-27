@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -58,7 +59,7 @@ export default function HomePlayerMomentumCard({
                       className="h-7 w-7 shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-navy-700 flex items-center justify-center text-[10px] font-heading font-bold text-gray-500 dark:text-gray-300"
                     />
                     <span className="text-xs font-medium text-gray-800 dark:text-gray-200 flex-1 truncate">
-                      {player.full_name}
+                      {getPlayerDisplayName(player)}
                     </span>
                     <Badge variant="success" size="sm">
                       {translatePositionAbbreviation(t, player.position)}
@@ -90,7 +91,7 @@ export default function HomePlayerMomentumCard({
                       className="h-7 w-7 shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-navy-700 flex items-center justify-center text-[10px] font-heading font-bold text-gray-500 dark:text-gray-300"
                     />
                     <span className="text-xs font-medium text-gray-800 dark:text-gray-200 flex-1 truncate">
-                      {player.full_name}
+                      {getPlayerDisplayName(player)}
                     </span>
                     <Badge variant="danger" size="sm">
                       {translatePositionAbbreviation(t, player.position)}

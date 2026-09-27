@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import {
   ArrowLeft,
   Calendar as CalendarIcon,
@@ -245,7 +246,7 @@ function renderSearchResults(props: {
                     {translatePositionAbbreviation(t, player.position)}
                   </Badge>
                   <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                    {player.full_name}
+                    {getPlayerDisplayName(player)}
                   </span>
                   <span className="ml-auto text-xs text-gray-400">
                     {getTeamName(teams, player.team_id ?? "")}

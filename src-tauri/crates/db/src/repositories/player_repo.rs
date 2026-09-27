@@ -292,7 +292,7 @@ fn row_to_player(row: &rusqlite::Row) -> rusqlite::Result<Player> {
         parse_position(&natural_position_str)
     };
 
-    Ok(Player {
+    let mut player = Player {
         id: row.get(0)?,
         match_name: row.get(1)?,
         full_name: row.get(2)?,
@@ -351,7 +351,9 @@ fn row_to_player(row: &rusqlite::Row) -> rusqlite::Result<Player> {
         active_loan: active_loan_json.and_then(|json| serde_json::from_str(&json).ok()),
         morale_core: serde_json::from_str(&morale_core_json).unwrap_or_default(),
         jersey_number,
-    })
+    };
+    player.apply_source_short_name();
+    Ok(player)
 }
 
 #[cfg(test)]

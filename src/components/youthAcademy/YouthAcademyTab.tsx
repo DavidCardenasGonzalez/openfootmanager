@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { useEffect, useRef, useState } from "react";
 import type { GameStateData } from "../../store/gameStore";
 import { useGameStore } from "../../store/gameStore";
@@ -331,7 +332,7 @@ export default function YouthAcademyTab({
                           onClick={() => onSelectPlayer?.(player.id)}
                           className="text-left font-heading font-bold text-sm text-gray-800 dark:text-gray-100 hover:text-primary-500 transition-colors truncate block"
                         >
-                          {player.full_name}
+                          {getPlayerDisplayName(player)}
                         </button>
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                           {translatePositionAbbreviation(
@@ -490,7 +491,7 @@ export default function YouthAcademyTab({
                             <PlayerAvatar player={player} />
                             <div className="min-w-0">
                               <p className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">
-                                {player.full_name}
+                                {getPlayerDisplayName(player)}
                               </p>
                               <div className="text-[10px] text-gray-400 dark:text-gray-500 flex items-center gap-1 mt-0.5">
                                 <CountryFlag

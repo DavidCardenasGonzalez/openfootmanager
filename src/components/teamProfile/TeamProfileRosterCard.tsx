@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { countryName } from "../../lib/countries";
 import { calcAge, formatVal, getPlayerOvr, positionBadgeVariant } from "../../lib/helpers";
 import type { PlayerData } from "../../store/gameStore";
@@ -89,7 +90,7 @@ export default function TeamProfileRosterCard({
                       <div className="flex items-center gap-3 min-w-0">
                         <PlayerAvatar player={player} />
                         <span className="block truncate font-semibold text-sm text-gray-800 dark:text-gray-200 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                          {player.full_name}
+                          {getPlayerDisplayName(player)}
                         </span>
                       </div>
                     </td>

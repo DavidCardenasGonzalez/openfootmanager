@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { useTranslation } from "react-i18next";
 
 import type { PlayerData, ScoutingAssignment, StaffData } from "../../store/gameStore";
@@ -91,7 +92,7 @@ export default function ScoutingScoutDetailsCard({
                         <p key={assignment.id} className="text-xs text-gray-500 dark:text-gray-400">
                           {t("scouting.scoutLabel", { name: "" })}
                           <span className="font-heading font-bold text-gray-700 dark:text-gray-300">
-                            {player.full_name}
+                            {getPlayerDisplayName(player)}
                           </span>{" "}
                           - {assignment.days_remaining}d
                         </p>

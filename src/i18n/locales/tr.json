@@ -1874,6 +1874,7 @@
   "match": {
     "live": "Canlı",
     "paused": "Duraklatıldı",
+    "cinematicPause": "Maç duraklatıldı. Hazır olduğunda devam et.",
     "matchView": "Maç",
     "visualReconstruction": "Canlı maç olaylarına dayalı temsili hareketler.",
     "events": "Olaylar",

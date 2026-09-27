@@ -177,3 +177,142 @@ it("waits for the last clip before finishing and cancels automatic steps while p
   unmount();
   vi.useRealTimers();
 });
+
+it("holds engine advancement and full time until every goal/foul/card cinematic is acknowledged", async () => {
+  vi.useFakeTimers();
+  vi.mocked(invoke).mockClear();
+  HTMLDialogElement.prototype.showModal = function () {
+    this.setAttribute("open", "");
+  };
+  HTMLDialogElement.prototype.close = function () {
+    this.removeAttribute("open");
+  };
+  const finished = vi.fn();
+  const snapshot = createSnapshot();
+  const events = ["Foul", "YellowCard", "Goal"].map((event_type) => ({
+    minute: 90,
+    event_type,
+    side: "Home" as const,
+    zone: "AwayBox",
+    player_id: "starter-1",
+    secondary_player_id: null,
+  }));
+  vi.mocked(invoke)
+    .mockResolvedValueOnce([{ phase: "Finished", is_finished: true, events }])
+    .mockResolvedValueOnce({ ...snapshot, events, phase: "Finished" });
+  const { unmount } = render(
+    <MatchLive
+      snapshot={snapshot}
+      gameState={{ teams: [], players: [] } as unknown as GameStateData}
+      userSide={null}
+      isSpectator
+      importantEvents={[]}
+      onSnapshotUpdate={vi.fn()}
+      onImportantEvent={vi.fn()}
+      onHalfTime={vi.fn()}
+      onFullTime={finished}
+    />,
+  );
+  await act(() => vi.advanceTimersByTimeAsync(8000));
+  expect(screen.getByRole("dialog", { name: "match.eventTypes.Foul" })).toBeVisible();
+  await act(() => vi.advanceTimersByTimeAsync(12000));
+  expect(invoke).toHaveBeenCalledTimes(2);
+  expect(finished).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole("button", { name: "match.continue" }));
+  expect(screen.getByRole("dialog", { name: "match.eventTypes.YellowCard" })).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "match.continue" }));
+  expect(screen.getByRole("dialog", { name: "match.eventTypes.Goal" })).toBeVisible();
+  expect(finished).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole("button", { name: "match.continue" }));
+  expect(finished).toHaveBeenCalledOnce();
+  unmount();
+  vi.useRealTimers();
+});
+
+it("preserves a manual pause after a stepped event cinematic", async () => {
+  vi.useFakeTimers();
+  vi.mocked(invoke).mockClear();
+  const snapshot = createSnapshot();
+  const events = [
+    {
+      minute: 33,
+      event_type: "RedCard",
+      side: "Away" as const,
+      zone: "Midfield",
+      player_id: "opp-1",
+      secondary_player_id: null,
+    },
+  ];
+  vi.mocked(invoke)
+    .mockResolvedValueOnce([{ phase: "FirstHalf", is_finished: false, events }])
+    .mockResolvedValueOnce({ ...snapshot, events });
+  const { unmount } = render(
+    <MatchLive
+      snapshot={snapshot}
+      gameState={{ teams: [], players: [] } as unknown as GameStateData}
+      userSide={null}
+      isSpectator
+      importantEvents={[]}
+      onSnapshotUpdate={vi.fn()}
+      onImportantEvent={vi.fn()}
+      onHalfTime={vi.fn()}
+      onFullTime={vi.fn()}
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "match.pause" }));
+  await act(async () => fireEvent.click(screen.getByRole("button", { name: "match.step1Min" })));
+  // Even repeated stepping cannot overtake the pending presentation.
+  fireEvent.click(screen.getByRole("button", { name: "match.step1Min" }));
+  await act(() => vi.advanceTimersByTimeAsync(4000));
+  expect(screen.getByRole("dialog", { name: "match.eventTypes.RedCard" })).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "match.continue" }));
+  await act(() => vi.advanceTimersByTimeAsync(12000));
+  expect(invoke).toHaveBeenCalledTimes(2);
+  expect(screen.getByRole("button", { name: "match.step1Min" })).toBeVisible();
+  unmount();
+  vi.useRealTimers();
+});
+
+it("queues instant-speed incidents even in Events view and resumes the selected speed afterwards", async () => {
+  vi.useFakeTimers();
+  vi.mocked(invoke).mockReset();
+  const snapshot = createSnapshot();
+  const events = ["Foul", "YellowCard"].map((event_type) => ({
+    minute: 35,
+    event_type,
+    side: "Home" as const,
+    zone: "Midfield",
+    player_id: "starter-1",
+    secondary_player_id: null,
+  }));
+  vi.mocked(invoke)
+    .mockResolvedValueOnce([{ phase: "FirstHalf", is_finished: false, events }])
+    .mockResolvedValueOnce({ ...snapshot, events })
+    .mockResolvedValue([]);
+  const { unmount } = render(
+    <MatchLive
+      snapshot={snapshot}
+      gameState={{ teams: [], players: [] } as unknown as GameStateData}
+      userSide={null}
+      isSpectator
+      importantEvents={[]}
+      onSnapshotUpdate={vi.fn()}
+      onImportantEvent={vi.fn()}
+      onHalfTime={vi.fn()}
+      onFullTime={vi.fn()}
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "match.events" }));
+  fireEvent.click(screen.getByRole("button", { name: "match.max" }));
+  await act(() => vi.advanceTimersByTimeAsync(200));
+  expect(screen.getByRole("dialog", { name: "match.eventTypes.Foul" })).toBeVisible();
+  await act(() => vi.advanceTimersByTimeAsync(10000));
+  expect(invoke).toHaveBeenCalledTimes(2);
+  fireEvent.click(screen.getByRole("button", { name: "match.continue" }));
+  fireEvent.click(screen.getByRole("button", { name: "match.continue" }));
+  await act(() => vi.advanceTimersByTimeAsync(100));
+  expect(invoke).toHaveBeenLastCalledWith("step_live_match", { minutes: 10 });
+  expect(invoke).toHaveBeenCalledTimes(3);
+  unmount();
+  vi.useRealTimers();
+});

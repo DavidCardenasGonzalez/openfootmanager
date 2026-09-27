@@ -72,6 +72,9 @@ fn infer_world_regions(teams: &[domain::team::Team]) -> Vec<WorldRegionDefinitio
 }
 
 fn normalize_world(mut world: WorldData) -> WorldData {
+    for player in &mut world.players {
+        player.apply_source_short_name();
+    }
     crate::football_identity::upgrade_world_football_identities(
         &mut world.teams,
         &mut world.players,

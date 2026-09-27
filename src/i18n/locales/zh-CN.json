@@ -1874,6 +1874,7 @@
   "match": {
     "live": "直播中",
     "paused": "已暂停",
+    "cinematicPause": "比赛已暂停。准备好后请继续。",
     "matchView": "比赛画面",
     "visualReconstruction": "根据实时比赛事件示意球员移动。",
     "events": "事件",

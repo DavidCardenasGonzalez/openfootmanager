@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { useTranslation } from "react-i18next";
 import { User } from "lucide-react";
 import { Card, CardHeader, CardBody, Badge } from "../ui";
@@ -78,7 +79,7 @@ export default function FinancesPayrollTable({
                     >
                       <td className="py-3 px-5 font-semibold text-sm text-gray-800 dark:text-gray-200">
                         <span className="group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                          {p.full_name}
+                          {getPlayerDisplayName(p)}
                         </span>
                       </td>
                       <td className="py-3 px-5">

@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { Globe, Medal, Trophy, UserRound } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { ReactNode } from "react";
@@ -125,7 +126,7 @@ export default function HallOfFameWorldTab({
                       onClick={() => onSelectPlayer?.(legend.player.id)}
                       className="text-left transition-colors hover:text-primary-500"
                     >
-                      {legend.player.full_name}
+                      {getPlayerDisplayName(legend.player)}
                     </button>
                   </CardHeader>
                   <CardBody className="space-y-4">

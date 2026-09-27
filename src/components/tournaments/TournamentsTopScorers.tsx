@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { useTranslation } from "react-i18next";
 
 import ContextMenu from "../ContextMenu";
@@ -59,7 +60,7 @@ export default function TournamentsTopScorers({
                   </span>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
-                      {entry.playerName!.full_name}
+                      {getPlayerDisplayName(entry.playerName!)}
                     </p>
                     <p className="text-xs text-gray-400 dark:text-gray-500">
                       {entry.playerName!.team_name ?? entry.playerName!.team_id ?? ""}

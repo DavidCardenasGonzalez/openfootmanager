@@ -255,7 +255,7 @@ mod tests {
         assert_eq!(response.snapshot.weekly_wage_spend, 1_000);
         assert_eq!(response.snapshot.weekly_wage_budget, 120_000 / 52);
         assert!(response.previews.board_support.is_none());
-        assert!(response.previews.sponsor_pitch.is_none());
+        assert!(response.previews.sponsor_pitch.is_some());
         assert!(response.previews.marketing_campaign.is_none());
     }
 

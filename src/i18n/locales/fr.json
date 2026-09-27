@@ -1874,6 +1874,7 @@
   "match": {
     "live": "En Direct",
     "paused": "En Pause",
+    "cinematicPause": "Match en pause. Continuez quand vous êtes prêt.",
     "matchView": "Rencontre",
     "visualReconstruction": "Mouvements illustratifs basés sur les événements du match en direct.",
     "events": "Événements",

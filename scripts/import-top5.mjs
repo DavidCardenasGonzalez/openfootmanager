@@ -114,7 +114,7 @@ function runtimePlayer(raw, clubId, warnings) {
   );
   const appearance = { ...(source.appearance ?? {}), ...(source.physicalProfile ?? {}), ...source };
   const p = {
-    id: stableId("player", sid), match_name: fullName, full_name: fullName, date_of_birth: dob,
+    id: stableId("player", sid), match_name: text(source, ["shortName", "short_name"], fullName), full_name: fullName, date_of_birth: dob,
     nationality: text(source, ["nationality", "nation", "nationalityName"], "UN"), football_nation: text(source, ["nationality", "nation"], "UN"),
     birth_country: first(source, ["birthCountry", "birth_country"], null), media: {
       source_age: age,

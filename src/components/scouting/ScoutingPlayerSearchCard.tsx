@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { ChevronLeft, ChevronRight, ScanSearch, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -187,7 +188,7 @@ export default function ScoutingPlayerSearchCard({
                             onClick={() => onSelectPlayer?.(player.id)}
                             className="font-heading font-bold text-gray-800 dark:text-gray-100 hover:text-primary-500 transition-colors text-left"
                           >
-                            {player.full_name}
+                            {getPlayerDisplayName(player)}
                           </button>
                           <div className="text-[10px] text-gray-400 mt-0.5 flex items-center gap-1">
                             <CountryFlag

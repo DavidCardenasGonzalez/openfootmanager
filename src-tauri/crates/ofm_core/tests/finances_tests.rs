@@ -324,15 +324,14 @@ fn request_sponsor_pitch_creates_pending_offer_for_over_budget_team() {
 }
 
 #[test]
-fn request_sponsor_pitch_rejects_healthy_club() {
+fn request_sponsor_pitch_allows_healthy_club_without_sponsor() {
     let mut game = make_monday_game();
     game.teams[0].wage_budget = 5_000_000;
     game.teams[0].finance = 2_000_000;
 
-    let error =
-        finances::request_sponsor_pitch(&mut game, "team1").expect_err("healthy club should fail");
-
-    assert_eq!(error, "be.error.finance.sponsorPitchUnavailable");
+    let offer = finances::request_sponsor_pitch(&mut game, "team1")
+        .expect("a club without sponsorship should be able to seek a new deal");
+    assert!(offer.weekly_amount > 0);
 }
 
 #[test]

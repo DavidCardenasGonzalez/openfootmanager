@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { Shield } from "lucide-react";
 import { countryName } from "../../lib/countries";
 import { positionBadgeVariant } from "../../lib/helpers";
@@ -85,7 +86,7 @@ export default function PlayerProfileHeroCard({
           )}
           <div className="flex-1">
             <h2 className="text-3xl font-heading font-bold text-white uppercase tracking-wide">
-              {player.full_name}
+              {getPlayerDisplayName(player)}
             </h2>
             <div className="flex items-center gap-3 mt-2">
               <Badge variant={positionBadgeVariant(primaryPosition)}>

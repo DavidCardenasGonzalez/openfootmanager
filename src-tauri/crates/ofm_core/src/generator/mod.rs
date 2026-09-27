@@ -29,8 +29,8 @@ pub use world_io::*;
 use domain::league::{CompetitionFormat, CompetitionScope};
 use domain::player::{Player, Position};
 use domain::staff::{Staff, StaffRole};
-use domain::team::Team;
 use domain::team::TeamColors;
+use domain::team::{Sponsorship, Team};
 use log::info;
 use rand::RngExt;
 use uuid::Uuid;
@@ -76,6 +76,37 @@ fn normalized_wage_budget(annual_wage_bill: i64, reputation: u32) -> i64 {
     let annual_wage_bill = annual_wage_bill.max(0);
     let usage_target = target_wage_usage_percent(reputation);
     ((annual_wage_bill * 100) + usage_target - 1) / usage_target
+}
+
+fn seed_opening_commercial_finances(team: &mut Team, annual_wage_bill: i64) {
+    if annual_wage_bill <= 0 {
+        return;
+    }
+    let weekly_wages = (annual_wage_bill + 51) / 52;
+    team.finance = team
+        .finance
+        .max(weekly_wages.saturating_mul(MIN_OPENING_RUNWAY_WEEKS));
+    team.transfer_budget = team.transfer_budget.max(annual_wage_bill / 10);
+
+    // The generic 10,000-seat import value is a placeholder, not an authored
+    // stadium size. Give high-payroll clubs capacity to earn meaningful gates.
+    if team.stadium_capacity == 10_000 {
+        team.stadium_capacity = match annual_wage_bill {
+            120_000_000.. => 60_000,
+            60_000_000.. => 40_000,
+            20_000_000.. => 25_000,
+            _ => 10_000,
+        };
+    }
+
+    if team.sponsorship.is_none() {
+        team.sponsorship = Some(Sponsorship {
+            sponsor_name: format!("{} Partners", team.short_name),
+            base_value: crate::finances::scaled_sponsor_amount(weekly_wages, 70),
+            remaining_weeks: 52,
+            bonus_criteria: Vec::new(),
+        });
+    }
 }
 
 fn normalize_opening_contracts(players: &mut [Player]) {
@@ -328,12 +359,8 @@ fn normalize_generated_team(team: &mut Team, players: &mut [Player], opening_yea
     normalize_opening_contracts(players);
 
     let annual_wage_bill: i64 = players.iter().map(|player| player.wage as i64).sum();
-    let weekly_wage_spend = (annual_wage_bill + 51) / 52;
-
     team.wage_budget = normalized_wage_budget(annual_wage_bill, team.reputation);
-    team.finance = team
-        .finance
-        .max(weekly_wage_spend.saturating_mul(MIN_OPENING_RUNWAY_WEEKS));
+    seed_opening_commercial_finances(team, annual_wage_bill);
 }
 
 /// The country a club's *people* should be drawn from.
@@ -507,25 +534,28 @@ pub fn replenish_available_staff_market(
 
 pub fn normalize_imported_world_for_career_start(world: &mut WorldData, opening_year: u32) {
     generate_missing_team_staff(world, opening_year);
+    let is_roster_baseline = world.metadata.kind == WorldDataKind::RosterBaseline;
     for team in &mut world.teams {
-        if team.wage_budget > 0 {
-            continue;
-        }
         let player_wages: i64 = world
             .players
             .iter()
             .filter(|player| player.team_id.as_deref() == Some(team.id.as_str()))
-            .map(|player| player.wage.max(0) as i64)
+            .map(|player| i64::from(player.wage))
             .sum();
         let staff_wages: i64 = world
             .staff
             .iter()
             .filter(|staff| staff.team_id.as_deref() == Some(team.id.as_str()))
-            .map(|staff| staff.wage.max(0) as i64)
+            .map(|staff| i64::from(staff.wage))
             .sum();
         let annual_wage_bill = player_wages.saturating_add(staff_wages);
         if annual_wage_bill > 0 {
-            team.wage_budget = normalized_wage_budget(annual_wage_bill, team.reputation);
+            if team.wage_budget == 0 {
+                team.wage_budget = normalized_wage_budget(annual_wage_bill, team.reputation);
+            }
+            if is_roster_baseline {
+                seed_opening_commercial_finances(team, annual_wage_bill);
+            }
         }
     }
     let _ = replenish_available_staff_market(&mut world.staff, &world.teams, opening_year);
@@ -2794,19 +2824,93 @@ mod tests {
             .players
             .iter()
             .filter(|player| player.team_id.as_deref() == Some("team-1"))
-            .map(|player| player.wage.max(0) as i64)
+            .map(|player| i64::from(player.wage))
             .sum::<i64>()
             + world
                 .staff
                 .iter()
                 .filter(|staff| staff.team_id.as_deref() == Some("team-1"))
-                .map(|staff| staff.wage.max(0) as i64)
+                .map(|staff| i64::from(staff.wage))
                 .sum::<i64>();
         assert_eq!(
             world.teams[0].wage_budget,
             normalized_wage_budget(team_one_wages, world.teams[0].reputation)
         );
         assert_eq!(world.teams[1].wage_budget, 75_000);
+    }
+
+    #[test]
+    fn imported_clubs_open_with_payroll_scaled_cash_commercial_income_and_capacity() {
+        let mut world = make_roster_baseline_world_without_staff();
+        let large_id = world.teams[0].id.clone();
+        let small_id = world.teams[1].id.clone();
+        for player in &mut world.players {
+            if player.team_id.as_deref() == Some(large_id.as_str()) {
+                player.wage = 10_000_000;
+            } else if player.team_id.as_deref() == Some(small_id.as_str()) {
+                player.wage = 1_000_000;
+            }
+        }
+        world.teams[0].finance = 1_000_000;
+        world.teams[0].stadium_capacity = 10_000;
+        world.teams[0].transfer_budget = 0;
+
+        normalize_imported_world_for_career_start(&mut world, TEST_OPENING_YEAR);
+
+        let large = world.teams.iter().find(|team| team.id == large_id).unwrap();
+        let small = world.teams.iter().find(|team| team.id == small_id).unwrap();
+        let large_annual_wages: i64 = world
+            .players
+            .iter()
+            .filter(|player| player.team_id.as_deref() == Some(large.id.as_str()))
+            .map(|player| i64::from(player.wage))
+            .sum::<i64>()
+            + world
+                .staff
+                .iter()
+                .filter(|staff| staff.team_id.as_deref() == Some(large.id.as_str()))
+                .map(|staff| i64::from(staff.wage))
+                .sum::<i64>();
+        let weekly = (large_annual_wages + 51) / 52;
+
+        assert!(large.finance >= weekly * MIN_OPENING_RUNWAY_WEEKS);
+        assert!(large.transfer_budget > 0);
+        assert!(large.stadium_capacity > small.stadium_capacity);
+        assert!(large.sponsorship.as_ref().unwrap().base_value >= weekly * 60 / 100);
+        assert!(
+            large.sponsorship.as_ref().unwrap().base_value
+                > small.sponsorship.as_ref().unwrap().base_value
+        );
+    }
+
+    #[test]
+    fn opening_finance_normalization_preserves_authored_values_and_historical_snapshots() {
+        let mut baseline = make_roster_baseline_world_without_staff();
+        baseline.teams[0].finance = 100_000_000;
+        baseline.teams[0].stadium_capacity = 34_567;
+        baseline.teams[0].transfer_budget = 20_000_000;
+        baseline.teams[0].sponsorship = Some(Sponsorship {
+            sponsor_name: "Existing Partner".into(),
+            base_value: 250_000,
+            remaining_weeks: 20,
+            bonus_criteria: Vec::new(),
+        });
+        let authored = baseline.teams[0].clone();
+        normalize_imported_world_for_career_start(&mut baseline, TEST_OPENING_YEAR);
+        assert_eq!(baseline.teams[0].finance, authored.finance);
+        assert_eq!(
+            baseline.teams[0].stadium_capacity,
+            authored.stadium_capacity
+        );
+        assert_eq!(baseline.teams[0].transfer_budget, authored.transfer_budget);
+        assert_eq!(baseline.teams[0].sponsorship, authored.sponsorship);
+
+        let mut historical = make_roster_baseline_world_without_staff();
+        historical.metadata.kind = WorldDataKind::HistoricalSnapshot;
+        historical.teams[0].finance = -1_000_000;
+        normalize_imported_world_for_career_start(&mut historical, TEST_OPENING_YEAR);
+        assert_eq!(historical.teams[0].finance, -1_000_000);
+        assert!(historical.teams[0].sponsorship.is_none());
     }
 
     #[test]

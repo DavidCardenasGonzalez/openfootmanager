@@ -21,6 +21,7 @@ import { TraitList } from "../TraitBadge";
 import {
   calcAge,
   getPlayerOvr,
+  getPlayerDisplayName,
   formatContractEndDate,
   getContractRiskBadgeVariant,
   getContractRiskLevel,
@@ -238,7 +239,7 @@ export default function SquadRosterView({
     if (search) {
       const searchable = [
         player.full_name,
-        player.match_name,
+        getPlayerDisplayName(player),
         currentPos,
         ...preferredPositions,
         ...preferredPositions.map((position) => translatePositionAbbreviation(t, position)),
@@ -834,7 +835,7 @@ export default function SquadRosterView({
                               />
                             )}
                             <span className="font-semibold text-sm text-gray-900 dark:text-gray-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors truncate">
-                              {player.match_name}
+                              {getPlayerDisplayName(player)}
                             </span>
                             <CountryFlag
                               code={player.nationality}
@@ -969,7 +970,7 @@ export default function SquadRosterView({
                             const rect = e.currentTarget.getBoundingClientRect();
                             menuRefs.current.get(player.id)?.open(rect.left, rect.bottom + 4);
                           }}
-                          aria-label={t("common.playerActions", { name: player.match_name })}
+                          aria-label={t("common.playerActions", { name: getPlayerDisplayName(player) })}
                           aria-haspopup="menu"
                           aria-expanded={openMenuPlayerId === player.id}
                           className="relative rounded-md p-1.5 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 transition-colors"

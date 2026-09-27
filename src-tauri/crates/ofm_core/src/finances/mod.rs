@@ -26,7 +26,7 @@ const MARKETING_CAMPAIGN_MAX_GROSS_REVENUE: i64 = 250_000;
 const MARKETING_CAMPAIGN_MIN_COST: i64 = 15_000;
 const SPONSOR_PITCH_DURATION_WEEKS: u32 = 12;
 const SPONSOR_PITCH_MIN_WEEKLY_AMOUNT: i64 = 40_000;
-const SPONSOR_PITCH_MAX_WEEKLY_AMOUNT: i64 = 180_000;
+const SPONSOR_PITCH_MAX_WEEKLY_AMOUNT: i64 = 5_000_000;
 const SPONSOR_PITCH_REPUTATION_MULTIPLIER: i64 = 120;
 
 fn marketing_campaign_activation_description() -> String {
@@ -265,13 +265,34 @@ pub fn calc_upkeep(_team: &Team) -> i64 {
     0
 }
 
+pub fn scaled_sponsor_amount(weekly_wages: i64, percent: i64) -> i64 {
+    weekly_wages
+        .saturating_mul(percent)
+        .saturating_div(100)
+        .max(10_000)
+}
+
+fn matchday_ticket_price(team: &Team) -> f64 {
+    match team.wage_budget {
+        150_000_000.. => 60.0,
+        75_000_000.. => 45.0,
+        25_000_000.. => 30.0,
+        _ => 20.0,
+    }
+}
+
 fn estimated_weekly_matchday_income(game: &Game, team: &Team) -> i64 {
     let recent_home_match_count = count_recent_home_matches(game, &team.id);
     if recent_home_match_count == 0 {
         return 0;
     }
 
-    calc_matchday(team.stadium_capacity, recent_home_match_count, 0.76, 20.0)
+    calc_matchday(
+        team.stadium_capacity,
+        recent_home_match_count,
+        0.76,
+        matchday_ticket_price(team),
+    )
 }
 
 pub fn team_finance_snapshot(game: &Game, team_id: &str) -> Option<TeamFinanceSnapshot> {
@@ -432,7 +453,8 @@ fn board_support_season(game: &Game) -> u32 {
 }
 
 fn sponsor_pitch_available(snapshot: &TeamFinanceSnapshot) -> bool {
-    snapshot.currently_over_budget
+    snapshot.weekly_sponsor_income == 0
+        || snapshot.currently_over_budget
         || snapshot.currently_in_debt
         || matches!(
             snapshot.wage_budget_status,
@@ -584,7 +606,8 @@ fn sponsor_pitch_weekly_amount(
         0
     };
 
-    (SPONSOR_PITCH_MIN_WEEKLY_AMOUNT
+    (scaled_sponsor_amount(snapshot.weekly_wage_spend, 70)
+        + SPONSOR_PITCH_MIN_WEEKLY_AMOUNT
         + reputation_component
         + league_position_component
         + pressure_component
@@ -878,29 +901,27 @@ fn current_league_position(game: &Game, team_id: &str) -> Option<u32> {
 }
 
 fn count_recent_home_matches(game: &Game, team_id: &str) -> i64 {
-    let Some(league) = &game.league else {
-        return 0;
-    };
-
     let current = game.clock.current_date.date_naive();
     let week_ago = current - chrono::Duration::days(7);
+    let count_in_league = |league: &domain::league::League| {
+        league
+            .fixtures
+            .iter()
+            .filter(|fixture| {
+                fixture.status == domain::league::FixtureStatus::Completed
+                    && fixture.home_team_id == team_id
+                    && fixture.result.is_some()
+                    && chrono::NaiveDate::parse_from_str(&fixture.date, "%Y-%m-%d")
+                        .is_ok_and(|date| date > week_ago && date <= current)
+            })
+            .count() as i64
+    };
 
-    league
-        .fixtures
-        .iter()
-        .filter(|fixture| {
-            fixture.status == domain::league::FixtureStatus::Completed
-                && fixture.home_team_id == team_id
-                && fixture.result.is_some()
-        })
-        .filter(|fixture| {
-            if let Ok(date) = chrono::NaiveDate::parse_from_str(&fixture.date, "%Y-%m-%d") {
-                date > week_ago && date <= current
-            } else {
-                false
-            }
-        })
-        .count() as i64
+    if game.competitions.is_empty() {
+        game.league.as_ref().map(count_in_league).unwrap_or(0)
+    } else {
+        game.competitions.iter().map(count_in_league).sum()
+    }
 }
 
 fn commit_weekly_posts(game: &mut Game, reqs: &[PostRequest]) -> bool {
@@ -1023,6 +1044,7 @@ pub fn process_weekly_finances(game: &mut Game) {
         }
     }
 
+    let user_team_id = game.manager.team_id.as_deref();
     for team in game.teams.iter_mut() {
         if !posted_clubs.contains(&team.id) {
             continue;
@@ -1030,12 +1052,19 @@ pub fn process_weekly_finances(game: &mut Game) {
         if let Some(sponsorship) = team.sponsorship.as_mut() {
             sponsorship.remaining_weeks = sponsorship.remaining_weeks.saturating_sub(1);
             if sponsorship.remaining_weeks == 0 {
-                team.sponsorship = None;
+                if user_team_id == Some(team.id.as_str()) {
+                    team.sponsorship = None;
+                } else {
+                    let weekly_wages = player_wages_by_team.get(&team.id).copied().unwrap_or(0)
+                        + staff_wages_by_team.get(&team.id).copied().unwrap_or(0);
+                    sponsorship.base_value = scaled_sponsor_amount(weekly_wages, 70);
+                    sponsorship.remaining_weeks = 52;
+                }
             }
         }
     }
 
-    if game.league.is_some() {
+    if game.league.is_some() || !game.competitions.is_empty() {
         let team_ids: Vec<String> = game.teams.iter().map(|team| team.id.clone()).collect();
         for team_id in team_ids {
             let home_count = count_recent_home_matches(game, &team_id);
@@ -1050,7 +1079,13 @@ pub fn process_weekly_finances(game: &mut Game) {
                 .unwrap_or(0);
             let mut rng = rand::rng();
             let attendance_pct = rng.random_range(60..=92) as f64 / 100.0;
-            let avg_ticket = rng.random_range(15..=25) as f64;
+            let ticket_variation = rng.random_range(90..=110) as f64 / 100.0;
+            let avg_ticket = matchday_ticket_price(
+                game.teams
+                    .iter()
+                    .find(|team| team.id == team_id)
+                    .expect("known team"),
+            ) * ticket_variation;
             let total_revenue =
                 calc_matchday(stadium_capacity, home_count, attendance_pct, avg_ticket);
             let req = PostRequest::new(&team_id, total_revenue, CashKind::Matchday, post_date);
@@ -1233,13 +1268,16 @@ fn format_money(amount: u64) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::preview_sponsor_pitch;
+    use super::{
+        count_recent_home_matches, matchday_ticket_price, preview_sponsor_pitch,
+        process_weekly_finances,
+    };
     use crate::clock::GameClock;
     use crate::game::Game;
     use chrono::{TimeZone, Utc};
-    use domain::league::League;
+    use domain::league::{Fixture, FixtureStatus, League, MatchResult};
     use domain::manager::Manager;
-    use domain::team::Team;
+    use domain::team::{Sponsorship, Team};
 
     fn make_team(id: &str, name: &str) -> Team {
         let mut team = Team::new(
@@ -1314,5 +1352,72 @@ mod tests {
             leader_pitch.weekly_amount > trailing_pitch.weekly_amount,
             "A stronger league position should improve sponsor pitch value when other club factors are equal"
         );
+    }
+
+    #[test]
+    fn ticket_prices_scale_with_club_payroll() {
+        let mut small = make_team("small", "Small FC");
+        let mut large = make_team("large", "Large FC");
+        small.wage_budget = 5_000_000;
+        large.wage_budget = 190_000_000;
+        assert!(matchday_ticket_price(&large) > matchday_ticket_price(&small));
+    }
+
+    #[test]
+    fn sponsor_pitch_scales_with_weekly_wages() {
+        let mut game = make_game();
+        let mut staff = domain::staff::Staff::new(
+            "star".into(),
+            "Star".into(),
+            "Coach".into(),
+            "1980-01-01".into(),
+            domain::staff::StaffRole::Coach,
+            domain::staff::StaffAttributes {
+                coaching: 80,
+                judging_ability: 80,
+                judging_potential: 80,
+                physiotherapy: 80,
+            },
+        );
+        staff.team_id = Some("team1".into());
+        staff.wage = 104_000_000;
+        game.staff.push(staff);
+        let pitch = preview_sponsor_pitch(&game, "team1").unwrap();
+        assert!(pitch.weekly_amount >= 1_200_000);
+    }
+
+    #[test]
+    fn home_matches_in_other_competitions_generate_gate_income() {
+        let mut game = make_game();
+        game.competitions = vec![
+            League::default(),
+            League {
+                fixtures: vec![Fixture {
+                    date: "2026-02-14".into(),
+                    home_team_id: "team1".into(),
+                    away_team_id: "team2".into(),
+                    status: FixtureStatus::Completed,
+                    result: Some(MatchResult::default()),
+                    ..Default::default()
+                }],
+                ..Default::default()
+            },
+        ];
+        assert_eq!(count_recent_home_matches(&game, "team1"), 1);
+    }
+
+    #[test]
+    fn ai_clubs_renew_expiring_sponsorship_instead_of_losing_recurring_income() {
+        let mut game = make_game();
+        game.teams[1].sponsorship = Some(Sponsorship {
+            sponsor_name: "Partner".into(),
+            base_value: 1_000,
+            remaining_weeks: 1,
+            bonus_criteria: Vec::new(),
+        });
+        process_weekly_finances(&mut game);
+        let renewed = game.teams[1].sponsorship.as_ref().unwrap();
+        assert_eq!(renewed.remaining_weeks, 52);
+        assert!(renewed.base_value >= 10_000);
     }
 }

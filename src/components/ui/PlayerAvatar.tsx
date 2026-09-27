@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { usePackageAssetSrc } from "../../hooks/usePackageAssetSrc";
 import {
@@ -26,7 +27,7 @@ interface PlayerAvatarProps {
 }
 
 function playerInitials(player: PlayerAvatarPlayer): string {
-  const source = player.match_name || player.full_name;
+  const source = getPlayerDisplayName(player);
   return source.slice(0, 2).toUpperCase();
 }
 
@@ -92,7 +93,7 @@ function RuntimePortraitFallback({
         </div>
         <img
           src={runtimeSrc}
-          alt={player.full_name}
+          alt={getPlayerDisplayName(player)}
           className={`${imageClassName} absolute inset-0 transition-opacity duration-200 ease-out ${runtimeImageLoaded ? "opacity-100" : "opacity-0"}`}
           loading="lazy"
           decoding="async"
@@ -119,7 +120,7 @@ export function PlayerAvatar({
   const faceSrc = usePackageAssetSrc(player.media?.face);
   const defaultFallback = fallback ?? (
     <GeneratedAvatar
-      name={player.full_name || player.match_name}
+      name={getPlayerDisplayName(player)}
       initials={playerInitials(player)}
       className="h-full w-full"
     />
@@ -129,7 +130,7 @@ export function PlayerAvatar({
     <div className={className}>
       <AssetImage
         src={faceSrc}
-        alt={player.full_name}
+        alt={getPlayerDisplayName(player)}
         className={imageClassName}
         fallback={
           enableRuntimePortrait ? (

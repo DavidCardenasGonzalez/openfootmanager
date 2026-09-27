@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { useTranslation } from "react-i18next";
 
 import type { PlayerData, TeamData } from "../../store/gameStore";
@@ -72,7 +73,7 @@ export function FreeAgentContractForm({
           </Badge>
           <div>
             <p className="font-semibold text-sm text-gray-800 dark:text-gray-200">
-              {player.full_name}
+              {getPlayerDisplayName(player)}
             </p>
             <p className="text-xs text-gray-400">
               {player.team_id ? getTeamName(teams, player.team_id) : t("common.freeAgent")} •{" "}

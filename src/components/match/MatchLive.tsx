@@ -15,6 +15,7 @@ import { getEventDisplay, getPlayerName, makeTeamFallback, phaseLabel } from "./
 import { Badge, TeamLogo } from "../ui";
 import { useSettingsStore } from "../../store/settingsStore";
 import { EventFeed, MatchStats, Lineups } from "./MatchPanels";
+import { MatchCinematic, isCinematicEvent } from "./MatchCinematic";
 import { LiveMatchView } from "./LiveMatchView";
 import { LIVE_SPEED_MS } from "./livePresentation";
 import MatchScreenLayout from "./MatchScreenLayout";
@@ -79,14 +80,21 @@ export default function MatchLive({
   const [activePanel, setActivePanel] = useState<ActivePanel>("match");
   const [isRunning, setIsRunning] = useState(true);
   const [showSubPanel, setShowSubPanel] = useState(false);
+  const [cinematics, setCinematics] = useState<MatchEvent[]>([]);
+  const [presentationPending, setPresentationPending] = useState(false);
+  const presentationLock = useRef(false);
+  const stepInFlight = useRef(false);
+  const mounted = useRef(true);
+  const pendingPhase = useRef<(() => void) | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const transitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
       if (transitionTimerRef.current) clearTimeout(transitionTimerRef.current);
-    },
-    [],
-  );
+    };
+  }, []);
   const eventFeedRef = useRef<HTMLDivElement>(null);
   // Track phases we've already signaled to avoid double-firing
   const signaledRef = useRef<Set<string>>(new Set());
@@ -112,8 +120,11 @@ export default function MatchLive({
   // ofm_core/live_match_manager.rs; MINUTES_PER_TICK on this side is what makes batches possible.
   const stepMatch = useCallback(
     async (minutes: number) => {
+      if (presentationLock.current || stepInFlight.current) return;
+      stepInFlight.current = true;
       try {
         const results = await invoke<MinuteResult[]>("step_live_match", { minutes });
+        if (!mounted.current) return;
         if (results.length > 0) {
           const lastResult = results[results.length - 1];
 
@@ -129,58 +140,44 @@ export default function MatchLive({
 
           // Fetch full snapshot
           const snap = await invoke<MatchSnapshot>("get_match_snapshot");
+          if (!mounted.current) return;
           onSnapshotUpdate(snap);
 
-          // Check for phase transitions that should pause
+          const incidents = results.flatMap((result) => result.events).filter(isCinematicEvent);
           const phase = lastResult.phase;
-          if (phase === "HalfTime" && !signaledRef.current.has("HalfTime")) {
-            signaledRef.current.add("HalfTime");
-            setIsRunning(false);
-            setSpeed("paused");
-            // Let the final presentation clip finish before leaving the live screen.
-            transitionTimerRef.current = setTimeout(
-              () => onHalfTime("HalfTime"),
-              LIVE_SPEED_MS[speed] || LIVE_SPEED_MS.normal,
-            );
-            return;
+          let finish: (() => void) | null = null;
+          if (!signaledRef.current.has(phase)) {
+            if (phase === "HalfTime" || phase === "ExtraTimeHalfTime")
+              finish = () => onHalfTime(phase);
+            else if (phase === "PenaltyShootout") finish = () => onPenaltyShootout?.();
+            else if (lastResult.is_finished) finish = onFullTime;
           }
-
-          if (phase === "ExtraTimeHalfTime" && !signaledRef.current.has("ExtraTimeHalfTime")) {
-            signaledRef.current.add("ExtraTimeHalfTime");
+          if (finish) {
+            signaledRef.current.add(phase);
             setIsRunning(false);
             setSpeed("paused");
-            transitionTimerRef.current = setTimeout(
-              () => onHalfTime("ExtraTimeHalfTime"),
-              LIVE_SPEED_MS[speed] || LIVE_SPEED_MS.normal,
-            );
-            return;
           }
-
-          if (phase === "PenaltyShootout" && !signaledRef.current.has("PenaltyShootout")) {
-            signaledRef.current.add("PenaltyShootout");
-            setIsRunning(false);
-            setSpeed("paused");
+          // Finish the current visual passage before showing each confirmed incident.
+          // Block additional engine steps immediately, including instant/ten-minute batches.
+          if (incidents.length) {
+            presentationLock.current = true;
+            setPresentationPending(true);
+            pendingPhase.current = finish;
+            transitionTimerRef.current = setTimeout(() => {
+              setCinematics(incidents);
+            }, LIVE_SPEED_MS[speed] || LIVE_SPEED_MS.normal);
+          } else if (finish) {
             transitionTimerRef.current = setTimeout(
-              () => onPenaltyShootout?.(),
+              finish,
               LIVE_SPEED_MS[speed] || LIVE_SPEED_MS.normal,
             );
-            return;
-          }
-
-          if (lastResult.is_finished && !signaledRef.current.has("Finished")) {
-            signaledRef.current.add("Finished");
-            setIsRunning(false);
-            setSpeed("paused");
-            transitionTimerRef.current = setTimeout(
-              () => onFullTime(),
-              LIVE_SPEED_MS[speed] || LIVE_SPEED_MS.normal,
-            );
-            return;
           }
         }
       } catch (err) {
         console.error("Failed to step match:", err);
         setIsRunning(false);
+      } finally {
+        stepInFlight.current = false;
       }
     },
     [onSnapshotUpdate, onImportantEvent, onHalfTime, onFullTime, onPenaltyShootout, speed],
@@ -193,7 +190,7 @@ export default function MatchLive({
       timerRef.current = null;
     }
 
-    if (isRunning && speed !== "paused" && !isFinished && !showSubPanel) {
+    if (isRunning && speed !== "paused" && !isFinished && !showSubPanel && !presentationPending) {
       timerRef.current = setTimeout(async () => {
         await stepMatch(MINUTES_PER_TICK[speed]);
       }, LIVE_SPEED_MS[speed]);
@@ -210,7 +207,21 @@ export default function MatchLive({
     stepMatch,
     isFinished,
     showSubPanel,
+    presentationPending,
   ]);
+
+  const continueCinematic = () => {
+    if (cinematics.length > 1) {
+      setCinematics(cinematics.slice(1));
+      return;
+    }
+    setCinematics([]);
+    presentationLock.current = false;
+    setPresentationPending(false);
+    const finish = pendingPhase.current;
+    pendingPhase.current = null;
+    finish?.();
+  };
 
   // Auto-scroll event feed
   useEffect(() => {
@@ -429,7 +440,8 @@ export default function MatchLive({
                     !["HalfTime", "ExtraTimeHalfTime", "PenaltyShootout", "Finished"].includes(
                       snapshot.phase,
                     )) ||
-                  showSubPanel
+                  showSubPanel ||
+                  cinematics.length > 0
                 }
               />
             </div>
@@ -643,6 +655,19 @@ export default function MatchLive({
         </aside>
       </div>
 
+      {cinematics[0] && (
+        <MatchCinematic
+          event={cinematics[0]}
+          playerName={
+            gameState.players.find((player) => player.id === cinematics[0].player_id)?.full_name ??
+            getPlayerName(snapshot, cinematics[0].player_id)
+          }
+          teamName={
+            cinematics[0].side === "Home" ? snapshot.home_team.name : snapshot.away_team.name
+          }
+          onContinue={continueCinematic}
+        />
+      )}
       {/* Substitution Modal */}
       {showSubPanel && userSide && (
         <SubPanel

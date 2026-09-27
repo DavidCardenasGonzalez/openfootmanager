@@ -1874,6 +1874,7 @@
   "match": {
     "live": "Live",
     "paused": "Paused",
+    "cinematicPause": "Match paused. Continue when you are ready.",
     "matchView": "Match",
     "visualReconstruction": "Illustrative movement based on live match events.",
     "events": "Events",

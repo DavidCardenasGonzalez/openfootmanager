@@ -1,3 +1,4 @@
+import { getPlayerDisplayName } from "../../lib/playerName";
 import { useTranslation } from "react-i18next";
 import { AlertTriangle } from "lucide-react";
 
@@ -84,7 +85,7 @@ export function TransferBidForm({
           </Badge>
           <div>
             <p className="font-semibold text-sm text-gray-800 dark:text-gray-200">
-              {bidTarget.full_name}
+              {getPlayerDisplayName(bidTarget)}
             </p>
             <p className="text-xs text-gray-400">
               {getTeamName(teams, bidTarget.team_id)} •{" "}
