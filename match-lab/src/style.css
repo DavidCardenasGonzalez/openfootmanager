@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@theme {
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --color-lab-bg: rgb(12, 23, 25);
+  --color-lab-panel: rgb(19, 34, 35);
+  --color-lab-border: rgb(43, 63, 60);
+  --color-lab-text: rgb(232, 238, 218);
+  --color-lab-muted: rgb(147, 171, 157);
+  --color-lab-home: rgb(110, 231, 205);
+  --color-lab-away: rgb(255, 157, 96);
+}
