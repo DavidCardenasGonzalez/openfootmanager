@@ -31,17 +31,25 @@ function wall(
   ctx.stroke();
 }
 function spectator(ctx: CanvasRenderingContext2D, x: number, y: number, seed: number) {
-  const colors = [p.homeShade, p.awayShade, p.gold, p.home, p.concreteLight, p.away];
+  // Muted clothes keep nearby spectators readable without competing with kits.
+  const colors = [p.homeShade, p.awayShade, p.trackEdge, p.banner, p.concreteLight, p.seat];
+  x = Math.round(x);
+  y = Math.round(y);
   const raised = seed % 5 === 0;
   ctx.fillStyle = p.ink;
   ctx.fillRect(x - 5, y - 12, 12, 14);
   ctx.fillStyle = colors[seed % colors.length];
   ctx.fillRect(x - 4, y - 12, 10, 9);
+  ctx.fillStyle = p.fabricShadow;
+  ctx.fillRect(x - 4, y - 5, 10, 2);
+  ctx.fillStyle = colors[seed % colors.length];
   ctx.fillRect(x - 7, y - (raised ? 19 : 11), 3, raised ? 12 : 6);
   ctx.fillStyle = seed % 3 ? p.skin : p.skinDark;
   ctx.fillRect(x - 3, y - 20, 7, 8);
   ctx.fillStyle = p.hair;
   ctx.fillRect(x - 3, y - 21, 7, 3);
+  ctx.fillStyle = p.fabricShadow;
+  ctx.fillRect(x - 3, y - 14, 7, 2);
   if (raised) {
     ctx.fillStyle = p.skin;
     ctx.fillRect(x - 7, y - 22, 3, 4);

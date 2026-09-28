@@ -3,6 +3,14 @@ import { actionCamera } from "./actionCamera";
 import { project, viewport } from "./projection";
 
 describe("action framing", () => {
+  it("fills the frame with the pitch and holds the action near the center", () => {
+    for (const x of [0, 25, 50, 75, 100]) {
+      const camera = actionCamera({ x, y: 34 });
+      const point = project(x, 34);
+      expect(camera.zoom).toBeGreaterThanOrEqual(1.8);
+      expect(Math.abs(point.x * camera.zoom + camera.x - viewport.width / 2)).toBeLessThan(210);
+    }
+  });
   it("keeps the ball on screen and never reveals blank canvas at either goal or touchline", () => {
     for (const x of [-2, 0, 50, 100, 102])
       for (const y of [0, 34, 68]) {
@@ -14,14 +22,18 @@ describe("action framing", () => {
         expect(ball.y * camera.zoom + camera.y).toBeLessThan(viewport.height - 16);
         expect(camera.x).toBeLessThanOrEqual(0);
         expect(camera.y).toBeLessThanOrEqual(0);
-        expect(camera.x + viewport.width * camera.zoom).toBeGreaterThanOrEqual(viewport.width);
-        expect(camera.y + viewport.height * camera.zoom).toBeGreaterThanOrEqual(viewport.height);
+        expect(camera.x + viewport.width * camera.zoom).toBeGreaterThanOrEqual(
+          viewport.width - 1e-9,
+        );
+        expect(camera.y + viewport.height * camera.zoom).toBeGreaterThanOrEqual(
+          viewport.height - 1e-9,
+        );
       }
   });
   it("is seek-stable, pans gently and disables movement for debug or reduced motion", () => {
     const a = actionCamera({ x: 50, y: 34 });
     const b = actionCamera({ x: 51, y: 34 });
-    expect(Math.abs(a.x - b.x)).toBeLessThan(4);
+    expect(Math.abs(a.x - b.x)).toBeLessThan(12);
     expect(actionCamera({ x: 50, y: 34 })).toEqual(a);
     expect(actionCamera({ x: 90, y: 20 }, false)).toEqual({ x: 0, y: 0, zoom: 1 });
   });

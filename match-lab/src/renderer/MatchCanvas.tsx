@@ -7,12 +7,15 @@ import { drawForeground, drawStadium } from "./stadiumRenderer";
 import { palette } from "./palette";
 import { actionCamera } from "./actionCamera";
 import { project, sortByDepth, viewport } from "./projection";
+import { createSceneLayer } from "./sceneLayer";
+import type { MatchKits } from "./kits";
 export interface PlayerLabel {
   name?: string;
   rating?: number;
 }
 interface Props {
   sample: RenderSample;
+  kits?: MatchKits;
   showNumbers: boolean;
   showCoordinates: boolean;
   label: string;
@@ -21,6 +24,7 @@ interface Props {
 }
 export function MatchCanvas({
   sample,
+  kits,
   showNumbers,
   showCoordinates,
   label,
@@ -37,23 +41,12 @@ export function MatchCanvas({
   useEffect(() => {
     const ctx = ref.current?.getContext("2d");
     if (!ctx) return;
-    const makeLayer = (draw: (context: CanvasRenderingContext2D) => void) => {
-      const layer = document.createElement("canvas");
-      layer.width = viewport.width / viewport.pixelScale;
-      layer.height = viewport.height / viewport.pixelScale;
-      const context = layer.getContext("2d");
-      if (context) {
-        context.scale(1 / viewport.pixelScale, 1 / viewport.pixelScale);
-        draw(context);
-      }
-      return layer;
-    };
     // Stadium, crowd and grass are rasterized once; only actors redraw during playback.
-    background.current ??= makeLayer((context) => {
+    background.current ??= createSceneLayer((context) => {
       drawStadium(context);
       drawPitch(context);
     });
-    foreground.current ??= makeLayer(drawForeground);
+    foreground.current ??= createSceneLayer(drawForeground);
     ctx.save();
     ctx.scale(1 / viewport.pixelScale, 1 / viewport.pixelScale);
     ctx.imageSmoothingEnabled = false;
@@ -84,7 +77,15 @@ export function MatchCanvas({
         x: player.x,
         y: player.y,
         draw: () =>
-          drawPlayer(ctx, player, frame, frame.ball.ownerId === player.id, showNumbers, event),
+          drawPlayer(
+            ctx,
+            player,
+            frame,
+            frame.ball.ownerId === player.id,
+            showNumbers,
+            event,
+            kits,
+          ),
       })),
       { x: 0, y: 34, draw: () => drawGoal(ctx, false) },
       { x: 100, y: 34, draw: () => drawGoal(ctx, true) },
@@ -121,7 +122,7 @@ export function MatchCanvas({
       ctx.fillText(goalLabel.toUpperCase(), viewport.width / 2, 71, 310);
     }
     ctx.restore();
-  }, [sample, showNumbers, showCoordinates, goalLabel, framing.x, framing.y, framing.zoom]);
+  }, [kits, sample, showNumbers, showCoordinates, goalLabel, framing.x, framing.y, framing.zoom]);
   return (
     <div className="relative overflow-hidden">
       <canvas

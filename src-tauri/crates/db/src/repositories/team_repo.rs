@@ -31,6 +31,8 @@ pub fn upsert_team(conn: &Connection, t: &Team) -> Result<(), String> {
         .map_err(|_| GAME_PERSISTENCE_WRITE_ERROR.to_string())?;
     let tactics_phase_json = serde_json::to_string(&t.tactics_phase)
         .map_err(|_| GAME_PERSISTENCE_WRITE_ERROR.to_string())?;
+    let kits_json =
+        serde_json::to_string(&t.kits).map_err(|_| GAME_PERSISTENCE_WRITE_ERROR.to_string())?;
     let play_style_str = format!("{:?}", t.play_style);
     let kit_pattern_str = t.kit_pattern.to_string();
     let training_focus_str = format!("{:?}", t.training_focus);
@@ -45,8 +47,8 @@ pub fn upsert_team(conn: &Connection, t: &Team) -> Result<(), String> {
          training_focus, training_intensity, training_schedule,
          founded_year, colors_primary, colors_secondary,
          starting_xi_ids, match_roles, form, history, training_groups, financial_ledger, sponsorship, facilities, media_json, kit_pattern,
-         player_roles_json, tactics_phase_json)
-         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29, ?30, ?31, ?32, ?33, ?34, ?35)",
+         player_roles_json, tactics_phase_json, kits_json)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29, ?30, ?31, ?32, ?33, ?34, ?35, ?36)",
         params![
             t.id,
             t.name,
@@ -83,6 +85,7 @@ pub fn upsert_team(conn: &Connection, t: &Team) -> Result<(), String> {
             kit_pattern_str,
             player_roles_json,
             tactics_phase_json,
+            kits_json,
         ],
     )
     .map_err(|_| GAME_PERSISTENCE_WRITE_ERROR.to_string())?;
@@ -154,6 +157,13 @@ fn row_to_team(row: &rusqlite::Row) -> rusqlite::Result<Team> {
     let tactics_phase_json: String = row.get(34).unwrap_or_else(|_| "{}".to_string());
 
     Ok(Team {
+        kits: serde_json::from_str(&row.get::<_, String>(35)?).map_err(|error| {
+            rusqlite::Error::FromSqlConversionFailure(
+                35,
+                rusqlite::types::Type::Text,
+                Box::new(error),
+            )
+        })?,
         id: row.get(0)?,
         name: row.get(1)?,
         short_name: row.get(2)?,
@@ -261,7 +271,7 @@ pub fn load_all_teams(conn: &Connection) -> Result<Vec<Team>, String> {
                     founded_year, colors_primary, colors_secondary,
                     starting_xi_ids, match_roles, form, history, training_groups, financial_ledger, sponsorship, facilities,
                     COALESCE(media_json, '{}'), COALESCE(kit_pattern, 'Solid'),
-                    COALESCE(player_roles_json, '{}'), COALESCE(tactics_phase_json, '{}')
+                    COALESCE(player_roles_json, '{}'), COALESCE(tactics_phase_json, '{}'), COALESCE(kits_json, '{}')
              FROM teams",
         )
         .map_err(|_| GAME_PERSISTENCE_LOAD_ERROR.to_string())?;
@@ -288,7 +298,7 @@ pub fn load_team(conn: &Connection, id: &str) -> Result<Option<Team>, String> {
                     founded_year, colors_primary, colors_secondary,
                     starting_xi_ids, match_roles, form, history, training_groups, financial_ledger, sponsorship, facilities,
                     COALESCE(media_json, '{}'), COALESCE(kit_pattern, 'Solid'),
-                    COALESCE(player_roles_json, '{}'), COALESCE(tactics_phase_json, '{}')
+                    COALESCE(player_roles_json, '{}'), COALESCE(tactics_phase_json, '{}'), COALESCE(kits_json, '{}')
              FROM teams WHERE id = ?1",
         )
         .map_err(|_| GAME_PERSISTENCE_LOAD_ERROR.to_string())?;
@@ -368,6 +378,26 @@ mod tests {
         upsert_teams(db.conn(), &teams).unwrap();
         let all = load_all_teams(db.conn()).unwrap();
         assert_eq!(all.len(), 3);
+    }
+
+    #[test]
+    fn test_world_kits_survive_save_load() {
+        let db = test_db();
+        let world: serde_json::Value =
+            serde_json::from_str(include_str!("../../../../../data/open-manager/world.json"))
+                .unwrap();
+        let team: Team = serde_json::from_value(world["teams"][0].clone()).unwrap();
+        upsert_team(db.conn(), &team).unwrap();
+        let loaded = load_team(db.conn(), &team.id).unwrap().unwrap();
+        assert_eq!(
+            serde_json::to_value(&loaded).unwrap()["kits"],
+            world["teams"][0]["kits"]
+        );
+        let all = load_all_teams(db.conn()).unwrap();
+        assert_eq!(
+            serde_json::to_value(&all[0]).unwrap()["kits"],
+            world["teams"][0]["kits"]
+        );
     }
 
     #[test]

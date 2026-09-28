@@ -3,18 +3,29 @@ import { beforeEach, afterEach, expect, it, vi } from "vitest";
 import { LiveMatchView } from "./LiveMatchView";
 import type { EnginePlayerData, EngineTeamData, MatchSnapshot } from "./types";
 import type { RenderSample } from "../../../match-lab/src/match/types";
+import type { Kit, MatchKits } from "../../../match-lab/src/renderer/kits";
 import { useSettingsStore } from "../../store/settingsStore";
+const worldState = vi.hoisted(() => ({
+  teams: [] as { id: string; kits: { home: Kit; away: Kit } }[],
+}));
+vi.mock("../../store/gameStore", () => ({
+  useGameStore: (selector: (state: { gameState: typeof worldState }) => unknown) =>
+    selector({ gameState: worldState }),
+}));
 vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn().mockResolvedValue(undefined) }));
 vi.mock("react-i18next", () => ({ useTranslation: () => ({ t: (key: string) => key }) }));
 vi.mock("../../../match-lab/src/renderer/MatchCanvas", () => ({
   MatchCanvas: ({
     sample,
     playerLabels,
+    kits,
   }: {
     sample: RenderSample;
+    kits?: MatchKits;
     playerLabels?: ReadonlyMap<string, { name?: string; rating?: number }>;
   }) => (
     <>
+      <output aria-label="rendered kits">{JSON.stringify(kits)}</output>
       <output aria-label="rendered match">{JSON.stringify(sample)}</output>
       {sample.frame.players.map((player) => (
         <div key={player.id}>
@@ -122,6 +133,7 @@ let callback: FrameRequestCallback;
 const sample = () =>
   JSON.parse(screen.getByLabelText("rendered match").textContent ?? "{}") as RenderSample;
 beforeEach(() => {
+  worldState.teams = [];
   useSettingsStore.setState({
     settings: {
       ...useSettingsStore.getState().settings,
@@ -218,6 +230,9 @@ it("positions names above players and ratings below them in the actual pitch", a
       playerLabels={new Map([["starter-1", { name: "Starter One", rating: 7.2 }]])}
     />,
   );
+  const canvas = screen.getByRole("img", { name: "pitch" });
+  expect(canvas).toHaveAttribute("width", "1120");
+  expect(canvas).toHaveAttribute("height", "800");
   const name = screen.getByText("Starter One");
   const rating = screen.getByText("7.2");
   // The player's projected feet are at 40.76% of the pitch height.
@@ -283,4 +298,18 @@ it("shows the resulting frame when stepping while paused and honors reduced moti
   );
   act(() => callback(16));
   expect(sample().frame.timeMs).toBe(4000);
+});
+
+it("passes the actual match teams' world kits to the renderer by ID", () => {
+  const home: Kit = { pattern: "Solid", colors: { primary: "#FFFFFF", secondary: "#FEBE10" } };
+  const away: Kit = { pattern: "Solid", colors: { primary: "#0057B8", secondary: "#FFFFFF" } };
+  worldState.teams = [
+    { id: "team-2", kits: { home, away } },
+    { id: "team-1", kits: { home, away } },
+  ];
+  render(<LiveMatchView snapshot={createSnapshot()} numbers={new Map()} speed="paused" paused />);
+  expect(JSON.parse(screen.getByLabelText("rendered kits").textContent ?? "{}")).toEqual({
+    home,
+    away,
+  });
 });

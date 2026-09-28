@@ -56,6 +56,8 @@ pub struct Team {
     #[serde(default)]
     pub kit_pattern: KitPattern,
     #[serde(default)]
+    pub kits: TeamKits,
+    #[serde(default)]
     pub media: TeamMedia,
 
     // Training groups: allow per-group focus overrides for subsets of players
@@ -320,7 +322,24 @@ pub struct TrainingGroup {
     pub player_ids: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+/// Optional variants preserve legacy worlds that only define team colors.
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct TeamKits {
+    #[serde(default)]
+    pub home: Option<TeamKit>,
+    #[serde(default)]
+    pub away: Option<TeamKit>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct TeamKit {
+    #[serde(default)]
+    pub pattern: KitPattern,
+    #[serde(default)]
+    pub colors: TeamColors,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TeamColors {
     pub primary: String,
     pub secondary: String,
@@ -505,6 +524,7 @@ impl Team {
                 secondary: "#ffffff".to_string(),
             },
             kit_pattern: KitPattern::default(),
+            kits: TeamKits::default(),
             media: TeamMedia::default(),
             starting_xi_ids: Vec::new(),
             match_roles: MatchRoles::default(),

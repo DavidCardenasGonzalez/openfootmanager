@@ -1,7 +1,7 @@
 import type { Position } from "../match/types";
 
 /** Presentation-only affine camera. Simulation coordinates remain 100 × 68. */
-export const viewport = { width: 1120, height: 800, pixelScale: 2 };
+export const viewport = { width: 1120, height: 800, pixelScale: 1 };
 const camera = { x: 400, y: 190, xx: 6.05, xy: 2.4, yx: -4.1, yy: 3.65, height: 9 };
 export function project(x: number, y: number, height = 0): Position {
   return {

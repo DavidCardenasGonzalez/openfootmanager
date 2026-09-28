@@ -11,6 +11,9 @@ import { calculateMatchRatings } from "./playerRatings";
 import { useSettingsStore } from "../../store/settingsStore";
 import { Checkbox } from "../ui";
 
+import { useGameStore } from "../../store/gameStore";
+import { resolveMatchKits } from "../../../match-lab/src/renderer/kits";
+
 interface Props {
   snapshot: MatchSnapshot;
   numbers: ReadonlyMap<string, number>;
@@ -20,6 +23,13 @@ interface Props {
 
 export function LiveMatchView({ snapshot, numbers, speed, paused }: Props) {
   const { t } = useTranslation();
+  const homeTeam = useGameStore((state) =>
+    state.gameState?.teams.find((team) => team.id === snapshot.home_team.id),
+  );
+  const awayTeam = useGameStore((state) =>
+    state.gameState?.teams.find((team) => team.id === snapshot.away_team.id),
+  );
+  const kits = useMemo(() => resolveMatchKits(homeTeam, awayTeam), [homeTeam, awayTeam]);
   const { settings, updateSettings } = useSettingsStore();
   const [sample, setSample] = useState(() =>
     sampleReplay(buildLiveReplay(snapshot, [], numbers), 0),
@@ -139,6 +149,7 @@ export function LiveMatchView({ snapshot, numbers, speed, paused }: Props) {
       </div>
       <MatchCanvas
         sample={sample}
+        kits={kits}
         showNumbers
         showCoordinates={false}
         label={t("match.matchView")}

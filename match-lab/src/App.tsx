@@ -96,9 +96,10 @@ export function MatchLab({
         </span>
       </div>
       <div className="border border-lab-border">
-        <MatchHud frame={sample.frame} event={sample.event} t={t} />
+        <MatchHud frame={sample.frame} event={sample.event} t={t} kits={__MATCH_LAB_KITS__} />
         <MatchCanvas
           sample={sample}
+          kits={__MATCH_LAB_KITS__}
           showNumbers={numbers}
           showCoordinates={coordinates}
           label={t.pitch}

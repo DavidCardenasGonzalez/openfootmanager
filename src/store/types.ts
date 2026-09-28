@@ -154,6 +154,10 @@ export interface TeamData {
   founded_year: number;
   colors: TeamColors;
   kit_pattern?: KitPattern;
+  kits?: {
+    home?: { pattern: KitPattern; colors: TeamColors } | null;
+    away?: { pattern: KitPattern; colors: TeamColors } | null;
+  };
   media?: TeamMediaData;
   facilities?: FacilitiesData;
   sponsorship?: SponsorshipData | null;

@@ -1,0 +1,1 @@
+ALTER TABLE teams ADD COLUMN kits_json TEXT NOT NULL DEFAULT '{}';
