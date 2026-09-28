@@ -149,7 +149,10 @@ pub fn is_season_complete(game: &Game) -> bool {
         let all_leagues: Vec<&League> = game
             .competitions
             .iter()
-            .filter(|c| c.rules.format == CompetitionFormat::LeagueTable)
+            .filter(|c| {
+                c.rules.format == CompetitionFormat::LeagueTable
+                    && c.kind != CompetitionType::InternationalNation
+            })
             .collect();
         return !all_leagues.is_empty() && all_leagues.into_iter().all(is_league_season_ended);
     }
@@ -1211,6 +1214,8 @@ pub fn process_end_of_season(game: &mut Game) -> EndOfSeasonSummary {
     }
 
     crate::season_context::refresh_game_context(game);
+    crate::ai_squad::process_ai_squads(game);
+    crate::ai_squad::repair_squads(game);
 
     summary
 }
@@ -1351,3 +1356,6 @@ pub struct EndOfSeasonSummary {
     pub total_teams: u32,
     pub season_awards: crate::season_awards::SeasonAwards,
 }
+
+#[cfg(test)]
+mod tests;

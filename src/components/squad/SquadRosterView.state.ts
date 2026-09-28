@@ -8,7 +8,40 @@ export type SquadListSortKey =
   | "condition"
   | "morale"
   | "ovr"
-  | "contract";
+  | "contract"
+  | "appearances"
+  | "goals"
+  | "assists"
+  | "yellow_cards"
+  | "red_cards"
+  | "avg_rating"
+  | "wage"
+  | "market_value";
+
+export type SquadRosterViewMode = "general" | "statistics" | "finances";
+
+export const SQUAD_VIEW_COLUMNS: Record<
+  SquadRosterViewMode,
+  { key: SquadListSortKey; labelKey: string }[]
+> = {
+  general: [
+    { key: "pos", labelKey: "squad.pos" },
+    { key: "style", labelKey: "tactics.playStyle" },
+    { key: "condition", labelKey: "common.condition" },
+    { key: "ovr", labelKey: "common.ovr" },
+  ],
+  statistics: [
+    { key: "appearances", labelKey: "playerProfile.apps" },
+    { key: "goals", labelKey: "playerProfile.goals" },
+    { key: "assists", labelKey: "playerProfile.assists" },
+    { key: "yellow_cards", labelKey: "playerProfile.yellows" },
+  ],
+  finances: [
+    { key: "wage", labelKey: "finances.wagePerWeek" },
+    { key: "market_value", labelKey: "finances.marketValue" },
+    { key: "contract", labelKey: "common.contract" },
+  ],
+};
 
 export interface SquadListSortState {
   sortKey: SquadListSortKey;

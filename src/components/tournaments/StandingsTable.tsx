@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import ContextMenu from "../ContextMenu";
@@ -28,6 +29,7 @@ export default function StandingsTable({
   zones,
 }: StandingsTableProps) {
   const { t } = useTranslation();
+  const [sort, setSort] = useState<{ key: string; direction: "asc" | "desc" } | null>(null);
   const { userTeamId, isClubTeam, resolveTeamName, onSelectTeam } = teams;
   const pad = variant === "full" ? "py-3 px-4" : "py-2 px-3";
   const headPad = variant === "full" ? "py-3 px-4" : "py-2 px-3";
@@ -53,6 +55,23 @@ export default function StandingsTable({
       : []),
   ];
 
+  const officialOrder = standings;
+  const rankByTeam = new Map(officialOrder.map((entry, index) => [entry.team_id, index + 1]));
+  const displayedStandings = useMemo(() => {
+    if (!sort) return officialOrder;
+    const value = (entry: StandingData): number => {
+      if (sort.key === "gd") return entry.goals_for - entry.goals_against;
+      if (sort.key === "pts") return entry.points;
+      return statColumns.find((column) => column.key === sort.key)?.value(entry) ?? (rankByTeam.get(entry.team_id) ?? 0);
+    };
+    return [...officialOrder].sort((a, b) => (sort.direction === "asc" ? 1 : -1) * (value(a) - value(b)) || (rankByTeam.get(a.team_id) ?? 0) - (rankByTeam.get(b.team_id) ?? 0));
+  }, [officialOrder, sort, statColumns]);
+  const sortHeader = (key: string, label: string) => (
+    <button type="button" className="hover:text-primary-500" aria-label={label} onClick={() => setSort((current) => ({ key, direction: current?.key === key && current.direction === "desc" ? "asc" : "desc" }))}>
+      {label}{sort?.key === key ? (sort.direction === "asc" ? " ▲" : " ▼") : " ↕"}
+    </button>
+  );
+
   const headClass = `${headPad} font-heading font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400`;
   const statClass = `${pad} text-center text-sm text-gray-600 dark:text-gray-400 tabular-nums`;
 
@@ -72,19 +91,20 @@ export default function StandingsTable({
           </th>
           {statColumns.map((column) => (
             <th key={column.key} scope="col" className={`${headClass} text-center`}>
-              {column.label}
+              {sortHeader(column.key, column.label)}
             </th>
           ))}
           <th scope="col" className={`${headClass} text-center`}>
-            {t("common.gd")}
+            {sortHeader("gd", t("common.gd"))}
           </th>
           <th scope="col" className={`${headClass} text-center`}>
-            {t("common.pts")}
+            {sortHeader("pts", t("common.pts"))}
           </th>
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-100 dark:divide-navy-600">
-        {standings.map((entry, idx) => {
+        {displayedStandings.map((entry) => {
+          const idx = (rankByTeam.get(entry.team_id) ?? 1) - 1;
           const isUser = entry.team_id === userTeamId;
           const gd = entry.goals_for - entry.goals_against;
           const inPromotionZone = idx < (zones?.promotionSlots ?? 0);

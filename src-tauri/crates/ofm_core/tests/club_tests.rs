@@ -59,6 +59,7 @@ fn upgrade_facility_rejects_when_funds_are_insufficient() {
     let mut game = make_game();
     game.teams[0].finance = 100_000;
     game.teams[0].facilities = Facilities {
+        youth: 1,
         training: 1,
         medical: 1,
         scouting: 1,

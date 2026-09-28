@@ -68,6 +68,8 @@ pub struct YouthScoutingAssignment {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Game {
+    #[serde(default)]
+    pub squad_management: crate::ai_squad::SquadManagementState,
     pub clock: GameClock,
     pub manager: Manager,
     #[serde(default)]
@@ -182,6 +184,7 @@ impl Game {
             package_lockfile: vec![],
             cash_journal: CashJournal::default(),
             cash_journal_dirty_ids: Vec::new(),
+            squad_management: Default::default(),
         };
         game.promote_legacy_league();
         crate::football_identity::upgrade_game_football_identities(&mut game);

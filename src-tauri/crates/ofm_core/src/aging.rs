@@ -52,17 +52,27 @@ fn decrease_attribute(value: &mut u8, delta: u8) {
 }
 
 fn apply_attribute_curve(player: &mut Player, age: i32, season: u32) {
+    let before = player.attributes.clone();
     let pace_loss = veteran_pace_loss(&player.id, age, season);
     if pace_loss > 0 {
         decrease_attribute(&mut player.attributes.pace, pace_loss);
     }
 
-    let growth = technical_growth(&player.id, age, season);
+    let growth = if player.potential == 0 || player.ovr < player.potential {
+        technical_growth(&player.id, age, season)
+    } else {
+        0
+    };
     if growth > 0 {
         increase_attribute(&mut player.attributes.passing, growth);
         increase_attribute(&mut player.attributes.vision, growth);
         increase_attribute(&mut player.attributes.decisions, growth);
         increase_attribute(&mut player.attributes.composure, growth);
+    }
+    if player.potential > 0
+        && crate::player_rating::natural_ovr(player).round() as u8 > player.potential
+    {
+        player.attributes = before;
     }
 }
 
@@ -127,6 +137,9 @@ fn retire_player(player: &mut Player) {
     player.transfer_listed = false;
     player.loan_listed = false;
     player.transfer_offers.clear();
+    player.loan_offers.clear();
+    player.active_loan = None;
+    player.wage = 0;
 }
 
 pub fn apply_seasonal_aging(game: &mut Game, current_date: NaiveDate, season: u32) {
@@ -138,6 +151,8 @@ pub fn apply_seasonal_aging(game: &mut Game, current_date: NaiveDate, season: u3
         let age = player_age_on(current_date, &player.date_of_birth);
         apply_attribute_curve(player, age, season);
 
+        crate::player_rating::refresh_player_derived(player, current_date.year() as u32);
+
         if should_retire(player, age, current_date, season) {
             if let Some(team_id) = player.team_id.clone()
                 && let Some(team) = game.teams.iter_mut().find(|team| team.id == team_id)
@@ -145,6 +160,10 @@ pub fn apply_seasonal_aging(game: &mut Game, current_date: NaiveDate, season: u3
                 team.remove_player_references(&player.id);
             }
             retire_player(player);
+            game.squad_management.totals.retirements += 1;
+            game.squad_management
+                .inactive_since
+                .insert(player.id.clone(), current_date.to_string());
         }
     }
 }

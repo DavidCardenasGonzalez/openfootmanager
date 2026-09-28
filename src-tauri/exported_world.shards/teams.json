@@ -1,0 +1,6788 @@
+[
+  {
+    "id": "top5-club-243-0",
+    "name": "Real Madrid",
+    "short_name": "Real Madrid",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Real Madrid",
+    "stadium_name": "Real Madrid Stadium",
+    "stadium_capacity": 60000,
+    "finance": 83223508,
+    "manager_id": "mgr_top5-club-243-0",
+    "reputation": 96,
+    "wage_budget": 282812904,
+    "transfer_budget": 26301600,
+    "season_income": 88431480,
+    "season_expenses": 86135972,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Real Madrid Partners",
+      "base_value": 3540600,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "L",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-21-0",
+    "name": "FC Bayern München",
+    "short_name": "FC Bayern München",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "FC Bayern München",
+    "stadium_name": "FC Bayern München Stadium",
+    "stadium_capacity": 40000,
+    "finance": 26039750,
+    "manager_id": "mgr_top5-club-21-0",
+    "reputation": 90,
+    "wage_budget": 93040861,
+    "transfer_budget": 8652800,
+    "season_income": 27790520,
+    "season_expenses": 28374770,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "FC Bayern München Partners",
+      "base_value": 1164800,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "D",
+      "L",
+      "L",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-73-0",
+    "name": "Paris Saint-Germain",
+    "short_name": "Paris Saint-Germain",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "Paris Saint-Germain",
+    "stadium_name": "Paris Saint-Germain Stadium",
+    "stadium_capacity": 40000,
+    "finance": 33223519,
+    "manager_id": "mgr_top5-club-73-0",
+    "reputation": 95,
+    "wage_budget": 115853764,
+    "transfer_budget": 10774400,
+    "season_income": 35297899,
+    "season_expenses": 35226380,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Paris Saint-Germain Partners",
+      "base_value": 1450400,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "High",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "L",
+      "W",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-44-0",
+    "name": "Inter",
+    "short_name": "Inter",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Inter",
+    "stadium_name": "Inter Stadium",
+    "stadium_capacity": 25000,
+    "finance": 11029932,
+    "manager_id": "mgr_top5-club-44-0",
+    "reputation": 87,
+    "wage_budget": 57870968,
+    "transfer_budget": 5382000,
+    "season_income": 12076950,
+    "season_expenses": 17607018,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Inter Partners",
+      "base_value": 724500,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "D",
+      "W",
+      "W",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-9-0",
+    "name": "Liverpool",
+    "short_name": "Liverpool",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Liverpool",
+    "stadium_name": "Liverpool Stadium",
+    "stadium_capacity": 60000,
+    "finance": 53932069,
+    "manager_id": "mgr_top5-club-9-0_30182885-e7b0-4991-a3e1-2636e30a645e",
+    "reputation": 92,
+    "wage_budget": 164107527,
+    "transfer_budget": 15262000,
+    "season_income": 57006399,
+    "season_expenses": 50034330,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Liverpool Partners",
+      "base_value": 2054500,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "D",
+      "L",
+      "D",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-10-0",
+    "name": "Manchester City",
+    "short_name": "Manchester City",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Manchester City",
+    "stadium_name": "Manchester City Stadium",
+    "stadium_capacity": 60000,
+    "finance": 46738488,
+    "manager_id": "mgr_top5-club-10-0",
+    "reputation": 91,
+    "wage_budget": 179204302,
+    "transfer_budget": 16666000,
+    "season_income": 49948240,
+    "season_expenses": 54489752,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Manchester City Partners",
+      "base_value": 2243500,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "W",
+      "D",
+      "D",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-240-0",
+    "name": "Atlético Madrid",
+    "short_name": "Atlético Madrid",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Atlético Madrid",
+    "stadium_name": "Atlético Madrid Stadium",
+    "stadium_capacity": 40000,
+    "finance": 24633014,
+    "manager_id": "mgr_top5-club-240-0_abd115e9-1a7e-4eaf-b534-1aefe4962d71_3",
+    "reputation": 88,
+    "wage_budget": 99415054,
+    "transfer_budget": 9245600,
+    "season_income": 26413940,
+    "season_expenses": 30228926,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Atlético Madrid Partners",
+      "base_value": 1244600,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "W",
+      "D",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-11-0",
+    "name": "Manchester United",
+    "short_name": "Manchester United",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Manchester United",
+    "stadium_name": "Manchester United Stadium",
+    "stadium_capacity": 40000,
+    "finance": 28083477,
+    "manager_id": "mgr_top5-club-11-0",
+    "reputation": 82,
+    "wage_budget": 96675269,
+    "transfer_budget": 8990800,
+    "season_income": 29884899,
+    "season_expenses": 29465422,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Manchester United Partners",
+      "base_value": 1210300,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "W",
+      "D",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-448-0",
+    "name": "Athletic Club",
+    "short_name": "Athletic Club",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Athletic Club",
+    "stadium_name": "Athletic Club Stadium",
+    "stadium_capacity": 25000,
+    "finance": 15609190,
+    "manager_id": "mgr_top5-club-448-0_6e34290d-06cd-42a7-bd80-f439cdacf9ef",
+    "reputation": 79,
+    "wage_budget": 55243011,
+    "transfer_budget": 5137600,
+    "season_income": 16645974,
+    "season_expenses": 16844784,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Athletic Club Partners",
+      "base_value": 691600,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "L",
+      "L",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-47-0",
+    "name": "AC Milan",
+    "short_name": "AC Milan",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "AC Milan",
+    "stadium_name": "AC Milan Stadium",
+    "stadium_capacity": 25000,
+    "finance": 14778066,
+    "manager_id": "mgr_top5-club-47-0",
+    "reputation": 78,
+    "wage_budget": 51888173,
+    "transfer_budget": 4825600,
+    "season_income": 15753474,
+    "season_expenses": 15823408,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "AC Milan Partners",
+      "base_value": 649600,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "D",
+      "W",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-13-0",
+    "name": "Newcastle United",
+    "short_name": "Newcastle United",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Newcastle United",
+    "stadium_name": "Newcastle United Stadium",
+    "stadium_capacity": 60000,
+    "finance": 30809852,
+    "manager_id": "mgr_top5-club-13-0",
+    "reputation": 85,
+    "wage_budget": 143978495,
+    "transfer_budget": 13390000,
+    "season_income": 33328480,
+    "season_expenses": 43718628,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Newcastle United Partners",
+      "base_value": 1802500,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "L",
+      "L",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-22-0",
+    "name": "Borussia Dortmund",
+    "short_name": "Borussia Dortmund",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "Borussia Dortmund",
+    "stadium_name": "Borussia Dortmund Stadium",
+    "stadium_capacity": 25000,
+    "finance": 15463047,
+    "manager_id": "mgr_top5-club-22-0",
+    "reputation": 84,
+    "wage_budget": 64021506,
+    "transfer_budget": 5954000,
+    "season_income": 16658675,
+    "season_expenses": 19515628,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Borussia Dortmund Partners",
+      "base_value": 801500,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "D",
+      "L",
+      "W",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1-0",
+    "name": "Arsenal",
+    "short_name": "Arsenal",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Arsenal",
+    "stadium_name": "Arsenal Stadium",
+    "stadium_capacity": 60000,
+    "finance": 64844501,
+    "manager_id": "mgr_top5-club-1-0",
+    "reputation": 94,
+    "wage_budget": 194245162,
+    "transfer_budget": 18064800,
+    "season_income": 68340959,
+    "season_expenses": 59080458,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Arsenal Partners",
+      "base_value": 2431800,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "W",
+      "L",
+      "L",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-241-0",
+    "name": "FC Barcelona",
+    "short_name": "FC Barcelona",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "FC Barcelona",
+    "stadium_name": "FC Barcelona Stadium",
+    "stadium_capacity": 40000,
+    "finance": 32044278,
+    "manager_id": "mgr_top5-club-241-0",
+    "reputation": 93,
+    "wage_budget": 127036560,
+    "transfer_budget": 11814400,
+    "season_income": 34418860,
+    "season_expenses": 38726582,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "FC Barcelona Partners",
+      "base_value": 1590400,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "High",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "D",
+      "W",
+      "D",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-48-0",
+    "name": "Napoli",
+    "short_name": "Napoli",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Napoli",
+    "stadium_name": "Napoli Stadium",
+    "stadium_capacity": 40000,
+    "finance": 30707462,
+    "manager_id": "mgr_top5-club-48-0",
+    "reputation": 81,
+    "wage_budget": 122619355,
+    "transfer_budget": 11403600,
+    "season_income": 32995860,
+    "season_expenses": 37376398,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Napoli Partners",
+      "base_value": 1535100,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "D",
+      "D",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-45-0",
+    "name": "Juventus",
+    "short_name": "Juventus",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Juventus",
+    "stadium_name": "Juventus Stadium",
+    "stadium_capacity": 60000,
+    "finance": 33432934,
+    "manager_id": "mgr_top5-club-45-0_d177f9a4-ff1d-4cf2-bedc-b630d750fec6_3",
+    "reputation": 83,
+    "wage_budget": 131397850,
+    "transfer_budget": 12220000,
+    "season_income": 35905810,
+    "season_expenses": 40072876,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Juventus Partners",
+      "base_value": 1645000,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "D",
+      "W",
+      "D",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-32-0",
+    "name": "Bayer 04 Leverkusen",
+    "short_name": "Bayer 04 Leverkusen",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "Bayer 04 Leverkusen",
+    "stadium_name": "Bayer 04 Leverkusen Stadium",
+    "stadium_capacity": 40000,
+    "finance": 27749812,
+    "manager_id": "mgr_top5-club-32-0",
+    "reputation": 75,
+    "wage_budget": 82025807,
+    "transfer_budget": 7628400,
+    "season_income": 29291940,
+    "season_expenses": 25014128,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Bayer 04 Leverkusen Partners",
+      "base_value": 1026900,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "W",
+      "L",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-5-0",
+    "name": "Chelsea",
+    "short_name": "Chelsea",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Chelsea",
+    "stadium_name": "Chelsea Stadium",
+    "stadium_capacity": 60000,
+    "finance": 32183743,
+    "manager_id": "mgr_top5-club-5-0",
+    "reputation": 89,
+    "wage_budget": 144761291,
+    "transfer_budget": 13462800,
+    "season_income": 34775339,
+    "season_expenses": 44015596,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Chelsea Partners",
+      "base_value": 1812300,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "High",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "W",
+      "L",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-18-0",
+    "name": "Tottenham Hotspur",
+    "short_name": "Tottenham Hotspur",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Tottenham Hotspur",
+    "stadium_name": "Tottenham Hotspur Stadium",
+    "stadium_capacity": 60000,
+    "finance": 31534956,
+    "manager_id": "mgr_top5-club-18-0",
+    "reputation": 86,
+    "wage_budget": 131509678,
+    "transfer_budget": 12230400,
+    "season_income": 33948570,
+    "season_expenses": 40045614,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Tottenham Hotspur Partners",
+      "base_value": 1646400,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "D",
+      "W",
+      "D",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-2-0",
+    "name": "Aston Villa",
+    "short_name": "Aston Villa",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Aston Villa",
+    "stadium_name": "Aston Villa Stadium",
+    "stadium_capacity": 40000,
+    "finance": 36455191,
+    "manager_id": "mgr_top5-club-2-0",
+    "reputation": 80,
+    "wage_budget": 127260216,
+    "transfer_budget": 11835200,
+    "season_income": 38722099,
+    "season_expenses": 38682908,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Aston Villa Partners",
+      "base_value": 1593200,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "High",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "D",
+      "W",
+      "W",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-52-0",
+    "name": "Roma",
+    "short_name": "Roma",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Roma",
+    "stadium_name": "Roma Stadium",
+    "stadium_capacity": 40000,
+    "finance": 25344474,
+    "manager_id": "mgr_top5-club-52-0",
+    "reputation": 77,
+    "wage_budget": 74030108,
+    "transfer_budget": 6884800,
+    "season_income": 26733400,
+    "season_expenses": 22572926,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Roma Partners",
+      "base_value": 926800,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "D",
+      "W",
+      "L",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-449-0",
+    "name": "Real Betis Balompié",
+    "short_name": "Real Betis Balompié",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Real Betis Balompié",
+    "stadium_name": "Real Betis Balompié Stadium",
+    "stadium_capacity": 25000,
+    "finance": 9721693,
+    "manager_id": "mgr_top5-club-449-0",
+    "reputation": 66,
+    "wage_budget": 41096775,
+    "transfer_budget": 3822000,
+    "season_income": 10474949,
+    "season_expenses": 12513256,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Real Betis Balompié Partners",
+      "base_value": 514500,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "D",
+      "D",
+      "W",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-453-0",
+    "name": "RCD Mallorca",
+    "short_name": "RCD Mallorca",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "RCD Mallorca",
+    "stadium_name": "RCD Mallorca Stadium",
+    "stadium_capacity": 25000,
+    "finance": 8842400,
+    "manager_id": "mgr_top5-club-453-0",
+    "reputation": 46,
+    "wage_budget": 34163441,
+    "transfer_budget": 3177200,
+    "season_income": 9483124,
+    "season_expenses": 10416724,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "RCD Mallorca Partners",
+      "base_value": 427700,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Recovery",
+    "training_intensity": "Low",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "W",
+      "L",
+      "W",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-66-0",
+    "name": "Olympique Lyonnais",
+    "short_name": "Olympique Lyonnais",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "Olympique Lyonnais",
+    "stadium_name": "Olympique Lyonnais Stadium",
+    "stadium_capacity": 10000,
+    "finance": 4415097,
+    "manager_id": "mgr_top5-club-66-0_2a1b1c17-bfa1-48d3-bdc4-20987902b154_3",
+    "reputation": 41,
+    "wage_budget": 19681721,
+    "transfer_budget": 1830400,
+    "season_income": 4784459,
+    "season_expenses": 6001362,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Olympique Lyonnais Partners",
+      "base_value": 246400,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "L",
+      "L",
+      "L",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1808-0",
+    "name": "Brighton & Hove Albion",
+    "short_name": "Brighton & Hove Albion",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Brighton & Hove Albion",
+    "stadium_name": "Brighton & Hove Albion Stadium",
+    "stadium_capacity": 40000,
+    "finance": 16989154,
+    "manager_id": "mgr_top5-club-1808-0",
+    "reputation": 67,
+    "wage_budget": 87058065,
+    "transfer_budget": 8096400,
+    "season_income": 18622800,
+    "season_expenses": 26545646,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Brighton & Hove Albion Partners",
+      "base_value": 1089900,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "D",
+      "L",
+      "W",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-14-0",
+    "name": "Nottingham Forest",
+    "short_name": "Nottingham Forest",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Nottingham Forest",
+    "stadium_name": "Nottingham Forest Stadium",
+    "stadium_capacity": 40000,
+    "finance": 35991223,
+    "manager_id": "mgr_top5-club-14-0",
+    "reputation": 76,
+    "wage_budget": 112219355,
+    "transfer_budget": 10436400,
+    "season_income": 38102759,
+    "season_expenses": 34223536,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Nottingham Forest Partners",
+      "base_value": 1404900,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "D",
+      "L",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-483-0",
+    "name": "Villarreal CF",
+    "short_name": "Villarreal CF",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Villarreal CF",
+    "stadium_name": "Villarreal CF Stadium",
+    "stadium_capacity": 25000,
+    "finance": 13576809,
+    "manager_id": "mgr_top5-club-483-0_1935238d-1d8d-46f6-a3ad-6de55038fe8b",
+    "reputation": 70,
+    "wage_budget": 50937635,
+    "transfer_budget": 4737200,
+    "season_income": 14534675,
+    "season_expenses": 15533866,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Villarreal CF Partners",
+      "base_value": 637700,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "High",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "W",
+      "W",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-46-0",
+    "name": "Lazio",
+    "short_name": "Lazio",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Lazio",
+    "stadium_name": "Lazio Stadium",
+    "stadium_capacity": 25000,
+    "finance": 9545688,
+    "manager_id": "mgr_top5-club-46-0_946232c9-f3b3-46c8-bbec-ab3e6f852898_6",
+    "reputation": 65,
+    "wage_budget": 45569893,
+    "transfer_budget": 4238000,
+    "season_income": 10387550,
+    "season_expenses": 13881862,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Lazio Partners",
+      "base_value": 570500,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "L",
+      "W",
+      "D",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-19-0",
+    "name": "West Ham United",
+    "short_name": "West Ham United",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "West Ham United",
+    "stadium_name": "West Ham United Stadium",
+    "stadium_capacity": 40000,
+    "finance": 18233649,
+    "manager_id": "mgr_top5-club-19-0",
+    "reputation": 61,
+    "wage_budget": 70060216,
+    "transfer_budget": 6515600,
+    "season_income": 19491199,
+    "season_expenses": 21305550,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "West Ham United Partners",
+      "base_value": 877100,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "W",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1860-0",
+    "name": "Getafe CF",
+    "short_name": "Getafe CF",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Getafe CF",
+    "stadium_name": "Getafe CF Stadium",
+    "stadium_capacity": 25000,
+    "finance": 6145482,
+    "manager_id": "mgr_top5-club-1860-0",
+    "reputation": 27,
+    "wage_budget": 30305377,
+    "transfer_budget": 2818400,
+    "season_income": 6702500,
+    "season_expenses": 9229018,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Getafe CF Partners",
+      "base_value": 379400,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "D",
+      "D",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-219-0",
+    "name": "Olympique de Marseille",
+    "short_name": "Olympique de Marseille",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "Olympique de Marseille",
+    "stadium_name": "Olympique de Marseille Stadium",
+    "stadium_capacity": 25000,
+    "finance": 14851762,
+    "manager_id": "mgr_top5-club-219-0_965b931f-6a35-4033-93e2-bdda6a5b072d",
+    "reputation": 73,
+    "wage_budget": 60946237,
+    "transfer_budget": 5668000,
+    "season_income": 15958000,
+    "season_expenses": 18546238,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Olympique de Marseille Partners",
+      "base_value": 763000,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "L",
+      "L",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-450-0",
+    "name": "RC Celta",
+    "short_name": "RC Celta",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "RC Celta",
+    "stadium_name": "RC Celta Stadium",
+    "stadium_capacity": 25000,
+    "finance": 11741184,
+    "manager_id": "mgr_top5-club-450-0",
+    "reputation": 52,
+    "wage_budget": 34498925,
+    "transfer_budget": 3208400,
+    "season_income": 12390574,
+    "season_expenses": 10521390,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "RC Celta Partners",
+      "base_value": 431900,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "L",
+      "W",
+      "W",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-189-0",
+    "name": "Bologna",
+    "short_name": "Bologna",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Bologna",
+    "stadium_name": "Bologna Stadium",
+    "stadium_capacity": 25000,
+    "finance": 14382304,
+    "manager_id": "mgr_top5-club-189-0",
+    "reputation": 50,
+    "wage_budget": 53378280,
+    "transfer_budget": 4964180,
+    "season_income": 15370354,
+    "season_expenses": 16262450,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Bologna Partners",
+      "base_value": 668255,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Recovery",
+    "training_intensity": "Low",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "D",
+      "W",
+      "D",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-457-0",
+    "name": "Real Sociedad",
+    "short_name": "Real Sociedad",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Real Sociedad",
+    "stadium_name": "Real Sociedad Stadium",
+    "stadium_capacity": 25000,
+    "finance": 10949311,
+    "manager_id": "mgr_top5-club-457-0",
+    "reputation": 71,
+    "wage_budget": 45178495,
+    "transfer_budget": 4201600,
+    "season_income": 11796549,
+    "season_expenses": 13775238,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Real Sociedad Partners",
+      "base_value": 565600,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "L",
+      "L",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-39-0",
+    "name": "Atalanta",
+    "short_name": "Atalanta",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Atalanta",
+    "stadium_name": "Atalanta Stadium",
+    "stadium_capacity": 40000,
+    "finance": 24043643,
+    "manager_id": "mgr_top5-club-39-0_0e9222cf-0506-4d20-91f7-00a1d63144e7_2",
+    "reputation": 74,
+    "wage_budget": 73974194,
+    "transfer_budget": 6879600,
+    "season_income": 25416959,
+    "season_expenses": 22541316,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Atalanta Partners",
+      "base_value": 926100,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "W",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-175-0",
+    "name": "VfL Wolfsburg",
+    "short_name": "VfL Wolfsburg",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "VfL Wolfsburg",
+    "stadium_name": "VfL Wolfsburg Stadium",
+    "stadium_capacity": 25000,
+    "finance": 15348392,
+    "manager_id": "mgr_top5-club-175-0",
+    "reputation": 60,
+    "wage_budget": 51150108,
+    "transfer_budget": 4756960,
+    "season_income": 16282584,
+    "season_expenses": 15570992,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "VfL Wolfsburg Partners",
+      "base_value": 640360,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "L",
+      "D",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1831-0",
+    "name": "1. FC Union Berlin",
+    "short_name": "1. FC Union Berlin",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "1. FC Union Berlin",
+    "stadium_name": "1. FC Union Berlin Stadium",
+    "stadium_capacity": 25000,
+    "finance": 8769973,
+    "manager_id": "mgr_top5-club-1831-0_d94f7907-df26-437d-99ad-4ad33b257ae7_2",
+    "reputation": 28,
+    "wage_budget": 33324732,
+    "transfer_budget": 3099200,
+    "season_income": 9375725,
+    "season_expenses": 10141752,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "1. FC Union Berlin Partners",
+      "base_value": 417200,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "L",
+      "L",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-110374-0",
+    "name": "Fiorentina",
+    "short_name": "Fiorentina",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Fiorentina",
+    "stadium_name": "Fiorentina Stadium",
+    "stadium_capacity": 25000,
+    "finance": 16608414,
+    "manager_id": "mgr_top5-club-110374-0",
+    "reputation": 56,
+    "wage_budget": 51552689,
+    "transfer_budget": 4794400,
+    "season_income": 17570872,
+    "season_expenses": 15714458,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Fiorentina Partners",
+      "base_value": 645400,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "L",
+      "W",
+      "D",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-112172-0",
+    "name": "RB Leipzig",
+    "short_name": "RB Leipzig",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "RB Leipzig",
+    "stadium_name": "RB Leipzig Stadium",
+    "stadium_capacity": 25000,
+    "finance": 15836984,
+    "manager_id": "mgr_top5-club-112172-0",
+    "reputation": 72,
+    "wage_budget": 58150538,
+    "transfer_budget": 5408000,
+    "season_income": 16926800,
+    "season_expenses": 17729816,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "RB Leipzig Partners",
+      "base_value": 728000,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "D",
+      "D",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-110556-0",
+    "name": "Genoa",
+    "short_name": "Genoa",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Genoa",
+    "stadium_name": "Genoa Stadium",
+    "stadium_capacity": 25000,
+    "finance": 7773153,
+    "manager_id": "mgr_top5-club-110556-0",
+    "reputation": 14,
+    "wage_budget": 23928388,
+    "transfer_budget": 2225340,
+    "season_income": 8218689,
+    "season_expenses": 7292736,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Genoa Partners",
+      "base_value": 299565,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "W",
+      "L",
+      "L",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-54-0",
+    "name": "Torino",
+    "short_name": "Torino",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Torino",
+    "stadium_name": "Torino Stadium",
+    "stadium_capacity": 25000,
+    "finance": 13331477,
+    "manager_id": "mgr_top5-club-54-0_e77c1b0c-5c4f-4bed-b671-7e007713629b",
+    "reputation": 35,
+    "wage_budget": 44283871,
+    "transfer_budget": 4118400,
+    "season_income": 14159325,
+    "season_expenses": 13499848,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Torino Partners",
+      "base_value": 554400,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "L",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-106-0",
+    "name": "Sunderland",
+    "short_name": "Sunderland",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Sunderland",
+    "stadium_name": "Sunderland Stadium",
+    "stadium_capacity": 40000,
+    "finance": 22825326,
+    "manager_id": "mgr_top5-club-106-0",
+    "reputation": 57,
+    "wage_budget": 64580646,
+    "transfer_budget": 6006000,
+    "season_income": 24017160,
+    "season_expenses": 19671834,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Sunderland Partners",
+      "base_value": 808500,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "W",
+      "L",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-38-0",
+    "name": "SV Werder Bremen",
+    "short_name": "SV Werder Bremen",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "SV Werder Bremen",
+    "stadium_name": "SV Werder Bremen Stadium",
+    "stadium_capacity": 25000,
+    "finance": 9354884,
+    "manager_id": null,
+    "reputation": 43,
+    "wage_budget": 37070968,
+    "transfer_budget": 3447600,
+    "season_income": 10042200,
+    "season_expenses": 11295316,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "SV Werder Bremen Partners",
+      "base_value": 464100,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "L",
+      "W",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-72-0",
+    "name": "OGC Nice",
+    "short_name": "OGC Nice",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "OGC Nice",
+    "stadium_name": "OGC Nice Stadium",
+    "stadium_capacity": 25000,
+    "finance": 9162049,
+    "manager_id": null,
+    "reputation": 48,
+    "wage_budget": 31144087,
+    "transfer_budget": 2896400,
+    "season_income": 9721475,
+    "season_expenses": 9471426,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "OGC Nice Partners",
+      "base_value": 389900,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "L",
+      "L",
+      "L",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1796-0",
+    "name": "Burnley",
+    "short_name": "Burnley",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Burnley",
+    "stadium_name": "Burnley Stadium",
+    "stadium_capacity": 25000,
+    "finance": 18174131,
+    "manager_id": "mgr_top5-club-1796-0",
+    "reputation": 37,
+    "wage_budget": 61505377,
+    "transfer_budget": 5720000,
+    "season_income": 19331525,
+    "season_expenses": 18757394,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Burnley Partners",
+      "base_value": 770000,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "W",
+      "W",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-169-0",
+    "name": "1. FSV Mainz 05",
+    "short_name": "1. FSV Mainz 05",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "1. FSV Mainz 05",
+    "stadium_name": "1. FSV Mainz 05 Stadium",
+    "stadium_capacity": 25000,
+    "finance": 10994159,
+    "manager_id": "mgr_top5-club-169-0",
+    "reputation": 39,
+    "wage_budget": 30696775,
+    "transfer_budget": 2854800,
+    "season_income": 11565975,
+    "season_expenses": 9355816,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "1. FSV Mainz 05 Partners",
+      "base_value": 384300,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "W",
+      "D",
+      "D",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-461-0",
+    "name": "Valencia CF",
+    "short_name": "Valencia CF",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Valencia CF",
+    "stadium_name": "Valencia CF Stadium",
+    "stadium_capacity": 25000,
+    "finance": 13725460,
+    "manager_id": "mgr_top5-club-461-0",
+    "reputation": 58,
+    "wage_budget": 41823656,
+    "transfer_budget": 3889600,
+    "season_income": 14473900,
+    "season_expenses": 12716440,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Valencia CF Partners",
+      "base_value": 523600,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "D",
+      "L",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1925-0",
+    "name": "Brentford",
+    "short_name": "Brentford",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Brentford",
+    "stadium_name": "Brentford Stadium",
+    "stadium_capacity": 40000,
+    "finance": 20503110,
+    "manager_id": "mgr_top5-club-1925-0",
+    "reputation": 55,
+    "wage_budget": 69445162,
+    "transfer_budget": 6458400,
+    "season_income": 21793798,
+    "season_expenses": 21162688,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Brentford Partners",
+      "base_value": 869400,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "L",
+      "L",
+      "D",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1799-0",
+    "name": "Crystal Palace",
+    "short_name": "Crystal Palace",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Crystal Palace",
+    "stadium_name": "Crystal Palace Stadium",
+    "stadium_capacity": 40000,
+    "finance": 19217228,
+    "manager_id": "mgr_top5-club-1799-0",
+    "reputation": 69,
+    "wage_budget": 82696775,
+    "transfer_budget": 7690800,
+    "season_income": 20733778,
+    "season_expenses": 25180550,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Crystal Palace Partners",
+      "base_value": 1035300,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "L",
+      "W",
+      "D",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1842-0",
+    "name": "Cagliari",
+    "short_name": "Cagliari",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Cagliari",
+    "stadium_name": "Cagliari Stadium",
+    "stadium_capacity": 10000,
+    "finance": 4357008,
+    "manager_id": "mgr_top5-club-1842-0",
+    "reputation": 24,
+    "wage_budget": 18616560,
+    "transfer_budget": 1731340,
+    "season_income": 4706980,
+    "season_expenses": 5677172,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Cagliari Partners",
+      "base_value": 233065,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "L",
+      "W",
+      "D",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1943-0",
+    "name": "AFC Bournemouth",
+    "short_name": "AFC Bournemouth",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "AFC Bournemouth",
+    "stadium_name": "AFC Bournemouth Stadium",
+    "stadium_capacity": 40000,
+    "finance": 16509203,
+    "manager_id": "mgr_top5-club-1943-0",
+    "reputation": 63,
+    "wage_budget": 70675269,
+    "transfer_budget": 6572800,
+    "season_income": 17840799,
+    "season_expenses": 21555596,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "AFC Bournemouth Partners",
+      "base_value": 884800,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "High",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "D",
+      "L",
+      "L",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-69-0",
+    "name": "AS Monaco",
+    "short_name": "AS Monaco",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "AS Monaco",
+    "stadium_name": "AS Monaco Stadium",
+    "stadium_capacity": 25000,
+    "finance": 10362347,
+    "manager_id": "mgr_top5-club-69-0",
+    "reputation": 64,
+    "wage_budget": 37238710,
+    "transfer_budget": 3463200,
+    "season_income": 11057475,
+    "season_expenses": 11351128,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "AS Monaco Partners",
+      "base_value": 466200,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "D",
+      "W",
+      "L",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1824-0",
+    "name": "Eintracht Frankfurt",
+    "short_name": "Eintracht Frankfurt",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "Eintracht Frankfurt",
+    "stadium_name": "Eintracht Frankfurt Stadium",
+    "stadium_capacity": 25000,
+    "finance": 9591583,
+    "manager_id": null,
+    "reputation": 68,
+    "wage_budget": 36847312,
+    "transfer_budget": 3426800,
+    "season_income": 10272725,
+    "season_expenses": 11225142,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Eintracht Frankfurt Partners",
+      "base_value": 461300,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "L",
+      "L",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-110062-0",
+    "name": "Girona FC",
+    "short_name": "Girona FC",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Girona FC",
+    "stadium_name": "Girona FC Stadium",
+    "stadium_capacity": 25000,
+    "finance": 8978090,
+    "manager_id": "mgr_user",
+    "reputation": 49,
+    "wage_budget": 36903226,
+    "transfer_budget": 3432000,
+    "season_income": 9259250,
+    "season_expenses": 10841160,
+    "financial_ledger": [
+      {
+        "date": "2026-09-17",
+        "description": "Marketing campaign activation spend",
+        "amount": -31812,
+        "kind": "CommercialCampaign"
+      },
+      {
+        "date": "2026-09-17",
+        "description": "Marketing campaign merchandise revenue",
+        "amount": 127250,
+        "kind": "CommercialCampaign"
+      }
+    ],
+    "sponsorship": {
+      "sponsor_name": "Girona FC Partners",
+      "base_value": 462000,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-3-3",
+    "play_style": "Balanced",
+    "player_roles": {
+      "top5-player-246928": "Standard",
+      "top5-player-221363": "AdvancedPlaymaker",
+      "top5-player-213565": "Standard"
+    },
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Low",
+    "training_schedule": "Light",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [
+      {
+        "id": "grp_1790554226823",
+        "name": "Defensas",
+        "focus": "Physical",
+        "player_ids": []
+      },
+      {
+        "id": "grp_1790554242237",
+        "name": "Centrocampistas",
+        "focus": "Physical",
+        "player_ids": []
+      },
+      {
+        "id": "grp_1790554242524",
+        "name": "Delanteros",
+        "focus": "Physical",
+        "player_ids": []
+      },
+      {
+        "id": "grp_1790554242775",
+        "name": "Cantera",
+        "focus": "Physical",
+        "player_ids": []
+      },
+      {
+        "id": "grp_1790555996681",
+        "name": "Recuperación",
+        "focus": "Physical",
+        "player_ids": [
+          "top5-player-241671",
+          "top5-player-177413",
+          "top5-player-217036",
+          "top5-player-213565",
+          "top5-player-221363"
+        ]
+      }
+    ],
+    "starting_xi_ids": [
+      "top5-player-241671",
+      "top5-player-217036",
+      "top5-player-254310",
+      "82fb86fd-b4f4-4513-9d95-1069388029b0",
+      "top5-player-260815",
+      "top5-player-246928",
+      "top5-player-255125",
+      "top5-player-221363",
+      "top5-player-246785",
+      "top5-player-271541",
+      "top5-player-244369"
+    ],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "W",
+      "L",
+      "W",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-65-0",
+    "name": "Lille OSC",
+    "short_name": "Lille OSC",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "Lille OSC",
+    "stadium_name": "Lille OSC Stadium",
+    "stadium_capacity": 25000,
+    "finance": 6831698,
+    "manager_id": "mgr_top5-club-65-0_01f32f8f-31cd-44dd-b3e7-6ecd03e6cd6a_2",
+    "reputation": 45,
+    "wage_budget": 30361291,
+    "transfer_budget": 2823600,
+    "season_income": 7386000,
+    "season_expenses": 9242302,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Lille OSC Partners",
+      "base_value": 380100,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "W",
+      "W",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-100409-0",
+    "name": "FC Augsburg",
+    "short_name": "FC Augsburg",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "FC Augsburg",
+    "stadium_name": "FC Augsburg Stadium",
+    "stadium_capacity": 25000,
+    "finance": 11546190,
+    "manager_id": "mgr_top5-club-100409-0",
+    "reputation": 32,
+    "wage_budget": 33772044,
+    "transfer_budget": 3140800,
+    "season_income": 12171850,
+    "season_expenses": 10289660,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "FC Augsburg Partners",
+      "base_value": 422800,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "L",
+      "W",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1745-0",
+    "name": "Como",
+    "short_name": "Como",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Como",
+    "stadium_name": "Como Stadium",
+    "stadium_capacity": 40000,
+    "finance": 17632648,
+    "manager_id": "mgr_top5-club-1745-0",
+    "reputation": 51,
+    "wage_budget": 74365592,
+    "transfer_budget": 6916000,
+    "season_income": 19015120,
+    "season_expenses": 22662472,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Como Partners",
+      "base_value": 931000,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "W",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-36-0",
+    "name": "VfB Stuttgart",
+    "short_name": "VfB Stuttgart",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "VfB Stuttgart",
+    "stadium_name": "VfB Stuttgart Stadium",
+    "stadium_capacity": 25000,
+    "finance": 12660077,
+    "manager_id": "mgr_top5-club-36-0_a4624b7f-7883-4019-bdc1-01925841299f_4",
+    "reputation": 62,
+    "wage_budget": 43763871,
+    "transfer_budget": 4070040,
+    "season_income": 13479315,
+    "season_expenses": 13342438,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "VfB Stuttgart Partners",
+      "base_value": 547890,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "L",
+      "W",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-481-0",
+    "name": "Sevilla FC",
+    "short_name": "Sevilla FC",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Sevilla FC",
+    "stadium_name": "Sevilla FC Stadium",
+    "stadium_capacity": 25000,
+    "finance": 13069253,
+    "manager_id": "mgr_top5-club-481-0",
+    "reputation": 36,
+    "wage_budget": 37182796,
+    "transfer_budget": 3458000,
+    "season_income": 13769225,
+    "season_expenses": 11339972,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Sevilla FC Partners",
+      "base_value": 465500,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "High",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "W",
+      "D",
+      "D",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-110738-0",
+    "name": "Pisa",
+    "short_name": "Pisa",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Pisa",
+    "stadium_name": "Pisa Stadium",
+    "stadium_capacity": 10000,
+    "finance": 3364596,
+    "manager_id": "mgr_top5-club-110738-0",
+    "reputation": 5,
+    "wage_budget": 14009248,
+    "transfer_budget": 1302860,
+    "season_income": 3621860,
+    "season_expenses": 4266064,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Pisa Partners",
+      "base_value": 175385,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "High",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "W",
+      "W",
+      "D",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-7-0",
+    "name": "Everton",
+    "short_name": "Everton",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Everton",
+    "stadium_name": "Everton Stadium",
+    "stadium_capacity": 25000,
+    "finance": 13631743,
+    "manager_id": "mgr_top5-club-7-0",
+    "reputation": 59,
+    "wage_budget": 45513979,
+    "transfer_budget": 4232800,
+    "season_income": 14485449,
+    "season_expenses": 13877706,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Everton Partners",
+      "base_value": 569800,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "High",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "W",
+      "W",
+      "W",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-74-0",
+    "name": "Stade Rennais FC",
+    "short_name": "Stade Rennais FC",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "Stade Rennais FC",
+    "stadium_name": "Stade Rennais FC Stadium",
+    "stadium_capacity": 25000,
+    "finance": 10513665,
+    "manager_id": "mgr_top5-club-74-0",
+    "reputation": 34,
+    "wage_budget": 25664517,
+    "transfer_budget": 2386800,
+    "season_income": 10993949,
+    "season_expenses": 7824284,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Stade Rennais FC Partners",
+      "base_value": 321300,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "W",
+      "L",
+      "L",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-31-0",
+    "name": "1. FC Köln",
+    "short_name": "1. FC Köln",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "1. FC Köln",
+    "stadium_name": "1. FC Köln Stadium",
+    "stadium_capacity": 25000,
+    "finance": 8367624,
+    "manager_id": "mgr_top5-club-31-0_378f8abd-fc14-4091-b0ca-77261a27eb7a",
+    "reputation": 20,
+    "wage_budget": 24434409,
+    "transfer_budget": 2272400,
+    "season_income": 8815050,
+    "season_expenses": 7439426,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "1. FC Köln Partners",
+      "base_value": 305900,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "W",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-480-0",
+    "name": "Rayo Vallecano",
+    "short_name": "Rayo Vallecano",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Rayo Vallecano",
+    "stadium_name": "Rayo Vallecano Stadium",
+    "stadium_capacity": 25000,
+    "finance": 11693651,
+    "manager_id": "mgr_top5-club-480-0",
+    "reputation": 40,
+    "wage_budget": 28507742,
+    "transfer_budget": 2651220,
+    "season_income": 12207045,
+    "season_expenses": 8670994,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Rayo Vallecano Partners",
+      "base_value": 356895,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "D",
+      "L",
+      "W",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-110827-0",
+    "name": "Real Oviedo",
+    "short_name": "Real Oviedo",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Real Oviedo",
+    "stadium_name": "Real Oviedo Stadium",
+    "stadium_capacity": 25000,
+    "finance": 9656762,
+    "manager_id": "mgr_top5-club-110827-0",
+    "reputation": 10,
+    "wage_budget": 33716130,
+    "transfer_budget": 3135600,
+    "season_income": 10285124,
+    "season_expenses": 10276362,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Real Oviedo Partners",
+      "base_value": 422100,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "W",
+      "L",
+      "W",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-144-0",
+    "name": "Fulham FC",
+    "short_name": "Fulham FC",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Fulham FC",
+    "stadium_name": "Fulham FC Stadium",
+    "stadium_capacity": 40000,
+    "finance": 32891958,
+    "manager_id": "mgr_top5-club-144-0",
+    "reputation": 54,
+    "wage_budget": 83144087,
+    "transfer_budget": 7732400,
+    "season_income": 34430838,
+    "season_expenses": 25330880,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Fulham FC Partners",
+      "base_value": 1040900,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "W",
+      "L",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-8-0",
+    "name": "Leeds United",
+    "short_name": "Leeds United",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Leeds United",
+    "stadium_name": "Leeds United Stadium",
+    "stadium_capacity": 25000,
+    "finance": 15500949,
+    "manager_id": "mgr_top5-club-8-0",
+    "reputation": 44,
+    "wage_budget": 60834409,
+    "transfer_budget": 5657600,
+    "season_income": 16644875,
+    "season_expenses": 18551926,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Leeds United Partners",
+      "base_value": 761600,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Recovery",
+    "training_intensity": "Low",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "L",
+      "W",
+      "D",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-64-0",
+    "name": "RC Lens",
+    "short_name": "RC Lens",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "RC Lens",
+    "stadium_name": "RC Lens Stadium",
+    "stadium_capacity": 25000,
+    "finance": 8997217,
+    "manager_id": "mgr_top5-club-64-0",
+    "reputation": 17,
+    "wage_budget": 24182796,
+    "transfer_budget": 2249000,
+    "season_income": 9439799,
+    "season_expenses": 7362582,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "RC Lens Partners",
+      "base_value": 302750,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "W",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-23-0",
+    "name": "Borussia Mönchengladbach",
+    "short_name": "Borussia Mönchengladbach",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "Borussia Mönchengladbach",
+    "stadium_name": "Borussia Mönchengladbach Stadium",
+    "stadium_capacity": 25000,
+    "finance": 12068494,
+    "manager_id": "mgr_top5-club-23-0",
+    "reputation": 38,
+    "wage_budget": 31200000,
+    "transfer_budget": 2901600,
+    "season_income": 12626324,
+    "season_expenses": 9485830,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Borussia Mönchengladbach Partners",
+      "base_value": 390600,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "W",
+      "W",
+      "L",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-10029-0",
+    "name": "TSG 1899 Hoffenheim",
+    "short_name": "TSG 1899 Hoffenheim",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "TSG 1899 Hoffenheim",
+    "stadium_name": "TSG 1899 Hoffenheim Stadium",
+    "stadium_capacity": 25000,
+    "finance": 9419143,
+    "manager_id": "mgr_top5-club-10029-0",
+    "reputation": 31,
+    "wage_budget": 36735484,
+    "transfer_budget": 3416400,
+    "season_income": 10097849,
+    "season_expenses": 11190706,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "TSG 1899 Hoffenheim Partners",
+      "base_value": 459900,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "D",
+      "W",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-111817-0",
+    "name": "Paris FC",
+    "short_name": "Paris FC",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "Paris FC",
+    "stadium_name": "Paris FC Stadium",
+    "stadium_capacity": 25000,
+    "finance": 9102057,
+    "manager_id": "mgr_top5-club-111817-0_98e60b6f-1177-4781-a999-6ef783c6de6d_3",
+    "reputation": 25,
+    "wage_budget": 43501076,
+    "transfer_budget": 4045600,
+    "season_income": 9914575,
+    "season_expenses": 13260518,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Paris FC Partners",
+      "base_value": 544600,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "D",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-111974-0",
+    "name": "Sassuolo",
+    "short_name": "Sassuolo",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Sassuolo",
+    "stadium_name": "Sassuolo Stadium",
+    "stadium_capacity": 25000,
+    "finance": 9019694,
+    "manager_id": "mgr_top5-club-111974-0",
+    "reputation": 30,
+    "wage_budget": 29187097,
+    "transfer_budget": 2714400,
+    "season_income": 9559198,
+    "season_expenses": 8891504,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Sassuolo Partners",
+      "base_value": 365400,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "High",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "W",
+      "L",
+      "D",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-50-0",
+    "name": "Parma",
+    "short_name": "Parma",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Parma",
+    "stadium_name": "Parma Stadium",
+    "stadium_capacity": 10000,
+    "finance": 4260596,
+    "manager_id": "mgr_top5-club-50-0_5c90cce4-61c6-4718-8b1e-4f3a98c93913_2",
+    "reputation": 26,
+    "wage_budget": 19961291,
+    "transfer_budget": 1856400,
+    "season_income": 4635600,
+    "season_expenses": 6087004,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Parma Partners",
+      "base_value": 249900,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "W",
+      "D",
+      "L",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-110-0",
+    "name": "Wolverhampton Wanderers",
+    "short_name": "Wolverhampton Wanderers",
+    "country": "EN",
+    "football_nation": "EN",
+    "city": "Wolverhampton Wanderers",
+    "stadium_name": "Wolverhampton Wanderers Stadium",
+    "stadium_capacity": 25000,
+    "finance": 15511784,
+    "manager_id": "mgr_top5-club-110-0",
+    "reputation": 53,
+    "wage_budget": 63070968,
+    "transfer_budget": 5865600,
+    "season_income": 16671600,
+    "season_expenses": 19207816,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Wolverhampton Wanderers Partners",
+      "base_value": 789600,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "L",
+      "D",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-206-0",
+    "name": "Hellas Verona FC",
+    "short_name": "Hellas Verona FC",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Hellas Verona FC",
+    "stadium_name": "Hellas Verona FC Stadium",
+    "stadium_capacity": 10000,
+    "finance": 5442791,
+    "manager_id": "mgr_top5-club-206-0",
+    "reputation": 16,
+    "wage_budget": 19609033,
+    "transfer_budget": 1823640,
+    "season_income": 5809199,
+    "season_expenses": 5977608,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Hellas Verona FC Partners",
+      "base_value": 245490,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "W",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-452-0",
+    "name": "RCD Espanyol",
+    "short_name": "RCD Espanyol",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "RCD Espanyol",
+    "stadium_name": "RCD Espanyol Stadium",
+    "stadium_capacity": 25000,
+    "finance": 5133209,
+    "manager_id": "mgr_top5-club-452-0_0a2c4e52-4259-4c91-a379-18f418eae4fb",
+    "reputation": 29,
+    "wage_budget": 22701076,
+    "transfer_budget": 2111200,
+    "season_income": 5560699,
+    "season_expenses": 6923490,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "RCD Espanyol Partners",
+      "base_value": 284200,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "D",
+      "W",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-111235-0",
+    "name": "1. FC Heidenheim 1846",
+    "short_name": "1. FC Heidenheim 1846",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "1. FC Heidenheim 1846",
+    "stadium_name": "1. FC Heidenheim 1846 Stadium",
+    "stadium_capacity": 25000,
+    "finance": 5980638,
+    "manager_id": "mgr_top5-club-111235-0",
+    "reputation": 7,
+    "wage_budget": 24713979,
+    "transfer_budget": 2298400,
+    "season_income": 6440250,
+    "season_expenses": 7531612,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "1. FC Heidenheim 1846 Partners",
+      "base_value": 309400,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "D",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-76-0",
+    "name": "RC Strasbourg Alsace",
+    "short_name": "RC Strasbourg Alsace",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "RC Strasbourg Alsace",
+    "stadium_name": "RC Strasbourg Alsace Stadium",
+    "stadium_capacity": 25000,
+    "finance": 8506627,
+    "manager_id": "mgr_top5-club-76-0",
+    "reputation": 47,
+    "wage_budget": 43277420,
+    "transfer_budget": 4024800,
+    "season_income": 9309975,
+    "season_expenses": 13187348,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "RC Strasbourg Alsace Partners",
+      "base_value": 541800,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "W",
+      "L",
+      "D",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-110329-0",
+    "name": "FC St. Pauli",
+    "short_name": "FC St. Pauli",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "FC St. Pauli",
+    "stadium_name": "FC St. Pauli Stadium",
+    "stadium_capacity": 10000,
+    "finance": 5013478,
+    "manager_id": "mgr_top5-club-110329-0",
+    "reputation": 4,
+    "wage_budget": 19402151,
+    "transfer_budget": 1804400,
+    "season_income": 5372620,
+    "season_expenses": 5911142,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "FC St. Pauli Partners",
+      "base_value": 242900,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "L",
+      "W",
+      "D",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-378-0",
+    "name": "Stade Brestois 29",
+    "short_name": "Stade Brestois 29",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "Stade Brestois 29",
+    "stadium_name": "Stade Brestois 29 Stadium",
+    "stadium_capacity": 10000,
+    "finance": 4597919,
+    "manager_id": "mgr_top5-club-378-0",
+    "reputation": 22,
+    "wage_budget": 19122581,
+    "transfer_budget": 1778400,
+    "season_income": 4958139,
+    "season_expenses": 5832220,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Stade Brestois 29 Partners",
+      "base_value": 239400,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "W",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-28-0",
+    "name": "Hamburger SV",
+    "short_name": "Hamburger SV",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "Hamburger SV",
+    "stadium_name": "Hamburger SV Stadium",
+    "stadium_capacity": 25000,
+    "finance": 9284717,
+    "manager_id": "mgr_top5-club-28-0",
+    "reputation": 21,
+    "wage_budget": 30724732,
+    "transfer_budget": 2857400,
+    "season_income": 9859249,
+    "season_expenses": 9366532,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Hamburger SV Partners",
+      "base_value": 384650,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "L",
+      "L",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-55-0",
+    "name": "Udinese",
+    "short_name": "Udinese",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Udinese",
+    "stadium_name": "Udinese Stadium",
+    "stadium_capacity": 10000,
+    "finance": 5075894,
+    "manager_id": "mgr_top5-club-55-0",
+    "reputation": 19,
+    "wage_budget": 20059140,
+    "transfer_budget": 1865500,
+    "season_income": 5450380,
+    "season_expenses": 6114486,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Udinese Partners",
+      "base_value": 251125,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "D",
+      "W",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-25-0",
+    "name": "SC Freiburg",
+    "short_name": "SC Freiburg",
+    "country": "DE",
+    "football_nation": "DE",
+    "city": "SC Freiburg",
+    "stadium_name": "SC Freiburg Stadium",
+    "stadium_capacity": 25000,
+    "finance": 9287053,
+    "manager_id": "mgr_top5-club-25-0",
+    "reputation": 33,
+    "wage_budget": 29969893,
+    "transfer_budget": 2787200,
+    "season_income": 9834649,
+    "season_expenses": 9123596,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "SC Freiburg Partners",
+      "base_value": 375200,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "L",
+      "W",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1853-0",
+    "name": "Levante UD",
+    "short_name": "Levante UD",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Levante UD",
+    "stadium_name": "Levante UD Stadium",
+    "stadium_capacity": 25000,
+    "finance": 6000388,
+    "manager_id": "mgr_top5-club-1853-0",
+    "reputation": 13,
+    "wage_budget": 23372044,
+    "transfer_budget": 2173600,
+    "season_income": 6440800,
+    "season_expenses": 7128412,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Levante UD Partners",
+      "base_value": 292600,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "L",
+      "D",
+      "W",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1530-0",
+    "name": "Angers SCO",
+    "short_name": "Angers SCO",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "Angers SCO",
+    "stadium_name": "Angers SCO Stadium",
+    "stadium_capacity": 10000,
+    "finance": 3004915,
+    "manager_id": "mgr_top5-club-1530-0",
+    "reputation": 2,
+    "wage_budget": 9603226,
+    "transfer_budget": 893100,
+    "season_income": 3183919,
+    "season_expenses": 2927004,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Angers SCO Partners",
+      "base_value": 120225,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "D",
+      "L",
+      "W",
+      "D",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1809-0",
+    "name": "Toulouse FC",
+    "short_name": "Toulouse FC",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "Toulouse FC",
+    "stadium_name": "Toulouse FC Stadium",
+    "stadium_capacity": 10000,
+    "finance": 3657685,
+    "manager_id": "mgr_top5-club-1809-0",
+    "reputation": 23,
+    "wage_budget": 16550538,
+    "transfer_budget": 1539200,
+    "season_income": 3968079,
+    "season_expenses": 5046394,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Toulouse FC Partners",
+      "base_value": 207200,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "High",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "D",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-479-0",
+    "name": "CA Osasuna",
+    "short_name": "CA Osasuna",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "CA Osasuna",
+    "stadium_name": "CA Osasuna Stadium",
+    "stadium_capacity": 25000,
+    "finance": 11042787,
+    "manager_id": "mgr_top5-club-479-0",
+    "reputation": 42,
+    "wage_budget": 33492474,
+    "transfer_budget": 3114800,
+    "season_income": 11657149,
+    "season_expenses": 10198362,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "CA Osasuna Partners",
+      "base_value": 419300,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Tactical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "L",
+      "L",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-71-0",
+    "name": "FC Nantes",
+    "short_name": "FC Nantes",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "FC Nantes",
+    "stadium_name": "FC Nantes Stadium",
+    "stadium_capacity": 10000,
+    "finance": 3709785,
+    "manager_id": "mgr_top5-club-71-0",
+    "reputation": 8,
+    "wage_budget": 15935484,
+    "transfer_budget": 1482000,
+    "season_income": 4009679,
+    "season_expenses": 4859894,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "FC Nantes Partners",
+      "base_value": 199500,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "L",
+      "W",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-468-0",
+    "name": "Elche CF",
+    "short_name": "Elche CF",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Elche CF",
+    "stadium_name": "Elche CF Stadium",
+    "stadium_capacity": 25000,
+    "finance": 5007168,
+    "manager_id": null,
+    "reputation": 11,
+    "wage_budget": 21526882,
+    "transfer_budget": 2002000,
+    "season_income": 5399700,
+    "season_expenses": 6552532,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Elche CF Partners",
+      "base_value": 269500,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "L",
+      "L",
+      "L",
+      "D"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-68-0",
+    "name": "FC Metz",
+    "short_name": "FC Metz",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "FC Metz",
+    "stadium_name": "FC Metz Stadium",
+    "stadium_capacity": 10000,
+    "finance": 3554580,
+    "manager_id": "mgr_top5-club-68-0_fb33c13a-b517-4fd9-a0aa-812bf008a055_6",
+    "reputation": 1,
+    "wage_budget": 11350538,
+    "transfer_budget": 1055600,
+    "season_income": 3767800,
+    "season_expenses": 3461220,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "FC Metz Partners",
+      "base_value": 142100,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "L",
+      "D",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-111434-0",
+    "name": "Cremonese",
+    "short_name": "Cremonese",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Cremonese",
+    "stadium_name": "Cremonese Stadium",
+    "stadium_capacity": 25000,
+    "finance": 7065624,
+    "manager_id": "mgr_top5-club-111434-0",
+    "reputation": 12,
+    "wage_budget": 24082151,
+    "transfer_budget": 2239640,
+    "season_income": 7518440,
+    "season_expenses": 7344016,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Cremonese Partners",
+      "base_value": 301490,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "W",
+      "L",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-347-0",
+    "name": "Lecce",
+    "short_name": "Lecce",
+    "country": "IT",
+    "football_nation": "IT",
+    "city": "Lecce",
+    "stadium_name": "Lecce Stadium",
+    "stadium_capacity": 10000,
+    "finance": 3446890,
+    "manager_id": "mgr_top5-club-347-0_ea4dc80e-ec41-4454-b295-c9ecf32c8034_2",
+    "reputation": 15,
+    "wage_budget": 13690538,
+    "transfer_budget": 1273220,
+    "season_income": 3690798,
+    "season_expenses": 4161508,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Lecce Partners",
+      "base_value": 171395,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "L",
+      "L",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-1738-0",
+    "name": "Le Havre AC",
+    "short_name": "Le Havre AC",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "Le Havre AC",
+    "stadium_name": "Le Havre AC Stadium",
+    "stadium_capacity": 10000,
+    "finance": 3173399,
+    "manager_id": "mgr_top5-club-1738-0",
+    "reputation": 3,
+    "wage_budget": 10609678,
+    "transfer_budget": 986700,
+    "season_income": 3371660,
+    "season_expenses": 3234261,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Le Havre AC Partners",
+      "base_value": 132825,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "W",
+      "L",
+      "D",
+      "W"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-463-0",
+    "name": "Deportivo Alavés",
+    "short_name": "Deportivo Alavés",
+    "country": "ES",
+    "football_nation": "ES",
+    "city": "Deportivo Alavés",
+    "stadium_name": "Deportivo Alavés Stadium",
+    "stadium_capacity": 25000,
+    "finance": 10085006,
+    "manager_id": "mgr_top5-club-463-0",
+    "reputation": 18,
+    "wage_budget": 25720431,
+    "transfer_budget": 2392000,
+    "season_income": 10563400,
+    "season_expenses": 7838394,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "Deportivo Alavés Partners",
+      "base_value": 322000,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "L",
+      "W",
+      "W",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-217-0",
+    "name": "FC Lorient",
+    "short_name": "FC Lorient",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "FC Lorient",
+    "stadium_name": "FC Lorient Stadium",
+    "stadium_capacity": 10000,
+    "finance": 4193786,
+    "manager_id": "mgr_top5-club-217-0",
+    "reputation": 6,
+    "wage_budget": 16215054,
+    "transfer_budget": 1508000,
+    "season_income": 4483740,
+    "season_expenses": 4929954,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "FC Lorient Partners",
+      "base_value": 203000,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "L",
+      "W",
+      "W",
+      "D",
+      "L"
+    ],
+    "history": []
+  },
+  {
+    "id": "top5-club-57-0",
+    "name": "AJ Auxerre",
+    "short_name": "AJ Auxerre",
+    "country": "FR",
+    "football_nation": "FR",
+    "city": "AJ Auxerre",
+    "stadium_name": "AJ Auxerre Stadium",
+    "stadium_capacity": 10000,
+    "finance": 3573900,
+    "manager_id": "mgr_top5-club-57-0",
+    "reputation": 9,
+    "wage_budget": 17330538,
+    "transfer_budget": 1611740,
+    "season_income": 3895060,
+    "season_expenses": 5280360,
+    "financial_ledger": [],
+    "sponsorship": {
+      "sponsor_name": "AJ Auxerre Partners",
+      "base_value": 216965,
+      "remaining_weeks": 36,
+      "bonus_criteria": []
+    },
+    "facilities": {
+      "training": 5,
+      "medical": 5,
+      "scouting": 5
+    },
+    "formation": "4-4-2",
+    "play_style": "Balanced",
+    "player_roles": {},
+    "tactics_phase": {
+      "build_up_style": "Mixed",
+      "width": "Normal",
+      "tempo": "Direct",
+      "defensive_line": "Medium",
+      "pressing_intensity": "Medium",
+      "defensive_shape": "Normal",
+      "marking_style": "Zonal",
+      "counter_press_duration": "None",
+      "break_speed": "Medium"
+    },
+    "training_focus": "Technical",
+    "training_intensity": "Medium",
+    "training_schedule": "Balanced",
+    "founded_year": 1900,
+    "colors": {
+      "primary": "#1f2937",
+      "secondary": "#ffffff"
+    },
+    "kit_pattern": "Solid",
+    "media": {},
+    "training_groups": [],
+    "starting_xi_ids": [],
+    "match_roles": {
+      "captain": null,
+      "vice_captain": null,
+      "penalty_taker": null,
+      "free_kick_taker": null,
+      "corner_taker": null
+    },
+    "form": [
+      "W",
+      "L",
+      "W",
+      "L",
+      "L"
+    ],
+    "history": []
+  }
+]

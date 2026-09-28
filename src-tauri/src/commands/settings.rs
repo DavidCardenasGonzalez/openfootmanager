@@ -18,6 +18,10 @@ pub struct AppSettings {
     pub auto_save: bool,
     pub match_speed: String, // "slow" | "normal" | "fast"
     pub show_match_commentary: bool,
+    #[serde(default = "default_player_labels")]
+    pub show_match_player_names: bool,
+    #[serde(default = "default_player_labels")]
+    pub show_match_player_ratings: bool,
     pub confirm_advance: bool,
     #[serde(default = "default_ui_scale")]
     pub ui_scale: String, // "small" | "normal" | "large" | "xlarge"
@@ -42,6 +46,9 @@ fn default_language() -> String {
 fn default_ui_scale() -> String {
     "normal".to_string()
 }
+fn default_player_labels() -> bool {
+    true
+}
 
 impl Default for AppSettings {
     fn default() -> Self {
@@ -53,6 +60,8 @@ impl Default for AppSettings {
             auto_save: true,
             match_speed: "normal".to_string(),
             show_match_commentary: true,
+            show_match_player_names: true,
+            show_match_player_ratings: true,
             confirm_advance: false,
             ui_scale: "normal".to_string(),
             high_contrast: false,
@@ -144,6 +153,28 @@ pub fn clear_all_saves(
 #[cfg(test)]
 mod tests {
     use super::{normalize_loaded_settings, response_for_settings, validate_settings, AppSettings};
+
+    #[test]
+    fn legacy_settings_enable_player_labels_and_preserve_explicit_preferences() {
+        let mut json = serde_json::to_value(AppSettings::default()).unwrap();
+        json.as_object_mut()
+            .unwrap()
+            .remove("show_match_player_names");
+        json.as_object_mut()
+            .unwrap()
+            .remove("show_match_player_ratings");
+        let legacy: AppSettings = serde_json::from_value(json.clone()).unwrap();
+        let loaded = serde_json::to_value(legacy).unwrap();
+        assert_eq!(loaded["show_match_player_names"], true);
+        assert_eq!(loaded["show_match_player_ratings"], true);
+
+        json["show_match_player_names"] = serde_json::json!(false);
+        json["show_match_player_ratings"] = serde_json::json!(false);
+        let hidden: AppSettings = serde_json::from_value(json).unwrap();
+        let saved = serde_json::to_value(hidden).unwrap();
+        assert_eq!(saved["show_match_player_names"], false);
+        assert_eq!(saved["show_match_player_ratings"], false);
+    }
 
     fn make_settings(currency: &str) -> AppSettings {
         AppSettings {

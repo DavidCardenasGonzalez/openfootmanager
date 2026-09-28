@@ -236,7 +236,7 @@ describe("dashboardHelpers", (): void => {
       messages: [createMessage({ id: "m1", read: false }), createMessage({ id: "m2", read: true })],
     });
 
-    expect(getManagerTeamName(gameState)).toBe("Alpha FC");
+    expect(getManagerTeamName(gameState)).toBe("ALP");
     expect(getUnreadMessagesCount(gameState)).toBe(1);
   });
 

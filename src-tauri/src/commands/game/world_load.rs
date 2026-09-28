@@ -221,6 +221,20 @@ mod tests {
         )
         .unwrap();
         assert_eq!(loaded.teams.len(), world.teams.len());
+        for (id, minimum) in [("top5-player-212831", 85), ("top5-player-203376", 85)] {
+            let raw = world.players.iter().find(|player| player.id == id).unwrap();
+            let player = loaded
+                .players
+                .iter()
+                .find(|player| player.id == id)
+                .unwrap();
+            assert_eq!(raw.ovr, 0, "the source overall is only a reference");
+            assert!(player.ovr >= minimum, "{} has OVR {}", id, player.ovr);
+            assert_eq!(
+                player.ovr,
+                ofm_core::player_rating::natural_ovr(player).round() as u8
+            );
+        }
         let options = StartupOptions {
             start_year: 2026,
             start_phase: StartPhase::SeasonStart,

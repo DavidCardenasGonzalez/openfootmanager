@@ -184,10 +184,10 @@ describe("TeamsListTab", () => {
 
     render(<TeamsListTab gameState={gameStateWithManagerTeam("team-1")} onSelectTeam={vi.fn()} />);
 
-    await screen.findByText("Beta FC");
+    await screen.findAllByText("BET");
     const headings = screen.getAllByRole("heading", { level: 3 });
-    expect(headings[0]).toHaveTextContent("Beta FC");
-    expect(headings[1]).toHaveTextContent("Alpha FC");
+    expect(headings[0]).toHaveTextContent("BET");
+    expect(headings[1]).toHaveTextContent("ALP");
     expect(screen.getByText("Your Team")).toBeInTheDocument();
   });
 
@@ -199,16 +199,16 @@ describe("TeamsListTab", () => {
 
     render(<TeamsListTab gameState={gameStateWithManagerTeam("team-1")} onSelectTeam={vi.fn()} />);
 
-    await screen.findByText("Alpha FC");
+    await screen.findAllByText("ALP");
 
     fireEvent.change(screen.getByPlaceholderText("Search clubs"), {
       target: { value: "beta" },
     });
 
     await waitFor(() => {
-      expect(screen.queryByText("Alpha FC")).not.toBeInTheDocument();
+      expect(screen.queryAllByText("ALP")).toHaveLength(0);
     });
-    expect(screen.getByText("Beta FC")).toBeInTheDocument();
+    expect(screen.getAllByText("BET")).toHaveLength(2);
   });
 
   it("shows an empty state when no clubs match", async () => {
@@ -216,7 +216,7 @@ describe("TeamsListTab", () => {
 
     render(<TeamsListTab gameState={gameStateWithManagerTeam("team-1")} onSelectTeam={vi.fn()} />);
 
-    await screen.findByText("Alpha FC");
+    await screen.findAllByText("ALP");
 
     fireEvent.change(screen.getByPlaceholderText("Search clubs"), {
       target: { value: "zzzzz" },
@@ -238,7 +238,8 @@ describe("TeamsListTab", () => {
       <TeamsListTab gameState={gameStateWithManagerTeam("team-1")} onSelectTeam={onSelectTeam} />,
     );
 
-    fireEvent.click(await screen.findByText("Beta FC"));
+    const betaLabels = await screen.findAllByText("BET");
+    fireEvent.click(betaLabels[betaLabels.length - 1]);
 
     expect(onSelectTeam).toHaveBeenCalledWith("team-2");
   });

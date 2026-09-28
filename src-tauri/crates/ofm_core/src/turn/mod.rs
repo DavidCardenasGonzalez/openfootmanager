@@ -99,6 +99,32 @@ fn dormant_competition_indices_due_today(game: &Game, today: &str) -> Vec<usize>
         .collect()
 }
 
+/// A live or delegated user match handles its own competition separately.
+/// Resolve the rest of the club calendar before that match day advances.
+pub fn simulate_other_competitions_with_capture<F>(
+    game: &mut Game,
+    today: &str,
+    skip_competition_index: usize,
+    on_capture: &mut F,
+) where
+    F: FnMut(StatsState),
+{
+    if game.competitions.is_empty() {
+        return;
+    }
+    for index in competition_indices_due_today(game, today) {
+        if index != skip_competition_index {
+            simulate_competition_day_with_capture(game, index, today, on_capture);
+        }
+    }
+    let mut rng = rand::rng();
+    for index in dormant_competition_indices_due_today(game, today) {
+        if index != skip_competition_index {
+            dormant::simulate_dormant_competition_day(game, index, today, &mut rng);
+        }
+    }
+}
+
 fn simulate_competition_day_with_capture<F>(
     game: &mut Game,
     competition_index: usize,
@@ -182,7 +208,9 @@ where
     crate::national_team::process_national_team_fixtures_due(game, &today, &mut rand::rng());
     crate::world_cup::process_world_cup_fixtures_due(game, &today, &mut rand::rng());
 
+    crate::ai_squad::process_ai_squads(game);
     crate::contracts::process_contract_expiries(game);
+    crate::ai_squad::repair_squads(game);
 
     // Weekly financial processing (wages, matchday income, warnings)
     crate::finances::process_weekly_finances(game);
@@ -223,7 +251,9 @@ pub fn finish_live_match_day(game: &mut Game) {
     transfers::process_loan_returns(game);
     generate_matchday_news(game, &today);
 
+    crate::ai_squad::process_ai_squads(game);
     crate::contracts::process_contract_expiries(game);
+    crate::ai_squad::repair_squads(game);
     crate::finances::process_weekly_finances(game);
 
     board_objectives::generate_objectives(game);

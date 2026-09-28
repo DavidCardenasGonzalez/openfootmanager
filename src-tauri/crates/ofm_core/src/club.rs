@@ -19,6 +19,7 @@ fn facility_upgrade_insufficient_funds_error(amount: i64) -> String {
 
 fn facility_level(facilities: &Facilities, facility_type: &FacilityType) -> u8 {
     match facility_type {
+        FacilityType::Youth => facilities.youth,
         FacilityType::Training => facilities.training,
         FacilityType::Medical => facilities.medical,
         FacilityType::Scouting => facilities.scouting,
@@ -40,6 +41,19 @@ pub fn upgrade_facility(
             .iter()
             .find(|team| team.id == team_id)
             .ok_or_else(|| "be.error.managedTeamNotFound".to_string())?;
+        if matches!(facility_type, FacilityType::Training) && team.facilities.training >= 5 {
+            return Err("academy.maxLevelError".into());
+        }
+        if matches!(facility_type, FacilityType::Youth) {
+            if team.facilities.youth >= 5 {
+                return Err("academy.maxLevelError".into());
+            }
+            if game.squad_management.academy_upgrades.get(team_id)
+                == Some(&crate::academy::current_cycle(game))
+            {
+                return Err("academy.upgradeError".into());
+            }
+        }
         let cost = next_upgrade_cost(team, &facility_type);
         if team.finance < cost {
             return Err(facility_upgrade_insufficient_funds_error(cost));
@@ -49,6 +63,11 @@ pub fn upgrade_facility(
 
     let date = game.clock.current_date.date_naive();
     post(game, team_id, -cost, CashKind::Facilities, date)?;
+    if matches!(facility_type, FacilityType::Youth) {
+        game.squad_management
+            .academy_upgrades
+            .insert(team_id.into(), crate::academy::current_cycle(game));
+    }
 
     let team = game
         .teams
@@ -56,6 +75,9 @@ pub fn upgrade_facility(
         .find(|team| team.id == team_id)
         .ok_or_else(|| "be.error.managedTeamNotFound".to_string())?;
     match facility_type {
+        FacilityType::Youth => {
+            team.facilities.youth = team.facilities.youth.saturating_add(1);
+        }
         FacilityType::Training => {
             team.facilities.training = team.facilities.training.saturating_add(1);
         }

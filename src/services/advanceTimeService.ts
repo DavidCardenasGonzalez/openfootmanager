@@ -11,6 +11,11 @@ export interface BlockerData {
   tab: string;
 }
 
+export type BlockerAcknowledgement = Pick<
+  BlockerData,
+  "id" | "severity" | "tab" | "text_key" | "text_params"
+>;
+
 /** One finished match shown in the post-advance results recap. */
 export interface AdvanceMatchResultData {
   date: string;
@@ -83,6 +88,16 @@ export interface OneDayResponse {
  * *before* advancing so the frontend digest loop can surface per-day events
  * without ever auto-simulating the user's own match.
  */
-export async function advanceOneDay(): Promise<OneDayResponse> {
-  return invoke<OneDayResponse>("advance_one_day");
+export async function advanceOneDay(
+  acknowledgedBlockers: BlockerAcknowledgement[] = [],
+): Promise<OneDayResponse> {
+  return invoke<OneDayResponse>("advance_one_day", {
+    acknowledgedBlockers: acknowledgedBlockers.map((blocker) => ({
+      id: blocker.id,
+      severity: blocker.severity,
+      tab: blocker.tab,
+      ...(blocker.text_key === undefined ? {} : { text_key: blocker.text_key }),
+      ...(blocker.text_params === undefined ? {} : { text_params: blocker.text_params }),
+    })),
+  });
 }

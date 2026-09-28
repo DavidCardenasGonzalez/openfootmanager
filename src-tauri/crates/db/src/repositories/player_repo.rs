@@ -140,6 +140,14 @@ pub fn upsert_players(conn: &Connection, players: &[Player]) -> Result<(), Strin
     Ok(())
 }
 
+/// Replace the snapshot inside the caller's save transaction. This also removes
+/// retired archives that the lifecycle has pruned; upserts resurrect them on load.
+pub fn replace_players(conn: &Connection, players: &[Player]) -> Result<(), String> {
+    conn.execute("DELETE FROM players", [])
+        .map_err(|_| "be.error.gamePersistence.writeFailed".to_string())?;
+    upsert_players(conn, players)
+}
+
 fn parse_position(s: &str) -> Position {
     match s {
         "Goalkeeper" => Position::Goalkeeper,

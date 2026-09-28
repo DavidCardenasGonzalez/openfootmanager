@@ -8,6 +8,58 @@ use ofm_core::state::StateManager;
 
 use crate::commands::util::mutate_active_game;
 
+pub fn get_academy_internal(
+    state: &StateManager,
+) -> Result<ofm_core::academy::AcademyView, String> {
+    state
+        .update_game(|game| {
+            ofm_core::academy::process_human_intake(game);
+            ofm_core::academy::view(game).ok_or_else(|| "be.error.noTeamAssigned".to_string())
+        })
+        .ok_or_else(|| "be.error.noActiveGameSession".to_string())?
+}
+
+#[tauri::command]
+pub fn get_academy(
+    state: State<'_, Arc<StateManager>>,
+) -> Result<ofm_core::academy::AcademyView, String> {
+    get_academy_internal(&state)
+}
+
+pub fn sign_academy_candidate_internal(
+    state: &StateManager,
+    candidate_id: &str,
+) -> Result<Game, String> {
+    mutate_active_game(state, |game| {
+        ofm_core::academy::sign_candidate(game, candidate_id)
+    })
+}
+
+#[tauri::command]
+pub fn sign_academy_candidate(
+    state: State<'_, Arc<StateManager>>,
+    candidate_id: String,
+) -> Result<Game, String> {
+    sign_academy_candidate_internal(&state, &candidate_id)
+}
+
+pub fn reject_academy_candidate_internal(
+    state: &StateManager,
+    candidate_id: &str,
+) -> Result<Game, String> {
+    mutate_active_game(state, |game| {
+        ofm_core::academy::reject_candidate(game, candidate_id)
+    })
+}
+
+#[tauri::command]
+pub fn reject_academy_candidate(
+    state: State<'_, Arc<StateManager>>,
+    candidate_id: String,
+) -> Result<Game, String> {
+    reject_academy_candidate_internal(&state, &candidate_id)
+}
+
 #[tauri::command]
 pub fn upgrade_facility(
     state: State<'_, Arc<StateManager>>,
@@ -28,6 +80,7 @@ pub fn upgrade_facility_internal(state: &StateManager, facility: &str) -> Result
             .ok_or("be.error.noTeamAssigned".to_string())?;
 
         let facility_type = match facility {
+            "Youth" => domain::team::FacilityType::Youth,
             "Training" => domain::team::FacilityType::Training,
             "Medical" => domain::team::FacilityType::Medical,
             "Scouting" => domain::team::FacilityType::Scouting,
@@ -62,6 +115,39 @@ mod tests {
     use ofm_core::clock::GameClock;
     use ofm_core::game::Game;
     use ofm_core::state::StateManager;
+
+    #[test]
+    fn maximum_training_facility_cannot_charge_for_an_ineffective_upgrade() {
+        let state = StateManager::new();
+        let mut game = make_game();
+        game.teams[0].facilities.training = 5;
+        state.set_game(game);
+        assert_eq!(
+            upgrade_facility_internal(&state, "Training").unwrap_err(),
+            "academy.maxLevelError"
+        );
+    }
+
+    #[test]
+    fn academy_commands_keep_candidates_out_of_the_world_until_signed() {
+        let state = StateManager::new();
+        state.set_game(make_game());
+        let view = super::get_academy_internal(&state).unwrap();
+        assert_eq!(view.candidates.len(), 6);
+        assert!(!serde_json::to_string(&view)
+            .unwrap()
+            .contains("\"potential\":"));
+        let before = state.get_game(|g| g.players.len()).unwrap();
+        let updated =
+            super::sign_academy_candidate_internal(&state, &view.candidates[0].id).unwrap();
+        assert_eq!(updated.players.len(), before + 1);
+        assert_eq!(
+            super::get_academy_internal(&state)
+                .unwrap()
+                .signings_remaining,
+            1
+        );
+    }
 
     fn default_attrs() -> PlayerAttributes {
         PlayerAttributes {

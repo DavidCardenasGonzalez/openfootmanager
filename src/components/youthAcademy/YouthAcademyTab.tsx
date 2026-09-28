@@ -44,6 +44,15 @@ import type { DashboardNavigateContext } from "../dashboard/dashboardProfileNavi
 import type { PlayerSquadRole } from "../../store/types";
 import { calculateAvailableScouts } from "../scouting/ScoutingTab.helpers";
 import ScoutingYouthRecruitmentCard from "../scouting/ScoutingYouthRecruitmentCard";
+import AcademyIntakePanel from "./AcademyIntakePanel";
+import {
+  getAcademy,
+  signAcademyCandidate,
+  rejectAcademyCandidate,
+  upgradeYouthAcademy,
+  type AcademyView,
+} from "../../services/academyService";
+import { resolveBackendError } from "../../utils/backendI18n";
 
 interface YouthAcademyTabProps {
   gameState: GameStateData | null;
@@ -80,6 +89,9 @@ export default function YouthAcademyTab({
   const [youthSearchError, setYouthSearchError] = useState<string | null>(null);
   const menuRefs = useRef<Map<string, ContextMenuHandle>>(new Map());
   const [openMenuPlayerId, setOpenMenuPlayerId] = useState<string | null>(null);
+  const [intake, setIntake] = useState<AcademyView | null>(null);
+  const [intakePending, setIntakePending] = useState<string | null>(null);
+  const [intakeError, setIntakeError] = useState<string | null>(null);
 
   const teamId = sessionState?.manager?.team_id ?? gameState?.manager?.team_id ?? null;
   const clockDate = sessionState?.clock.current_date ?? gameState?.clock.current_date ?? "";
@@ -99,6 +111,39 @@ export default function YouthAcademyTab({
   }, [teamId, clockDate]);
 
   const team = sessionState?.team ?? gameState?.teams.find((tm) => tm.id === teamId) ?? null;
+  useEffect(() => {
+    setIntake(null);
+    if (!teamId) return;
+    let cancelled = false;
+    void getAcademy()
+      .then((value) => {
+        if (!cancelled) setIntake(value);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [teamId, clockDate, team?.facilities?.youth]);
+
+  const handleIntakeAction = async (action: "sign" | "reject" | "upgrade", candidateId = "") => {
+    setIntakePending(candidateId || action);
+    setIntakeError(null);
+    try {
+      const updated =
+        action === "upgrade"
+          ? await upgradeYouthAcademy()
+          : action === "sign"
+            ? await signAcademyCandidate(candidateId)
+            : await rejectAcademyCandidate(candidateId);
+      onGameUpdate?.(updated);
+      setFetchedSquad(updated.players.filter((p) => p.team_id === teamId));
+      setIntake(await getAcademy());
+    } catch (error) {
+      setIntakeError(resolveBackendError(error));
+    } finally {
+      setIntakePending(null);
+    }
+  };
   const scouts =
     fetchedStaff?.team_staff.filter((s) => s.role === "Scout") ??
     gameState?.staff.filter((s) => s.role === "Scout" && s.team_id === teamId) ??
@@ -158,6 +203,9 @@ export default function YouthAcademyTab({
 
   const applyScoutingUpdate = (updated: GameStateData) => {
     onGameUpdate?.(updated);
+    void getAcademy()
+      .then(setIntake)
+      .catch(() => {});
     setFetchedStaff((prev) =>
       prev
         ? {
@@ -235,6 +283,22 @@ export default function YouthAcademyTab({
       </div>
 
       {/* Overview Cards */}
+      {intake && (
+        <AcademyIntakePanel
+          intake={intake}
+          pending={intakePending}
+          error={intakeError}
+          onSign={(id) => {
+            void handleIntakeAction("sign", id);
+          }}
+          onReject={(id) => {
+            void handleIntakeAction("reject", id);
+          }}
+          onUpgrade={() => {
+            void handleIntakeAction("upgrade");
+          }}
+        />
+      )}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardBody>

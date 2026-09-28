@@ -182,6 +182,16 @@ pub fn start_youth_scouting(
     objective: YouthScoutingObjective,
     target_position: Option<Position>,
 ) -> Result<(), String> {
+    if let Some(pool) = game
+        .manager
+        .team_id
+        .as_deref()
+        .and_then(|id| game.squad_management.academies.get(id))
+        && pool.cycle == crate::academy::current_cycle(game)
+        && pool.scout_candidates >= 3
+    {
+        return Err("academy.scoutError".into());
+    }
     let scout = resolve_user_scout(game, scout_id)?;
     let max_slots = scout_max_assignments(scout.attributes.judging_ability);
     let current_count = scout_assignment_count(game, scout_id);
@@ -362,16 +372,17 @@ fn complete_youth_scouting_assignment(
         return;
     };
 
-    // Prospects are scouted mid-career, so they are aged against the running
-    // clock rather than the year the world opened in.
-    let current_year = chrono::Datelike::year(&game.clock.current_date) as u32;
-    let prospects = generate_youth_recruitment_candidates(
-        &team,
-        assignment.region,
-        assignment.objective,
-        assignment.target_position.as_ref(),
-        current_year,
-    );
+    let nationality = match assignment.region {
+        YouthScoutingRegion::Domestic => Some(if team.football_nation.is_empty() {
+            team.country.as_str()
+        } else {
+            team.football_nation.as_str()
+        }),
+        YouthScoutingRegion::International => None,
+    };
+    let mut prospects =
+        crate::academy::scout_candidates(game, assignment.target_position.as_ref(), nationality);
+    prospects.sort_by_key(|player| std::cmp::Reverse(prospect_score(player, assignment.objective)));
     if prospects.is_empty() {
         return;
     }
@@ -501,48 +512,6 @@ fn prospect_score(player: &Player, objective: YouthScoutingObjective) -> (u8, u8
     }
 }
 
-fn generate_youth_recruitment_candidates(
-    team: &domain::team::Team,
-    region: YouthScoutingRegion,
-    objective: YouthScoutingObjective,
-    target_position: Option<&Position>,
-    current_year: u32,
-) -> Vec<Player> {
-    let pool_size = match objective {
-        YouthScoutingObjective::Balanced => 4,
-        YouthScoutingObjective::HighPotential => 6,
-        YouthScoutingObjective::ReadySoon => 6,
-    };
-    let domestic_nationality = if team.football_nation.is_empty() {
-        Some(team.country.as_str())
-    } else {
-        Some(team.football_nation.as_str())
-    };
-
-    let mut prospects: Vec<Player> = (0..pool_size)
-        .map(|_| {
-            let mut prospect = crate::generator::generate_youth_academy_recruit_with_nationality(
-                team,
-                target_position,
-                match region {
-                    YouthScoutingRegion::Domestic => domestic_nationality,
-                    YouthScoutingRegion::International => None,
-                },
-                current_year,
-            );
-            prospect.team_id = None;
-            prospect.squad_role = SquadRole::Youth;
-            prospect
-        })
-        .collect();
-
-    prospects.sort_by(|left, right| {
-        prospect_score(right, objective).cmp(&prospect_score(left, objective))
-    });
-    prospects.truncate(3);
-    prospects
-}
-
 pub struct YouthRecruitmentEffect {
     pub message: String,
     pub i18n_key: String,
@@ -576,6 +545,7 @@ pub fn apply_youth_recruitment_response(
 
     match option_id {
         "discard" => {
+            let _ = crate::academy::reject_candidate(game, &prospect.id);
             let mut remaining = prospects;
             remaining.remove(prospect_index);
             let message = &mut game.messages[message_index];
@@ -589,24 +559,23 @@ pub fn apply_youth_recruitment_response(
             })
         }
         "sign" => {
-            if game.players.iter().any(|player| player.id == prospect.id) {
+            if game.messages[message_index].context.team_id != game.manager.team_id {
                 return None;
             }
-
-            let mut signed_player = prospect;
-            signed_player.team_id = game.manager.team_id.clone();
-            signed_player.squad_role = SquadRole::Youth;
-            if let Some(team_id) = signed_player.team_id.clone()
-                && let Some(team) = game.teams.iter().find(|team| team.id == team_id)
-            {
-                signed_player.jersey_number =
-                    crate::roster::resolve_jersey_for(game, &signed_player, team);
+            if let Err(error) = crate::academy::sign_report_candidate(game, &prospect) {
+                return Some(YouthRecruitmentEffect {
+                    message: String::new(),
+                    i18n_key: error,
+                    i18n_params: HashMap::new(),
+                });
             }
-            let player_id = signed_player.id.clone();
-            let player_name = signed_player.full_name.clone();
-            let signed_jersey_number = signed_player.jersey_number;
-            game.players.push(signed_player);
-
+            let player_id = prospect.id.clone();
+            let player_name = prospect.full_name.clone();
+            let signed_jersey_number = game
+                .players
+                .iter()
+                .find(|p| p.id == player_id)
+                .and_then(|p| p.jersey_number);
             let message = &mut game.messages[message_index];
             message.context.player_id = Some(player_id);
             if let Some(prospects) = message.context.youth_prospects.as_mut()

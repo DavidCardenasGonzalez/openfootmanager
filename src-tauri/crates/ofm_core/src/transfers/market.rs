@@ -213,8 +213,7 @@ pub fn evaluate_transfer_market(game: &mut Game) {
         })
         .map(|team| team.id.clone())
         .collect();
-    let mut completed_ai_transfers = 0_usize;
-    let mut moved_player_ids: HashSet<String> = HashSet::new();
+
     // New incoming offers opened to user players today, tracked to throttle the
     // inbox: at most one new club per player and a hard squad-wide ceiling.
     let mut new_offers_per_player: std::collections::HashMap<String, usize> =
@@ -266,6 +265,9 @@ pub fn evaluate_transfer_market(game: &mut Game) {
             continue;
         }
         let is_user_owned = Some(owner_team_id) == user_team_id.as_deref();
+        if !is_user_owned {
+            continue;
+        }
         shortlist.push(MarketTarget {
             player_id: player.id.clone(),
             owner_team_id: owner_team_id.to_string(),
@@ -321,7 +323,7 @@ pub fn evaluate_transfer_market(game: &mut Game) {
         // The list is score-sorted, so the first target clearing this club's
         // filters is its highest-appeal eligible signing.
         let chosen = shortlist.iter().find(|target| {
-            if target.owner_team_id == buyer_id || moved_player_ids.contains(&target.player_id) {
+            if target.owner_team_id == buyer_id {
                 return false;
             }
             if loan_offer_player_id.as_deref() == Some(target.player_id.as_str()) {
@@ -341,8 +343,6 @@ pub fn evaluate_transfer_market(game: &mut Game) {
                 {
                     return false;
                 }
-            } else if completed_ai_transfers >= MAX_COMPLETED_AI_TRANSFERS_PER_DAY {
-                return false;
             }
             // Clubs only chase players that fit their stature and a position they
             // actually need, so a single star doesn't draw the whole division.
@@ -363,7 +363,6 @@ pub fn evaluate_transfer_market(game: &mut Game) {
         let candidate = MarketCandidate {
             player_id: target.player_id.clone(),
             owner_team_id: target.owner_team_id.clone(),
-            score: target.score,
             fee: target.fee,
         };
 
@@ -379,25 +378,10 @@ pub fn evaluate_transfer_market(game: &mut Game) {
             new_user_offers_today += 1;
             continue;
         }
-
-        if candidate.score <= 60 || completed_ai_transfers >= MAX_COMPLETED_AI_TRANSFERS_PER_DAY {
-            continue;
-        }
-
-        if execute_transfer(
-            game,
-            &candidate.player_id,
-            &buyer_id,
-            &candidate.owner_team_id,
-            candidate.fee,
-        )
-        .is_ok()
-        {
-            moved_player_ids.insert(candidate.player_id);
-            completed_ai_transfers += 1;
-        }
     }
+    crate::ai_squad::process_ai_transfer_market(game);
 }
+
 pub fn generate_incoming_transfer_offers(game: &mut Game) {
     evaluate_transfer_market(game);
 }

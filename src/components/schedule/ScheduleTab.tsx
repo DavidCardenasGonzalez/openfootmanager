@@ -670,6 +670,17 @@ function StandingsView({
   t: ReturnType<typeof useTranslation>["t"];
 }) {
   const standings = sortStandings(competition);
+  const [standingSort, setStandingSort] = useState<{ key: string; descending: boolean } | null>(null);
+  const displayStandings = standingSort
+    ? [...standings].sort((a, b) => {
+        const value = (entry: (typeof standings)[number]) => standingSort.key === "gd"
+          ? entry.goals_for - entry.goals_against
+          : standingSort.key === "pts"
+            ? entry.points
+            : entry[standingSort.key as "played" | "won" | "drawn" | "lost" | "goals_for" | "goals_against"];
+        return (standingSort.descending ? -1 : 1) * (value(a) - value(b)) || standings.indexOf(a) - standings.indexOf(b);
+      })
+    : standings;
   const zones = competition
     ? getPromotionRelegationZones(getActiveCompetitions(gameState), competition)
     : { promotionSlots: 0, relegationSlots: 0 };
@@ -715,28 +726,24 @@ function StandingsView({
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50 text-xs dark:border-navy-600 dark:bg-navy-800">
                 {[
-                  "#",
-                  t("common.team"),
-                  t("common.played"),
-                  t("common.won"),
-                  t("common.drawn"),
-                  t("common.lost"),
-                  t("common.gf"),
-                  t("common.ga"),
-                  t("common.gd"),
-                  t("common.pts"),
-                ].map((header, idx) => (
+                  { label: "#", key: null }, { label: t("common.team"), key: null },
+                  { label: t("common.played"), key: "played" }, { label: t("common.won"), key: "won" },
+                  { label: t("common.drawn"), key: "drawn" }, { label: t("common.lost"), key: "lost" },
+                  { label: t("common.gf"), key: "goals_for" }, { label: t("common.ga"), key: "goals_against" },
+                  { label: t("common.gd"), key: "gd" }, { label: t("common.pts"), key: "pts" },
+                ].map(({ label: header, key }, idx) => (
                   <th
-                    key={idx}
+                    key={header}
                     className={`px-4 py-3 font-heading font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 ${idx === 0 ? "w-8" : ""} ${idx >= 2 ? "text-center" : ""}`}
                   >
-                    {header}
+                    {key ? <button type="button" className="hover:text-primary-500" onClick={() => setStandingSort((current) => ({ key, descending: current?.key === key ? !current.descending : true }))}>{header}{standingSort?.key === key ? (standingSort.descending ? " ▼" : " ▲") : " ↕"}</button> : header}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-navy-600">
-              {standings.map((entry, index) => {
+              {displayStandings.map((entry) => {
+                const index = standings.findIndex((row) => row.team_id === entry.team_id);
                 const isUser = entry.team_id === userTeamId;
                 const gd = entry.goals_for - entry.goals_against;
                 const inPromotionZone = index < zones.promotionSlots;

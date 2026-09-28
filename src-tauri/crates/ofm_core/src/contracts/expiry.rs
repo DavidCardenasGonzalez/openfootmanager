@@ -127,7 +127,9 @@ pub(crate) fn release_player_contract(
         }
     };
 
-    game.messages.push(message);
+    if game.manager.team_id.as_deref() == Some(team_id) {
+        game.messages.push(message);
+    }
 }
 
 pub(crate) fn contract_expired_message(

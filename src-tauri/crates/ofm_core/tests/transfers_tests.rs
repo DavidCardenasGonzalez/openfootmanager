@@ -2033,6 +2033,29 @@ fn generates_pending_incoming_offer_for_contract_risk_player() {
     }));
 }
 
+// Sellers now have to retain a functional roster after every sale.
+fn give_ai_seller_depth(game: &mut Game) {
+    for (group, count) in [
+        (Position::Goalkeeper, 2),
+        (Position::Defender, 8),
+        (Position::Midfielder, 8),
+        (Position::Forward, 6),
+    ] {
+        for slot in 0..count {
+            let mut p = make_player(&format!("support-{group:?}-{slot}"));
+            p.team_id = Some("team-3".into());
+            p.natural_position = group.clone();
+            p.position = group.clone();
+            p.market_value = 100_000;
+            p.ovr = 60;
+            game.players.push(p);
+        }
+    }
+    for p in &mut game.players {
+        p.ovr = 60;
+    }
+}
+
 #[test]
 fn ai_clubs_complete_transfer_between_themselves_without_inbox_message() {
     let mut player = make_player("player-ai-market");
@@ -2048,6 +2071,7 @@ fn ai_clubs_complete_transfer_between_themselves_without_inbox_message() {
     game.teams[1].transfer_budget = 3_000_000;
     attach_transfer_log_league(&mut game);
 
+    give_ai_seller_depth(&mut game);
     evaluate_transfer_market(&mut game);
 
     let player = game
@@ -2104,6 +2128,7 @@ fn ai_market_limits_completed_ai_transfers_per_day() {
     game.teams[1].transfer_budget = 3_000_000;
     attach_transfer_log_league(&mut game);
 
+    give_ai_seller_depth(&mut game);
     evaluate_transfer_market(&mut game);
 
     let moved_players = game

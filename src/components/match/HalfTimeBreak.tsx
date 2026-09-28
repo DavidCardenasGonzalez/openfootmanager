@@ -12,7 +12,9 @@ import {
 } from "./types";
 import { getEventDisplay, getPlayerName, makeTeamFallback } from "./helpers";
 import { getTalkIcon } from "./TeamTalkIcons";
-import { SubPanel } from "./SubPanel";
+import { SubPanel, type PendingSubstitution } from "./SubPanel";
+import { Lineups, MatchStats } from "./MatchPanels";
+import { PlayerRatingsPanel } from "./PostMatchHelpers";
 import { Badge, TeamLogo, ThemeToggle } from "../ui";
 import { Play, RefreshCw, Shield, Zap, Target, Crosshair, Flag, MessageCircle } from "lucide-react";
 
@@ -101,21 +103,20 @@ export default function HalfTimeBreak({
     }
   };
 
-  const handleSubstitution = async (playerOffId: string, playerOnId: string) => {
+  const handleSubstitution = async (changes: PendingSubstitution[], keepOpen = false) => {
     try {
-      const snap = await invoke<MatchSnapshot>("apply_match_command", {
-        command: {
-          Substitute: {
-            side: userSide,
-            player_off_id: playerOffId,
-            player_on_id: playerOnId,
+      for (const { offId, onId } of changes) {
+        const snap = await invoke<MatchSnapshot>("apply_match_command", {
+          command: {
+            Substitute: { side: userSide, player_off_id: offId, player_on_id: onId },
           },
-        },
-      });
-      onUpdateSnapshot(snap);
-      setShowSubPanel(false);
+        });
+        onUpdateSnapshot(snap);
+      }
+      if (!keepOpen) setShowSubPanel(false);
     } catch (err) {
       console.error("Substitution failed:", err);
+      throw err;
     }
   };
 
@@ -236,7 +237,45 @@ export default function HalfTimeBreak({
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
-        <div className="px-6 py-6 grid grid-cols-3 gap-6">
+        <div className="px-6 py-6 flex flex-col gap-6">
+          {/* Match overview: stats, live ratings, and player condition */}
+          <section className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+            <div className="bg-white dark:bg-navy-800 rounded-xl border border-gray-200 dark:border-navy-700 shadow-sm p-4 transition-colors duration-300">
+              <h3 className="text-xs font-heading font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-4">
+                {t("match.stats")}
+              </h3>
+              <MatchStats snapshot={snapshot} />
+            </div>
+            <PlayerRatingsPanel
+              snapshot={snapshot}
+              side="Home"
+              teamColor={homeTeamColor}
+              userSide={null}
+              includeResultBonus={false}
+              showMotm={false}
+              includeBench
+            />
+            <PlayerRatingsPanel
+              snapshot={snapshot}
+              side="Away"
+              teamColor={awayTeamColor}
+              userSide={null}
+              includeResultBonus={false}
+              showMotm={false}
+              includeBench
+            />
+          </section>
+
+          <section className="bg-white dark:bg-navy-800 rounded-xl border border-gray-200 dark:border-navy-700 shadow-sm p-4 transition-colors duration-300">
+            <h3 className="text-xs font-heading font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
+              {t("match.lineups")}
+            </h3>
+            <div className="max-h-96 overflow-auto">
+              <Lineups snapshot={snapshot} />
+            </div>
+          </section>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: First Half Summary */}
           <div className="flex flex-col gap-4">
             <div className="bg-white dark:bg-navy-800 rounded-xl border border-gray-200 dark:border-navy-700 shadow-sm p-4 transition-colors duration-300">
@@ -468,6 +507,7 @@ export default function HalfTimeBreak({
                 </div>
               </>
             )}
+          </div>
           </div>
         </div>
       </div>

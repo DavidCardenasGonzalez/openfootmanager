@@ -107,6 +107,7 @@ struct TeamTrainingPlan {
     schedule: TrainingSchedule,
     bonus: TeamCoachingBonus,
     medical_facility_mult: f64,
+    training_facility_mult: f64,
     /// player_id → group focus override (players not in any group use default_focus)
     group_overrides: std::collections::HashMap<String, TrainingFocus>,
     /// Whether this team is controlled by the human manager (exempt from the
@@ -155,6 +156,8 @@ pub fn process_training(game: &mut Game, weekday_num: u32) {
                     schedule: t.training_schedule.clone(),
                     bonus,
                     medical_facility_mult,
+                    training_facility_mult: 1.0
+                        + f64::from(t.facilities.training.clamp(1, 5) - 1) * 0.08,
                     group_overrides,
                     is_user_team: user_team_id.as_deref() == Some(t.id.as_str()),
                 },
@@ -279,18 +282,30 @@ fn train_player(
     };
 
     // Base gain per attribute per session, boosted by coaching staff
-    let gain = 0.15
+    let minutes_mult = if age <= 23 {
+        0.8 + 0.4 * (f64::from(player.stats.minutes_played) / 1800.0).min(1.0)
+    } else {
+        1.0
+    };
+    let gain = 0.045
         * intensity_mult
         * age_factor
         * plan.bonus.coaching_mult
-        * plan.bonus.specialization_mult;
+        * plan.bonus.specialization_mult
+        * plan.training_facility_mult
+        * minutes_mult;
 
     // Peaked players (ovr == potential) get no attribute gains. Without this
     // gate, attribute drift lifts ovr, and `refresh_player_derived`'s
     // `potential = max(potential, ovr)` invariant silently raises the career
     // ceiling in lockstep — the ceiling stops being a ceiling.
     if player.potential > player.ovr {
+        let before = player.attributes.clone();
         apply_focus_gains(&mut player.attributes, player_focus, gain, rng);
+        // Rounding multiple gains must not silently lift the career ceiling.
+        if crate::player_rating::natural_ovr(player).round() as u8 > player.potential {
+            player.attributes = before;
+        }
     }
     apply_fitness_change(&mut player.fitness, player_focus, intensity_mult, rng);
 
@@ -467,4 +482,89 @@ fn recovery_factor_from_fitness(fitness: u8) -> f64 {
 /// Clamp a fitness value to 0–100.
 fn clamp_fitness(val: i16) -> u8 {
     val.clamp(0, 100) as u8
+}
+
+#[cfg(test)]
+mod development_tests {
+    use super::*;
+    use rand::{SeedableRng, rngs::StdRng};
+
+    fn develop(age: u32, minutes: u32, level: u8, ceiling: u8) -> Player {
+        let team = domain::team::Team::new(
+            "club".into(),
+            "Club".into(),
+            "CLU".into(),
+            "England".into(),
+            "City".into(),
+            "Ground".into(),
+            1000,
+        );
+        let mut player = crate::academy::generate_prospect(
+            &Game::new(
+                crate::clock::GameClock::new("2026-07-01T12:00:00Z".parse().unwrap()),
+                domain::manager::Manager::new(
+                    "u".into(),
+                    "U".into(),
+                    "M".into(),
+                    "1980-01-01".into(),
+                    "England".into(),
+                ),
+                vec![team.clone()],
+                vec![],
+                vec![],
+                vec![],
+            ),
+            &team,
+            &domain::player::Position::Midfielder,
+            "development-test",
+        );
+        player.date_of_birth = format!("{}-01-01", 2026 - age);
+        player.potential = ceiling.max(player.ovr);
+        player.stats.minutes_played = minutes;
+        let plan = TeamTrainingPlan {
+            default_focus: TrainingFocus::Tactical,
+            intensity: TrainingIntensity::Medium,
+            schedule: TrainingSchedule::Balanced,
+            bonus: TeamCoachingBonus {
+                coaching_mult: 1.0,
+                specialization_mult: 1.0,
+                physio_mult: 1.0,
+            },
+            medical_facility_mult: 1.0,
+            training_facility_mult: 1.0 + f64::from(level.saturating_sub(1)) * 0.08,
+            group_overrides: Default::default(),
+            is_user_team: true,
+        };
+        let mut rng = StdRng::seed_from_u64(12345);
+        for _ in 0..250 {
+            train_player(
+                &mut player,
+                &plan,
+                &TrainingDay {
+                    weekday_num: 0,
+                    year: 2026,
+                },
+                &mut rng,
+            );
+        }
+        player
+    }
+
+    #[test]
+    fn minutes_and_facilities_improve_development_without_printing_elite_players() {
+        let bench = develop(18, 0, 1, 90);
+        let playing = develop(18, 1800, 5, 90);
+        assert!(playing.ovr > bench.ovr);
+        assert!(
+            playing.ovr < 70,
+            "one season cannot turn an academy recruit into a star"
+        );
+    }
+
+    #[test]
+    fn attribute_rounding_cannot_raise_the_potential_ceiling() {
+        let player = develop(18, 1800, 5, 48);
+        assert_eq!(player.potential, 48);
+        assert!(player.ovr <= 48);
+    }
 }

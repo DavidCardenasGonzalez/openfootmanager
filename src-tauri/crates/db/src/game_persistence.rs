@@ -115,6 +115,8 @@ fn write_game_to_connection(
             vacant_team_days_json,
             world_history_json,
             emitted_events_json,
+            squad_management_json: serde_json::to_string(&game.squad_management)
+                .map_err(|_| game_persistence_write_error())?,
             available_staff_market_last_activity_date: game
                 .available_staff_market_last_activity_date
                 .clone(),
@@ -143,7 +145,7 @@ fn write_game_to_connection(
     }
     team_repo::upsert_teams(conn, &game.teams)?;
     journal_repo::persist_cash_journal(conn, game)?;
-    player_repo::upsert_players(conn, &game.players)?;
+    player_repo::replace_players(conn, &game.players)?;
     staff_repo::replace_staff_list(conn, &game.staff)?;
     message_repo::replace_messages(conn, &game.messages)?;
     news_repo::replace_news_list(conn, &game.news)?;
@@ -362,6 +364,8 @@ impl GamePersistenceReader {
                 conn,
             )?),
             cash_journal_dirty_ids: Vec::new(),
+            squad_management: serde_json::from_str(&meta.squad_management_json)
+                .map_err(|_| "be.error.gamePersistence.loadFailed".to_string())?,
         };
         game.promote_legacy_league();
         // Seeding the sent-ledger for a pre-v5 save is deliberately NOT done
@@ -413,6 +417,7 @@ mod tests {
             extra_translations_json: "{}".to_string(),
             package_lockfile_json: "[]".to_string(),
             emitted_events_json: "[]".to_string(),
+            squad_management_json: "{}".to_string(),
         }
     }
 
@@ -607,6 +612,32 @@ mod tests {
             .query_row("SELECT COUNT(*) FROM news", [], |row| row.get(0))
             .unwrap();
         assert_eq!(remaining, 0);
+    }
+
+    #[test]
+    fn squad_management_round_trip_does_not_resurrect_archived_players() {
+        let db = GameDatabase::open_in_memory().unwrap();
+        let mut game = sample_game_with_clock(2032, 18);
+        game.manager.team_id = Some(game.teams[0].id.clone());
+        ofm_core::academy::process_human_intake(&mut game);
+        game.squad_management.academies.get_mut("team-1").unwrap().signed = 1;
+        game.squad_management.last_intake_cycle = 6;
+        game.squad_management.last_review_week = Some("2032-20".into());
+        game.squad_management.totals.renewals = 42;
+        game.squad_management
+            .inactive_since
+            .insert("retired".into(), "2030-01-01".into());
+        let p = ofm_core::generator::generate_youth_academy_recruit(&game.teams[0], None, 2032);
+        game.players.push(p);
+        GamePersistenceWriter::write_game(&db, &game, "save-1", "Career").unwrap();
+        game.players.clear();
+        GamePersistenceWriter::write_game(&db, &game, "save-1", "Career").unwrap();
+        let loaded = GamePersistenceReader::read_game(&db).unwrap();
+        assert_eq!(
+            serde_json::to_value(loaded.squad_management).unwrap(),
+            serde_json::to_value(game.squad_management).unwrap()
+        );
+        assert!(loaded.players.is_empty());
     }
 
     #[test]

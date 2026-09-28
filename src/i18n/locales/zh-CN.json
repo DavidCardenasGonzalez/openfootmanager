@@ -187,6 +187,7 @@
     "digestEventUserNews": "关于您俱乐部或球员的新闻",
     "digestEventTransferWindow": "转会窗口开启或截止日",
     "digestContinue": "继续推进",
+    "digestAutoContinue": "自动继续推进",
     "digestError": "模拟出错"
   },
   "continueMenu": {
@@ -628,6 +629,18 @@
     "developing": "发展中"
   },
   "squad": {
+    "styleFitShort": {
+      "strong": "出色",
+      "good": "良好",
+      "risky": "有风险"
+    },
+    "views": {
+      "general": "概览",
+      "statistics": "统计",
+      "finances": "财务"
+    },
+    "playerDetails": "球员详情",
+    "viewControls": "阵容视图",
     "title": "{{team}} 阵容",
     "playerCount": "{{count}} 名球员",
     "noPlayers": "你的阵容中未找到球员。",
@@ -1877,6 +1890,8 @@
     "cinematicPause": "比赛已暂停。准备好后请继续。",
     "matchView": "比赛画面",
     "visualReconstruction": "根据实时比赛事件示意球员移动。",
+    "showPlayerNames": "显示球员姓名",
+    "showPlayerRatings": "显示实时评分",
     "events": "事件",
     "stats": "数据",
     "lineups": "首发名单",
@@ -1906,6 +1921,9 @@
     "substitutions": "换人",
     "substitutionsTitle": "换人",
     "subsUsed": "已用{{used}}/{{max}}",
+    "selectedToLeave": "离场球员：{{count}}",
+    "selectedToEnter": "上场球员：{{count}}",
+    "pendingSubstitutions": "已选：{{off}} 人离场，{{on}} 人上场 · 剩余 {{max}} 次",
     "allSubsUsed": "换人名额已用完",
     "selectPlayerOff": "选择要换下的球员",
     "takingOff": "换下：{{name}}",
@@ -3092,7 +3110,7 @@
         }
       },
       "trainingInjury": {
-        "subject": "伤病——{{player}}({{injury}})",
+        "subject": "伤病——{{player}}({{injury}}) — {{days}}天",
         "body0": "训练场传来坏消息。{{player}}在今天的训练中遭遇了{{injury}}。\n\n医疗团队估计需要缺阵{{days}}天。我们会密切关注恢复情况。",
         "body1": "不幸的是,{{player}}今天在训练中因{{injury}}倒下。\n\n初步评估:缺阵约{{days}}天。我们会随时向您通报进展。"
       },
@@ -4042,5 +4060,31 @@
   "generation": {
     "title": "生成与完善",
     "coverage": "您的包涵盖"
+  },
+  "academy": {
+    "title": "新一届青训球员",
+    "level": "青训等级 {{level}}",
+    "description": "候选球员尚未进入球队。选择培养对象；每次签约都会占用阵容名额和赛季签约额度。",
+    "capacity": "剩余签约：{{remaining}}/{{limit}} · 阵容：{{squad}}/{{maximum}}",
+    "deadline": "请在 {{date}} 前决定",
+    "nextGeneration": "下一届：{{candidates}} 名候选球员，最多签约 {{signings}} 人。",
+    "upgradeHint": "青训设施改善未来的青训球员。训练设施和上场时间促进当前球员的发展。",
+    "upgrade": "升级青训（{{cost}}）",
+    "maxLevel": "最高等级",
+    "empty": "暂无候选球员。下一赛季将迎来新一届青训球员。",
+    "potentialEstimate": "预估潜力",
+    "costs": "培养费用：{{fee}} · 年薪：{{wage}}",
+    "sign": "签约",
+    "reject": "放弃",
+    "quotaError": "本赛季的青训签约额度已用完。",
+    "rosterError": "球队阵容已满。签约前请腾出一个名额。",
+    "expiredError": "这一届青训球员已不再开放签约。",
+    "wageError": "此次签约将超出工资预算。",
+    "cashError": "资金不足，无法支付培养费用。",
+    "candidateError": "该候选球员已不可用。",
+    "scoutError": "球探已找到本赛季全部三名额外候选球员。",
+    "maxLevelError": "这些设施已达到最高等级。",
+    "upgradeError": "每赛季只能升级青训一次。",
+    "messageBody": "青训提供了 {{count}} 名候选球员。本赛季最多可签约 {{signings}} 人。查看报告并选择培养对象。"
   }
 }

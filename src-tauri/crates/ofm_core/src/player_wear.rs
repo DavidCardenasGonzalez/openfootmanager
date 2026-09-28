@@ -28,7 +28,12 @@ pub fn apply_match_wear(player: &mut Player, minutes: u8, rng: &mut impl Rng) {
 
     let minutes_factor = minutes as f64 / 90.0;
     let stamina_factor = player.attributes.stamina as f64 / 100.0;
-    let base_depletion = 40.0 * (1.0 - stamina_factor * 0.4);
+    let position_factor = if player.position == domain::player::Position::Goalkeeper {
+        0.5
+    } else {
+        1.0
+    };
+    let base_depletion = 40.0 * (1.0 - stamina_factor * 0.4) * position_factor;
     let depletion = (base_depletion * minutes_factor) as u8;
     player.condition = player.condition.saturating_sub(depletion);
 
@@ -130,6 +135,18 @@ mod tests {
         apply_match_wear(&mut player, 90, &mut rng);
 
         assert_eq!(player.condition, 76);
+    }
+
+    #[test]
+    fn goalkeeper_takes_less_persistent_match_wear() {
+        let mut player = make_player(100);
+        player.position = Position::Goalkeeper;
+        player.condition = 100;
+        let mut rng = StdRng::seed_from_u64(11);
+
+        apply_match_wear(&mut player, 90, &mut rng);
+
+        assert_eq!(player.condition, 88);
     }
 
     #[test]

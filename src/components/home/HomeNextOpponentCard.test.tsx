@@ -69,7 +69,7 @@ describe("HomeNextOpponentCard", () => {
     render(<HomeNextOpponentCard nextOpponent={createNextOpponent()} lang="en" />);
 
     expect(screen.getByText("Next Opponent")).toBeInTheDocument();
-    expect(screen.getByText("Beta FC")).toBeInTheDocument();
+    expect(screen.getAllByText("BET")).toHaveLength(2);
     expect(screen.getByText(/Matchday 2/i)).toBeInTheDocument();
     expect(screen.getByText("Home")).toBeInTheDocument();
     expect(screen.getByText("9 pts")).toBeInTheDocument();

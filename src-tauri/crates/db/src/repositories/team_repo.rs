@@ -542,6 +542,7 @@ mod tests {
         let db = test_db();
         let mut team = sample_team("team-001", "Facilities FC");
         team.facilities = Facilities {
+            youth: 5,
             training: 2,
             medical: 3,
             scouting: 4,
@@ -551,6 +552,7 @@ mod tests {
         let loaded = load_team(db.conn(), "team-001").unwrap().unwrap();
 
         assert_eq!(loaded.facilities.training, 2);
+        assert_eq!(loaded.facilities.youth, 5);
         assert_eq!(loaded.facilities.medical, 3);
         assert_eq!(loaded.facilities.scouting, 4);
     }

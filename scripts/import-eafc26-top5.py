@@ -80,7 +80,9 @@ def primary_position(value: str) -> str:
 def runtime_attributes(row: dict[str, str]) -> dict[str, int | float]:
     # Raw EA attributes remain untouched in sourceData. These aliases feed the
     # existing simplified simulator; absent ratings retain importer defaults.
-    is_goalkeeper = (row.get("player_positions", "").split(",")[0].strip().upper() == "GK")
+    primary = row.get("player_positions", "").split(",")[0].strip().upper()
+    is_goalkeeper = primary == "GK"
+    is_defender = primary in {"CB", "LCB", "RCB", "LB", "LWB", "RB", "RWB"}
     aliases = {
         "pace": "movement_sprint_speed", "stamina": "power_stamina",
         "strength": "power_strength", "agility": "movement_agility",
@@ -90,10 +92,13 @@ def runtime_attributes(row: dict[str, str]) -> dict[str, int | float]:
         "vision": "mentality_vision", "composure": "mentality_composure",
         "aggression": "mentality_aggression", "handling": "goalkeeping_handling",
         "reflexes": "goalkeeping_reflexes",
-        "decisions": "mentality_interceptions",
+        "decisions": "movement_reactions",
         "aerial": "attacking_heading_accuracy",
     }
-    aliases["positioning"] = "goalkeeping_positioning" if is_goalkeeper else "mentality_positioning"
+    aliases["positioning"] = (
+        "goalkeeping_positioning" if is_goalkeeper else
+        "defending_marking_awareness" if is_defender else "mentality_positioning"
+    )
     if is_goalkeeper:
         # The runtime has no separate diving/kicking fields: agility and passing
         # are their closest role-specific counterparts for keeper OVR.

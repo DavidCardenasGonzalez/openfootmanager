@@ -27,6 +27,7 @@ import {
 
 type SortColumn = "name" | "position" | "ovr" | "condition";
 type SortState = { column: SortColumn; direction: "asc" | "desc" } | null;
+export type PendingSubstitution = { offId: string; onId: string };
 const POSITION_SORT_ORDER: Record<string, number> = {
   Goalkeeper: 0,
   Defender: 1,
@@ -129,20 +130,27 @@ export function SubPanel({
 }: {
   snapshot: MatchSnapshot;
   side: "Home" | "Away";
-  onSubstitute: (offId: string, onId: string) => void;
+  onSubstitute: (changes: PendingSubstitution[], keepOpen?: boolean) => Promise<void> | void;
   onFormationChange: (formation: string) => void;
   onPlayStyleChange: (playStyle: string) => void;
   onClose: () => void;
 }) {
   const { t } = useTranslation();
-  const [selectedOff, setSelectedOff] = useState<string | null>(null);
-  const [selectedBench, setSelectedBench] = useState<string | null>(null);
+  const [selection, setSelection] = useState<{ off: string[]; on: string[] }>({ off: [], on: [] });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [offSort, setOffSort] = useState<SortState>(null);
   const [benchSort, setBenchSort] = useState<SortState>(null);
 
   const team = side === "Home" ? snapshot.home_team : snapshot.away_team;
   const bench = side === "Home" ? snapshot.home_bench : snapshot.away_bench;
   const subsMade = side === "Home" ? snapshot.home_subs_made : snapshot.away_subs_made;
+  const remainingSubs = Math.max(0, snapshot.max_subs - subsMade);
+  const selectedOff = selection.off[0] ?? null;
+  const selectedBench = selection.on[0] ?? null;
+  const canConfirm =
+    selection.off.length > 0 &&
+    selection.off.length === selection.on.length &&
+    selection.off.length <= remainingSubs;
 
   const subbedOnIds = new Set(
     snapshot.substitutions.filter((s) => s.side === side).map((s) => s.player_on_id),
@@ -177,24 +185,51 @@ export function SubPanel({
   };
 
   const handleClearSelection = () => {
-    setSelectedOff(null);
-    setSelectedBench(null);
+    setSelection({ off: [], on: [] });
   };
 
   const handleSelectOffPlayer = (playerId: string) => {
-    setSelectedOff((cur) => {
-      if (cur === playerId) {
-        setSelectedBench(null);
-        return null;
-      }
-      setSelectedBench(null);
-      return playerId;
-    });
+    setSelection((current) => ({
+      ...current,
+      off: current.off.includes(playerId)
+        ? current.off.filter((id) => id !== playerId)
+        : current.off.length < remainingSubs
+          ? [...current.off, playerId]
+          : current.off,
+    }));
   };
 
   const handleSelectBenchPlayer = (playerId: string) => {
-    if (!selectedOff) return;
-    setSelectedBench((cur) => (cur === playerId ? null : playerId));
+    setSelection((current) => ({
+      ...current,
+      on: current.on.includes(playerId)
+        ? current.on.filter((id) => id !== playerId)
+        : current.on.length < remainingSubs
+          ? [...current.on, playerId]
+          : current.on,
+    }));
+  };
+
+  const handlePair = (offId: string, onId: string) => {
+    if (snapshot.sent_off.includes(offId) || !availableBench.some((p) => p.id === onId)) return;
+    setSelection((current) => {
+      const pairedCount = Math.min(current.off.length, current.on.length);
+      const paired = current.off
+        .slice(0, pairedCount)
+        .map((id, index) => ({ offId: id, onId: current.on[index] }))
+        .filter((pair) => pair.offId !== offId && pair.onId !== onId);
+      const off = [
+        ...paired.map((pair) => pair.offId),
+        offId,
+        ...current.off.slice(pairedCount).filter((id) => id !== offId),
+      ];
+      const on = [
+        ...paired.map((pair) => pair.onId),
+        onId,
+        ...current.on.slice(pairedCount).filter((id) => id !== onId),
+      ];
+      return Math.max(off.length, on.length) <= remainingSubs ? { off, on } : current;
+    });
   };
 
   const toggleSort = (
@@ -219,14 +254,38 @@ export function SubPanel({
     event.dataTransfer.effectAllowed = "move";
   };
 
+  const submitChanges = (changes: PendingSubstitution[], keepOpen = false) => {
+    if (isSubmitting || changes.length === 0 || changes.length > remainingSubs) return;
+    setIsSubmitting(true);
+    Promise.resolve(keepOpen ? onSubstitute(changes, true) : onSubstitute(changes))
+      .then(() => {
+        if (keepOpen) {
+          setSelection({ off: [], on: [] });
+          setIsSubmitting(false);
+        }
+      })
+      .catch(() => {
+        setSelection({ off: [], on: [] });
+        setIsSubmitting(false);
+      });
+  };
+
+  const handleDroppedPair = (offId: string, onId: string) => {
+    if (snapshot.sent_off.includes(offId) || !availableBench.some((p) => p.id === onId)) return;
+    if (selection.off.length === 0 && selection.on.length === 0) {
+      submitChanges([{ offId, onId }], true);
+    } else {
+      handlePair(offId, onId);
+    }
+  };
+
   const handleDropOnOff = (event: React.DragEvent<HTMLTableRowElement>, playerId: string) => {
     event.preventDefault();
     const draggedId = event.dataTransfer.getData("text/player-id");
     if (!draggedId || draggedId === playerId) return;
     const draggedFromBench = availableBench.some((player) => player.id === draggedId);
     if (!draggedFromBench) return;
-    setSelectedOff(playerId);
-    setSelectedBench(draggedId);
+    handleDroppedPair(playerId, draggedId);
   };
 
   const handleDropOnBench = (event: React.DragEvent<HTMLTableRowElement>, playerId: string) => {
@@ -235,8 +294,7 @@ export function SubPanel({
     if (!draggedId || draggedId === playerId) return;
     const draggedFromField = team.players.some((player) => player.id === draggedId);
     if (!draggedFromField) return;
-    setSelectedOff(draggedId);
-    setSelectedBench(playerId);
+    handleDroppedPair(draggedId, playerId);
   };
 
   const sortedFieldPlayers = sortPlayers(
@@ -246,13 +304,13 @@ export function SubPanel({
   const sortedBenchPlayers = sortPlayers(availableBench, benchSort);
 
   const handleConfirmSubstitution = () => {
-    if (!selectedOff || !selectedBench) return;
-    onSubstitute(selectedOff, selectedBench);
+    if (!canConfirm || isSubmitting || selection.off.length > remainingSubs) return;
+    const changes = selection.off.map((offId, index) => ({ offId, onId: selection.on[index] }));
+    submitChanges(changes);
   };
 
   const handleApplyRecommendation = (offId: string, onId: string) => {
-    setSelectedOff(offId);
-    setSelectedBench(onId);
+    handlePair(offId, onId);
   };
 
   const handleInteractiveRowKeyDown = (event: KeyboardEvent<HTMLElement>, action: () => void) => {
@@ -388,7 +446,7 @@ export function SubPanel({
                 <div className="shrink-0 border-b border-gray-200 bg-gray-50 px-4 py-2 dark:border-navy-700 dark:bg-navy-800/50">
                   <p className="font-heading text-xs uppercase tracking-widest text-red-400">
                     {selectedOff
-                      ? t("match.takingOff", { name: selectedPlayer?.name })
+                      ? t("match.selectedToLeave", { count: selection.off.length })
                       : t("match.selectPlayerOff")}
                   </p>
                 </div>
@@ -441,7 +499,7 @@ export function SubPanel({
                     </thead>
                     <tbody>
                       {sortedFieldPlayers.map((p) => {
-                        const isSelected = selectedOff === p.id;
+                        const isSelected = selection.off.includes(p.id);
                         const isSubOn = subbedOnIds.has(p.id);
                         const row = (
                           <tr
@@ -528,7 +586,9 @@ export function SubPanel({
               <div className="flex min-w-0 flex-1 flex-col">
                 <div className="shrink-0 border-b border-gray-200 bg-gray-50 px-4 py-2 dark:border-navy-700 dark:bg-navy-800/50">
                   <p className="font-heading text-xs uppercase tracking-widest text-green-400">
-                    {selectedOff ? t("match.selectReplacement") : t("match.benchPlayers")}
+                    {selection.on.length
+                      ? t("match.selectedToEnter", { count: selection.on.length })
+                      : t("match.selectReplacement")}
                   </p>
                 </div>
 
@@ -592,10 +652,10 @@ export function SubPanel({
                               }
                               role="button"
                               tabIndex={0}
-                              aria-pressed={selectedBench === p.id}
+                              aria-pressed={selection.on.includes(p.id)}
                               className={`cursor-grab text-sm transition-colors active:cursor-grabbing ${
-                                selectedOff
-                                  ? selectedBench === p.id
+                                selection.on.length
+                                  ? selection.on.includes(p.id)
                                     ? "cursor-pointer bg-green-500/15 ring-1 ring-green-500/30"
                                     : "cursor-pointer hover:bg-green-500/10"
                                   : "hover:bg-green-500/10"
@@ -603,7 +663,7 @@ export function SubPanel({
                             >
                               <td className="py-2 pr-2">
                                 <div className="flex items-center gap-1.5">
-                                  {selectedOff && (
+                                  {selection.on.includes(p.id) && (
                                     <UserPlus className="h-3.5 w-3.5 shrink-0 text-green-400/50" />
                                   )}
                                   <span className="truncate font-medium text-gray-700 dark:text-gray-300">
@@ -648,27 +708,15 @@ export function SubPanel({
                           return (
                             <ContextMenu
                               key={p.id}
-                              items={
-                                selectedOff
-                                  ? [
-                                      {
-                                        label:
-                                          selectedBench === p.id
-                                            ? t("match.clearReplacementSelection")
-                                            : t("match.selectReplacementMenu"),
-                                        icon: <UserPlus className="h-4 w-4" />,
-                                        onClick: () => handleSelectBenchPlayer(p.id),
-                                      },
-                                    ]
-                                  : [
-                                      {
-                                        label: t("match.selectPlayerToTakeOffFirst"),
-                                        icon: <UserPlus className="h-4 w-4" />,
-                                        onClick: () => {},
-                                        disabled: true,
-                                      },
-                                    ]
-                              }
+                              items={[
+                                {
+                                  label: selection.on.includes(p.id)
+                                    ? t("match.clearReplacementSelection")
+                                    : t("match.selectReplacementMenu"),
+                                  icon: <UserPlus className="h-4 w-4" />,
+                                  onClick: () => handleSelectBenchPlayer(p.id),
+                                },
+                              ]}
                             >
                               {benchRow}
                             </ContextMenu>
@@ -709,6 +757,49 @@ export function SubPanel({
 
             {/* Sticky footer: comparison summary + confirm / cancel */}
             <div className="shrink-0 border-t border-gray-200 bg-gray-50/60 px-4 py-3 dark:border-navy-700 dark:bg-navy-900/30">
+              {(selection.off.length > 0 || selection.on.length > 0) && (
+                <div className="mb-2 flex items-start justify-between gap-3">
+                  <div className="min-w-0 text-xs text-gray-700 dark:text-gray-300">
+                    <p className="mb-1 font-heading font-bold">
+                      {t("match.pendingSubstitutions", {
+                        off: selection.off.length,
+                        on: selection.on.length,
+                        max: remainingSubs,
+                      })}
+                    </p>
+                    {selection.off.map((offId, index) => (
+                      <p key={offId}>
+                        {team.players.find((player) => player.id === offId)?.name} →{" "}
+                        {availableBench.find((player) => player.id === selection.on[index])?.name ??
+                          "…"}
+                      </p>
+                    ))}
+                    {selection.on.slice(selection.off.length).map((onId) => (
+                      <p key={onId}>
+                        … → {availableBench.find((player) => player.id === onId)?.name}
+                      </p>
+                    ))}
+                  </div>
+                  <div className="flex shrink-0 items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleClearSelection}
+                      disabled={isSubmitting}
+                      className="rounded-lg border border-gray-300 px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wider text-gray-700 transition-colors hover:bg-gray-100 dark:border-navy-500 dark:text-gray-300 dark:hover:bg-navy-600"
+                    >
+                      {t("common.cancel")}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleConfirmSubstitution}
+                      disabled={!canConfirm || isSubmitting}
+                      className="rounded-lg bg-green-500 px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-green-400 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {t("match.confirmSubstitution")}
+                    </button>
+                  </div>
+                </div>
+              )}
               {selectedPlayer && comparedPlayer ? (
                 <div>
                   {/* Player names + position match + action buttons */}
@@ -735,22 +826,6 @@ export function SubPanel({
                         ? t("match.fitExact")
                         : t("match.fitAdjusted")}
                     </span>
-                    <div className="ml-auto flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={handleClearSelection}
-                        className="rounded-lg border border-gray-300 px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wider text-gray-700 transition-colors hover:bg-gray-100 dark:border-navy-500 dark:text-gray-300 dark:hover:bg-navy-600"
-                      >
-                        {t("common.cancel")}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleConfirmSubstitution}
-                        className="rounded-lg bg-green-500 px-3 py-1.5 font-heading text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-green-400"
-                      >
-                        {t("match.confirmSubstitution")}
-                      </button>
-                    </div>
                   </div>
                   {/* Attribute comparison bars */}
                   <div className="grid grid-cols-2 gap-x-4">

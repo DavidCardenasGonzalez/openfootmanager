@@ -187,6 +187,7 @@
     "digestEventUserNews": "News about your club or players",
     "digestEventTransferWindow": "Transfer window opening or deadline day",
     "digestContinue": "Keep Going",
+    "digestAutoContinue": "Keep Advancing Automatically",
     "digestError": "Simulation error"
   },
   "continueMenu": {
@@ -628,6 +629,18 @@
     "developing": "Developing"
   },
   "squad": {
+    "styleFitShort": {
+      "strong": "Strong",
+      "good": "Good",
+      "risky": "Risky"
+    },
+    "views": {
+      "general": "Overview",
+      "statistics": "Statistics",
+      "finances": "Finances"
+    },
+    "playerDetails": "Player details",
+    "viewControls": "Squad view",
     "title": "{{team}} Squad",
     "playerCount": "{{count}} Players",
     "noPlayers": "No players found in your squad.",
@@ -1877,6 +1890,8 @@
     "cinematicPause": "Match paused. Continue when you are ready.",
     "matchView": "Match",
     "visualReconstruction": "Illustrative movement based on live match events.",
+    "showPlayerNames": "Show player names",
+    "showPlayerRatings": "Show live ratings",
     "events": "Events",
     "stats": "Stats",
     "lineups": "Lineups",
@@ -1906,6 +1921,9 @@
     "substitutions": "Substitutions",
     "substitutionsTitle": "Substitutions",
     "subsUsed": "{{used}}/{{max}} used",
+    "selectedToLeave": "Players leaving: {{count}}",
+    "selectedToEnter": "Players entering: {{count}}",
+    "pendingSubstitutions": "Selected: {{off}} out, {{on}} in · {{max}} available",
     "allSubsUsed": "All substitutions used",
     "selectPlayerOff": "Select a player to substitute off",
     "takingOff": "Taking off: {{name}}",
@@ -3092,7 +3110,7 @@
         }
       },
       "trainingInjury": {
-        "subject": "Injury — {{player}} ({{injury}})",
+        "subject": "Injury — {{player}} ({{injury}}) — {{days}} days",
         "body0": "Bad news from the training ground. {{player}} has picked up a {{injury}} during today's session.\n\nThe medical team estimates {{days}} days on the sidelines. We'll monitor the recovery closely.",
         "body1": "Unfortunately, {{player}} went down in training today with a {{injury}}.\n\nInitial assessment: out for approximately {{days}} days. We'll keep you updated on their progress."
       },
@@ -4042,5 +4060,31 @@
   "generation": {
     "title": "Generation & Completion",
     "coverage": "Your packages cover"
+  },
+  "academy": {
+    "title": "New academy generation",
+    "level": "Academy level {{level}}",
+    "description": "Candidates are outside your squad. Choose who to develop; each signing uses a squad place and your seasonal allowance.",
+    "capacity": "Signings left: {{remaining}}/{{limit}} · Squad: {{squad}}/{{maximum}}",
+    "deadline": "Decide before {{date}}",
+    "nextGeneration": "Next generation: {{candidates}} candidates, up to {{signings}} signings.",
+    "upgradeHint": "Youth facilities improve future intakes. Training facilities and playing time improve ongoing development.",
+    "upgrade": "Improve academy ({{cost}})",
+    "maxLevel": "Maximum level",
+    "empty": "No candidates available. A new generation arrives next season.",
+    "potentialEstimate": "Estimated potential",
+    "costs": "Formation fee: {{fee}} · Annual wage: {{wage}}",
+    "sign": "Sign",
+    "reject": "Reject",
+    "quotaError": "You have used all academy signings for this season.",
+    "rosterError": "Your squad is full. Free a place before signing a candidate.",
+    "expiredError": "This generation is no longer available.",
+    "wageError": "This signing would exceed your wage budget.",
+    "cashError": "There is not enough cash to pay the formation fee.",
+    "candidateError": "This candidate is no longer available.",
+    "scoutError": "Your scouts have found all three additional candidates for this season.",
+    "maxLevelError": "These facilities are already at the maximum level.",
+    "upgradeError": "You can improve the academy once per season.",
+    "messageBody": "The academy has {{count}} candidates. You can sign up to {{signings}} this season. Review their reports and choose who to develop."
   }
 }

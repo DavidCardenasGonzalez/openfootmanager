@@ -74,6 +74,15 @@ fn infer_world_regions(teams: &[domain::team::Team]) -> Vec<WorldRegionDefinitio
 fn normalize_world(mut world: WorldData) -> WorldData {
     for player in &mut world.players {
         player.apply_source_short_name();
+        crate::player_rating::sync_player_overall(player);
+        if player.jersey_number.is_none() {
+            player.jersey_number = player
+                .media
+                .source_data
+                .as_ref()
+                .and_then(|source| source.get("club_jersey_number"))
+                .and_then(parse_jersey_number);
+        }
     }
     crate::football_identity::upgrade_world_football_identities(
         &mut world.teams,
@@ -108,6 +117,16 @@ fn normalize_world(mut world: WorldData) -> WorldData {
     }
     world.league = world.competitions.first().cloned().or(world.league);
     world
+}
+
+fn parse_jersey_number(value: &serde_json::Value) -> Option<u8> {
+    let number = value
+        .as_f64()
+        .or_else(|| value.as_str().and_then(|raw| raw.parse::<f64>().ok()))?;
+    if number.fract() != 0.0 || !(1.0..=99.0).contains(&number) {
+        return None;
+    }
+    Some(number as u8)
 }
 
 fn manifest_shard_path(base: &Path, shard_ref: &str) -> PathBuf {
@@ -469,6 +488,31 @@ mod tests {
     use std::fs;
     use std::path::PathBuf;
     use std::time::{SystemTime, UNIX_EPOCH};
+
+    #[test]
+    fn imported_world_ovr_is_recalculated_from_attributes() {
+        let mut world = generate_world_data(&crate::generator::DefinitionSources::embedded_only());
+        let player = &mut world.players[0];
+        player.ovr = 99;
+        player.potential = 1;
+        let expected = crate::player_rating::natural_ovr(player).round() as u8;
+
+        let normalized = normalize_world(world);
+        assert_eq!(normalized.players[0].ovr, expected);
+        assert_eq!(normalized.players[0].potential, expected);
+    }
+
+    #[test]
+    fn imported_world_jersey_number_is_restored_from_source_data() {
+        let mut world = generate_world_data(&crate::generator::DefinitionSources::embedded_only());
+        let player = &mut world.players[0];
+        player.jersey_number = None;
+        player.media.source_data = Some(serde_json::json!({"club_jersey_number": 5}));
+
+        let normalized = normalize_world(world);
+
+        assert_eq!(normalized.players[0].jersey_number, Some(5));
+    }
 
     struct TempWorldDir {
         path: PathBuf,

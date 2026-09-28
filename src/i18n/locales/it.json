@@ -187,6 +187,7 @@
     "digestEventUserNews": "Notizie sul tuo club o sui tuoi giocatori",
     "digestEventTransferWindow": "Apertura o chiusura della finestra di mercato",
     "digestContinue": "Continua ad avanzare",
+    "digestAutoContinue": "Continua automaticamente",
     "digestError": "Errore di simulazione"
   },
   "continueMenu": {
@@ -647,6 +648,18 @@
     "developing": "In crescita"
   },
   "squad": {
+    "styleFitShort": {
+      "strong": "Ottimo",
+      "good": "Buono",
+      "risky": "Rischioso"
+    },
+    "views": {
+      "general": "Generale",
+      "statistics": "Statistiche",
+      "finances": "Finanze"
+    },
+    "playerDetails": "Dettagli del giocatore",
+    "viewControls": "Vista della rosa",
     "title": "Rosa di {{team}}",
     "playerCount": "{{count}} giocatori",
     "noPlayers": "Nessun giocatore trovato nella tua rosa.",
@@ -1896,6 +1909,8 @@
     "cinematicPause": "Partita in pausa. Prosegui quando vuoi.",
     "matchView": "Partita",
     "visualReconstruction": "Movimenti illustrativi basati sugli eventi della partita in diretta.",
+    "showPlayerNames": "Mostra i nomi dei giocatori",
+    "showPlayerRatings": "Mostra le valutazioni in diretta",
     "events": "Eventi",
     "stats": "Statistiche",
     "lineups": "Formazioni",
@@ -1925,6 +1940,9 @@
     "substitutions": "Sostituzioni",
     "substitutionsTitle": "Sostituzioni",
     "subsUsed": "{{used}}/{{max}} usate",
+    "selectedToLeave": "Giocatori in uscita: {{count}}",
+    "selectedToEnter": "Giocatori in entrata: {{count}}",
+    "pendingSubstitutions": "Selezionati: {{off}} escono, {{on}} entrano · {{max}} disponibili",
     "allSubsUsed": "Tutte le sostituzioni usate",
     "selectPlayerOff": "Seleziona un giocatore da sostituire",
     "takingOff": "Esce: {{name}}",
@@ -2875,7 +2893,7 @@
         "body": "La dirigenza ha fissato i seguenti obiettivi per questa stagione:\n\n1. Chiudere tra le prime {{expectedPos}}\n2. Vincere almeno {{winTarget}} partite\n3. Segnare almeno {{goalsTarget}} gol\n\nRaggiungere questi traguardi aumenterà la fiducia della dirigenza nel tuo operato. Il mancato rispetto delle aspettative potrebbe comportare budget ridotti o ulteriori conseguenze."
       },
       "trainingInjury": {
-        "subject": "Infortunio — {{player}} ({{injury}})",
+        "subject": "Infortunio — {{player}} ({{injury}}) — {{days}} giorni",
         "body0": "Brutte notizie dal campo di allenamento. {{player}} ha riportato un {{injury}} durante la sessione di oggi.\n\nLo staff medico stima {{days}} giorni di stop. Monitoreremo attentamente il recupero.",
         "body1": "Purtroppo {{player}} si è fermato in allenamento oggi a causa di un {{injury}}.\n\nPrima valutazione: circa {{days}} giorni ai box. Ti terremo aggiornato sui progressi."
       },
@@ -4042,5 +4060,31 @@
   "generation": {
     "title": "Generazione e Completamento",
     "coverage": "I tuoi pacchetti coprono"
+  },
+  "academy": {
+    "title": "Nuova generazione del vivaio",
+    "level": "Accademia di livello {{level}}",
+    "description": "I candidati sono fuori dalla rosa. Scegli chi sviluppare; ogni ingaggio occupa un posto e consuma il limite stagionale.",
+    "capacity": "Ingaggi disponibili: {{remaining}}/{{limit}} · Rosa: {{squad}}/{{maximum}}",
+    "deadline": "Decidi entro il {{date}}",
+    "nextGeneration": "Prossima generazione: {{candidates}} candidati, fino a {{signings}} ingaggi.",
+    "upgradeHint": "Le strutture giovanili migliorano le future generazioni. Allenamento e minuti giocati aiutano lo sviluppo attuale.",
+    "upgrade": "Migliora accademia ({{cost}})",
+    "maxLevel": "Livello massimo",
+    "empty": "Nessun candidato disponibile. Una nuova generazione arriverà la prossima stagione.",
+    "potentialEstimate": "Potenziale stimato",
+    "costs": "Costo di formazione: {{fee}} · Stipendio annuo: {{wage}}",
+    "sign": "Ingaggia",
+    "reject": "Scarta",
+    "quotaError": "Hai utilizzato tutti gli ingaggi del vivaio per questa stagione.",
+    "rosterError": "La rosa è al completo. Libera un posto prima di ingaggiare un candidato.",
+    "expiredError": "Questa generazione non è più disponibile.",
+    "wageError": "Questo ingaggio supererebbe il budget stipendi.",
+    "cashError": "Non ci sono fondi sufficienti per pagare il costo di formazione.",
+    "candidateError": "Questo candidato non è più disponibile.",
+    "scoutError": "I tuoi osservatori hanno già trovato i tre candidati aggiuntivi di questa stagione.",
+    "maxLevelError": "Queste strutture hanno già raggiunto il livello massimo.",
+    "upgradeError": "Puoi migliorare l’accademia una volta per stagione.",
+    "messageBody": "L’accademia ha {{count}} candidati. Puoi ingaggiarne fino a {{signings}} questa stagione. Esamina i rapporti e scegli chi sviluppare."
   }
 }

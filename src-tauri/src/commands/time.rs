@@ -243,6 +243,25 @@ pub fn skip_to_match_day_internal(state: &StateManager) -> Result<serde_json::Va
 ///   - `fired`      — manager was dismissed during today's processing
 ///   - `advanced`   — quiet day processed successfully; game state updated
 pub fn advance_one_day_internal(state: &StateManager) -> Result<serde_json::Value, String> {
+    advance_one_day_with_acknowledged_blockers_internal(state, &[])
+}
+
+fn blocker_is_acknowledged(
+    blocker: &serde_json::Value,
+    acknowledged_blockers: &[serde_json::Value],
+) -> bool {
+    const FINGERPRINT_FIELDS: [&str; 5] = ["id", "severity", "tab", "text_key", "text_params"];
+    acknowledged_blockers.iter().any(|acknowledged| {
+        FINGERPRINT_FIELDS
+            .iter()
+            .all(|field| blocker.get(field) == acknowledged.get(field))
+    })
+}
+
+fn advance_one_day_with_acknowledged_blockers_internal(
+    state: &StateManager,
+    acknowledged_blockers: &[serde_json::Value],
+) -> Result<serde_json::Value, String> {
     // The whole check-process-respond sequence runs under the game lock
     // (update_game) so a concurrent GUI/MCP write is never clobbered by a
     // stale clone written back afterwards.
@@ -262,7 +281,10 @@ pub fn advance_one_day_internal(state: &StateManager) -> Result<serde_json::Valu
                 });
             }
 
-            let blockers = compute_blocking_actions(game);
+            let blockers: Vec<_> = compute_blocking_actions(game)
+                .into_iter()
+                .filter(|blocker| !blocker_is_acknowledged(blocker, acknowledged_blockers))
+                .collect();
             if !blockers.is_empty() {
                 info!(
                     "[cmd] advance_one_day: blocked date={} count={}",
@@ -321,9 +343,14 @@ pub fn advance_one_day_internal(state: &StateManager) -> Result<serde_json::Valu
 #[tauri::command]
 pub async fn advance_one_day(
     state: State<'_, Arc<StateManager>>,
+    acknowledged_blockers: Option<Vec<serde_json::Value>>,
 ) -> Result<serde_json::Value, String> {
     let state = state.inner().clone();
-    run_off_thread(move || advance_one_day_internal(&state)).await
+    let acknowledged_blockers = acknowledged_blockers.unwrap_or_default();
+    run_off_thread(move || {
+        advance_one_day_with_acknowledged_blockers_internal(&state, &acknowledged_blockers)
+    })
+    .await
 }
 
 fn count_high_priority_messages(game: &Game) -> usize {
@@ -481,7 +508,8 @@ pub fn advance_to_next_event_internal(state: &StateManager) -> Result<serde_json
 #[cfg(test)]
 mod tests {
     use super::{
-        advance_time_with_mode_internal, compute_blocking_actions, continue_reached_attention_event,
+        advance_one_day_with_acknowledged_blockers_internal, advance_time_with_mode_internal,
+        compute_blocking_actions, continue_reached_attention_event,
     };
     use chrono::{TimeZone, Utc};
     use domain::league::{Fixture, FixtureCompetition, FixtureStatus};
@@ -1330,6 +1358,64 @@ mod tests {
     }
 
     #[test]
+    fn a_user_match_day_also_plays_fixtures_in_other_divisions() {
+        for (mode, other_active) in [
+            ("live", true),
+            ("delegate", true),
+            ("live", false),
+            ("delegate", false),
+        ] {
+            let mut game = make_round_summary_game();
+            game.clock.current_date = Utc.with_ymd_and_hms(2025, 7, 1, 12, 0, 0).unwrap();
+            let mut user_division = game.league.take().unwrap();
+            user_division.fixtures[0].date = "2025-07-01".to_string();
+            let mut other_fixture = user_division.fixtures.pop().unwrap();
+            other_fixture.date = "2025-07-01".to_string();
+            other_fixture.competition_id = "league2".to_string();
+            user_division.standings.truncate(2);
+            let other_division = domain::league::League {
+                id: "league2".to_string(),
+                name: "Second Division".to_string(),
+                season: 2025,
+                fixtures: vec![other_fixture],
+                standings: vec![
+                    domain::league::StandingEntry::new("team3".to_string()),
+                    domain::league::StandingEntry::new("team4".to_string()),
+                ],
+                ..domain::league::League::default()
+            };
+            game.competitions = vec![other_division, user_division];
+            game.active_competition_ids = vec!["league1".to_string()];
+            if other_active {
+                game.active_competition_ids.push("league2".to_string());
+            }
+            game.sync_legacy_league();
+            let state = StateManager::new();
+            state.set_game(game);
+
+            advance_time_with_mode_internal(&state, mode).unwrap();
+
+            let other_status =
+                state.get_game(|game| game.competitions[0].fixtures[0].status.clone());
+            assert_eq!(
+                other_status,
+                Some(FixtureStatus::Completed),
+                "mode={mode}, active={other_active}"
+            );
+            let user_status =
+                state.get_game(|game| game.competitions[1].fixtures[0].status.clone());
+            assert_eq!(
+                user_status,
+                Some(if mode == "live" {
+                    FixtureStatus::Scheduled
+                } else {
+                    FixtureStatus::Completed
+                })
+            );
+        }
+    }
+
+    #[test]
     fn advance_one_day_stops_on_match_day_without_advancing() {
         let state = StateManager::new();
         // Must use a competition-based fixture because user_has_scheduled_match_on
@@ -1374,6 +1460,45 @@ mod tests {
         );
         let blockers = result.get("blockers").and_then(Value::as_array).unwrap();
         assert!(!blockers.is_empty(), "blockers array must be populated");
+    }
+
+    #[test]
+    fn advance_one_day_ignores_acknowledged_blockers_but_still_stops_for_new_ones() {
+        let state = StateManager::new();
+        let mut game = make_game(11);
+        for player_id in ["p2", "p5"] {
+            let player = game.players.iter_mut().find(|p| p.id == player_id).unwrap();
+            player.injury = Some(Injury {
+                name: "Hamstring".to_string(),
+                days_remaining: 7,
+            });
+        }
+        state.set_game(game);
+
+        let first = super::advance_one_day_internal(&state).expect("initial blocker response");
+        let acknowledged = first["blockers"].as_array().unwrap().clone();
+
+        let same_blockers =
+            advance_one_day_with_acknowledged_blockers_internal(&state, &acknowledged)
+                .expect("advance past acknowledged blockers");
+        assert_eq!(same_blockers["action"], "advanced");
+
+        let new_state = StateManager::new();
+        let mut game = make_game(11);
+        for player_id in ["p2", "p5", "p8"] {
+            let player = game.players.iter_mut().find(|p| p.id == player_id).unwrap();
+            player.injury = Some(Injury {
+                name: "Hamstring".to_string(),
+                days_remaining: 7,
+            });
+        }
+        new_state.set_game(game);
+
+        let new_blockers =
+            advance_one_day_with_acknowledged_blockers_internal(&new_state, &acknowledged)
+                .expect("new blocker response");
+        assert_eq!(new_blockers["action"], "blocked");
+        assert_ne!(new_blockers["blockers"], Value::Array(acknowledged));
     }
 
     #[test]

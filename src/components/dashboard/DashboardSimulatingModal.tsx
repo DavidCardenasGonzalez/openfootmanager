@@ -242,7 +242,11 @@ function DigestDayRow({ entry }: { entry: DigestEntry }): JSX.Element {
         {recap.news.map((article, i) => (
           <NewsCard
             key={article.id}
-            text={article.textKey ? t(article.textKey, article.params ?? {}) : article.text}
+            text={
+              article.textKey
+                ? resolveBackendText(article.textKey, article.text, article.params)
+                : article.text
+            }
             idx={newsOffset + i}
           />
         ))}
@@ -250,7 +254,11 @@ function DigestDayRow({ entry }: { entry: DigestEntry }): JSX.Element {
         {recap.inbox.map((item, i) => (
           <InboxCard
             key={item.id}
-            text={item.textKey ? t(item.textKey, item.params ?? {}) : item.text}
+            text={
+              item.textKey
+                ? resolveBackendText(item.textKey, item.text, item.params)
+                : item.text
+            }
             category={item.category}
             idx={inboxOffset + i}
           />
@@ -367,7 +375,7 @@ export default function DashboardSimulatingModal({
                 onClick={onContinueAdvancing}
                 className="w-full rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-700"
               >
-                {t("dashboard.digestContinue")}
+                {t("dashboard.digestAutoContinue")}
               </button>
             )}
             <button

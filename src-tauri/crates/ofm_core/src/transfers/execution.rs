@@ -234,7 +234,7 @@ pub(super) fn ensure_transfer_cash_postable(
 }
 
 /// Transfer a player between teams, adjusting finances.
-pub(super) fn execute_transfer(
+pub(crate) fn execute_transfer(
     game: &mut Game,
     player_id: &str,
     to_team_id: &str,
@@ -250,6 +250,16 @@ pub(super) fn execute_transfer(
 
     if player_has_active_or_pending_loan(&player_snapshot) {
         return Err(ERR_PLAYER_ALREADY_LOANED.into());
+    }
+
+    if player_snapshot.retired
+        || player_snapshot.team_id.as_deref() != Some(from_team_id)
+        || from_team_id == to_team_id
+    {
+        return Err("be.error.playerNotInClub".into());
+    }
+    if !transfer_buyer_can_register(game, to_team_id, fee) {
+        return Err(ERR_INSUFFICIENT_FUNDS.into());
     }
 
     let from_team_name = game

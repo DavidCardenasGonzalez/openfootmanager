@@ -13,8 +13,8 @@ use ofm_core::clock::GameClock;
 use ofm_core::game::Game;
 
 use super::{
-    StartupOptions, apply_generated_past_history, ensure_multi_competition_foundations,
-    preseason_league_year, preseason_season_start,
+    apply_generated_past_history, ensure_multi_competition_foundations, preseason_league_year,
+    preseason_season_start, StartupOptions,
 };
 
 pub(super) fn build_game_from_world_data(
@@ -130,9 +130,9 @@ pub(super) fn build_game_from_world_data(
     }
 }
 
-/// Build the game's single real-world-independent pyramid from an imported
-/// Open Manager roster. Source competitions remain metadata in the import
-/// step; gameplay only sees these divisions.
+/// Build one fictional national pyramid from an imported Open Manager roster.
+/// Clubs from every source country share these divisions and can move between
+/// adjacent tiers at season rollover.
 pub(super) fn build_open_manager_pyramid(game: &Game) -> Vec<League> {
     const MAX_CLUBS_PER_DIVISION: usize = 20;
     let player_strength: std::collections::HashMap<&str, u32> = game
@@ -179,7 +179,8 @@ pub(super) fn build_open_manager_pyramid(game: &Game) -> Vec<League> {
                 &ids,
             );
             division.kind = CompetitionType::League;
-            division.scope = CompetitionScope::Regional;
+            division.scope = CompetitionScope::Domestic;
+            division.country_id = Some("open-manager".to_string());
             division.region_id = Some("europe".to_string());
             division.priority = (index + 1) as u32;
             division.fixtures = ofm_core::schedule::build_round_robin_fixtures(
@@ -191,6 +192,49 @@ pub(super) fn build_open_manager_pyramid(game: &Game) -> Vec<League> {
             division
         })
         .collect()
+}
+
+/// Older saves registered these same divisions as regional competitions and
+/// selected only the manager's tier. Keep their results and rosters while
+/// making the full ladder visible and eligible for future promotion. Recover
+/// other divisions' fixtures that an earlier live-match day skipped.
+pub(super) fn upgrade_open_manager_pyramid(game: &mut Game) {
+    let mut division_ids = Vec::new();
+    for division in &mut game.competitions {
+        if !division.id.starts_with("open-manager-division-") {
+            continue;
+        }
+        division.scope = CompetitionScope::Domestic;
+        division.country_id = Some("open-manager".to_string());
+        let includes_manager = game
+            .manager
+            .team_id
+            .as_ref()
+            .is_some_and(|team_id| division.participant_ids.contains(team_id));
+        if !includes_manager {
+            ofm_core::catchup::simulate_past_fixtures(
+                division,
+                &game.players,
+                game.clock.current_date,
+            );
+        }
+        division_ids.push(division.id.clone());
+    }
+    if division_ids.is_empty() {
+        return;
+    }
+    if !game.active_competition_ids.is_empty() {
+        for id in division_ids {
+            if !game.active_competition_ids.contains(&id) {
+                game.active_competition_ids.push(id);
+            }
+        }
+    }
+    if !game.active_region_ids.is_empty() && !game.active_region_ids.iter().any(|id| id == "europe")
+    {
+        game.active_region_ids.push("europe".to_string());
+    }
+    game.sync_legacy_league();
 }
 
 pub(super) fn infer_region_id(country_code: &str) -> String {
@@ -376,6 +420,7 @@ pub(super) fn brazil_state_region(city: &str) -> Option<&'static str> {
 mod tests {
     use super::*;
     use crate::commands::game::{start_date_for_year, testkit::nation_team};
+    use chrono::{TimeZone, Utc};
 
     #[test]
     fn select_continental_entrants_takes_top_clubs_per_region_by_reputation() {
@@ -551,10 +596,188 @@ mod tests {
         );
         assert_eq!(divisions[0].participant_ids[0], "club-00");
         assert_eq!(divisions[2].participant_ids[0], "club-40");
-        assert!(
+        assert!(divisions
+            .iter()
+            .all(|division| division.id.starts_with("open-manager-division-")));
+    }
+
+    #[test]
+    fn open_manager_96_clubs_form_one_five_tier_domestic_pyramid() {
+        let clock = GameClock::new(start_date_for_year(2032).unwrap());
+        let manager = Manager::new(
+            "mgr-user".to_string(),
+            "A".to_string(),
+            "B".to_string(),
+            "1980-01-01".to_string(),
+            "EN".to_string(),
+        );
+        let teams = (0..96)
+            .map(|index| {
+                let nation = if index % 2 == 0 { "EN" } else { "ES" };
+                nation_team(&format!("club-{index:02}"), nation, 1000 - index)
+            })
+            .collect::<Vec<_>>();
+        let game = Game::new(clock, manager, teams, vec![], vec![], vec![]);
+
+        let divisions = build_open_manager_pyramid(&game);
+
+        assert_eq!(
             divisions
                 .iter()
-                .all(|division| division.id.starts_with("open-manager-division-"))
+                .map(|d| d.participant_ids.len())
+                .collect::<Vec<_>>(),
+            vec![20, 20, 20, 20, 16]
+        );
+        assert!(divisions.iter().all(|division| {
+            division.scope == CompetitionScope::Domestic
+                && division.country_id.as_deref() == Some("open-manager")
+        }));
+        assert_eq!(
+            divisions
+                .iter()
+                .map(|division| division.priority)
+                .collect::<Vec<_>>(),
+            vec![1, 2, 3, 4, 5]
+        );
+    }
+
+    #[test]
+    fn open_manager_middle_division_exchanges_clubs_with_both_neighbours() {
+        let clock = GameClock::new(start_date_for_year(2032).unwrap());
+        let mut manager = Manager::new(
+            "mgr-user".to_string(),
+            "A".to_string(),
+            "B".to_string(),
+            "1980-01-01".to_string(),
+            "EN".to_string(),
+        );
+        manager.hire("club-00".to_string());
+        let teams = (0..96)
+            .map(|index| nation_team(&format!("club-{index:02}"), "EN", 1000 - index))
+            .collect::<Vec<_>>();
+        let mut game = Game::new(clock, manager, teams, vec![], vec![], vec![]);
+        game.competitions = build_open_manager_pyramid(&game);
+        let old_rosters = game
+            .competitions
+            .iter()
+            .map(|d| d.participant_ids.clone())
+            .collect::<Vec<_>>();
+
+        let after_last_fixture = Utc.with_ymd_and_hms(2033, 6, 1, 0, 0, 0).unwrap();
+        let early_season = Utc.with_ymd_and_hms(2032, 9, 1, 0, 0, 0).unwrap();
+        for division in game.competitions.iter_mut().skip(1) {
+            ofm_core::catchup::simulate_past_fixtures(division, &game.players, early_season);
+        }
+        game.clock.current_date = early_season;
+        ofm_core::catchup::simulate_past_fixtures(
+            &mut game.competitions[0],
+            &game.players,
+            after_last_fixture,
+        );
+        assert!(
+            !ofm_core::end_of_season::is_season_complete(&game),
+            "the top division must wait for the rest of its pyramid"
+        );
+        for division in game.competitions.iter_mut().skip(1) {
+            ofm_core::catchup::simulate_past_fixtures(division, &game.players, after_last_fixture);
+        }
+        game.clock.current_date = after_last_fixture;
+        assert!(ofm_core::end_of_season::is_season_complete(&game));
+        ofm_core::end_of_season::process_end_of_season(&mut game);
+
+        let rosters = game
+            .competitions
+            .iter()
+            .filter(|division| division.id.starts_with("open-manager-division-"))
+            .map(|division| division.participant_ids.clone())
+            .collect::<Vec<_>>();
+        let second = &rosters[1];
+        assert!(
+            second.iter().any(|club| old_rosters[0].contains(club)),
+            "second division receives relegated clubs"
+        );
+        assert!(
+            second.iter().any(|club| old_rosters[2].contains(club)),
+            "second division receives promoted clubs"
+        );
+        assert!(
+            old_rosters[1].iter().any(|club| rosters[0].contains(club)),
+            "second division sends clubs up"
+        );
+        assert!(
+            old_rosters[1].iter().any(|club| rosters[2].contains(club)),
+            "second division sends clubs down"
+        );
+        assert_eq!(
+            rosters.iter().map(Vec::len).collect::<Vec<_>>(),
+            vec![20, 20, 20, 20, 16]
+        );
+        let unique = rosters
+            .iter()
+            .flatten()
+            .collect::<std::collections::HashSet<_>>();
+        assert_eq!(unique.len(), 96);
+    }
+
+    #[test]
+    fn old_open_manager_save_activates_its_existing_divisions() {
+        let clock = GameClock::new(start_date_for_year(2026).unwrap());
+        let mut manager = Manager::new(
+            "mgr-user".to_string(),
+            "A".to_string(),
+            "B".to_string(),
+            "1980-01-01".to_string(),
+            "EN".to_string(),
+        );
+        manager.hire("club-20".to_string());
+        let teams = (0..40)
+            .map(|index| nation_team(&format!("club-{index:02}"), "EN", 1000 - index))
+            .collect::<Vec<_>>();
+        let mut game = Game::new(clock, manager, teams, vec![], vec![], vec![]);
+        game.competitions = build_open_manager_pyramid(&game);
+        for division in &mut game.competitions {
+            division.scope = CompetitionScope::Regional;
+            division.country_id = None;
+        }
+        game.active_competition_ids = vec![game.competitions[0].id.clone()];
+        game.clock.current_date = Utc.with_ymd_and_hms(2026, 7, 12, 0, 0, 0).unwrap();
+
+        upgrade_open_manager_pyramid(&mut game);
+
+        assert!(game.competitions.iter().all(|division| {
+            division.scope == CompetitionScope::Domestic
+                && division.country_id.as_deref() == Some("open-manager")
+                && game.active_competition_ids.contains(&division.id)
+        }));
+        let other_division = &game.competitions[0];
+        assert!(other_division
+            .fixtures
+            .iter()
+            .filter(|fixture| fixture.date.as_str() < "2026-07-12")
+            .all(|fixture| fixture.status == domain::league::FixtureStatus::Completed));
+        assert!(other_division
+            .standings
+            .iter()
+            .all(|entry| entry.played == 2));
+        assert!(other_division
+            .fixtures
+            .iter()
+            .filter(|fixture| fixture.date.as_str() >= "2026-07-12")
+            .all(|fixture| fixture.status == domain::league::FixtureStatus::Scheduled));
+        assert!(
+            game.competitions[1]
+                .fixtures
+                .iter()
+                .all(|fixture| fixture.status == domain::league::FixtureStatus::Scheduled),
+            "loading a save must not auto-play the manager's missed matches"
+        );
+        upgrade_open_manager_pyramid(&mut game);
+        assert!(
+            game.competitions[0]
+                .standings
+                .iter()
+                .all(|entry| entry.played == 2),
+            "loading again must not count recovered matches twice"
         );
     }
 }

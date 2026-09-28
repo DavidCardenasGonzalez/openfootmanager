@@ -187,6 +187,7 @@
     "digestEventUserNews": "Berita tentang klub atau para pemain",
     "digestEventTransferWindow": "Pembukaan jendela transfer atau hari batas akhir",
     "digestContinue": "Lanjutkan",
+    "digestAutoContinue": "Lanjutkan otomatis",
     "digestError": "Kesalahan simulasi"
   },
   "continueMenu": {
@@ -628,6 +629,18 @@
     "developing": "Berkembang"
   },
   "squad": {
+    "styleFitShort": {
+      "strong": "Kuat",
+      "good": "Baik",
+      "risky": "Berisiko"
+    },
+    "views": {
+      "general": "Umum",
+      "statistics": "Statistik",
+      "finances": "Keuangan"
+    },
+    "playerDetails": "Detail pemain",
+    "viewControls": "Tampilan skuad",
     "title": "Skuad {{team}}",
     "playerCount": "{{count}} Pemain",
     "noPlayers": "Tidak ada pemain ditemukan dalam skuad.",
@@ -1877,6 +1890,8 @@
     "cinematicPause": "Pertandingan dijeda. Lanjutkan saat kamu siap.",
     "matchView": "Pertandingan",
     "visualReconstruction": "Gerakan ilustratif berdasarkan kejadian pertandingan langsung.",
+    "showPlayerNames": "Tampilkan nama pemain",
+    "showPlayerRatings": "Tampilkan penilaian langsung",
     "events": "Peristiwa",
     "stats": "Statistik",
     "lineups": "Susunan Pemain",
@@ -1906,6 +1921,9 @@
     "substitutions": "Pergantian Pemain",
     "substitutionsTitle": "Pergantian Pemain",
     "subsUsed": "{{used}}/{{max}} digunakan",
+    "selectedToLeave": "Pemain keluar: {{count}}",
+    "selectedToEnter": "Pemain masuk: {{count}}",
+    "pendingSubstitutions": "Dipilih: {{off}} keluar, {{on}} masuk · {{max}} tersedia",
     "allSubsUsed": "Semua pergantian pemain telah digunakan",
     "selectPlayerOff": "Pilih pemain yang akan diganti",
     "takingOff": "Ditarik keluar: {{name}}",
@@ -3092,7 +3110,7 @@
         }
       },
       "trainingInjury": {
-        "subject": "Cedera — {{player}} ({{injury}})",
+        "subject": "Cedera — {{player}} ({{injury}}) — {{days}} hari",
         "body0": "Kabar buruk dari lapangan latihan. {{player}} mengalami {{injury}} selama sesi hari ini.\n\nTim medis memperkirakan {{days}} hari di luar lapangan. Kami akan memantau pemulihan dengan saksama.",
         "body1": "Sayangnya, {{player}} mengalami {{injury}} dalam latihan hari ini.\n\nPenilaian awal: absen sekitar {{days}} hari. Kami akan terus memberi kabar perkembangan mereka."
       },
@@ -4042,5 +4060,31 @@
   "generation": {
     "title": "Pembuatan & Penyelesaian",
     "coverage": "Paket kamu mencakup"
+  },
+  "academy": {
+    "title": "Generasi akademi baru",
+    "level": "Akademi tingkat {{level}}",
+    "description": "Kandidat belum masuk skuad. Pilih siapa yang dikembangkan; setiap kontrak memakai satu tempat skuad dan kuota musim.",
+    "capacity": "Sisa kontrak: {{remaining}}/{{limit}} · Skuad: {{squad}}/{{maximum}}",
+    "deadline": "Putuskan sebelum {{date}}",
+    "nextGeneration": "Generasi berikutnya: {{candidates}} kandidat, maksimal {{signings}} kontrak.",
+    "upgradeHint": "Fasilitas akademi meningkatkan generasi mendatang. Latihan dan menit bermain membantu perkembangan saat ini.",
+    "upgrade": "Tingkatkan akademi ({{cost}})",
+    "maxLevel": "Tingkat maksimal",
+    "empty": "Tidak ada kandidat tersedia. Generasi baru akan datang musim depan.",
+    "potentialEstimate": "Perkiraan potensi",
+    "costs": "Biaya pembinaan: {{fee}} · Gaji tahunan: {{wage}}",
+    "sign": "Rekrut",
+    "reject": "Tolak",
+    "quotaError": "Semua jatah kontrak akademi musim ini sudah digunakan.",
+    "rosterError": "Skuadmu penuh. Kosongkan satu tempat sebelum merekrut kandidat.",
+    "expiredError": "Generasi ini tidak lagi tersedia.",
+    "wageError": "Kontrak ini akan melebihi anggaran gaji.",
+    "cashError": "Uang tunai tidak cukup untuk membayar biaya pembinaan.",
+    "candidateError": "Kandidat ini tidak lagi tersedia.",
+    "scoutError": "Pemandu bakat sudah menemukan ketiga kandidat tambahan musim ini.",
+    "maxLevelError": "Fasilitas ini sudah mencapai level maksimum.",
+    "upgradeError": "Akademi dapat ditingkatkan sekali per musim.",
+    "messageBody": "Akademi memiliki {{count}} kandidat. Kamu dapat merekrut hingga {{signings}} musim ini. Tinjau laporan mereka dan pilih siapa yang dikembangkan."
   }
 }

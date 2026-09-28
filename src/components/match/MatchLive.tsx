@@ -19,7 +19,7 @@ import { MatchCinematic, isCinematicEvent } from "./MatchCinematic";
 import { LiveMatchView } from "./LiveMatchView";
 import { LIVE_SPEED_MS } from "./livePresentation";
 import MatchScreenLayout from "./MatchScreenLayout";
-import { SubPanel } from "./SubPanel";
+import { SubPanel, type PendingSubstitution } from "./SubPanel";
 import {
   Play,
   Pause,
@@ -231,18 +231,21 @@ export default function MatchLive({
   }, [importantEvents.length]);
 
   // Apply substitution
-  const handleSubstitution = async (playerOffId: string, playerOnId: string) => {
+  const handleSubstitution = async (changes: PendingSubstitution[], keepOpen = false) => {
     if (!userSide || isSpectator) return;
     try {
-      const snap = await invoke<MatchSnapshot>("apply_match_command", {
-        command: {
-          Substitute: { side: userSide, player_off_id: playerOffId, player_on_id: playerOnId },
-        },
-      });
-      onSnapshotUpdate(snap);
-      setShowSubPanel(false);
+      for (const { offId, onId } of changes) {
+        const snap = await invoke<MatchSnapshot>("apply_match_command", {
+          command: {
+            Substitute: { side: userSide, player_off_id: offId, player_on_id: onId },
+          },
+        });
+        onSnapshotUpdate(snap);
+      }
+      if (!keepOpen) setShowSubPanel(false);
     } catch (err) {
       console.error("Substitution failed:", err);
+      throw err;
     }
   };
 

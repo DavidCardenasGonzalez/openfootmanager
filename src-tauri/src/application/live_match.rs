@@ -223,6 +223,15 @@ pub fn start_live_match(
                         game.sync_legacy_league();
                     }
                 }
+                let competition_index = game.competitions.iter()
+                    .position(|competition| competition.id == session.competition_id)
+                    .unwrap_or(game.competitions.len());
+                ofm_core::turn::simulate_other_competitions_with_capture(
+                    game,
+                    &today,
+                    competition_index,
+                    &mut |capture| captures.push(capture),
+                );
             } else if swapped_league && !game.competitions.is_empty() {
                 // The swap now persists (update_game mutates in place); restore
                 // the legacy mirror when no simulation ran to do it for us.

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
 import type {
@@ -219,7 +219,78 @@ describe("SquadTab", () => {
     );
   }
 
-  it("renders only the full roster table and not the moved tactics controls", () => {
+  it("opens the first visible player's detail and selects rows without navigating away", () => {
+    const onSelectPlayer = vi.fn();
+    renderSquadTab(makeGameState(), { onSelectPlayer });
+    const details = screen.getByRole("region", { name: "squad.playerDetails" });
+    expect(within(details).getByRole("heading", { name: "Player gk1" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "squad.views.statistics" }));
+    expect(within(details).getByRole("heading", { name: "Player gk1" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "squad.views.general" }));
+    fireEvent.click(screen.getByRole("button", { name: "Bench DEF" }));
+    expect(within(details).getByRole("heading", { name: "Player d5" })).toBeInTheDocument();
+    expect(onSelectPlayer).not.toHaveBeenCalled();
+    fireEvent.click(within(details).getByRole("button", { name: "squad.viewProfile" }));
+    expect(onSelectPlayer).toHaveBeenCalledWith("d5");
+  });
+
+  it("changes table columns with the view and preserves the selected player", () => {
+    renderSquadTab(makeGameState());
+    fireEvent.click(screen.getByRole("button", { name: "Bench DEF" }));
+    fireEvent.click(screen.getByRole("button", { name: "squad.views.statistics" }));
+    expect(screen.getByRole("columnheader", { name: /playerProfile.goals/ })).toBeInTheDocument();
+    expect(
+      screen.queryByRole("columnheader", { name: /common.condition/ }),
+    ).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "squad.views.finances" }));
+    expect(screen.getByRole("columnheader", { name: /finances.wagePerWeek/ })).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: /finances.marketValue/ })).toBeInTheDocument();
+    expect(
+      within(screen.getByRole("region", { name: "squad.playerDetails" })).getByRole("heading", {
+        name: "Player d5",
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("sorts season statistics numerically and falls back to the first filtered player", () => {
+    const game = makeGameState();
+    game.players[0].stats.goals = 2;
+    game.players[1].stats.goals = 12;
+    renderSquadTab(game);
+    fireEvent.click(screen.getByRole("button", { name: "squad.views.statistics" }));
+    fireEvent.click(screen.getByRole("button", { name: "playerProfile.goals" }));
+    const rows = within(screen.getByRole("table")).getAllByRole("row");
+    expect(rows[1]).toHaveTextContent("D1");
+    fireEvent.click(screen.getByRole("button", { name: "D1" }));
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "Bench DEF" } });
+    expect(
+      within(screen.getByRole("region", { name: "squad.playerDetails" })).getByRole("heading", {
+        name: "Player d5",
+      }),
+    ).toBeInTheDocument();
+    fireEvent.change(screen.getByRole("textbox"), { target: { value: "nonexistent" } });
+    expect(screen.queryByRole("region", { name: "squad.playerDetails" })).not.toBeInTheDocument();
+  });
+
+  it("sorts finances by numeric value and keeps each view's ordering", () => {
+    const game = makeGameState();
+    game.players[0].market_value = 900;
+    game.players[1].market_value = 1200000;
+    renderSquadTab(game);
+    fireEvent.click(screen.getByRole("button", { name: "squad.views.finances" }));
+    fireEvent.click(screen.getByRole("button", { name: "finances.marketValue" }));
+    expect(within(screen.getByRole("table")).getAllByRole("row")[1]).toHaveTextContent("D1");
+    fireEvent.click(screen.getByRole("button", { name: "squad.views.statistics" }));
+    fireEvent.click(screen.getByRole("button", { name: "playerProfile.goals" }));
+    fireEvent.click(screen.getByRole("button", { name: "squad.views.finances" }));
+    expect(screen.getByRole("columnheader", { name: "finances.marketValue" })).toHaveAttribute(
+      "aria-sort",
+      "descending",
+    );
+    expect(within(screen.getByRole("table")).getAllByRole("row")[1]).toHaveTextContent("D1");
+  });
+
+  it("shows roster planning information alongside the selected player's details", () => {
     renderSquadTab(makeGameState());
 
     expect(screen.getByText("squad.title")).toBeInTheDocument();
@@ -229,7 +300,7 @@ describe("SquadTab", () => {
     expect(screen.queryByTestId("pitch-slot-1")).not.toBeInTheDocument();
     expect(screen.queryByText("squad.planStatus")).not.toBeInTheDocument();
     expect(screen.getByText("squad.formationFit")).toBeInTheDocument();
-    expect(screen.getByText("squad.styleFit")).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: "tactics.playStyle" })).toBeInTheDocument();
     expect(screen.getByText("squad.traits")).toBeInTheDocument();
     expect(screen.getByText(/squad.currentPlan/)).toBeInTheDocument();
     expect(screen.getByText("squad.coverageTitle")).toBeInTheDocument();

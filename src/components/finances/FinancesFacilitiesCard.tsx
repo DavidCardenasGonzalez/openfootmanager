@@ -40,7 +40,8 @@ export default function FinancesFacilitiesCard({
             const level = facilities[facility.levelKey];
             const nextUpgradeCost = getFacilityUpgradeCost(level);
             const canAffordUpgrade = teamFinance >= nextUpgradeCost;
-            const canUpgrade = canAffordUpgrade && !financeBlockReason;
+            const atMaximum = facility.id === "Training" && level >= 5;
+            const canUpgrade = canAffordUpgrade && !financeBlockReason && !atMaximum;
             const isLoading = actionLoading === facility.id;
             const upgradeReason = financeBlockReason
               ? resolveBackendError(financeBlockReason)
@@ -76,7 +77,7 @@ export default function FinancesFacilitiesCard({
                     onClick={() => onUpgrade(facility.id)}
                     size="sm"
                   >
-                    {t("finances.upgradeFacility")}
+                    {atMaximum ? t("academy.maxLevel") : t("finances.upgradeFacility")}
                   </Button>
                   {!canAffordUpgrade && !upgradeReason && (
                     <p className="text-xs text-red-500 dark:text-red-400">

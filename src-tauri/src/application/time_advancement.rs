@@ -170,6 +170,12 @@ pub fn advance_time_with_mode(
                             game.sync_legacy_league();
                         }
                     }
+                    ofm_core::turn::simulate_other_competitions_with_capture(
+                        game,
+                        &today,
+                        competition_index,
+                        &mut |capture| captures.push(capture),
+                    );
                     let round_summary =
                         round_context
                             .as_ref()
@@ -230,6 +236,12 @@ pub fn advance_time_with_mode(
                             game.sync_legacy_league();
                         }
                     }
+                    ofm_core::turn::simulate_other_competitions_with_capture(
+                        game,
+                        &today,
+                        competition_index,
+                        &mut |capture| captures.push(capture),
+                    );
 
                     let round_summary =
                         round_context

@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
 import MatchLive from "./MatchLive";
@@ -14,6 +14,13 @@ vi.mock("./LiveMatchView", () => ({
 }));
 vi.mock("../ui", () => ({
   Badge: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
+  Select: ({
+    children,
+    selectSize: _selectSize,
+    ...props
+  }: React.SelectHTMLAttributes<HTMLSelectElement> & { selectSize?: string }) => (
+    <select {...props}>{children}</select>
+  ),
   TeamLogo: () => null,
   ThemeToggle: () => null,
 }));
@@ -109,6 +116,85 @@ function createSnapshot(): MatchSnapshot {
 }
 
 describe("MatchLive presentation", () => {
+  it("applies selected substitutions in order before closing the panel", async () => {
+    vi.mocked(invoke).mockClear().mockResolvedValue(createSnapshot());
+    const onSnapshotUpdate = vi.fn();
+    render(
+      <MatchLive
+        snapshot={createSnapshot()}
+        gameState={{ teams: [], players: [] } as unknown as GameStateData}
+        userSide="Home"
+        isSpectator={false}
+        importantEvents={[]}
+        onSnapshotUpdate={onSnapshotUpdate}
+        onImportantEvent={vi.fn()}
+        onHalfTime={vi.fn()}
+        onFullTime={vi.fn()}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /match.subs/ }));
+    fireEvent.click(screen.getByTestId("sub-panel-off-starter-1"));
+    fireEvent.click(screen.getByTestId("sub-panel-off-starter-2"));
+    fireEvent.click(screen.getByTestId("sub-panel-bench-bench-1"));
+    fireEvent.click(screen.getByTestId("sub-panel-bench-bench-2"));
+    fireEvent.click(screen.getByRole("button", { name: "match.confirmSubstitution" }));
+    await waitFor(() =>
+      expect(screen.queryByTestId("sub-panel-off-starter-1")).not.toBeInTheDocument(),
+    );
+    expect(vi.mocked(invoke).mock.calls.filter(([name]) => name === "apply_match_command")).toEqual(
+      [
+        [
+          "apply_match_command",
+          {
+            command: {
+              Substitute: { side: "Home", player_off_id: "starter-1", player_on_id: "bench-1" },
+            },
+          },
+        ],
+        [
+          "apply_match_command",
+          {
+            command: {
+              Substitute: { side: "Home", player_off_id: "starter-2", player_on_id: "bench-2" },
+            },
+          },
+        ],
+      ],
+    );
+    expect(onSnapshotUpdate).toHaveBeenCalledTimes(2);
+    vi.mocked(invoke).mockReset();
+  });
+
+  it("applies a dropped replacement without closing the panel", async () => {
+    vi.mocked(invoke).mockClear().mockResolvedValue(createSnapshot());
+    render(
+      <MatchLive
+        snapshot={createSnapshot()}
+        gameState={{ teams: [], players: [] } as unknown as GameStateData}
+        userSide="Home"
+        isSpectator={false}
+        importantEvents={[]}
+        onSnapshotUpdate={vi.fn()}
+        onImportantEvent={vi.fn()}
+        onHalfTime={vi.fn()}
+        onFullTime={vi.fn()}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /match.subs/ }));
+    fireEvent.drop(screen.getByTestId("sub-panel-off-starter-1"), {
+      dataTransfer: { getData: () => "bench-1" },
+    });
+    await waitFor(() =>
+      expect(invoke).toHaveBeenCalledWith("apply_match_command", {
+        command: {
+          Substitute: { side: "Home", player_off_id: "starter-1", player_on_id: "bench-1" },
+        },
+      }),
+    );
+    expect(screen.getByTestId("sub-panel-off-starter-1")).toBeInTheDocument();
+    vi.mocked(invoke).mockReset();
+  });
+
   it("opens the pitch by default and keeps events and other panels accessible without replacing the viewer", () => {
     render(
       <MatchLive

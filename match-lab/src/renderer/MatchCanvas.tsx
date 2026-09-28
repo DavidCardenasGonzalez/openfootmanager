@@ -7,17 +7,33 @@ import { drawForeground, drawStadium } from "./stadiumRenderer";
 import { palette } from "./palette";
 import { actionCamera } from "./actionCamera";
 import { project, sortByDepth, viewport } from "./projection";
+export interface PlayerLabel {
+  name?: string;
+  rating?: number;
+}
 interface Props {
   sample: RenderSample;
   showNumbers: boolean;
   showCoordinates: boolean;
   label: string;
   goalLabel: string;
+  playerLabels?: ReadonlyMap<string, PlayerLabel>;
 }
-export function MatchCanvas({ sample, showNumbers, showCoordinates, label, goalLabel }: Props) {
+export function MatchCanvas({
+  sample,
+  showNumbers,
+  showCoordinates,
+  label,
+  goalLabel,
+  playerLabels,
+}: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
   const background = useRef<HTMLCanvasElement | null>(null);
   const foreground = useRef<HTMLCanvasElement | null>(null);
+  const framing = actionCamera(
+    sample.frame.ball,
+    !showCoordinates && !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
+  );
   useEffect(() => {
     const ctx = ref.current?.getContext("2d");
     if (!ctx) return;
@@ -42,10 +58,6 @@ export function MatchCanvas({ sample, showNumbers, showCoordinates, label, goalL
     ctx.scale(1 / viewport.pixelScale, 1 / viewport.pixelScale);
     ctx.imageSmoothingEnabled = false;
     ctx.save();
-    const framing = actionCamera(
-      sample.frame.ball,
-      !showCoordinates && !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
-    );
     ctx.translate(framing.x, framing.y);
     ctx.scale(framing.zoom, framing.zoom);
     ctx.drawImage(background.current, 0, 0, viewport.width, viewport.height);
@@ -109,17 +121,48 @@ export function MatchCanvas({ sample, showNumbers, showCoordinates, label, goalL
       ctx.fillText(goalLabel.toUpperCase(), viewport.width / 2, 71, 310);
     }
     ctx.restore();
-  }, [sample, showNumbers, showCoordinates, goalLabel]);
+  }, [sample, showNumbers, showCoordinates, goalLabel, framing.x, framing.y, framing.zoom]);
   return (
-    <canvas
-      ref={ref}
-      width={viewport.width / viewport.pixelScale}
-      height={viewport.height / viewport.pixelScale}
-      aria-label={label}
-      role="img"
-      className="block h-auto w-full [image-rendering:pixelated]"
-    >
-      {label}
-    </canvas>
+    <div className="relative overflow-hidden">
+      <canvas
+        ref={ref}
+        width={viewport.width / viewport.pixelScale}
+        height={viewport.height / viewport.pixelScale}
+        aria-label={label}
+        role="img"
+        className="block h-auto w-full [image-rendering:pixelated]"
+      >
+        {label}
+      </canvas>
+      {sample.frame.players.map((player) => {
+        const info = playerLabels?.get(player.id);
+        if (!info) return null;
+        const point = project(player.x, player.y);
+        const left = `${((point.x * framing.zoom + framing.x) / viewport.width) * 100}%`;
+        const top = (offset: number) =>
+          `${(((point.y + offset) * framing.zoom + framing.y) / viewport.height) * 100}%`;
+        return (
+          <div key={player.id} className="pointer-events-none">
+            {info.name && (
+              <span
+                title={info.name}
+                className="pointer-events-auto absolute max-w-24 -translate-x-1/2 -translate-y-full truncate rounded bg-navy-900/90 px-1.5 py-0.5 text-[10px] font-semibold leading-tight text-white dark:bg-navy-900/90 dark:text-white sm:max-w-32 sm:text-xs"
+                style={{ left, top: top(-70) }}
+              >
+                {info.name}
+              </span>
+            )}
+            {info.rating !== undefined && (
+              <span
+                className="absolute -translate-x-1/2 rounded bg-navy-900/90 px-1.5 py-0.5 text-[10px] font-bold leading-tight text-white tabular-nums dark:bg-navy-900/90 dark:text-white sm:text-xs"
+                style={{ left, top: top(8) }}
+              >
+                {info.rating.toFixed(1)}
+              </span>
+            )}
+          </div>
+        );
+      })}
+    </div>
   );
 }

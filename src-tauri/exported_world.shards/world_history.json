@@ -1,0 +1,612 @@
+{
+  "rivalries": [],
+  "season_awards": [],
+  "world_cup_champions": [],
+  "national_team_ranking": [
+    {
+      "nation_code": "CI",
+      "points": 1671.748533115338
+    },
+    {
+      "nation_code": "CM",
+      "points": 1643.8543119331612
+    },
+    {
+      "nation_code": "DZ",
+      "points": 1674.0725409172967
+    },
+    {
+      "nation_code": "AE",
+      "points": 1639.562294622893
+    },
+    {
+      "nation_code": "CN",
+      "points": 1644.9607809786905
+    },
+    {
+      "nation_code": "CR",
+      "points": 1601.6834723992313
+    },
+    {
+      "nation_code": "France",
+      "points": 1854.5454545454545
+    },
+    {
+      "nation_code": "Brazil",
+      "points": 1850.0
+    },
+    {
+      "nation_code": "ENG",
+      "points": 1827.7521971744702
+    },
+    {
+      "nation_code": "Germany",
+      "points": 1845.4545454545455
+    },
+    {
+      "nation_code": "Spain",
+      "points": 1843.6363636363635
+    },
+    {
+      "nation_code": "Argentina",
+      "points": 1830.0
+    },
+    {
+      "nation_code": "Italy",
+      "points": 1830.0
+    },
+    {
+      "nation_code": "Netherlands",
+      "points": 1828.181818181818
+    },
+    {
+      "nation_code": "Portugal",
+      "points": 1822.7272727272723
+    },
+    {
+      "nation_code": "Belgium",
+      "points": 1814.5454545454545
+    },
+    {
+      "nation_code": "Switzerland",
+      "points": 1800.909090909091
+    },
+    {
+      "nation_code": "Egypt",
+      "points": 1800.0
+    },
+    {
+      "nation_code": "New Zealand",
+      "points": 1800.0
+    },
+    {
+      "nation_code": "Sweden",
+      "points": 1794.5454545454545
+    },
+    {
+      "nation_code": "Nigeria",
+      "points": 1790.909090909091
+    },
+    {
+      "nation_code": "Norway",
+      "points": 1788.181818181818
+    },
+    {
+      "nation_code": "Croatia",
+      "points": 1787.2727272727277
+    },
+    {
+      "nation_code": "Austria",
+      "points": 1783.6363636363635
+    },
+    {
+      "nation_code": "Côte d'Ivoire",
+      "points": 1780.0
+    },
+    {
+      "nation_code": "Jamaica",
+      "points": 1780.0
+    },
+    {
+      "nation_code": "Morocco",
+      "points": 1780.0
+    },
+    {
+      "nation_code": "Mozambique",
+      "points": 1780.0
+    },
+    {
+      "nation_code": "Senegal",
+      "points": 1780.0
+    },
+    {
+      "nation_code": "Uzbekistan",
+      "points": 1780.0
+    },
+    {
+      "nation_code": "Denmark",
+      "points": 1779.090909090909
+    },
+    {
+      "nation_code": "Serbia",
+      "points": 1779.090909090909
+    },
+    {
+      "nation_code": "Poland",
+      "points": 1778.181818181818
+    },
+    {
+      "nation_code": "United States",
+      "points": 1778.181818181818
+    },
+    {
+      "nation_code": "Uruguay",
+      "points": 1776.3636363636365
+    },
+    {
+      "nation_code": "Colombia",
+      "points": 1774.5454545454545
+    },
+    {
+      "nation_code": "Japan",
+      "points": 1773.6363636363635
+    },
+    {
+      "nation_code": "Ecuador",
+      "points": 1771.428571428571
+    },
+    {
+      "nation_code": "Jordan",
+      "points": 1770.0
+    },
+    {
+      "nation_code": "Ghana",
+      "points": 1765.4545454545455
+    },
+    {
+      "nation_code": "Algeria",
+      "points": 1760.0
+    },
+    {
+      "nation_code": "Burundi",
+      "points": 1760.0
+    },
+    {
+      "nation_code": "CA",
+      "points": 1626.2962634637558
+    },
+    {
+      "nation_code": "AU",
+      "points": 1695.6389584995827
+    },
+    {
+      "nation_code": "AR",
+      "points": 1616.988456598206
+    },
+    {
+      "nation_code": "BO",
+      "points": 1645.1975479696891
+    },
+    {
+      "nation_code": "BR",
+      "points": 1701.996355031354
+    },
+    {
+      "nation_code": "US",
+      "points": 1648.5224477883248
+    },
+    {
+      "nation_code": "SWITZERLAND",
+      "points": 1033.5839255429328
+    },
+    {
+      "nation_code": "BURUNDI",
+      "points": 990.7576327929619
+    },
+    {
+      "nation_code": "MOROCCO",
+      "points": 999.3807418458842
+    },
+    {
+      "nation_code": "UNITED STATES",
+      "points": 983.1715698840503
+    },
+    {
+      "nation_code": "NEW ZEALAND",
+      "points": 1017.7616516803779
+    },
+    {
+      "nation_code": "GHANA",
+      "points": 1022.3515192209337
+    },
+    {
+      "nation_code": "EGYPT",
+      "points": 1055.9902426599606
+    },
+    {
+      "nation_code": "POLAND",
+      "points": 994.7447317766014
+    },
+    {
+      "nation_code": "ARGENTINA",
+      "points": 981.6160332339073
+    },
+    {
+      "nation_code": "NIGERIA",
+      "points": 993.6633307285763
+    },
+    {
+      "nation_code": "SERBIA",
+      "points": 1061.807907998963
+    },
+    {
+      "nation_code": "SWEDEN",
+      "points": 998.9183499255323
+    },
+    {
+      "nation_code": "ECUADOR",
+      "points": 979.0
+    },
+    {
+      "nation_code": "JORDAN",
+      "points": 993.6770230815262
+    },
+    {
+      "nation_code": "AUSTRIA",
+      "points": 1013.6288786591947
+    },
+    {
+      "nation_code": "ALGERIA",
+      "points": 1019.9265921679272
+    },
+    {
+      "nation_code": "MOZAMBIQUE",
+      "points": 1034.5216160692485
+    },
+    {
+      "nation_code": "URUGUAY",
+      "points": 1054.587392128901
+    },
+    {
+      "nation_code": "PORTUGAL",
+      "points": 1061.5131494264922
+    },
+    {
+      "nation_code": "CROATIA",
+      "points": 1009.4971401514916
+    },
+    {
+      "nation_code": "COLOMBIA",
+      "points": 1029.4531779114725
+    },
+    {
+      "nation_code": "SPAIN",
+      "points": 1033.5048612748963
+    },
+    {
+      "nation_code": "NETHERLANDS",
+      "points": 1026.9985592431694
+    },
+    {
+      "nation_code": "CÔTE D'IVOIRE",
+      "points": 1008.8692349344778
+    },
+    {
+      "nation_code": "GERMANY",
+      "points": 1057.3229131803205
+    },
+    {
+      "nation_code": "JAMAICA",
+      "points": 1016.7577660492688
+    },
+    {
+      "nation_code": "DENMARK",
+      "points": 1027.870213763869
+    },
+    {
+      "nation_code": "BELGIUM",
+      "points": 1028.253038768206
+    },
+    {
+      "nation_code": "FRANCE",
+      "points": 1066.5395825943729
+    },
+    {
+      "nation_code": "BRAZIL",
+      "points": 1014.977388229268
+    },
+    {
+      "nation_code": "UZBEKISTAN",
+      "points": 1027.8302196566103
+    },
+    {
+      "nation_code": "NORWAY",
+      "points": 1029.8119733490466
+    },
+    {
+      "nation_code": "ITALY",
+      "points": 1033.053925236077
+    },
+    {
+      "nation_code": "JAPAN",
+      "points": 1013.6596045949939
+    },
+    {
+      "nation_code": "AUSTRALIA",
+      "points": 1000.0
+    },
+    {
+      "nation_code": "MALAYSIA",
+      "points": 1000.0
+    },
+    {
+      "nation_code": "CAMEROON",
+      "points": 1000.6145959580172
+    },
+    {
+      "nation_code": "SENEGAL",
+      "points": 1001.2716226051336
+    },
+    {
+      "nation_code": "ROMANIA",
+      "points": 984.9989797224629
+    },
+    {
+      "nation_code": "MALI",
+      "points": 973.5425890738765
+    },
+    {
+      "nation_code": "CABO VERDE",
+      "points": 1014.4406743762612
+    },
+    {
+      "nation_code": "CANADA",
+      "points": 1014.5226273334426
+    },
+    {
+      "nation_code": "CENTRAL AFRICAN REPUBLIC",
+      "points": 1035.1761711505826
+    },
+    {
+      "nation_code": "COMOROS",
+      "points": 979.0
+    },
+    {
+      "nation_code": "LIBYA",
+      "points": 1021.0
+    },
+    {
+      "nation_code": "CYPRUS",
+      "points": 986.8989684757613
+    },
+    {
+      "nation_code": "ANGOLA",
+      "points": 1019.464682670774
+    },
+    {
+      "nation_code": "DOMINICAN REPUBLIC",
+      "points": 976.0
+    },
+    {
+      "nation_code": "GUINEA-BISSAU",
+      "points": 1024.0
+    },
+    {
+      "nation_code": "ISRAEL",
+      "points": 1021.0
+    },
+    {
+      "nation_code": "RUSSIA",
+      "points": 986.8398118467242
+    },
+    {
+      "nation_code": "FINLAND",
+      "points": 985.0
+    },
+    {
+      "nation_code": "ARMENIA",
+      "points": 1015.0
+    },
+    {
+      "nation_code": "BOSNIA AND HERZEGOVINA",
+      "points": 981.9095701455126
+    },
+    {
+      "nation_code": "GABON",
+      "points": 979.0
+    },
+    {
+      "nation_code": "KOREA REPUBLIC",
+      "points": 1021.0
+    },
+    {
+      "nation_code": "GAMBIA",
+      "points": 985.5804206221145
+    },
+    {
+      "nation_code": "HAITI",
+      "points": 1000.0
+    },
+    {
+      "nation_code": "CZECHIA",
+      "points": 1000.0
+    },
+    {
+      "nation_code": "HUNGARY",
+      "points": 1000.0
+    },
+    {
+      "nation_code": "ESTONIA",
+      "points": 1000.0
+    },
+    {
+      "nation_code": "ICELAND",
+      "points": 982.0
+    },
+    {
+      "nation_code": "MEXICO",
+      "points": 1018.0
+    },
+    {
+      "nation_code": "INDONESIA",
+      "points": 1018.695992067775
+    },
+    {
+      "nation_code": "IE",
+      "points": 1015.0
+    },
+    {
+      "nation_code": "BULGARIA",
+      "points": 985.0
+    },
+    {
+      "nation_code": "GEORGIA",
+      "points": 985.8137846973183
+    },
+    {
+      "nation_code": "SCO",
+      "points": 999.1350263429875
+    },
+    {
+      "nation_code": "PARAGUAY",
+      "points": 1000.7554673220827
+    },
+    {
+      "nation_code": "KOSOVO",
+      "points": 1035.3108325509618
+    },
+    {
+      "nation_code": "LUXEMBOURG",
+      "points": 981.1526422226686
+    },
+    {
+      "nation_code": "MOLDOVA",
+      "points": 1029.3267043000592
+    },
+    {
+      "nation_code": "MONTENEGRO",
+      "points": 979.0
+    },
+    {
+      "nation_code": "HONDURAS",
+      "points": 1021.0
+    },
+    {
+      "nation_code": "CONGO DR",
+      "points": 999.9720581625813
+    },
+    {
+      "nation_code": "BURKINA FASO",
+      "points": 985.8797884899185
+    },
+    {
+      "nation_code": "PERU",
+      "points": 1016.8845762492
+    },
+    {
+      "nation_code": "NIGER",
+      "points": 979.0
+    },
+    {
+      "nation_code": "LITHUANIA",
+      "points": 1021.0
+    },
+    {
+      "nation_code": "NORTH MACEDONIA",
+      "points": 1000.0
+    },
+    {
+      "nation_code": "PANAMA",
+      "points": 1000.0
+    },
+    {
+      "nation_code": "NIR",
+      "points": 1015.0
+    },
+    {
+      "nation_code": "BENIN",
+      "points": 985.0
+    },
+    {
+      "nation_code": "CHILE",
+      "points": 1020.5932329412977
+    },
+    {
+      "nation_code": "SIERRA LEONE",
+      "points": 976.0
+    },
+    {
+      "nation_code": "ALBANIA",
+      "points": 1024.0
+    },
+    {
+      "nation_code": "SLOVAKIA",
+      "points": 985.57861884203
+    },
+    {
+      "nation_code": "SOUTH AFRICA",
+      "points": 1015.0
+    },
+    {
+      "nation_code": "GUINEA",
+      "points": 985.0
+    },
+    {
+      "nation_code": "SLOVENIA",
+      "points": 1001.5099944689193
+    },
+    {
+      "nation_code": "TANZANIA",
+      "points": 985.0
+    },
+    {
+      "nation_code": "SAUDI ARABIA",
+      "points": 1015.0
+    },
+    {
+      "nation_code": "TUNISIA",
+      "points": 1015.0
+    },
+    {
+      "nation_code": "EQUATORIAL GUINEA",
+      "points": 985.0
+    },
+    {
+      "nation_code": "TÜRKIYE",
+      "points": 1015.3908102223058
+    },
+    {
+      "nation_code": "UKRAINE",
+      "points": 1000.0
+    },
+    {
+      "nation_code": "TOGO",
+      "points": 1000.0
+    },
+    {
+      "nation_code": "GREECE",
+      "points": 1035.2749412311782
+    },
+    {
+      "nation_code": "VENEZUELA",
+      "points": 1015.0
+    },
+    {
+      "nation_code": "SURINAME",
+      "points": 985.0
+    },
+    {
+      "nation_code": "WAL",
+      "points": 1001.0069494727301
+    },
+    {
+      "nation_code": "ZIMBABWE",
+      "points": 1000.0
+    },
+    {
+      "nation_code": "ZAMBIA",
+      "points": 1000.0
+    }
+  ],
+  "world_cup_hosts": []
+}

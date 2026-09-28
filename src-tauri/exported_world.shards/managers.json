@@ -1,0 +1,5042 @@
+[
+  {
+    "id": "mgr_user",
+    "first_name": "Dad",
+    "last_name": "Dad",
+    "date_of_birth": "1991-10-08",
+    "nationality": "MX",
+    "football_nation": "MX",
+    "birth_country": "MX",
+    "reputation": 500,
+    "satisfaction": 36,
+    "fan_approval": 24,
+    "team_id": "top5-club-110062-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-110062-0",
+        "team_name": "Girona FC",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-243-0",
+    "first_name": "Hugo",
+    "last_name": "Gil",
+    "date_of_birth": "1986-01-04",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 215,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": "top5-club-243-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-243-0",
+        "team_name": "Real Madrid",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-21-0",
+    "first_name": "Tim",
+    "last_name": "Van Dam",
+    "date_of_birth": "1974-01-07",
+    "nationality": "NL",
+    "football_nation": "NL",
+    "birth_country": "NL",
+    "reputation": 664,
+    "satisfaction": 36,
+    "fan_approval": 50,
+    "team_id": "top5-club-21-0",
+    "warning_stage": 2,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-21-0",
+        "team_name": "FC Bayern München",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-73-0",
+    "first_name": "Gonzalo",
+    "last_name": "Flores",
+    "date_of_birth": "1965-04-20",
+    "nationality": "UY",
+    "football_nation": "UY",
+    "birth_country": "UY",
+    "reputation": 580,
+    "satisfaction": 43,
+    "fan_approval": 50,
+    "team_id": "top5-club-73-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-73-0",
+        "team_name": "Paris Saint-Germain",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-44-0",
+    "first_name": "Roberto",
+    "last_name": "Marino",
+    "date_of_birth": "1973-05-25",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 355,
+    "satisfaction": 43,
+    "fan_approval": 50,
+    "team_id": "top5-club-44-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-44-0",
+        "team_name": "Inter",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-9-0",
+    "first_name": "Baptiste",
+    "last_name": "Leroy",
+    "date_of_birth": "1988-09-02",
+    "nationality": "NO",
+    "football_nation": "NO",
+    "birth_country": "NO",
+    "reputation": 468,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-9-0",
+        "team_name": "Liverpool",
+        "start_date": "2026-06-01",
+        "end_date": "2026-08-20",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-10-0",
+    "first_name": "Gethin",
+    "last_name": "Parry",
+    "date_of_birth": "1978-12-16",
+    "nationality": "AM",
+    "football_nation": "AM",
+    "birth_country": "AM",
+    "reputation": 431,
+    "satisfaction": 56,
+    "fan_approval": 50,
+    "team_id": "top5-club-10-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-10-0",
+        "team_name": "Manchester City",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-240-0",
+    "first_name": "Eduardo",
+    "last_name": "Nascimento",
+    "date_of_birth": "1976-06-11",
+    "nationality": "CO",
+    "football_nation": "CO",
+    "birth_country": "CO",
+    "reputation": 426,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-240-0",
+        "team_name": "Atlético Madrid",
+        "start_date": "2026-06-01",
+        "end_date": "2026-08-12",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-11-0",
+    "first_name": "Dennis",
+    "last_name": "Vermeer",
+    "date_of_birth": "1991-01-12",
+    "nationality": "NL",
+    "football_nation": "NL",
+    "birth_country": "NL",
+    "reputation": 535,
+    "satisfaction": 43,
+    "fan_approval": 50,
+    "team_id": "top5-club-11-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-11-0",
+        "team_name": "Manchester United",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-448-0",
+    "first_name": "Gonzalo",
+    "last_name": "Alvarez",
+    "date_of_birth": "1965-01-04",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 480,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-448-0",
+        "team_name": "Athletic Club",
+        "start_date": "2026-06-01",
+        "end_date": "2026-09-10",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-47-0",
+    "first_name": "Stefano",
+    "last_name": "Costa",
+    "date_of_birth": "1980-06-13",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 398,
+    "satisfaction": 63,
+    "fan_approval": 50,
+    "team_id": "top5-club-47-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-47-0",
+        "team_name": "AC Milan",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-13-0",
+    "first_name": "Pedro",
+    "last_name": "Ortiz",
+    "date_of_birth": "1989-12-18",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 700,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-13-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-13-0",
+        "team_name": "Newcastle United",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-22-0",
+    "first_name": "Tim",
+    "last_name": "Becker",
+    "date_of_birth": "1975-11-13",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 505,
+    "satisfaction": 36,
+    "fan_approval": 50,
+    "team_id": "top5-club-22-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-22-0",
+        "team_name": "Borussia Dortmund",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1-0",
+    "first_name": "Albin",
+    "last_name": "Eriksson",
+    "date_of_birth": "1969-11-24",
+    "nationality": "IQ",
+    "football_nation": "IQ",
+    "birth_country": "IQ",
+    "reputation": 428,
+    "satisfaction": 43,
+    "fan_approval": 50,
+    "team_id": "top5-club-1-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1-0",
+        "team_name": "Arsenal",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-241-0",
+    "first_name": "Luis",
+    "last_name": "Vega",
+    "date_of_birth": "1973-02-20",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 688,
+    "satisfaction": 69,
+    "fan_approval": 50,
+    "team_id": "top5-club-241-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-241-0",
+        "team_name": "FC Barcelona",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-48-0",
+    "first_name": "Federico",
+    "last_name": "Ricci",
+    "date_of_birth": "1980-12-12",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 453,
+    "satisfaction": 49,
+    "fan_approval": 50,
+    "team_id": "top5-club-48-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-48-0",
+        "team_name": "Napoli",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-45-0",
+    "first_name": "Andrea",
+    "last_name": "Bianchi",
+    "date_of_birth": "1978-07-07",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 389,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-45-0",
+        "team_name": "Juventus",
+        "start_date": "2026-06-01",
+        "end_date": "2026-08-05",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-32-0",
+    "first_name": "William",
+    "last_name": "Smith",
+    "date_of_birth": "1967-12-12",
+    "nationality": "PA",
+    "football_nation": "PA",
+    "birth_country": "PA",
+    "reputation": 693,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-32-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-32-0",
+        "team_name": "Bayer 04 Leverkusen",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-5-0",
+    "first_name": "Agustin",
+    "last_name": "Herrera",
+    "date_of_birth": "1974-11-03",
+    "nationality": "CL",
+    "football_nation": "CL",
+    "birth_country": "CL",
+    "reputation": 366,
+    "satisfaction": 70,
+    "fan_approval": 50,
+    "team_id": "top5-club-5-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-5-0",
+        "team_name": "Chelsea",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-18-0",
+    "first_name": "Rafael",
+    "last_name": "Gomes",
+    "date_of_birth": "1977-01-28",
+    "nationality": "SN",
+    "football_nation": "SN",
+    "birth_country": "SN",
+    "reputation": 567,
+    "satisfaction": 49,
+    "fan_approval": 50,
+    "team_id": "top5-club-18-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-18-0",
+        "team_name": "Tottenham Hotspur",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-2-0",
+    "first_name": "Callum",
+    "last_name": "MacLeod",
+    "date_of_birth": "1983-10-08",
+    "nationality": "DZ",
+    "football_nation": "DZ",
+    "birth_country": "DZ",
+    "reputation": 269,
+    "satisfaction": 76,
+    "fan_approval": 50,
+    "team_id": "top5-club-2-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-2-0",
+        "team_name": "Aston Villa",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-52-0",
+    "first_name": "Henrik",
+    "last_name": "Gustafsson",
+    "date_of_birth": "1969-02-28",
+    "nationality": "MX",
+    "football_nation": "MX",
+    "birth_country": "MX",
+    "reputation": 242,
+    "satisfaction": 36,
+    "fan_approval": 50,
+    "team_id": "top5-club-52-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-52-0",
+        "team_name": "Roma",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-449-0",
+    "first_name": "Miguel",
+    "last_name": "Garcia",
+    "date_of_birth": "1964-03-19",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 487,
+    "satisfaction": 56,
+    "fan_approval": 50,
+    "team_id": "top5-club-449-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-449-0",
+        "team_name": "Real Betis Balompié",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-453-0",
+    "first_name": "Gabriel",
+    "last_name": "Lima",
+    "date_of_birth": "1967-11-24",
+    "nationality": "CO",
+    "football_nation": "CO",
+    "birth_country": "CO",
+    "reputation": 426,
+    "satisfaction": 50,
+    "fan_approval": 50,
+    "team_id": "top5-club-453-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-453-0",
+        "team_name": "RCD Mallorca",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-66-0",
+    "first_name": "Kevin",
+    "last_name": "Michel",
+    "date_of_birth": "1985-08-03",
+    "nationality": "FR",
+    "football_nation": "FR",
+    "birth_country": "FR",
+    "reputation": 342,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-66-0",
+        "team_name": "Olympique Lyonnais",
+        "start_date": "2026-06-01",
+        "end_date": "2026-07-29",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1808-0",
+    "first_name": "Sergio",
+    "last_name": "Diaz",
+    "date_of_birth": "1974-11-05",
+    "nationality": "AR",
+    "football_nation": "AR",
+    "birth_country": "AR",
+    "reputation": 504,
+    "satisfaction": 43,
+    "fan_approval": 50,
+    "team_id": "top5-club-1808-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1808-0",
+        "team_name": "Brighton & Hove Albion",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-14-0",
+    "first_name": "Robin",
+    "last_name": "Vermeer",
+    "date_of_birth": "1985-09-14",
+    "nationality": "EG",
+    "football_nation": "EG",
+    "birth_country": "EG",
+    "reputation": 261,
+    "satisfaction": 43,
+    "fan_approval": 50,
+    "team_id": "top5-club-14-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-14-0",
+        "team_name": "Nottingham Forest",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-483-0",
+    "first_name": "Iker",
+    "last_name": "Lopez",
+    "date_of_birth": "1989-10-02",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 261,
+    "satisfaction": 3,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-483-0",
+        "team_name": "Villarreal CF",
+        "start_date": "2026-06-01",
+        "end_date": "2026-08-12",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-46-0",
+    "first_name": "Gustavo",
+    "last_name": "Martins",
+    "date_of_birth": "1963-07-21",
+    "nationality": "PE",
+    "football_nation": "PE",
+    "birth_country": "PE",
+    "reputation": 269,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-46-0",
+        "team_name": "Lazio",
+        "start_date": "2026-06-01",
+        "end_date": "2026-07-29",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-19-0",
+    "first_name": "Adrien",
+    "last_name": "Moreau",
+    "date_of_birth": "1965-04-18",
+    "nationality": "AU",
+    "football_nation": "AU",
+    "birth_country": "AU",
+    "reputation": 614,
+    "satisfaction": 70,
+    "fan_approval": 50,
+    "team_id": "top5-club-19-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-19-0",
+        "team_name": "West Ham United",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1860-0",
+    "first_name": "Sean",
+    "last_name": "Mullan",
+    "date_of_birth": "1970-01-07",
+    "nationality": "NIR",
+    "football_nation": "NIR",
+    "birth_country": "NIR",
+    "reputation": 586,
+    "satisfaction": 49,
+    "fan_approval": 50,
+    "team_id": "top5-club-1860-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1860-0",
+        "team_name": "Getafe CF",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-219-0",
+    "first_name": "Mathieu",
+    "last_name": "Bonnet",
+    "date_of_birth": "1964-07-06",
+    "nationality": "FR",
+    "football_nation": "FR",
+    "birth_country": "FR",
+    "reputation": 635,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-219-0",
+        "team_name": "Olympique de Marseille",
+        "start_date": "2026-06-01",
+        "end_date": "2026-09-10",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-450-0",
+    "first_name": "Andrea",
+    "last_name": "Costa",
+    "date_of_birth": "1964-10-08",
+    "nationality": "SM",
+    "football_nation": "SM",
+    "birth_country": "SM",
+    "reputation": 292,
+    "satisfaction": 56,
+    "fan_approval": 50,
+    "team_id": "top5-club-450-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-450-0",
+        "team_name": "RC Celta",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-189-0",
+    "first_name": "Emanuele",
+    "last_name": "Greco",
+    "date_of_birth": "1983-04-08",
+    "nationality": "GR",
+    "football_nation": "GR",
+    "birth_country": "GR",
+    "reputation": 336,
+    "satisfaction": 69,
+    "fan_approval": 50,
+    "team_id": "top5-club-189-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-189-0",
+        "team_name": "Bologna",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-457-0",
+    "first_name": "Emanuele",
+    "last_name": "Bruno",
+    "date_of_birth": "1965-07-21",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 283,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-457-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-457-0",
+        "team_name": "Real Sociedad",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-39-0",
+    "first_name": "Stefano",
+    "last_name": "Rinaldi",
+    "date_of_birth": "1968-08-10",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 213,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-39-0",
+        "team_name": "Atalanta",
+        "start_date": "2026-06-01",
+        "end_date": "2026-08-12",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-175-0",
+    "first_name": "Niklas",
+    "last_name": "Fischer",
+    "date_of_birth": "1991-08-11",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 656,
+    "satisfaction": 16,
+    "fan_approval": 50,
+    "team_id": "top5-club-175-0",
+    "warning_stage": 2,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-175-0",
+        "team_name": "VfL Wolfsburg",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1831-0",
+    "first_name": "Patrick",
+    "last_name": "Becker",
+    "date_of_birth": "1989-12-28",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 672,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1831-0",
+        "team_name": "1. FC Union Berlin",
+        "start_date": "2026-06-01",
+        "end_date": "2026-09-02",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-110374-0",
+    "first_name": "Raphael",
+    "last_name": "Petit",
+    "date_of_birth": "1980-12-03",
+    "nationality": "CR",
+    "football_nation": "CR",
+    "birth_country": "CR",
+    "reputation": 385,
+    "satisfaction": 49,
+    "fan_approval": 50,
+    "team_id": "top5-club-110374-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-110374-0",
+        "team_name": "Fiorentina",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-112172-0",
+    "first_name": "Tobias",
+    "last_name": "Wolf",
+    "date_of_birth": "1981-12-02",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 424,
+    "satisfaction": 16,
+    "fan_approval": 50,
+    "team_id": "top5-club-112172-0",
+    "warning_stage": 2,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-112172-0",
+        "team_name": "RB Leipzig",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-110556-0",
+    "first_name": "Jordi",
+    "last_name": "Kok",
+    "date_of_birth": "1975-05-14",
+    "nationality": "CM",
+    "football_nation": "CM",
+    "birth_country": "CM",
+    "reputation": 553,
+    "satisfaction": 43,
+    "fan_approval": 50,
+    "team_id": "top5-club-110556-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-110556-0",
+        "team_name": "Genoa",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-54-0",
+    "first_name": "Conor",
+    "last_name": "Brennan",
+    "date_of_birth": "1982-03-25",
+    "nationality": "PL",
+    "football_nation": "PL",
+    "birth_country": "PL",
+    "reputation": 266,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-54-0",
+        "team_name": "Torino",
+        "start_date": "2026-06-01",
+        "end_date": "2026-09-10",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-106-0",
+    "first_name": "Johnny",
+    "last_name": "McAllister",
+    "date_of_birth": "1980-11-08",
+    "nationality": "NIR",
+    "football_nation": "NIR",
+    "birth_country": "NIR",
+    "reputation": 276,
+    "satisfaction": 50,
+    "fan_approval": 50,
+    "team_id": "top5-club-106-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-106-0",
+        "team_name": "Sunderland",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-38-0",
+    "first_name": "Kevin",
+    "last_name": "Leclercq",
+    "date_of_birth": "1964-12-01",
+    "nationality": "BE",
+    "football_nation": "BE",
+    "birth_country": "BE",
+    "reputation": 311,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-38-0",
+        "team_name": "SV Werder Bremen",
+        "start_date": "2026-06-01",
+        "end_date": "2026-08-26",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-72-0",
+    "first_name": "Damien",
+    "last_name": "Petit",
+    "date_of_birth": "1970-10-05",
+    "nationality": "FR",
+    "football_nation": "FR",
+    "birth_country": "FR",
+    "reputation": 321,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-72-0",
+        "team_name": "OGC Nice",
+        "start_date": "2026-06-01",
+        "end_date": "2026-09-11",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1796-0",
+    "first_name": "Ross",
+    "last_name": "Wright",
+    "date_of_birth": "1971-10-02",
+    "nationality": "JP",
+    "football_nation": "JP",
+    "birth_country": "JP",
+    "reputation": 249,
+    "satisfaction": 63,
+    "fan_approval": 50,
+    "team_id": "top5-club-1796-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1796-0",
+        "team_name": "Burnley",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-169-0",
+    "first_name": "Marcel",
+    "last_name": "Hartmann",
+    "date_of_birth": "1983-01-28",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 413,
+    "satisfaction": 62,
+    "fan_approval": 50,
+    "team_id": "top5-club-169-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-169-0",
+        "team_name": "1. FSV Mainz 05",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-461-0",
+    "first_name": "Adrian",
+    "last_name": "Ramos",
+    "date_of_birth": "1991-04-09",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 619,
+    "satisfaction": 56,
+    "fan_approval": 50,
+    "team_id": "top5-club-461-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-461-0",
+        "team_name": "Valencia CF",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1925-0",
+    "first_name": "Paolo",
+    "last_name": "Ferrari",
+    "date_of_birth": "1972-08-22",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 490,
+    "satisfaction": 16,
+    "fan_approval": 50,
+    "team_id": "top5-club-1925-0",
+    "warning_stage": 2,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1925-0",
+        "team_name": "Brentford",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1799-0",
+    "first_name": "Mason",
+    "last_name": "Hill",
+    "date_of_birth": "1972-05-18",
+    "nationality": "ENG",
+    "football_nation": "ENG",
+    "birth_country": "ENG",
+    "reputation": 541,
+    "satisfaction": 56,
+    "fan_approval": 50,
+    "team_id": "top5-club-1799-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1799-0",
+        "team_name": "Crystal Palace",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1842-0",
+    "first_name": "Harry",
+    "last_name": "Walker",
+    "date_of_birth": "1973-07-15",
+    "nationality": "MA",
+    "football_nation": "MA",
+    "birth_country": "MA",
+    "reputation": 350,
+    "satisfaction": 43,
+    "fan_approval": 50,
+    "team_id": "top5-club-1842-0",
+    "warning_stage": 2,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1842-0",
+        "team_name": "Cagliari",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1943-0",
+    "first_name": "Jason",
+    "last_name": "Renard",
+    "date_of_birth": "1975-12-16",
+    "nationality": "BE",
+    "football_nation": "BE",
+    "birth_country": "BE",
+    "reputation": 474,
+    "satisfaction": 36,
+    "fan_approval": 50,
+    "team_id": "top5-club-1943-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1943-0",
+        "team_name": "AFC Bournemouth",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-69-0",
+    "first_name": "Andrea",
+    "last_name": "Esposito",
+    "date_of_birth": "1986-03-25",
+    "nationality": "AE",
+    "football_nation": "AE",
+    "birth_country": "AE",
+    "reputation": 219,
+    "satisfaction": 63,
+    "fan_approval": 50,
+    "team_id": "top5-club-69-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-69-0",
+        "team_name": "AS Monaco",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1824-0",
+    "first_name": "Radja",
+    "last_name": "Lambert",
+    "date_of_birth": "1964-08-22",
+    "nationality": "BE",
+    "football_nation": "BE",
+    "birth_country": "BE",
+    "reputation": 602,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1824-0",
+        "team_name": "Eintracht Frankfurt",
+        "start_date": "2026-06-01",
+        "end_date": "2026-09-16",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-110062-0",
+    "first_name": "Marcos",
+    "last_name": "Torres",
+    "date_of_birth": "1970-03-03",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 233,
+    "satisfaction": 50,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-110062-0",
+        "team_name": "Girona FC",
+        "start_date": "2026-06-01",
+        "end_date": "2026-06-01",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-65-0",
+    "first_name": "Pablo",
+    "last_name": "Rodriguez",
+    "date_of_birth": "1973-12-26",
+    "nationality": "SN",
+    "football_nation": "SN",
+    "birth_country": "SN",
+    "reputation": 224,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-65-0",
+        "team_name": "Lille OSC",
+        "start_date": "2026-06-01",
+        "end_date": "2026-07-29",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-100409-0",
+    "first_name": "Tobias",
+    "last_name": "Schneider",
+    "date_of_birth": "1986-03-08",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 696,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-100409-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-100409-0",
+        "team_name": "FC Augsburg",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1745-0",
+    "first_name": "Harri",
+    "last_name": "Jones",
+    "date_of_birth": "1972-02-03",
+    "nationality": "SN",
+    "football_nation": "SN",
+    "birth_country": "SN",
+    "reputation": 451,
+    "satisfaction": 70,
+    "fan_approval": 50,
+    "team_id": "top5-club-1745-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1745-0",
+        "team_name": "Como",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-36-0",
+    "first_name": "Dennis",
+    "last_name": "Wagner",
+    "date_of_birth": "1976-01-08",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 643,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-36-0",
+        "team_name": "VfB Stuttgart",
+        "start_date": "2026-06-01",
+        "end_date": "2026-07-29",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-481-0",
+    "first_name": "Marco",
+    "last_name": "Ricci",
+    "date_of_birth": "1968-06-15",
+    "nationality": "JM",
+    "football_nation": "JM",
+    "birth_country": "JM",
+    "reputation": 544,
+    "satisfaction": 56,
+    "fan_approval": 50,
+    "team_id": "top5-club-481-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-481-0",
+        "team_name": "Sevilla FC",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-110738-0",
+    "first_name": "Simone",
+    "last_name": "Greco",
+    "date_of_birth": "1983-06-15",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 495,
+    "satisfaction": 63,
+    "fan_approval": 50,
+    "team_id": "top5-club-110738-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-110738-0",
+        "team_name": "Pisa",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-7-0",
+    "first_name": "Callum",
+    "last_name": "McCormick",
+    "date_of_birth": "1966-01-20",
+    "nationality": "NIR",
+    "football_nation": "NIR",
+    "birth_country": "NIR",
+    "reputation": 556,
+    "satisfaction": 63,
+    "fan_approval": 50,
+    "team_id": "top5-club-7-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-7-0",
+        "team_name": "Everton",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-74-0",
+    "first_name": "Robin",
+    "last_name": "Van Dijk",
+    "date_of_birth": "1987-05-11",
+    "nationality": "RO",
+    "football_nation": "RO",
+    "birth_country": "RO",
+    "reputation": 469,
+    "satisfaction": 50,
+    "fan_approval": 50,
+    "team_id": "top5-club-74-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-74-0",
+        "team_name": "Stade Rennais FC",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-31-0",
+    "first_name": "Maximilian",
+    "last_name": "Schneider",
+    "date_of_birth": "1984-01-16",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 683,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-31-0",
+        "team_name": "1. FC Köln",
+        "start_date": "2026-06-01",
+        "end_date": "2026-07-29",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-480-0",
+    "first_name": "Ronan",
+    "last_name": "Gallagher",
+    "date_of_birth": "1967-07-16",
+    "nationality": "NG",
+    "football_nation": "NG",
+    "birth_country": "NG",
+    "reputation": 644,
+    "satisfaction": 56,
+    "fan_approval": 50,
+    "team_id": "top5-club-480-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-480-0",
+        "team_name": "Rayo Vallecano",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-110827-0",
+    "first_name": "Pedro",
+    "last_name": "Hernandez",
+    "date_of_birth": "1990-01-16",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 358,
+    "satisfaction": 50,
+    "fan_approval": 50,
+    "team_id": "top5-club-110827-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-110827-0",
+        "team_name": "Real Oviedo",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-144-0",
+    "first_name": "Julien",
+    "last_name": "Laurent",
+    "date_of_birth": "1983-10-13",
+    "nationality": "HN",
+    "football_nation": "HN",
+    "birth_country": "HN",
+    "reputation": 325,
+    "satisfaction": 23,
+    "fan_approval": 50,
+    "team_id": "top5-club-144-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-144-0",
+        "team_name": "Fulham FC",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-8-0",
+    "first_name": "Nicolas",
+    "last_name": "Pereyra",
+    "date_of_birth": "1964-09-20",
+    "nationality": "VE",
+    "football_nation": "VE",
+    "birth_country": "VE",
+    "reputation": 489,
+    "satisfaction": 49,
+    "fan_approval": 50,
+    "team_id": "top5-club-8-0",
+    "warning_stage": 2,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-8-0",
+        "team_name": "Leeds United",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-64-0",
+    "first_name": "Dennis",
+    "last_name": "Mulder",
+    "date_of_birth": "1981-12-11",
+    "nationality": "NL",
+    "football_nation": "NL",
+    "birth_country": "NL",
+    "reputation": 387,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-64-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-64-0",
+        "team_name": "RC Lens",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-23-0",
+    "first_name": "Maximilian",
+    "last_name": "Müller",
+    "date_of_birth": "1991-06-15",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 493,
+    "satisfaction": 56,
+    "fan_approval": 50,
+    "team_id": "top5-club-23-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-23-0",
+        "team_name": "Borussia Mönchengladbach",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-10029-0",
+    "first_name": "Lars",
+    "last_name": "Schulz",
+    "date_of_birth": "1983-05-03",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 699,
+    "satisfaction": 63,
+    "fan_approval": 50,
+    "team_id": "top5-club-10029-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-10029-0",
+        "team_name": "TSG 1899 Hoffenheim",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-111817-0",
+    "first_name": "Damien",
+    "last_name": "Bernard",
+    "date_of_birth": "1965-06-26",
+    "nationality": "FR",
+    "football_nation": "FR",
+    "birth_country": "FR",
+    "reputation": 547,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-111817-0",
+        "team_name": "Paris FC",
+        "start_date": "2026-06-01",
+        "end_date": "2026-07-22",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-111974-0",
+    "first_name": "Roberto",
+    "last_name": "Greco",
+    "date_of_birth": "1981-05-07",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 661,
+    "satisfaction": 43,
+    "fan_approval": 50,
+    "team_id": "top5-club-111974-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-111974-0",
+        "team_name": "Sassuolo",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-50-0",
+    "first_name": "Riccardo",
+    "last_name": "Santoro",
+    "date_of_birth": "1964-09-23",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 325,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-50-0",
+        "team_name": "Parma",
+        "start_date": "2026-06-01",
+        "end_date": "2026-08-05",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-110-0",
+    "first_name": "Marcos",
+    "last_name": "Garcia",
+    "date_of_birth": "1977-03-14",
+    "nationality": "AR",
+    "football_nation": "AR",
+    "birth_country": "AR",
+    "reputation": 429,
+    "satisfaction": 56,
+    "fan_approval": 50,
+    "team_id": "top5-club-110-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-110-0",
+        "team_name": "Wolverhampton Wanderers",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-206-0",
+    "first_name": "Salvatore",
+    "last_name": "Santoro",
+    "date_of_birth": "1973-03-16",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 320,
+    "satisfaction": 70,
+    "fan_approval": 50,
+    "team_id": "top5-club-206-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-206-0",
+        "team_name": "Hellas Verona FC",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-452-0",
+    "first_name": "Marcos",
+    "last_name": "Gil",
+    "date_of_birth": "1980-12-14",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 237,
+    "satisfaction": 3,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-452-0",
+        "team_name": "RCD Espanyol",
+        "start_date": "2026-06-01",
+        "end_date": "2026-08-12",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-111235-0",
+    "first_name": "Maximilian",
+    "last_name": "Schulz",
+    "date_of_birth": "1976-09-28",
+    "nationality": "UA",
+    "football_nation": "UA",
+    "birth_country": "UA",
+    "reputation": 329,
+    "satisfaction": 63,
+    "fan_approval": 50,
+    "team_id": "top5-club-111235-0",
+    "warning_stage": 2,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-111235-0",
+        "team_name": "1. FC Heidenheim 1846",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-76-0",
+    "first_name": "Florian",
+    "last_name": "Petit",
+    "date_of_birth": "1976-01-14",
+    "nationality": "FR",
+    "football_nation": "FR",
+    "birth_country": "FR",
+    "reputation": 558,
+    "satisfaction": 63,
+    "fan_approval": 50,
+    "team_id": "top5-club-76-0",
+    "warning_stage": 2,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-76-0",
+        "team_name": "RC Strasbourg Alsace",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-110329-0",
+    "first_name": "Andrea",
+    "last_name": "Ferrari",
+    "date_of_birth": "1976-12-05",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 676,
+    "satisfaction": 43,
+    "fan_approval": 50,
+    "team_id": "top5-club-110329-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-110329-0",
+        "team_name": "FC St. Pauli",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-378-0",
+    "first_name": "Fernando",
+    "last_name": "Lopez",
+    "date_of_birth": "1965-05-18",
+    "nationality": "NG",
+    "football_nation": "NG",
+    "birth_country": "NG",
+    "reputation": 237,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-378-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-378-0",
+        "team_name": "Stade Brestois 29",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-28-0",
+    "first_name": "Eduardo",
+    "last_name": "Gomes",
+    "date_of_birth": "1985-06-02",
+    "nationality": "CO",
+    "football_nation": "CO",
+    "birth_country": "CO",
+    "reputation": 245,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-28-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-28-0",
+        "team_name": "Hamburger SV",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-55-0",
+    "first_name": "Luca",
+    "last_name": "Gallo",
+    "date_of_birth": "1968-04-25",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 487,
+    "satisfaction": 63,
+    "fan_approval": 50,
+    "team_id": "top5-club-55-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-55-0",
+        "team_name": "Udinese",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-25-0",
+    "first_name": "Lucas",
+    "last_name": "Barbosa",
+    "date_of_birth": "1969-05-02",
+    "nationality": "BO",
+    "football_nation": "BO",
+    "birth_country": "BO",
+    "reputation": 546,
+    "satisfaction": 50,
+    "fan_approval": 50,
+    "team_id": "top5-club-25-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-25-0",
+        "team_name": "SC Freiburg",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1853-0",
+    "first_name": "Patrick",
+    "last_name": "Hendriks",
+    "date_of_birth": "1973-02-14",
+    "nationality": "NL",
+    "football_nation": "NL",
+    "birth_country": "NL",
+    "reputation": 462,
+    "satisfaction": 36,
+    "fan_approval": 50,
+    "team_id": "top5-club-1853-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1853-0",
+        "team_name": "Levante UD",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1530-0",
+    "first_name": "Lloyd",
+    "last_name": "Evans",
+    "date_of_birth": "1981-10-24",
+    "nationality": "WAL",
+    "football_nation": "WAL",
+    "birth_country": "WAL",
+    "reputation": 310,
+    "satisfaction": 36,
+    "fan_approval": 50,
+    "team_id": "top5-club-1530-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1530-0",
+        "team_name": "Angers SCO",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1809-0",
+    "first_name": "Maxime",
+    "last_name": "Morel",
+    "date_of_birth": "1984-12-02",
+    "nationality": "SK",
+    "football_nation": "SK",
+    "birth_country": "SK",
+    "reputation": 209,
+    "satisfaction": 23,
+    "fan_approval": 50,
+    "team_id": "top5-club-1809-0",
+    "warning_stage": 2,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1809-0",
+        "team_name": "Toulouse FC",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-479-0",
+    "first_name": "Diego",
+    "last_name": "Torres",
+    "date_of_birth": "1964-04-27",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 610,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-479-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-479-0",
+        "team_name": "CA Osasuna",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-71-0",
+    "first_name": "Theo",
+    "last_name": "Leroy",
+    "date_of_birth": "1977-06-11",
+    "nationality": "FR",
+    "football_nation": "FR",
+    "birth_country": "FR",
+    "reputation": 375,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-71-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-71-0",
+        "team_name": "FC Nantes",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-468-0",
+    "first_name": "Miguel",
+    "last_name": "Diaz",
+    "date_of_birth": "1976-01-17",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 453,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-468-0",
+        "team_name": "Elche CF",
+        "start_date": "2026-06-01",
+        "end_date": "2026-09-11",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-68-0",
+    "first_name": "Raphael",
+    "last_name": "Morel",
+    "date_of_birth": "1980-08-04",
+    "nationality": "FR",
+    "football_nation": "FR",
+    "birth_country": "FR",
+    "reputation": 411,
+    "satisfaction": 3,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-68-0",
+        "team_name": "FC Metz",
+        "start_date": "2026-06-01",
+        "end_date": "2026-07-29",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-111434-0",
+    "first_name": "Matteo",
+    "last_name": "Santoro",
+    "date_of_birth": "1979-11-18",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 620,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-111434-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-111434-0",
+        "team_name": "Cremonese",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-347-0",
+    "first_name": "Daniele",
+    "last_name": "Ferrari",
+    "date_of_birth": "1975-11-20",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 501,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-347-0",
+        "team_name": "Lecce",
+        "start_date": "2026-06-01",
+        "end_date": "2026-08-05",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1738-0",
+    "first_name": "Hugo",
+    "last_name": "Bernard",
+    "date_of_birth": "1987-03-04",
+    "nationality": "FR",
+    "football_nation": "FR",
+    "birth_country": "FR",
+    "reputation": 583,
+    "satisfaction": 63,
+    "fan_approval": 50,
+    "team_id": "top5-club-1738-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1738-0",
+        "team_name": "Le Havre AC",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-463-0",
+    "first_name": "Antonio",
+    "last_name": "Martinez",
+    "date_of_birth": "1988-08-03",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 494,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-463-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-463-0",
+        "team_name": "Deportivo Alavés",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-217-0",
+    "first_name": "Sam",
+    "last_name": "Young",
+    "date_of_birth": "1982-03-03",
+    "nationality": "CR",
+    "football_nation": "CR",
+    "birth_country": "CR",
+    "reputation": 259,
+    "satisfaction": 43,
+    "fan_approval": 50,
+    "team_id": "top5-club-217-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-217-0",
+        "team_name": "FC Lorient",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-57-0",
+    "first_name": "Carlos",
+    "last_name": "Gil",
+    "date_of_birth": "1975-07-20",
+    "nationality": "KE",
+    "football_nation": "KE",
+    "birth_country": "KE",
+    "reputation": 338,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-57-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-57-0",
+        "team_name": "AJ Auxerre",
+        "start_date": "2026-06-01",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-111817-0_98e60b6f-1177-4781-a999-6ef783c6de6d",
+    "first_name": "Nick",
+    "last_name": "Kok",
+    "date_of_birth": "1976-09-16",
+    "nationality": "JM",
+    "football_nation": "JM",
+    "birth_country": "JM",
+    "reputation": 580,
+    "satisfaction": 3,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-111817-0",
+        "team_name": "Paris FC",
+        "start_date": "2026-07-28",
+        "end_date": "2026-07-30",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-66-0_2a1b1c17-bfa1-48d3-bdc4-20987902b154",
+    "first_name": "Miguel",
+    "last_name": "Garcia",
+    "date_of_birth": "1994-07-18",
+    "nationality": "GH",
+    "football_nation": "GH",
+    "birth_country": "GH",
+    "reputation": 465,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-66-0",
+        "team_name": "Olympique Lyonnais",
+        "start_date": "2026-08-04",
+        "end_date": "2026-08-06",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-46-0_946232c9-f3b3-46c8-bbec-ab3e6f852898",
+    "first_name": "Nicola",
+    "last_name": "Rossi",
+    "date_of_birth": "1968-10-25",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 555,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-46-0",
+        "team_name": "Lazio",
+        "start_date": "2026-08-04",
+        "end_date": "2026-08-06",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-65-0_01f32f8f-31cd-44dd-b3e7-6ecd03e6cd6a",
+    "first_name": "Borna",
+    "last_name": "Tomic",
+    "date_of_birth": "1970-01-02",
+    "nationality": "DZ",
+    "football_nation": "DZ",
+    "birth_country": "DZ",
+    "reputation": 645,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-65-0",
+        "team_name": "Lille OSC",
+        "start_date": "2026-08-04",
+        "end_date": "2026-08-13",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-36-0_a4624b7f-7883-4019-bdc1-01925841299f",
+    "first_name": "Timo",
+    "last_name": "Hartmann",
+    "date_of_birth": "1978-06-23",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 575,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-36-0",
+        "team_name": "VfB Stuttgart",
+        "start_date": "2026-08-04",
+        "end_date": "2026-08-06",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-31-0_378f8abd-fc14-4091-b0ca-77261a27eb7a",
+    "first_name": "Kevin",
+    "last_name": "Meyer",
+    "date_of_birth": "1972-09-16",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 550,
+    "satisfaction": 70,
+    "fan_approval": 50,
+    "team_id": "top5-club-31-0",
+    "warning_stage": 2,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-31-0",
+        "team_name": "1. FC Köln",
+        "start_date": "2026-08-04",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-68-0_fb33c13a-b517-4fd9-a0aa-812bf008a055",
+    "first_name": "Franco",
+    "last_name": "Ruiz",
+    "date_of_birth": "1984-01-26",
+    "nationality": "GT",
+    "football_nation": "GT",
+    "birth_country": "GT",
+    "reputation": 620,
+    "satisfaction": 3,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-68-0",
+        "team_name": "FC Metz",
+        "start_date": "2026-08-04",
+        "end_date": "2026-08-06",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-111817-0_98e60b6f-1177-4781-a999-6ef783c6de6d_2",
+    "first_name": "Nick",
+    "last_name": "Kok",
+    "date_of_birth": "1976-09-16",
+    "nationality": "JM",
+    "football_nation": "JM",
+    "birth_country": "JM",
+    "reputation": 580,
+    "satisfaction": 3,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-111817-0",
+        "team_name": "Paris FC",
+        "start_date": "2026-08-05",
+        "end_date": "2026-08-07",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-45-0_d177f9a4-ff1d-4cf2-bedc-b630d750fec6",
+    "first_name": "Federico",
+    "last_name": "Barbieri",
+    "date_of_birth": "1990-05-26",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 550,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-45-0",
+        "team_name": "Juventus",
+        "start_date": "2026-08-11",
+        "end_date": "2026-08-13",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-50-0_5c90cce4-61c6-4718-8b1e-4f3a98c93913",
+    "first_name": "Riccardo",
+    "last_name": "Gallo",
+    "date_of_birth": "1982-10-08",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 550,
+    "satisfaction": 3,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-50-0",
+        "team_name": "Parma",
+        "start_date": "2026-08-11",
+        "end_date": "2026-08-13",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-347-0_ea4dc80e-ec41-4454-b295-c9ecf32c8034",
+    "first_name": "Alessandro",
+    "last_name": "Bianchi",
+    "date_of_birth": "1969-04-06",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 620,
+    "satisfaction": 3,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-347-0",
+        "team_name": "Lecce",
+        "start_date": "2026-08-11",
+        "end_date": "2026-08-13",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-66-0_2a1b1c17-bfa1-48d3-bdc4-20987902b154_2",
+    "first_name": "Miguel",
+    "last_name": "Garcia",
+    "date_of_birth": "1994-07-18",
+    "nationality": "GH",
+    "football_nation": "GH",
+    "birth_country": "GH",
+    "reputation": 465,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-66-0",
+        "team_name": "Olympique Lyonnais",
+        "start_date": "2026-08-12",
+        "end_date": "2026-09-10",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-46-0_946232c9-f3b3-46c8-bbec-ab3e6f852898_2",
+    "first_name": "Nicola",
+    "last_name": "Rossi",
+    "date_of_birth": "1968-10-25",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 555,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-46-0",
+        "team_name": "Lazio",
+        "start_date": "2026-08-12",
+        "end_date": "2026-08-14",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-36-0_a4624b7f-7883-4019-bdc1-01925841299f_2",
+    "first_name": "Timo",
+    "last_name": "Hartmann",
+    "date_of_birth": "1978-06-23",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 575,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-36-0",
+        "team_name": "VfB Stuttgart",
+        "start_date": "2026-08-12",
+        "end_date": "2026-08-14",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-68-0_fb33c13a-b517-4fd9-a0aa-812bf008a055_2",
+    "first_name": "Franco",
+    "last_name": "Ruiz",
+    "date_of_birth": "1984-01-26",
+    "nationality": "GT",
+    "football_nation": "GT",
+    "birth_country": "GT",
+    "reputation": 620,
+    "satisfaction": 3,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-68-0",
+        "team_name": "FC Metz",
+        "start_date": "2026-08-12",
+        "end_date": "2026-08-14",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-111817-0_98e60b6f-1177-4781-a999-6ef783c6de6d_3",
+    "first_name": "Nick",
+    "last_name": "Kok",
+    "date_of_birth": "1976-09-16",
+    "nationality": "JM",
+    "football_nation": "JM",
+    "birth_country": "JM",
+    "reputation": 580,
+    "satisfaction": 23,
+    "fan_approval": 50,
+    "team_id": "top5-club-111817-0",
+    "warning_stage": 2,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-111817-0",
+        "team_name": "Paris FC",
+        "start_date": "2026-08-13",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-240-0_abd115e9-1a7e-4eaf-b534-1aefe4962d71",
+    "first_name": "Lucas",
+    "last_name": "Lopez",
+    "date_of_birth": "1985-12-05",
+    "nationality": "EC",
+    "football_nation": "EC",
+    "birth_country": "EC",
+    "reputation": 640,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-240-0",
+        "team_name": "Atlético Madrid",
+        "start_date": "2026-08-18",
+        "end_date": "2026-08-20",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-483-0_1935238d-1d8d-46f6-a3ad-6de55038fe8b",
+    "first_name": "Gonzalo",
+    "last_name": "Sanchez",
+    "date_of_birth": "1982-10-22",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 645,
+    "satisfaction": 83,
+    "fan_approval": 50,
+    "team_id": "top5-club-483-0",
+    "warning_stage": 2,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-483-0",
+        "team_name": "Villarreal CF",
+        "start_date": "2026-08-18",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-39-0_0e9222cf-0506-4d20-91f7-00a1d63144e7",
+    "first_name": "Nuno",
+    "last_name": "Neves",
+    "date_of_birth": "1991-06-02",
+    "nationality": "PT",
+    "football_nation": "PT",
+    "birth_country": "PT",
+    "reputation": 545,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-39-0",
+        "team_name": "Atalanta",
+        "start_date": "2026-08-18",
+        "end_date": "2026-08-27",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-452-0_0a2c4e52-4259-4c91-a379-18f418eae4fb",
+    "first_name": "Thomas",
+    "last_name": "Brouwer",
+    "date_of_birth": "1978-02-23",
+    "nationality": "NL",
+    "football_nation": "NL",
+    "birth_country": "NL",
+    "reputation": 620,
+    "satisfaction": 56,
+    "fan_approval": 50,
+    "team_id": "top5-club-452-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-452-0",
+        "team_name": "RCD Espanyol",
+        "start_date": "2026-08-18",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-45-0_d177f9a4-ff1d-4cf2-bedc-b630d750fec6_2",
+    "first_name": "Federico",
+    "last_name": "Barbieri",
+    "date_of_birth": "1990-05-26",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 550,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-45-0",
+        "team_name": "Juventus",
+        "start_date": "2026-08-19",
+        "end_date": "2026-08-21",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-65-0_01f32f8f-31cd-44dd-b3e7-6ecd03e6cd6a_2",
+    "first_name": "Borna",
+    "last_name": "Tomic",
+    "date_of_birth": "1970-01-02",
+    "nationality": "DZ",
+    "football_nation": "DZ",
+    "birth_country": "DZ",
+    "reputation": 645,
+    "satisfaction": 40,
+    "fan_approval": 50,
+    "team_id": "top5-club-65-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-65-0",
+        "team_name": "Lille OSC",
+        "start_date": "2026-08-19",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-50-0_5c90cce4-61c6-4718-8b1e-4f3a98c93913_2",
+    "first_name": "Riccardo",
+    "last_name": "Gallo",
+    "date_of_birth": "1982-10-08",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 550,
+    "satisfaction": 63,
+    "fan_approval": 50,
+    "team_id": "top5-club-50-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-50-0",
+        "team_name": "Parma",
+        "start_date": "2026-08-19",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-347-0_ea4dc80e-ec41-4454-b295-c9ecf32c8034_2",
+    "first_name": "Alessandro",
+    "last_name": "Bianchi",
+    "date_of_birth": "1969-04-06",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 620,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-347-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-347-0",
+        "team_name": "Lecce",
+        "start_date": "2026-08-19",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-46-0_946232c9-f3b3-46c8-bbec-ab3e6f852898_3",
+    "first_name": "Nicola",
+    "last_name": "Rossi",
+    "date_of_birth": "1968-10-25",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 555,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-46-0",
+        "team_name": "Lazio",
+        "start_date": "2026-08-20",
+        "end_date": "2026-08-22",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-36-0_a4624b7f-7883-4019-bdc1-01925841299f_3",
+    "first_name": "Timo",
+    "last_name": "Hartmann",
+    "date_of_birth": "1978-06-23",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 575,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-36-0",
+        "team_name": "VfB Stuttgart",
+        "start_date": "2026-08-20",
+        "end_date": "2026-08-22",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-68-0_fb33c13a-b517-4fd9-a0aa-812bf008a055_3",
+    "first_name": "Franco",
+    "last_name": "Ruiz",
+    "date_of_birth": "1984-01-26",
+    "nationality": "GT",
+    "football_nation": "GT",
+    "birth_country": "GT",
+    "reputation": 620,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-68-0",
+        "team_name": "FC Metz",
+        "start_date": "2026-08-20",
+        "end_date": "2026-08-22",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-9-0_30182885-e7b0-4991-a3e1-2636e30a645e",
+    "first_name": "Oliver",
+    "last_name": "Brown",
+    "date_of_birth": "1976-11-19",
+    "nationality": "ENG",
+    "football_nation": "ENG",
+    "birth_country": "ENG",
+    "reputation": 595,
+    "satisfaction": 29,
+    "fan_approval": 50,
+    "team_id": "top5-club-9-0",
+    "warning_stage": 2,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-9-0",
+        "team_name": "Liverpool",
+        "start_date": "2026-08-26",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-240-0_abd115e9-1a7e-4eaf-b534-1aefe4962d71_2",
+    "first_name": "Lucas",
+    "last_name": "Lopez",
+    "date_of_birth": "1985-12-05",
+    "nationality": "EC",
+    "football_nation": "EC",
+    "birth_country": "EC",
+    "reputation": 640,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-240-0",
+        "team_name": "Atlético Madrid",
+        "start_date": "2026-08-26",
+        "end_date": "2026-08-28",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-45-0_d177f9a4-ff1d-4cf2-bedc-b630d750fec6_3",
+    "first_name": "Federico",
+    "last_name": "Barbieri",
+    "date_of_birth": "1990-05-26",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 550,
+    "satisfaction": 56,
+    "fan_approval": 50,
+    "team_id": "top5-club-45-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-45-0",
+        "team_name": "Juventus",
+        "start_date": "2026-08-27",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-46-0_946232c9-f3b3-46c8-bbec-ab3e6f852898_4",
+    "first_name": "Nicola",
+    "last_name": "Rossi",
+    "date_of_birth": "1968-10-25",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 555,
+    "satisfaction": 0,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-46-0",
+        "team_name": "Lazio",
+        "start_date": "2026-08-28",
+        "end_date": "2026-08-30",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-36-0_a4624b7f-7883-4019-bdc1-01925841299f_4",
+    "first_name": "Timo",
+    "last_name": "Hartmann",
+    "date_of_birth": "1978-06-23",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 575,
+    "satisfaction": 30,
+    "fan_approval": 50,
+    "team_id": "top5-club-36-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-36-0",
+        "team_name": "VfB Stuttgart",
+        "start_date": "2026-08-28",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-68-0_fb33c13a-b517-4fd9-a0aa-812bf008a055_4",
+    "first_name": "Franco",
+    "last_name": "Ruiz",
+    "date_of_birth": "1984-01-26",
+    "nationality": "GT",
+    "football_nation": "GT",
+    "birth_country": "GT",
+    "reputation": 620,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-68-0",
+        "team_name": "FC Metz",
+        "start_date": "2026-08-28",
+        "end_date": "2026-08-30",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-38-0_cbe54140-67e6-4374-a251-4148274d459e",
+    "first_name": "Niklas",
+    "last_name": "Zimmermann",
+    "date_of_birth": "1981-12-20",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 465,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-38-0",
+        "team_name": "SV Werder Bremen",
+        "start_date": "2026-09-01",
+        "end_date": "2026-09-03",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-39-0_0e9222cf-0506-4d20-91f7-00a1d63144e7_2",
+    "first_name": "Nuno",
+    "last_name": "Neves",
+    "date_of_birth": "1991-06-02",
+    "nationality": "PT",
+    "football_nation": "PT",
+    "birth_country": "PT",
+    "reputation": 545,
+    "satisfaction": 70,
+    "fan_approval": 50,
+    "team_id": "top5-club-39-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-39-0",
+        "team_name": "Atalanta",
+        "start_date": "2026-09-02",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-240-0_abd115e9-1a7e-4eaf-b534-1aefe4962d71_3",
+    "first_name": "Lucas",
+    "last_name": "Lopez",
+    "date_of_birth": "1985-12-05",
+    "nationality": "EC",
+    "football_nation": "EC",
+    "birth_country": "EC",
+    "reputation": 640,
+    "satisfaction": 63,
+    "fan_approval": 50,
+    "team_id": "top5-club-240-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-240-0",
+        "team_name": "Atlético Madrid",
+        "start_date": "2026-09-03",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-46-0_946232c9-f3b3-46c8-bbec-ab3e6f852898_5",
+    "first_name": "Nicola",
+    "last_name": "Rossi",
+    "date_of_birth": "1968-10-25",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 555,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-46-0",
+        "team_name": "Lazio",
+        "start_date": "2026-09-05",
+        "end_date": "2026-09-07",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-68-0_fb33c13a-b517-4fd9-a0aa-812bf008a055_5",
+    "first_name": "Franco",
+    "last_name": "Ruiz",
+    "date_of_birth": "1984-01-26",
+    "nationality": "GT",
+    "football_nation": "GT",
+    "birth_country": "GT",
+    "reputation": 620,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-68-0",
+        "team_name": "FC Metz",
+        "start_date": "2026-09-05",
+        "end_date": "2026-09-07",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1831-0_d94f7907-df26-437d-99ad-4ad33b257ae7",
+    "first_name": "Kai",
+    "last_name": "Koch",
+    "date_of_birth": "1977-07-09",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 540,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1831-0",
+        "team_name": "1. FC Union Berlin",
+        "start_date": "2026-09-08",
+        "end_date": "2026-09-10",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-38-0_cbe54140-67e6-4374-a251-4148274d459e_2",
+    "first_name": "Niklas",
+    "last_name": "Zimmermann",
+    "date_of_birth": "1981-12-20",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 465,
+    "satisfaction": 10,
+    "fan_approval": 50,
+    "team_id": null,
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-38-0",
+        "team_name": "SV Werder Bremen",
+        "start_date": "2026-09-09",
+        "end_date": "2026-09-11",
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-46-0_946232c9-f3b3-46c8-bbec-ab3e6f852898_6",
+    "first_name": "Nicola",
+    "last_name": "Rossi",
+    "date_of_birth": "1968-10-25",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 555,
+    "satisfaction": 23,
+    "fan_approval": 50,
+    "team_id": "top5-club-46-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-46-0",
+        "team_name": "Lazio",
+        "start_date": "2026-09-13",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-68-0_fb33c13a-b517-4fd9-a0aa-812bf008a055_6",
+    "first_name": "Franco",
+    "last_name": "Ruiz",
+    "date_of_birth": "1984-01-26",
+    "nationality": "GT",
+    "football_nation": "GT",
+    "birth_country": "GT",
+    "reputation": 620,
+    "satisfaction": 43,
+    "fan_approval": 50,
+    "team_id": "top5-club-68-0",
+    "warning_stage": 1,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-68-0",
+        "team_name": "FC Metz",
+        "start_date": "2026-09-13",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-448-0_6e34290d-06cd-42a7-bd80-f439cdacf9ef",
+    "first_name": "Alejandro",
+    "last_name": "Rodriguez",
+    "date_of_birth": "1972-07-06",
+    "nationality": "ES",
+    "football_nation": "ES",
+    "birth_country": "ES",
+    "reputation": 570,
+    "satisfaction": 50,
+    "fan_approval": 50,
+    "team_id": "top5-club-448-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-448-0",
+        "team_name": "Athletic Club",
+        "start_date": "2026-09-16",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-66-0_2a1b1c17-bfa1-48d3-bdc4-20987902b154_3",
+    "first_name": "Miguel",
+    "last_name": "Garcia",
+    "date_of_birth": "1994-07-18",
+    "nationality": "GH",
+    "football_nation": "GH",
+    "birth_country": "GH",
+    "reputation": 465,
+    "satisfaction": 50,
+    "fan_approval": 50,
+    "team_id": "top5-club-66-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-66-0",
+        "team_name": "Olympique Lyonnais",
+        "start_date": "2026-09-16",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-219-0_965b931f-6a35-4033-93e2-bdda6a5b072d",
+    "first_name": "Riccardo",
+    "last_name": "Marino",
+    "date_of_birth": "1993-04-15",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 605,
+    "satisfaction": 50,
+    "fan_approval": 50,
+    "team_id": "top5-club-219-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-219-0",
+        "team_name": "Olympique de Marseille",
+        "start_date": "2026-09-16",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-1831-0_d94f7907-df26-437d-99ad-4ad33b257ae7_2",
+    "first_name": "Kai",
+    "last_name": "Koch",
+    "date_of_birth": "1977-07-09",
+    "nationality": "DE",
+    "football_nation": "DE",
+    "birth_country": "DE",
+    "reputation": 540,
+    "satisfaction": 50,
+    "fan_approval": 50,
+    "team_id": "top5-club-1831-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-1831-0",
+        "team_name": "1. FC Union Berlin",
+        "start_date": "2026-09-16",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  },
+  {
+    "id": "mgr_top5-club-54-0_e77c1b0c-5c4f-4bed-b671-7e007713629b",
+    "first_name": "Alessandro",
+    "last_name": "Ferrari",
+    "date_of_birth": "1983-12-12",
+    "nationality": "IT",
+    "football_nation": "IT",
+    "birth_country": "IT",
+    "reputation": 645,
+    "satisfaction": 50,
+    "fan_approval": 50,
+    "team_id": "top5-club-54-0",
+    "warning_stage": 0,
+    "career_stats": {
+      "matches_managed": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "trophies": 0,
+      "best_finish": null
+    },
+    "career_history": [
+      {
+        "team_id": "top5-club-54-0",
+        "team_name": "Torino",
+        "start_date": "2026-09-16",
+        "end_date": null,
+        "matches": 0,
+        "wins": 0,
+        "draws": 0,
+        "losses": 0,
+        "best_league_position": null
+      }
+    ]
+  }
+]

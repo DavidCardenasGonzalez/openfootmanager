@@ -11,7 +11,7 @@ use ofm_core::game::Game;
 use ofm_core::generator;
 use ofm_core::player_identity;
 use ofm_core::player_rating::{
-    effective_rating_for_assignment, formation_slots, refresh_player_derived,
+    effective_rating_for_assignment, formation_slots, refresh_player_derived, sync_player_overall,
 };
 
 use crate::game_database::GameDatabase;
@@ -537,8 +537,8 @@ impl SaveManager {
             needs_resave = true;
         }
 
-        // Backfill OVR/potential for players from older saves that don't have them yet.
-        // We use the game clock year so age is accurate.
+        // Backfill missing potential and refresh stored ratings from attributes.
+        // We use the game clock year so age is accurate for legacy saves.
         let current_year = game
             .clock
             .current_date
@@ -546,16 +546,19 @@ impl SaveManager {
             .to_string()
             .parse::<u32>()
             .unwrap_or(2026);
-        let backfill_count = game.players.iter().filter(|p| p.ovr == 0).count();
-        if backfill_count > 0 {
-            for player in game.players.iter_mut() {
-                if player.ovr == 0 {
-                    refresh_player_derived(player, current_year);
-                }
+        let mut refreshed_count = 0;
+        for player in game.players.iter_mut() {
+            if player.ovr == 0 {
+                refresh_player_derived(player, current_year);
+                refreshed_count += 1;
+            } else if sync_player_overall(player) {
+                refreshed_count += 1;
             }
+        }
+        if refreshed_count > 0 {
             info!(
-                "[save_manager] backfilled OVR/potential for {} players in save {}",
-                backfill_count, save_id
+                "[save_manager] refreshed OVR/potential for {} players in save {}",
+                refreshed_count, save_id
             );
             needs_resave = true;
         }
@@ -1522,6 +1525,24 @@ mod tests {
         assert_eq!(loaded.staff.len(), 1);
         assert_eq!(loaded.clock.start_date, game.clock.start_date);
         assert_eq!(loaded.clock.current_date, game.clock.current_date);
+    }
+
+    #[test]
+    fn loading_save_recalculates_stale_overall_from_attributes() {
+        let dir = tempfile::tempdir().unwrap();
+        let saves_dir = dir.path().join("saves");
+        let mut sm = SaveManager::init(&saves_dir).unwrap();
+        let mut game = sample_game();
+        let player = &mut game.players[0];
+        player.ovr = 99;
+        player.potential = 1;
+        let expected = ofm_core::player_rating::natural_ovr(player).round() as u8;
+
+        let save_id = sm.create_save(&game, "Stale Overall").unwrap();
+        let loaded = sm.load_game(&save_id).unwrap();
+
+        assert_eq!(loaded.players[0].ovr, expected);
+        assert_eq!(loaded.players[0].potential, expected);
     }
 
     #[test]

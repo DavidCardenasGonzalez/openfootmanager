@@ -187,6 +187,7 @@
     "digestEventUserNews": "Kulübünüz veya oyuncularınız hakkında haberler",
     "digestEventTransferWindow": "Transfer penceresinin açılışı veya kapanışı",
     "digestContinue": "İlerlemeye devam et",
+    "digestAutoContinue": "Otomatik ilerle",
     "digestError": "Simülasyon hatası"
   },
   "continueMenu": {
@@ -628,6 +629,18 @@
     "developing": "Gelişen"
   },
   "squad": {
+    "styleFitShort": {
+      "strong": "Güçlü",
+      "good": "İyi",
+      "risky": "Riskli"
+    },
+    "views": {
+      "general": "Genel",
+      "statistics": "İstatistikler",
+      "finances": "Mali bilgiler"
+    },
+    "playerDetails": "Oyuncu ayrıntıları",
+    "viewControls": "Kadro görünümü",
     "title": "{{team}} Kadrosu",
     "playerCount": "{{count}} Oyuncu",
     "noPlayers": "Kadronuzda oyuncu bulunamadı.",
@@ -1877,6 +1890,8 @@
     "cinematicPause": "Maç duraklatıldı. Hazır olduğunda devam et.",
     "matchView": "Maç",
     "visualReconstruction": "Canlı maç olaylarına dayalı temsili hareketler.",
+    "showPlayerNames": "Oyuncu adlarını göster",
+    "showPlayerRatings": "Canlı performans puanlarını göster",
     "events": "Olaylar",
     "stats": "İstatistikler",
     "lineups": "Dizilişler",
@@ -1906,6 +1921,9 @@
     "substitutions": "Oyuncu Değişiklikleri",
     "substitutionsTitle": "Oyuncu Değişiklikleri",
     "subsUsed": "{{used}}/{{max}} kullanıldı",
+    "selectedToLeave": "Çıkan oyuncular: {{count}}",
+    "selectedToEnter": "Giren oyuncular: {{count}}",
+    "pendingSubstitutions": "Seçilen: {{off}} çıkan, {{on}} giren · {{max}} hak kaldı",
     "allSubsUsed": "Tüm oyuncu değişiklikleri kullanıldı",
     "selectPlayerOff": "Oyundan çıkacak oyuncuyu seç",
     "takingOff": "Çıkan oyuncu: {{name}}",
@@ -3092,7 +3110,7 @@
         }
       },
       "trainingInjury": {
-        "subject": "Sakatlık — {{player}} ({{injury}})",
+        "subject": "Sakatlık — {{player}} ({{injury}}) — {{days}} gün",
         "body0": "Antrenman sahasından kötü haber. {{player}} bugünkü antrenmanda {{injury}} yaşadı.\n\nSağlık ekibi {{days}} gün sahalardan uzak kalacağını öngörüyor. İyileşme sürecini yakından takip edeceğiz.",
         "body1": "Ne yazık ki {{player}} bugün antrenmanda {{injury}} sorunu yaşadı.\n\nİlk değerlendirme: yaklaşık {{days}} gün yok. Gelişmeler hakkında sizi bilgilendireceğiz."
       },
@@ -4042,5 +4060,31 @@
   "generation": {
     "title": "Oluşturma ve Tamamlama",
     "coverage": "Paketlerinizin kapsadıkları"
+  },
+  "academy": {
+    "title": "Yeni altyapı nesli",
+    "level": "Akademi seviyesi {{level}}",
+    "description": "Adaylar henüz kadroda değil. Kimi geliştireceğini seç; her sözleşme kadrodan bir yer ve sezonluk kontenjandan bir hak kullanır.",
+    "capacity": "Kalan sözleşme: {{remaining}}/{{limit}} · Kadro: {{squad}}/{{maximum}}",
+    "deadline": "{{date}} tarihinden önce karar ver",
+    "nextGeneration": "Sonraki nesil: {{candidates}} aday, en fazla {{signings}} sözleşme.",
+    "upgradeHint": "Altyapı tesisleri gelecekteki nesilleri iyileştirir. Antrenman ve maç süresi mevcut gelişimi destekler.",
+    "upgrade": "Akademiyi geliştir ({{cost}})",
+    "maxLevel": "En yüksek seviye",
+    "empty": "Uygun aday yok. Gelecek sezon yeni bir nesil gelecek.",
+    "potentialEstimate": "Tahmini potansiyel",
+    "costs": "Yetiştirme ücreti: {{fee}} · Yıllık maaş: {{wage}}",
+    "sign": "Sözleşme imzala",
+    "reject": "Reddet",
+    "quotaError": "Bu sezonun tüm altyapı sözleşme haklarını kullandın.",
+    "rosterError": "Kadron dolu. Bir adayla sözleşme imzalamadan önce yer aç.",
+    "expiredError": "Bu nesil artık mevcut değil.",
+    "wageError": "Bu sözleşme maaş bütçeni aşar.",
+    "cashError": "Yetiştirme ücretini ödemek için yeterli nakit yok.",
+    "candidateError": "Bu aday artık mevcut değil.",
+    "scoutError": "Gözlemcilerin bu sezonun üç ek adayını da buldu.",
+    "maxLevelError": "Bu tesisler zaten en yüksek seviyede.",
+    "upgradeError": "Akademiyi her sezon bir kez geliştirebilirsin.",
+    "messageBody": "Akademide {{count}} aday var. Bu sezon en fazla {{signings}} adayla sözleşme imzalayabilirsin. Raporları incele ve kimi geliştireceğini seç."
   }
 }

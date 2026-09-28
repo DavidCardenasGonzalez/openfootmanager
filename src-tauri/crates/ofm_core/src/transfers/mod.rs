@@ -101,7 +101,6 @@ pub(crate) enum PlayerImportance {
 pub(crate) struct MarketCandidate {
     player_id: String,
     owner_team_id: String,
-    score: i32,
     fee: u64,
 }
 

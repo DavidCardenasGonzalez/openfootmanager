@@ -14,6 +14,8 @@ const DEFAULT_SETTINGS = {
   auto_save: true,
   match_speed: "normal",
   show_match_commentary: true,
+  show_match_player_names: true,
+  show_match_player_ratings: true,
   confirm_advance: false,
   continue_to_next_event: false,
   ui_scale: "normal",
@@ -41,6 +43,30 @@ beforeEach(() => {
 });
 
 describe("useSettingsStore", () => {
+  it("persists player labels and restores disabled labels from settings", async () => {
+    vi.mocked(invoke).mockResolvedValue(undefined);
+    await useSettingsStore.getState().updateSettings({
+      show_match_player_names: false,
+      show_match_player_ratings: false,
+    });
+    expect(invoke).toHaveBeenCalledWith("save_settings", {
+      settings: {
+        ...DEFAULT_SETTINGS,
+        show_match_player_names: false,
+        show_match_player_ratings: false,
+      },
+    });
+    vi.mocked(invoke).mockResolvedValue({
+      settings: {
+        show_match_player_names: false,
+        show_match_player_ratings: false,
+      },
+      supported_currencies: SUPPORTED_CURRENCIES,
+    });
+    await useSettingsStore.getState().loadSettings();
+    expect(useSettingsStore.getState().settings.show_match_player_names).toBe(false);
+    expect(useSettingsStore.getState().settings.show_match_player_ratings).toBe(false);
+  });
   it("starts with default settings and an unloaded flag", () => {
     const state = useSettingsStore.getState();
 

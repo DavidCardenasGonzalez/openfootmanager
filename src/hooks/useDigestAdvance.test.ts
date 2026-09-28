@@ -39,6 +39,7 @@ describe("useDigestAdvance", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    mockedDetectAttentionEvents.mockReset().mockReturnValue([]);
   });
 
   it("starts not running and with empty entries", () => {
@@ -90,6 +91,51 @@ describe("useDigestAdvance", () => {
     expect(result.current.entries).toHaveLength(0);
   });
 
+  it("continues past acknowledged blockers but pauses again when a new action appears", async () => {
+    const existingBlocker = {
+      id: "urgent_messages",
+      severity: "info",
+      text: "1 urgent unread message(s)",
+      text_key: "notifications.blockers.urgentMessages",
+      text_params: { count: "1" },
+      tab: "Inbox",
+    };
+    const newBlocker = {
+      ...existingBlocker,
+      text: "2 urgent unread message(s)",
+      text_params: { count: "2" },
+    };
+    mockedAdvanceOneDay
+      .mockResolvedValueOnce({
+        action: "blocked",
+        date: "2026-09-01",
+        blockers: [existingBlocker],
+        results: [],
+      })
+      .mockResolvedValueOnce({
+        action: "blocked",
+        date: "2026-09-01",
+        blockers: [newBlocker],
+        results: [],
+      });
+
+    const { result } = renderHook(() => useDigestAdvance(setGameState, onFired));
+
+    await act(async () => {
+      await result.current.startDigest();
+    });
+    await act(async () => {
+      await result.current.startDigest({
+        resume: true,
+        continueThroughEvents: true,
+        acknowledgedBlockers: [existingBlocker],
+      });
+    });
+
+    expect(mockedAdvanceOneDay).toHaveBeenNthCalledWith(2, [existingBlocker]);
+    expect(result.current.stopReason).toEqual({ kind: "blocked", blockers: [newBlocker] });
+  });
+
   it("calls onFired and sets fired stop reason when manager is dismissed", async () => {
     mockedAdvanceOneDay.mockResolvedValueOnce({
       action: "fired",
@@ -128,6 +174,29 @@ describe("useDigestAdvance", () => {
       events: ["userTransfer"],
     });
     expect(result.current.isRunning).toBe(false);
+  });
+
+  it("keeps advancing through attention events in automatic mode until a match day", async () => {
+    mockedAdvanceOneDay
+      .mockResolvedValueOnce(makeAdvancedResponse("2026-09-01"))
+      .mockResolvedValueOnce(makeAdvancedResponse("2026-09-02"))
+      .mockResolvedValueOnce({ action: "match_day", date: "2026-09-03", results: [] });
+    mockedDetectAttentionEvents
+      .mockReturnValueOnce(["highPriorityInbox"])
+      .mockReturnValueOnce(["userTransfer"]);
+
+    const { result } = renderHook(() => useDigestAdvance(setGameState, onFired));
+
+    await act(async () => {
+      await result.current.startDigest({ resume: true, continueThroughEvents: true });
+    });
+
+    expect(mockedAdvanceOneDay).toHaveBeenCalledTimes(3);
+    expect(result.current.entries.map((entry) => entry.date)).toEqual([
+      "2026-09-01",
+      "2026-09-02",
+    ]);
+    expect(result.current.stopReason).toEqual({ kind: "match_day" });
   });
 
   it("resuming after an event stop keeps the accumulated feed", async () => {

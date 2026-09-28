@@ -127,7 +127,9 @@ function runtimePlayer(raw, clubId, warnings) {
     }, position: natural ?? "Midfielder", natural_position: natural ?? "Midfielder", alternate_positions: [], footedness: normalise(text(source, ["preferredFoot", "foot"], "Right")) === "left" ? "Left" : "Right", weak_foot: 2,
     attributes: attrs({ ...source, ...(source.attributes ?? {}), ...(source.technical ?? {}), ...(source.mental ?? {}), ...(source.physical ?? {}), ...(source.goalkeeping ?? {}) }),
     condition: 100, morale: 75, fitness: 75, injury: null, team_id: clubId, retired: false, squad_role: "Senior", traits: [],
-    ovr: Math.max(1, Math.min(99, number(source, ["currentAbility", "current_ability", "ca", "ovr"], 50))),
+    // The backend derives OVR from these attributes when it loads the world.
+    // Keep provider ratings only in media.source_data for calibration.
+    ovr: 0,
     potential: Math.max(1, Math.min(99, number(source, ["potentialAbility", "potential_ability", "pa", "potential"], 50))),
     contract_end: first(source, ["contractEnd", "contract_end", "contractUntil"], null), wage: number(source, ["wage", "weeklyWage", "salary"], 0), market_value: number(source, ["value", "marketValue", "market_value"], 0),
 stats: { appearances: 0, goals: 0, assists: 0, clean_sheets: 0, yellow_cards: 0, red_cards: 0, avg_rating: 0, minutes_played: 0, shots: 0, shots_on_target: 0, passes_completed: 0, passes_attempted: 0, tackles_won: 0, interceptions: 0, fouls_committed: 0 },

@@ -118,7 +118,7 @@ export function useTeamSelection({
   }, [isOpenManagerWorld, regions, selectedHomeRegionId]);
 
   useEffect(() => {
-    if (isOpenManagerWorld || competitions.length === 0) {
+    if (competitions.length === 0) {
       return;
     }
 
@@ -127,7 +127,7 @@ export function useTeamSelection({
         competitions.map((competition) => [competition.id, current[competition.id] ?? true]),
       ),
     );
-  }, [competitions, isOpenManagerWorld]);
+  }, [competitions]);
 
   const activeRegionIds = regions
     .filter((region) => region.id === selectedHomeRegionId || Boolean(regionSelection[region.id]))

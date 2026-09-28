@@ -14,6 +14,7 @@ export interface TeamColors {
 export type KitPattern = "Solid" | "Stripes" | "Hoops" | "HalfAndHalf" | "Diagonal";
 
 export interface FacilitiesData {
+  youth?: number;
   training: number;
   medical: number;
   scouting: number;

@@ -6,17 +6,19 @@ type TranslateFn = (key: string) => string;
 interface PlayerProfileSeasonStatsCardProps {
   stats: PlayerSeasonStats;
   t: TranslateFn;
+  compact?: boolean;
 }
 
 export default function PlayerProfileSeasonStatsCard({
   stats,
   t,
+  compact = false,
 }: PlayerProfileSeasonStatsCardProps) {
   return (
     <Card>
       <CardHeader>{t("playerProfile.seasonStats")}</CardHeader>
       <CardBody>
-        <div className="grid grid-cols-4 md:grid-cols-8 gap-3">
+        <div className={`grid grid-cols-2 sm:grid-cols-4 gap-3 ${compact ? "" : "md:grid-cols-8"}`}>
           <StatBox label={t("playerProfile.apps")} value={stats.appearances} />
           <StatBox label={t("playerProfile.goals")} value={stats.goals} />
           <StatBox label={t("playerProfile.assists")} value={stats.assists} />

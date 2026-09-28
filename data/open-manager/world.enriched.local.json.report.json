@@ -1,0 +1,1604 @@
+{
+  "config": {
+    "version": 1,
+    "input": "/Users/cardenas/openfootmanager/data/open-manager/world.json",
+    "sha256": "aae51873e94332bd7ed5e6ee10e769f107987c3d915175bded63b212b059ed70",
+    "model": "gpt-6-luna",
+    "asOf": "2026-09-27",
+    "factsOnly": false
+  },
+  "clubs": {
+    "top5-club-243-0": {
+      "status": "completed",
+      "name": "Real Madrid",
+      "patch": {
+        "short_name": "Real Madrid",
+        "city": "Madrid",
+        "stadium_name": "Bernabéu",
+        "stadium_capacity": 80242,
+        "founded_year": 1902,
+        "kit_pattern": "Solid",
+        "finance": 60000000,
+        "facilities": {
+          "training": 10,
+          "medical": 9,
+          "scouting": 10
+        },
+        "formation": "4-2-3-1",
+        "play_style": "Counter"
+      },
+      "skipped": [
+        {
+          "field": "colors",
+          "reason": "hecho sin verificar"
+        },
+        {
+          "field": "wage_budget",
+          "reason": "confianza insuficiente"
+        },
+        {
+          "field": "transfer_budget",
+          "reason": "confianza insuficiente"
+        },
+        {
+          "field": "logo_url",
+          "reason": "dato desconocido"
+        }
+      ],
+      "research": {
+        "club_id": "top5-club-243-0",
+        "matched": true,
+        "fields": {
+          "short_name": {
+            "value": "Real Madrid",
+            "basis": "verified",
+            "confidence": "high",
+            "source_urls": [
+              "https://www.realmadrid.com/en-US/the-club/"
+            ],
+            "notes": "Nombre corto de uso habitual en la web oficial; la entidad es Real Madrid C. F."
+          },
+          "city": {
+            "value": "Madrid",
+            "basis": "verified",
+            "confidence": "high",
+            "source_urls": [
+              "https://www.realmadrid.com/es-ES/el-club/contacto"
+            ],
+            "notes": "La dirección oficial del club y del estadio figura en Madrid. «Real Madrid» en el dato de entrada no es una ciudad."
+          },
+          "stadium_name": {
+            "value": "Bernabéu",
+            "basis": "verified",
+            "confidence": "medium",
+            "source_urls": [
+              "https://bernabeu.realmadrid.com/en-US/news/the-nfl-returns-to-the-bernabeu",
+              "https://www.realmadrid.com/en-US/news/club/latest-news/el-santiago-bernabeu-cumple-78-anos-14-12-2025"
+            ],
+            "notes": "Bernabéu es la denominación de marca empleada por el club en la fecha de referencia. El club también sigue usando Santiago Bernabéu al referirse a su nombre histórico."
+          },
+          "stadium_capacity": {
+            "value": 80242,
+            "basis": "verified",
+            "confidence": "medium",
+            "source_urls": [
+              "https://www.esmadrid.com/en/tourist-information/bernabeu-stadium"
+            ],
+            "notes": "La fuente turística oficial de Madrid consultada indica 80.242 asientos. Existe una cifra alternativa difundida de 83.186; ante esa discrepancia, se conserva la cifra de la fuente institucional local, que describe el aforo final tras la remodelación."
+          },
+          "founded_year": {
+            "value": 1902,
+            "basis": "verified",
+            "confidence": "high",
+            "source_urls": [
+              "https://www.realmadrid.com/es-ES/noticias/club/actualidad/124-anos-de-leyenda-06-03-2026"
+            ],
+            "notes": "El club identifica el 6 de marzo de 1902 como la fecha de constitución de su primera junta directiva; no se usa el año de apertura del estadio."
+          },
+          "colors": {
+            "value": {
+              "primary": "#FFFFFF",
+              "secondary": "#006B3C"
+            },
+            "basis": "estimated",
+            "confidence": "medium",
+            "source_urls": [
+              "https://www.realmadrid.com/StaticFiles/RealMadridResponsive/especiales/en/shirts-and-kits/index.html"
+            ],
+            "notes": "La equipación local 2026/27 es blanca con detalles verde oscuro. El color blanco está verificado; el código hexadecimal del verde es una aproximación, ya que la fuente no publica códigos cromáticos."
+          },
+          "kit_pattern": {
+            "value": "Solid",
+            "basis": "verified",
+            "confidence": "high",
+            "source_urls": [
+              "https://www.realmadrid.com/StaticFiles/RealMadridResponsive/especiales/en/shirts-and-kits/index.html"
+            ],
+            "notes": "La camiseta local es predominantemente blanca y no presenta franjas, aros, mitades ni una banda diagonal; los detalles de color son ribetes."
+          },
+          "finance": {
+            "value": 60000000,
+            "basis": "estimated",
+            "confidence": "medium",
+            "source_urls": [
+              "https://www.realmadrid.com/en-US/news/club/latest-news/el-real-madrid-cierra-la-temporada-2025-2026-con-los-mayores-ingresos-y-el-mayor-ebitda-de-su-historia-28-07-2026"
+            ],
+            "notes": "Estimación de caja inicial utilizable, no cifra auditada de tesorería disponible para el juego. El club publicó €82,8 millones de tesorería al 30 de junio de 2026 y €8,7 millones de deuda neta; se aplica un margen prudente para obligaciones operativas y compromisos del club."
+          },
+          "wage_budget": {
+            "value": 6000000,
+            "basis": "estimated",
+            "confidence": "low",
+            "source_urls": [
+              "https://www.realmadrid.com/en-US/news/club/latest-news/el-real-madrid-cierra-la-temporada-2025-2026-con-los-mayores-ingresos-y-el-mayor-ebitda-de-su-historia-28-07-2026"
+            ],
+            "notes": "Presupuesto semanal estimado para el primer equipo, no nómina publicada ni auditada. Se calibra como plantilla de élite y de gran tamaño frente a los ingresos récord publicados por el club; no equivale al gasto salarial total de todas las secciones."
+          },
+          "transfer_budget": {
+            "value": 80000000,
+            "basis": "estimated",
+            "confidence": "low",
+            "source_urls": [
+              "https://www.realmadrid.com/en-US/news/club/latest-news/el-real-madrid-cierra-la-temporada-2025-2026-con-los-mayores-ingresos-y-el-mayor-ebitda-de-su-historia-28-07-2026"
+            ],
+            "notes": "Estimación conservadora de capacidad inicial para fichajes, no presupuesto de traspasos anunciado. Tiene en cuenta los ingresos de €1.221,3 millones, la tesorería de €82,8 millones a 30 de junio de 2026 y que el club reinvierte en plantilla e instalaciones."
+          },
+          "facilities": {
+            "value": {
+              "training": 10,
+              "medical": 9,
+              "scouting": 10
+            },
+            "basis": "estimated",
+            "confidence": "medium",
+            "source_urls": [
+              "https://www.realmadrid.com/es-ES/el-club/ciudad-real-madrid/instalaciones",
+              "https://www.realmadrid.com/es-ES/noticias/club/patrocionadores/el-real-madrid-y-abbott-inauguran-el-innovation-lab",
+              "https://www.realmadrid.com/en-US/news/club/latest-news/el-real-madrid-cierra-la-temporada-2025-2026-con-los-mayores-ingresos-y-el-mayor-ebitda-de-su-historia-28-07-2026"
+            ],
+            "notes": "Valoraciones de juego, no calificaciones oficiales. Entrenamiento 10 por la Ciudad Real Madrid y su escala; medicina 9 por sus recursos de rendimiento y colaboración de innovación; scouting 10 como estimación acorde con el alcance global, la categoría y la inversión del club."
+          },
+          "formation": {
+            "value": "4-2-3-1",
+            "basis": "estimated",
+            "confidence": "medium",
+            "source_urls": [
+              "https://as.com/futbol/primera/las-pistas-que-deja-mourinho-f202608-n/"
+            ],
+            "notes": "Esquema base estimado para la temporada 2026/27: la cobertura consultada antes de la fecha de referencia describe el 4-2-3-1 implantado por Mourinho. Puede variar según rival y fase del juego."
+          },
+          "play_style": {
+            "value": "Counter",
+            "basis": "estimated",
+            "confidence": "medium",
+            "source_urls": [
+              "https://as.com/futbol/primera/las-pistas-que-deja-mourinho-f202608-n/"
+            ],
+            "notes": "Mapeo de juego estimado a partir del esquema y de la orientación de transición asociada a Mourinho; no es una etiqueta oficial del club y no implica que el equipo juegue siempre en bloque bajo."
+          },
+          "logo_url": {
+            "value": null,
+            "basis": "unknown",
+            "confidence": "unknown",
+            "source_urls": [],
+            "notes": "No se localizó en las fuentes consultadas una URL directa verificable de un archivo de escudo a color; se deja nulo en lugar de inferir o fabricar una dirección."
+          }
+        }
+      },
+      "sources": [
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/about-real-madrid/the-club/transparency/annual-accounts"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/noticias/club/actualidad/noticia-real-madrid-ejercicio-economico-2025"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/the-club/transparency"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/el-club/transparencia/cuentas-anuales"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/news/club/latest-news/noticia-real-madrid-ejercicio-economico-2025"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/el-club/transparencia"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/noticias/club/actualidad/el-real-madrid-cierra-la-temporada-2025-2026-con-los-mayores-ingresos-y-el-mayor-ebitda-de-su-historia-28-07-2026"
+        },
+        {
+          "type": "url",
+          "url": "https://shop.realmadrid.com/products/rmcfmz0942-mens-home-authentic-shirt-26-27-white"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/noticias/club/actualidad/124-anos-de-leyenda-06-03-2026"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/news/club/latest-news/el-real-madrid-cierra-la-temporada-2025-2026-con-los-mayores-ingresos-y-el-mayor-ebitda-de-su-historia-28-07-2026"
+        },
+        {
+          "type": "url",
+          "url": "https://us.shop.realmadrid.com/products/rmcfmz0919-mens-home-authentic-jersey-25-26-white?player=Pau+C."
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/news/club/latest-news/aprobados-practicamente-por-unanimidad-todos-los-puntos-tratados-en-la-asamblea-general-ordinaria-23-11-2025"
+        },
+        {
+          "type": "url",
+          "url": "https://assets-eu-01.kc-usercontent.com/1293c890-579f-01b7-8480-902cca7de55e/3dea6f20-4d2b-4bb9-b33a-cebbc570c4ca/Bilanci-Relazioni-2024-25-ENG.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://publish.realmadrid.com/content/dam/portals/realmadrid-com/en-us/core-content/assemblies/pages/generic-pages/el-club/transparencia/01-documentos-transparencia/2025-02-10%20CSR%20and%20Sustainability%20Report%202023_2024.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.fcbarcelona.com/fcbarcelona/document/2025/10/20/a50c257f-0ea4-4a92-b6b0-cacf189801fc/MEM_2024_25_ENG_web.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/StaticFiles/RealMadrid/InformeAnual0910_Ingles/pdf/Revista.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/StaticFiles/RealMadrid/img/pdf/M_Rm_InfomeAnual_11-12_Ingles_web_161012.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/StaticFiles/RealMadrid/img/pdf/AnnualReport2011_web_021211.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/un-real-madrid-milmillonario-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/unas-cuentas-historicas-f202511-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/el-madrid-rompe-su-techo-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/el-real-madrid-lider-mundial-f202601-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/soccer/comments/1m2lcvw"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/todo-listo-para-fichar-un-galactico-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/no-todos-pueden-ser-el-real-madrid-pero-muchos-pueden-aprender-de-su-modelo-f202602-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://de.wikipedia.org/wiki/Real_Madrid"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/2024%E2%80%9325_Real_Madrid_CF_season"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/2024%E2%80%9325_Real_Madrid_Baloncesto_season"
+        },
+        {
+          "type": "url",
+          "url": "https://it.wikipedia.org/wiki/Real_Madrid_Club_de_F%C3%BAtbol_2024-2025"
+        },
+        {
+          "type": "url",
+          "url": "https://ru.wikipedia.org/wiki/%D0%A4%D0%9A_%C2%AB%D0%A0%D0%B5%D0%B0%D0%BB_%D0%9C%D0%B0%D0%B4%D1%80%D0%B8%D0%B4%C2%BB_%D0%B2_%D1%81%D0%B5%D0%B7%D0%BE%D0%BD%D0%B5_2024/2025"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/soccer/comments/1v8zeuw/comunicado_oficial_real_madrid_closes_the/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/qv5n07"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/1tzdvc6/uefa_football_clubs_with_the_highest_opex/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/soccer/comments/1tp1pjj/real_madrid_reaches_12_billion_in_revenue_for_the/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/soccer/comments/qsaxgy"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/el-club/transparencia/aforo"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/the-club/history/stadium/estadio-de-elite"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/news/club/latest-news/el-real-madrid-cierra-la-temporada-2025-2026-con-los-mayores-ingresos-y-el-mayor-ebitda-de-su-historia-28-07-2026"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/the-club/history/stadium/santiago-bernabeu"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/the-club/transparency"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/el-club/transparencia"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/bernabeu-stadium/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.esmadrid.com/en/tourist-information/bernabeu-stadium"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/the-club/values"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/el-club/historia/estadio"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/el-club/contacto"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/futbol/portada"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/StaticFiles/RealMadrid/img/pdf/M_Rm_InfomeAnual_11-12_Ingles_web_161012.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.esmadrid.com/sites/default/files/catalogo_novedades_2024_eng.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/StaticFiles/RealMadrid/img/pdf/M_Rm_InfomeAnual_1213_eng_260913.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/StaticFiles/RealMadrid/img/pdf/Annual_Report_RealMadrid_2020-21.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/Real_Madrid_CF"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/2025%E2%80%9326_Real_Madrid_CF_season"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/el-madrid-congela-el-precio-de-los-abonos-f202606-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/real-madrid-cinco-partidos-en-agosto-f202607-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.youtube.com/watch?v=tHUx6P1c56E"
+        },
+        {
+          "type": "url",
+          "url": "https://www.youtube.com/watch?v=OOxBOZFyrVA"
+        },
+        {
+          "type": "url",
+          "url": "https://es.wikipedia.org/wiki/Primera_Divisi%C3%B3n_de_Espa%C3%B1a_2025-26"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/la-estrategia-del-real-madrid-al-descubierto-f202608-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/retoques-veraniegos-para-el-bernabeu-f202607-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/la-justicia-el-madrid-no-es-responsable-por-el-ruido-de-los-conciertos-f202605-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://de.wikipedia.org/wiki/Primera_Divisi%C3%B3n_2025/26"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/soccer/comments/1v8zeuw/comunicado_oficial_real_madrid_closes_the/"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/Bernab%C3%A9u_%28stadium%29"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/List_of_La_Liga_stadiums"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/RealMadridFC/comments/1wlun41/current_bernab%C3%A9u_matchday_backpack_and_camera/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.crtm.es/comunicacion/sala-de-prensa/noticias/noticias/18112025-avanzan-las-obras-de-renovacion-de-la-estacion-de-metro-de-bernabeu/?lang=en"
+        },
+        {
+          "type": "url",
+          "url": "https://rm-spa-web-ssr-f5.internal.realmadrid.es/es-ES/noticias/club/actualidad/toda-la-actualidad-del-santiago-bernabeu-del-siglo-xxi"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/news/club/latest-news/el-santiago-bernabeu-cumple-78-anos-14-12-2025"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/bernabeu-stadium/new-stadium/a-legendary-stadium"
+        },
+        {
+          "type": "url",
+          "url": "https://bernabeu.realmadrid.com/en-US/news/the-nfl-returns-to-the-bernabeu"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/el-club/transparencia/aforo"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/el-madrid-renombra-el-bernabeu-f202511-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://bernabeu.realmadrid.com/en-US/news/the-official-bernabeu-store-suits-up-for-the-nfl-madrid-game"
+        },
+        {
+          "type": "url",
+          "url": "https://sport.sky.de/fussball/artikel/real-madrid-aendert-stadionnamen-in-bernabeu/13470700/35311"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/Real_Madrid_CF"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/estadio-bernabeu-una-estrategia-disenada-al-detalle-f202511-n/?outputType=amp"
+        },
+        {
+          "type": "url",
+          "url": "https://www.abola.pt/noticias/oficial-real-madrid-muda-nome-do-estadio-2025111319090986088"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/the-club/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/StaticFiles/RealMadrid/img/pdf/M_Rm_InfomeAnual_11-12_Ingles_web_161012.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.esmadrid.com/sites/default/files/catalogo_novedades_2024_eng.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/Bernab%C3%A9u_%28stadium%29"
+        },
+        {
+          "type": "url",
+          "url": "https://de.wikipedia.org/wiki/Real_Madrid"
+        },
+        {
+          "type": "url",
+          "url": "https://fr.wikipedia.org/wiki/Bernab%C3%A9u"
+        },
+        {
+          "type": "url",
+          "url": "https://www.esmadrid.com/sites/default/files/catalogo_novedades_2025_en.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://assets.realmadrid.com/is/content/realmadrid/Sustainability%20Report%20Real%20Madrid%202024-2025pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://pt.wikipedia.org/wiki/Est%C3%A1dio_Bernab%C3%A9u"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/El_Cl%C3%A1sico"
+        },
+        {
+          "type": "url",
+          "url": "https://www.youtube.com/watch?v=IqHDpc6E9qI"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/StaticFiles/RealMadrid/img/pdf/Annual_Report_RealMadrid_2020-21.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/estadio-bernabeu-una-estrategia-disenada-al-detalle-f202511-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/la-asamblea-del-madrid-sera-el-23-de-noviembre-f202511-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/actualidad/sociedad/la-estacion-de-metro-de-santiago-bernabeu-cambiara-de-nombre-f202511-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/el-bernabeu-abre-otra-dimension-f202511-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://cadenaser.com/nacional/2025/11/15/las-dudas-con-el-nuevo-naming-del-santiago-bernabeu-me-gusta-como-suena-cadena-ser/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/soccer/comments/1v8zeuw/comunicado_oficial_real_madrid_closes_the/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/RealMadridFC/comments/1wlun41/current_bernab%C3%A9u_matchday_backpack_and_camera/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/StaticFiles/RealMadridResponsive/especiales/en/shirts-and-kits/index.html"
+        },
+        {
+          "type": "url",
+          "url": "https://us.shop.realmadrid.com/products/rmcfmz0941-mens-home-shirt-26-27-white?variant=61920282313034"
+        },
+        {
+          "type": "url",
+          "url": "https://livefootbal.com/articles/tactical-analysis/how-real-madrid-play-under-ancelotti"
+        },
+        {
+          "type": "url",
+          "url": "https://xgoal.net/formations/real-madrid-formation.html"
+        },
+        {
+          "type": "url",
+          "url": "https://laliganews.football/news/2026-02-17-ancelotti-s-madrid-more-structure-less-control-in-europe"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Real_Madrid_CF_season"
+        },
+        {
+          "type": "url",
+          "url": "https://es.coachesvoice.com/cv/analisis-tactico-como-ha-mejorado-jose-mourinho-al-real-madrid/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/the-club/history/football/first-team/coaches"
+        },
+        {
+          "type": "url",
+          "url": "https://fdp.fifa.org/assetspublic/ce233/r10585/pdf/TacticalLineup-English.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.youtube.com/watch?v=jXifHsDBf68"
+        },
+        {
+          "type": "url",
+          "url": "https://tribuna.com/amp/es/blogs/el-once-tipo-del-real-madrid-202526-de-la-idea-de-xabi-alons/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.uefa.com/newsfiles/UCL/2026/2048064_LU.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.futwiz.com/custom-tactics/view/3a54-6d6d-4b3e-ab2f-54f9-3741"
+        },
+        {
+          "type": "url",
+          "url": "https://www.youtube.com/watch?v=Lz5bd3bo8Vw"
+        },
+        {
+          "type": "url",
+          "url": "https://es.coachesvoice.com/cv/analisis-tactico-respuestas-a-las-interrogantes-principales-del-real-madrid-de-xabi-alonso/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.fcutcoins.com/blog/fc-26-real-madrid-career-mode-best-4-3-3-tactics-rebuild-guide"
+        },
+        {
+          "type": "url",
+          "url": "https://cuplisotw.blogspot.com/2026/04/echnical-analysis-real-madrid-tactics-evolution-2026.html"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/2025%E2%80%9326_Real_Madrid_CF_season"
+        },
+        {
+          "type": "url",
+          "url": "https://static.realmadrid.com/StaticFiles/RealMadrid/img/pdf/Annual-Report_Foundation-RM.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.uefa.com/newsfiles/UCL/2026/2045990_LU.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/Carlo_Ancelotti"
+        },
+        {
+          "type": "url",
+          "url": "https://www.soccertutor.com/newsletters/download/Real-Madrid-Tactical-Set-Contents.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/StaticFiles/RealMadrid/img/pdf/M_Rm_InfomeAnual_11-12_Ingles_web_161012.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/List_of_Real_Madrid_CF_managers"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/eFootball/comments/1vq3il6/trying_to_recreate_madrids_3peat_squad_and/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/1lfp7m7"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/Real_Madrid_CF"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/pesmobile/comments/1vpu2m4/trying_to_recreate_madrids_3peat_squad_and/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/u_Old_Echo3047/comments/1t6hjga/i_tried_building_a_real_madrid_system_using_fc/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/1k6uv0a"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/1jy4r1i"
+        },
+        {
+          "type": "url",
+          "url": "https://fr.wikipedia.org/wiki/Saison_2025-2026_du_Real_Madrid"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/RealMadridFC/comments/1u18k3z/how_i_would_line_upmake_this_madrid_team/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/pesmobile/comments/1lmj5d0"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/fifatactics/comments/1s0u2xz/jos%C3%A9_mourinho_recordbreaking_real_madrid_201112/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/1v3ljez/our_20262027_season_expectations/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/1ntj8qy/am_i_the_only_one_who_is_done_with_this_433/"
+        },
+        {
+          "type": "url",
+          "url": "https://cadenaser.com/nacional/2026/07/24/un-sistema-nuevo-la-recuperacion-del-mediapunta-y-alguien-de-confianza-en-el-vestuario-las-principales-conclusiones-del-primer-amistoso-de-la-era-mourinho-cadena-ser/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/1k8vvp9"
+        },
+        {
+          "type": "url",
+          "url": "https://cadenaser.com/nacional/2026/07/28/el-real-madrid-con-overbooking-en-la-medular-por-la-llegada-de-rodri-si-no-hay-salidas-sobra-gente-para-el-doble-pivote-cadena-ser/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/mastantuono-dilema-para-xabi-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/seis-candidatos-para-dos-puestos-f202608-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/las-pistas-que-deja-mourinho-f202608-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://cadenaser.com/nacional/2026/08/14/el-tapado-de-mourinho-para-dirigir-al-real-madrid-en-el-centro-del-campo-que-ya-tenia-en-la-plantilla-cadena-ser/"
+        },
+        {
+          "type": "url",
+          "url": "https://arxiv.org/abs/2602.16830"
+        },
+        {
+          "type": "url",
+          "url": "https://arxiv.org/abs/2506.23843"
+        },
+        {
+          "type": "url",
+          "url": "https://www.esmadrid.com/en/tourist-information/bernabeu-stadium"
+        },
+        {
+          "type": "url",
+          "url": "https://fortwelve.jp/stadium/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.wikidata.org/wiki/Q13045437"
+        },
+        {
+          "type": "url",
+          "url": "https://www.esmadrid.com/ja/kankoujouhou/estadio-bernabeu"
+        },
+        {
+          "type": "url",
+          "url": "https://www.footballsquads.co.uk/spain/2025-2026/laliga/rmadrid.htm"
+        },
+        {
+          "type": "url",
+          "url": "https://thefootballtop.com/stadiums/santiago-bernabeu/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/noticias/club/actualidad/la-fundacion-real-madrid-presenta-el-corazon-classic-match-2025-un-pase-para-la-esperanza-19-03-2025"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/Bernab%C3%A9u_%28stadium%29"
+        },
+        {
+          "type": "url",
+          "url": "https://www.rotascore.com/match/real-madrid-real-sociedad/8yomo4h1o0dlq0j"
+        },
+        {
+          "type": "url",
+          "url": "https://www.fotmob.com/sw/matches/athletic-bilbao-vs-rs-gimnastica/2aqrys"
+        },
+        {
+          "type": "url",
+          "url": "https://www.ysscores.com/ar/stadium/2236/Estadio-Bernabeu"
+        },
+        {
+          "type": "url",
+          "url": "https://www.rotascore.com/match/real-madrid-malaga/x7lm7phje94gm2w"
+        },
+        {
+          "type": "url",
+          "url": "https://reuters.screenocean.com/record/1820910"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/El_Cl%C3%A1sico"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/Real_Madrid_CF"
+        },
+        {
+          "type": "url",
+          "url": "https://ttabvue.uspto.gov/ttabvue/ttabvue-92082033-CAN-33.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/List_of_association_football_stadiums_by_country"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/List_of_stadiums_by_capacity"
+        },
+        {
+          "type": "url",
+          "url": "https://cdn.businessday.ng/wp-content/uploads/2024/11/BD_20241123.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://pt.wikipedia.org/wiki/Est%C3%A1dio_Bernab%C3%A9u"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/StaticFiles/RealMadridOAS/pdf/Resumen_Informe_ANUAL_Real_Madrid_2020-21.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.esmadrid.com/sites/default/files/catalogo_novedades_2024_eng.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.gulf-times.com/pdf/2024/08/24/sport-20240824-1.pdf?ts=004411"
+        },
+        {
+          "type": "url",
+          "url": "https://assets.realmadrid.com/is/content/realmadrid/Sustainability%20Report%20Real%20Madrid%202024-2025pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/us/futbol/internacional/cuanta-gente-cabe-en-el-santiago-bernabeu-la-capacidad-del-estadio-del-real-madrid-tras-la-remodelacion-n-2/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/LesVerts/comments/1qrz5n8/the_largest_stadiums_in_europe/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/el-club/ciudad-real-madrid/instalaciones"
+        },
+        {
+          "type": "url",
+          "url": "https://www.esmadrid.com/en/sports/ciudad-real-madrid"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/news/club/latest-news/it-is-18-years-since-the-inauguration-of-real-madrid-sport-city"
+        },
+        {
+          "type": "url",
+          "url": "https://publish.realmadrid.com/content/dam/portals/realmadrid-com/en-us/core-content/assemblies/pages/generic-pages/el-club/transparencia/01-documentos-transparencia/2025-02-10%20CSR%20and%20Sustainability%20Report%202023_2024.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/el-club/ciudad-real-madrid"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/las-pistas-que-deja-mourinho-f202608-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/noticias/futbol/primer-equipo/entrenamientos/el-equipo-se-esta-entrenando-29-07-2026"
+        },
+        {
+          "type": "url",
+          "url": "https://www.mundodeportivo.com/futbol/real-madrid/20260804/1004212868/rompecabezas-mourinho-posicion-clave-esquema.html?facet=amp"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/pt-PT/o-clube/cidade-real-madrid/instalacoes"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/en-US/news/football/first-team/latest-news/reconocimientos-medicos-de-cucurella-mbappe-y-konate-10-08-2026"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/es-ES/noticias/club/patrocionadores/el-real-madrid-y-abbott-inauguran-el-innovation-lab"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/ar-AE/the-club/real-madrid-city/training-facilities"
+        },
+        {
+          "type": "url",
+          "url": "https://assets.realmadrid.com/is/content/realmadrid/Sustainability%20Report%20Real%20Madrid%202024-2025pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.youtube.com/watch?v=X_zMn7VmOWo"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/StaticFiles/RealMadrid/img/pdf/M_Rm_InfomeAnual_1213_eng_260913.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.coach-os.com/en/wiki/jose-mourinho-taktik"
+        },
+        {
+          "type": "url",
+          "url": "https://static.realmadrid.com/StaticFiles/RealMadridOAS/pdf/Informe_ANUAL_Real_Madrid_2020-21.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.realmadrid.com/StaticFiles/RealMadrid/img/pdf/Annual_Report_RealMadrid_2020-21.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/1vi056s/jose_mourinhos_midfield_for_202627_season_which_3/"
+        },
+        {
+          "type": "url",
+          "url": "https://es.wikipedia.org/wiki/Real_Madrid_Club_de_F%C3%BAtbol"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/Ciudad_Real_Madrid"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Mourinho"
+        },
+        {
+          "type": "url",
+          "url": "https://es.wikipedia.org/wiki/Ciudad_Real_Madrid_Florentino_P%C3%A9rez"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/1vhiqvo/people_are_going_to_criticise_or_praise_mourinho/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/onlyrealmadrid/comments/1vkrm7u/jos%C3%A9_mourinhos_real_madrid_202627_what_do_you/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/RealMadridFC/comments/1vkrlkg/jos%C3%A9_mourinhos_real_madrid_202627_what_do_you/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/u_INSOSTUDIO/comments/1w0ef8q/how_mourinho_can_unlock_real_madrids_superteam/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/1w2nzc5/with_the_exception_of_cucurella_the_lineup_today/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/1w1ffk7/daily_open_thread_saturday_29_august_2026/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/1vsi23u/daily_open_thread_wednesday_19_august_2026/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/fifatactics/comments/1s0u2xz/jos%C3%A9_mourinho_recordbreaking_real_madrid_201112/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/RealMadridFC/comments/1w3fp7m/what_do_you_think_of_mourinho_so_far/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/RealMadridFC/comments/1vmzpvb/where_are_we_actually_heading_is_there_a_clear/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/realmadrid/comments/1qea5am/list_of_decisions_jose_mourinho_took_when_he_was/"
+        },
+        {
+          "type": "url",
+          "url": "https://es.wikipedia.org/wiki/Ciudad_Deportiva_del_Real_Madrid_Club_de_F%C3%BAtbol"
+        },
+        {
+          "type": "url",
+          "url": "https://de.wikipedia.org/wiki/Ciudad_Real_Madrid"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/mourinho-en-cada-titulo-del-madrid-tenia-una-llamada-del-presi-f202608-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://as.com/futbol/primera/1x1-del-real-madrid-ante-el-ferencvaros-la-maquina-aun-chirria-f202608-n/"
+        },
+        {
+          "type": "url",
+          "url": "https://cadenaser.com/nacional/2026/08/12/el-real-madrid-gana-al-deportivo-de-a-coruna-con-un-gol-de-brahim-y-se-lleva-el-teresa-herrera-trece-anos-despues-cadena-ser/"
+        },
+        {
+          "type": "url",
+          "url": "https://cadenaser.com/nacional/2026/08/21/la-clave-de-boveda-en-el-ataque-del-real-madrid-que-se-puede-convertir-en-la-china-en-el-zapato-en-esta-segunda-etapa-de-jose-mourinho-cadena-ser/"
+        },
+        {
+          "type": "url",
+          "url": "https://cadenaser.com/nacional/2026/08/31/mourinho-construye-su-madrid-por-el-tejado-cadena-ser/"
+        }
+      ],
+      "response_id": "resp_0bad0a97c6ef86f6016ab9deaa871887d1ba5c3f3d58dea8d8",
+      "usage": {
+        "input_tokens": 53658,
+        "input_tokens_details": {
+          "cache_write_tokens": 6065,
+          "cached_tokens": 0
+        },
+        "output_tokens": 4328,
+        "output_tokens_details": {
+          "reasoning_tokens": 2801
+        },
+        "total_tokens": 57986
+      },
+      "completed_at": "2026-09-28T03:28:41.137Z"
+    },
+    "top5-club-21-0": {
+      "status": "completed",
+      "name": "FC Bayern München",
+      "patch": {
+        "short_name": "Bayern",
+        "city": "Munich",
+        "stadium_name": "Allianz Arena",
+        "stadium_capacity": 75024,
+        "founded_year": 1900,
+        "kit_pattern": "Stripes",
+        "facilities": {
+          "training": 10,
+          "medical": 9,
+          "scouting": 9
+        },
+        "formation": "4-2-3-1",
+        "play_style": "HighPress"
+      },
+      "skipped": [
+        {
+          "field": "colors",
+          "reason": "hecho sin verificar"
+        },
+        {
+          "field": "finance",
+          "reason": "confianza insuficiente"
+        },
+        {
+          "field": "wage_budget",
+          "reason": "confianza insuficiente"
+        },
+        {
+          "field": "transfer_budget",
+          "reason": "confianza insuficiente"
+        },
+        {
+          "field": "logo_url",
+          "reason": "candidato de imagen guardado solo en el informe"
+        }
+      ],
+      "research": {
+        "club_id": "top5-club-21-0",
+        "matched": true,
+        "fields": {
+          "short_name": {
+            "value": "Bayern",
+            "basis": "verified",
+            "confidence": "high",
+            "source_urls": [
+              "https://fcbayern.com/en/teams/first-team"
+            ],
+            "notes": "La identidad coincide con el primer equipo del FC Bayern München; «Bayern» es una forma corta de uso común."
+          },
+          "city": {
+            "value": "Munich",
+            "basis": "verified",
+            "confidence": "high",
+            "source_urls": [
+              "https://fcbayern.com/de/club/historie/meilensteine-seit-1900/1900-bis-1932-von-beginn-an-erfolgreich",
+              "https://allianz-arena.com/en/arena/facts/general-information"
+            ],
+            "notes": "Club muniqués, fundado en el Café Gisela de Schwabing; juega en el estadio situado en Múnich."
+          },
+          "stadium_name": {
+            "value": "Allianz Arena",
+            "basis": "verified",
+            "confidence": "high",
+            "source_urls": [
+              "https://allianz-arena.com/en/arena/facts/general-information"
+            ],
+            "notes": "Estadio local identificado por la fuente oficial del recinto."
+          },
+          "stadium_capacity": {
+            "value": 75024,
+            "basis": "verified",
+            "confidence": "high",
+            "source_urls": [
+              "https://allianz-arena.com/en/faq",
+              "https://allianz-arena.com/en/arena/facts/general-information"
+            ],
+            "notes": "La capacidad publicada para partidos nacionales es 75.024. La capacidad internacional ordinaria indicada es 70.000; se usa la cifra doméstica para el juego."
+          },
+          "founded_year": {
+            "value": 1900,
+            "basis": "verified",
+            "confidence": "high",
+            "source_urls": [
+              "https://fcbayern.com/de/club/historie/meilensteine-seit-1900/1900-bis-1932-von-beginn-an-erfolgreich"
+            ],
+            "notes": "El club indica que fue fundado el 27 de febrero de 1900; no se confunde con la apertura del estadio."
+          },
+          "colors": {
+            "value": {
+              "primary": "#DC052D",
+              "secondary": "#FFFFFF"
+            },
+            "basis": "estimated",
+            "confidence": "medium",
+            "source_urls": [
+              "https://fcbayern.com/store/en-aa/i/logo",
+              "https://fcbayern.com/en/news/2026/05/the-new-fc-bayern-home-shirt-for-the-2026-27-season"
+            ],
+            "notes": "Rojo y blanco son los colores tradicionales confirmados por el club. Los códigos hexadecimales son valores representativos, no una especificación cromática oficial consultada."
+          },
+          "kit_pattern": {
+            "value": "Stripes",
+            "basis": "verified",
+            "confidence": "medium",
+            "source_urls": [
+              "https://fcbayern.com/en/news/2026/05/the-new-fc-bayern-home-shirt-for-the-2026-27-season",
+              "https://www.adidas.de/en/fc-bayern-26-27-home-authentic-jersey/JZ3070.html"
+            ],
+            "notes": "Para la camiseta local 2026/27, la descripción del producto señala franjas rojas tonales verticales; se asigna «Stripes»."
+          },
+          "finance": {
+            "value": 40000000,
+            "basis": "estimated",
+            "confidence": "low",
+            "source_urls": [
+              "https://fcbayern.com/binaries/content/assets/downloads/homepage/jhv/2025/agm-25-pressrelease.pdf"
+            ],
+            "notes": "Estimación de caja inicial disponible para el juego, no cifra auditada. El club informó ingresos de 978,3 M€ y beneficio neto de 27,1 M€ en 2024/25; los activos corrientes de 398 M€ incluyen cuentas por cobrar y otros conceptos, por lo que no se toman como efectivo libre."
+          },
+          "wage_budget": {
+            "value": 6000000,
+            "basis": "estimated",
+            "confidence": "low",
+            "source_urls": [
+              "https://fcbayern.com/binaries/content/assets/downloads/homepage/jhv/2025/agm-25-pressrelease.pdf"
+            ],
+            "notes": "Presupuesto semanal de primera plantilla para inicialización del juego. La cifra publicada de gastos de personal (408,3 M€ en 2024/25) cubre a todo el personal del FC Bayern München AG, no solo a los futbolistas; se estima una parte considerable pero menor para el primer equipo."
+          },
+          "transfer_budget": {
+            "value": 100000000,
+            "basis": "estimated",
+            "confidence": "low",
+            "source_urls": [
+              "https://fcbayern.com/binaries/content/assets/downloads/homepage/jhv/2025/agm-25-pressrelease.pdf"
+            ],
+            "notes": "Estimación jugable, no gasto disponible publicado. Se calibra con la escala de ingresos, el beneficio de 2024/25 y la capacidad financiera del club, manteniéndola por debajo de la facturación anual."
+          },
+          "facilities": {
+            "value": {
+              "training": 10,
+              "medical": 9,
+              "scouting": 9
+            },
+            "basis": "estimated",
+            "confidence": "medium",
+            "source_urls": [
+              "https://fcbayern.com/en/teams/first-team"
+            ],
+            "notes": "Valoraciones de juego, no calificaciones oficiales. La escala refleja el nivel de un club de élite y la existencia de una estructura profesional amplia; el sitio oficial identifica áreas médicas y de rendimiento, pero no publica ratings numéricos."
+          },
+          "formation": {
+            "value": "4-2-3-1",
+            "basis": "estimated",
+            "confidence": "medium",
+            "source_urls": [
+              "https://www.uefa.com/newsfiles/UCL/2026/2045910_LU.pdf"
+            ],
+            "notes": "Estimación táctica basada en una alineación europea de 2025 con una estructura compatible con 4-2-3-1. No se presenta como formación oficial fija para toda la temporada de referencia."
+          },
+          "play_style": {
+            "value": "HighPress",
+            "basis": "estimated",
+            "confidence": "medium",
+            "source_urls": [
+              "https://www.uefa.com/newsfiles/UCL/2026/2045910_LU.pdf"
+            ],
+            "notes": "Mapeo de juego estimado para representar presión adelantada y orientación ofensiva; no es una categoría oficial del club ni una medición publicada."
+          },
+          "logo_url": {
+            "value": "https://img.fcbayern.com/image/upload/v1779947772/cms/public/images/fcbayern-com/logos/fcbayern.svg",
+            "basis": "verified",
+            "confidence": "high",
+            "source_urls": [
+              "https://fcbayern.com/en/news/2026/05/the-new-fc-bayern-home-shirt-for-the-2026-27-season"
+            ],
+            "notes": "URL directa del escudo en color enlazada desde una página oficial del FC Bayern. Es un recurso SVG remoto, no una ruta local."
+          }
+        }
+      },
+      "sources": [
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/binaries/content/assets/downloads/homepage/jhv/2025/agm-25-pressrelease.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/en/news/2025/11/fc-bayern-with-new-record-turnover-for-2024-25-season"
+        },
+        {
+          "type": "url",
+          "url": "https://allianz-arena.com/en/faq"
+        },
+        {
+          "type": "url",
+          "url": "https://datencenter.dfb.de/competitions/bundesliga/seasons/2025-2026/teams/bayern-muenchen"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/de/news/2025/11/pm-jahresabschluss-der-saison-2024-25"
+        },
+        {
+          "type": "url",
+          "url": "https://allianz-arena.com/en/arena/facts/general-information"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/store/en-aa/i/logo"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/en/teams/first-team"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/en/club/allianz-arena"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/de/club/historie/meilensteine-seit-1900/1900-bis-1932-von-beginn-an-erfolgreich"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/museum/de/news/2016/01/rothosen"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/store/de-ch/i/logo"
+        },
+        {
+          "type": "url",
+          "url": "https://allianz-arena.com/de/die-arena/fakten-historie/allgemeine-informationen"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/binaries/content/assets/downloads/homepage/jhv/2025/agm-25-pressrelease.pdf%3Fv%3D1762073507767"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/binaries/content/assets/downloads/homepage/club/2019_09_19_pm_zumtobel_group_illuminates_allianz_arena_fc_bayern_en.pdf?v=1568882422571"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/binaries/content/assets/downloads/allianz-arena/gastinfo_fan_en.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.uefa.com/newsfiles/UCL/2026/2045910_LU.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://img.fcbayern.com/image/upload/v1724665210/cms/public/images/fcbayern-com/nachhaltigkeit/Nachhaltigkeitsbericht/Sustainability_Report_FC-Bayern_2022-2023_Englisch.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/FC_Bayern_Munich"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/2025%E2%80%9326_FC_Bayern_Munich_season"
+        },
+        {
+          "type": "url",
+          "url": "https://de.wikipedia.org/wiki/FC_Bayern_M%C3%BCnchen"
+        },
+        {
+          "type": "url",
+          "url": "https://fr.wikipedia.org/wiki/Bayern_Munich"
+        },
+        {
+          "type": "url",
+          "url": "https://es.wikipedia.org/wiki/Bayern_de_M%C3%BAnich"
+        },
+        {
+          "type": "url",
+          "url": "https://it.wikipedia.org/wiki/Fu%C3%9Fball-Club_Bayern_M%C3%BCnchen_2025-2026"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/fcbayern/comments/1tpufcr/megathread_transfer_discussion_thread_summer_2026/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/BayernMunich/comments/1icaz2b"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/championsleague/comments/1p12er4/best_bayern_xi_of_ucl_era/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/fcbayern/comments/1u6834d/daily_discussion_thread/"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/binaries/content/assets/downloads/homepage/jhv/2025/agm-25-pressrelease.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/de/news/2026/05/das-neue-heim-trikot-des-fc-bayern-fuer-die-saison-2026-27"
+        },
+        {
+          "type": "url",
+          "url": "https://fbref.com/en/squads/054efa67/2025-2026/wages/Bayern-Munich-Wage-Details"
+        },
+        {
+          "type": "url",
+          "url": "https://report.bvb.de/annual-report/2024-2025/_assets/downloads/gesamt-bvb-gb2425.pdf?h=n3elQLvS"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/store/en-aa/i/trikots-der-saison"
+        },
+        {
+          "type": "url",
+          "url": "https://www.fcbayern.com/store/en-aa/c/clothing/jerseys"
+        },
+        {
+          "type": "url",
+          "url": "https://datencenter.dfb.de/competitions/bundesliga/seasons/2025-2026/teams/bayern-muenchen"
+        },
+        {
+          "type": "url",
+          "url": "https://www.salaryleaks.com/football/teams/bayern-munich/2025-26"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/basketball/en/news/2025-26/06/gavel-new-bayern-head-coach"
+        },
+        {
+          "type": "url",
+          "url": "https://datencenter.dfb.de/en/competitions/bundesliga/seasons/2025-2026/teams/bayern-munich?datacenter_name=data-center%3Fhistorize_title%3DVfB+Stuttgart+Bundesliga+1993%2F94&historize_url="
+        },
+        {
+          "type": "url",
+          "url": "https://static.poder360.com.br/2025/11/Bayern-Munique-balanco.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.scribd.com/document/991751176/Agm-25-Pressrelease"
+        },
+        {
+          "type": "url",
+          "url": "https://report.bvb.de/annual-report/2024-2025/group-management-report/position-of-the-company/operating-expenses.html"
+        },
+        {
+          "type": "url",
+          "url": "https://assets-eu-01.kc-usercontent.com/1293c890-579f-01b7-8480-902cca7de55e/3dea6f20-4d2b-4bb9-b33a-cebbc570c4ca/Bilanci-Relazioni-2024-25-ENG.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/en/news/2026/08/jan-christian-dreesen-and-max-eberl-contract-extensions-until-2029"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/de/news/2025/11/pm-jahresabschluss-der-saison-2024-25"
+        },
+        {
+          "type": "url",
+          "url": "https://assets.laliga.com/assets/2026/04/13/originals/dd7aec50d2ee10d78a8f409e609c34a5.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://report.dfl.de/2425/en/_assets/downloads/entire-dfl-er25.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.youtube.com/watch?v=wW-W7vwLgGY"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/2024%E2%80%9325_FC_Bayern_Munich_season"
+        },
+        {
+          "type": "url",
+          "url": "https://www.uefa.com/MultimediaFiles/Download/OfficialDocument/uefaorg/Clublicensing/02/63/79/75/2637975_DOWNLOAD.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://de.wikipedia.org/wiki/FC_Bayern_M%C3%BCnchen"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/2025%E2%80%9326_FC_Bayern_Munich_season"
+        },
+        {
+          "type": "url",
+          "url": "https://ru.wikipedia.org/wiki/%D0%A4%D0%9A_%C2%AB%D0%91%D0%B0%D0%B2%D0%B0%D1%80%D0%B8%D1%8F%C2%BB_%D0%B2_%D1%81%D0%B5%D0%B7%D0%BE%D0%BD%D0%B5_2025/2026"
+        },
+        {
+          "type": "url",
+          "url": "https://zh.wikipedia.org/wiki/%E6%8B%9C%E4%BB%81%E6%85%95%E5%B0%BC%E9%BB%91%E8%B6%B3%E7%90%83%E4%BF%B1%E4%B9%90%E9%83%A8"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/dataisbeautiful/comments/1vantad/oc_what_a_euro_of_wages_buys_in_football_team/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/fcbayern/comments/1v2g2ij/bayern_munich_finances_202425_swissramble/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/fcbayern/comments/1rficls/clubs_with_the_highest_revenue_and_highest_salary/"
+        },
+        {
+          "type": "url",
+          "url": "https://de.wikipedia.org/wiki/Kader_der_deutschen_Fu%C3%9Fball-Bundesliga_2025/26"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/championsleague/comments/1t6cxlu/top_10_wage_bills_of_teams_across_europe/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/BayernMunich/comments/1tzg3gh/uefa_football_clubs_with_the_highest_opex/"
+        },
+        {
+          "type": "url",
+          "url": "https://allianz-arena.com/en/faq"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/store/en-aa/i/logo"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/de/club/historie/meilensteine-seit-1900/1900-bis-1932-von-beginn-an-erfolgreich"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/en/teams/first-team"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/de/bilder/2026/05/galerie-so-sieht-das-neue-heim-trikot-des-fc-bayern-zur-saison-2026-27-aus"
+        },
+        {
+          "type": "url",
+          "url": "https://www.adidas.de/en/fc-bayern-26-27-home-authentic-jersey/JZ3070.html"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/en/news/2026/05/the-new-fc-bayern-home-shirt-for-the-2026-27-season"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/en/photos/2026/05/gallery-the-new-fc-bayern-home-shirt-for-the-2026-27-season"
+        },
+        {
+          "type": "url",
+          "url": "https://www.shirtsociety.eu/articles/bayern-munchen-2026-27-home-adidas"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/de/news/2026/05/das-neue-heim-trikot-des-fc-bayern-fuer-die-saison-2026-27"
+        },
+        {
+          "type": "url",
+          "url": "https://www.footballkitarchive.com/de/bayern-munchen-2026-27-heimtrikot-441209/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.colorwaysports.com/stories/bayern-munich-kits-2026-27"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/kidsclub/de/news/2026/05/heimtrikot-fc-bayern-2026-27"
+        },
+        {
+          "type": "url",
+          "url": "https://fcbayern.com/en/news/2025/06/the-new-fc-bayern-home-jersey-for-the-2025-26-season"
+        },
+        {
+          "type": "url",
+          "url": "https://footballfashion.org/wordpress/2026/05/04/fc-bayern-2026-27-jersey-home-kit-release/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.goal.com/en-us/lists/bayern-munich-2026-27-kits-release-date-prices/bltc24afeefb95c55c5"
+        },
+        {
+          "type": "url",
+          "url": "https://de.wikipedia.org/wiki/FC_Bayern_M%C3%BCnchen"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/DHGateJerseys/comments/1v3jm6j/kkoog_reviewbayern_munich_2627_home_kits/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/repjerseyss/comments/1v3ji3o/kkoog_reviewbayern_munich_2627_home_kits/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/ReplicLeague/comments/1v3jotl/kkoog_reviewbayern_munich_2627_home_kits/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/repbudgesoccer/comments/1tdrf6b/qc_bayern_m%C3%BCnchen_home_jersey_2627_speiv/"
+        },
+        {
+          "type": "url",
+          "url": "https://en.wikipedia.org/wiki/FC_Bayern_Munich"
+        },
+        {
+          "type": "url",
+          "url": "https://downloads.11teamsports.com/kataloge/2026/nike-team-2026.pdf"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/BayernMunich/comments/1so5cv8/bayerns_202627_full_home_kit_leaked/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/KitReps/comments/1w5gjj3/bayern_munich_2627_qqkkr7_qc/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.youtube.com/watch?v=V0V-QZsYGs4"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/KitReps/comments/1wjgebj/okkinetic_review_bayern_munich_202627_home_kit/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/JerseyReplica/comments/1w5gho7/bayern_munich_2627_qqkkr7_qc/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/repjerseyss/comments/1w5glvj/bayern_munich_2627_qqkkr7_qc/"
+        },
+        {
+          "type": "url",
+          "url": "https://www.reddit.com/r/fcbayern/comments/1t3iy2o/just_bought_the_new_2627_home_shirt/"
+        }
+      ],
+      "response_id": "resp_0488ddba993b16d1016ab9dee9cc8487d1afd13ae77e6e5c2a",
+      "usage": {
+        "input_tokens": 38226,
+        "input_tokens_details": {
+          "cache_write_tokens": 139,
+          "cached_tokens": 5930
+        },
+        "output_tokens": 4003,
+        "output_tokens_details": {
+          "reasoning_tokens": 2318
+        },
+        "total_tokens": 42229
+      },
+      "completed_at": "2026-09-28T03:29:25.246Z"
+    }
+  },
+  "created_at": "2026-09-28T03:27:37.242Z",
+  "updated_at": "2026-09-28T03:29:25.246Z"
+}

@@ -1,7 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
 
-import { advanceTimeWithMode, checkBlockingActions, skipToMatchDay } from "./advanceTimeService";
+import {
+  advanceOneDay,
+  advanceTimeWithMode,
+  checkBlockingActions,
+  skipToMatchDay,
+} from "./advanceTimeService";
 
 vi.mock("@tauri-apps/api/core", () => ({
   invoke: vi.fn(),
@@ -57,5 +62,33 @@ describe("advanceTimeService", () => {
 
     await expect(skipToMatchDay()).resolves.toBe(response);
     expect(mockedInvoke).toHaveBeenCalledWith("skip_to_match_day");
+  });
+
+  it("passes acknowledged blocker fingerprints when advancing one day", async () => {
+    const blockers = [
+      {
+        id: "urgent_messages",
+        severity: "info",
+        tab: "Inbox",
+        text_key: "notifications.blockers.urgentMessages",
+        text_params: { count: "1" },
+        text: "1 urgent unread message(s)",
+      },
+    ];
+    mockedInvoke.mockResolvedValueOnce({ action: "advanced" });
+
+    await advanceOneDay(blockers);
+
+    expect(mockedInvoke).toHaveBeenCalledWith("advance_one_day", {
+      acknowledgedBlockers: [
+        {
+          id: "urgent_messages",
+          severity: "info",
+          tab: "Inbox",
+          text_key: "notifications.blockers.urgentMessages",
+          text_params: { count: "1" },
+        },
+      ],
+    });
   });
 });

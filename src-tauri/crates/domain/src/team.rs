@@ -430,6 +430,7 @@ pub struct Sponsorship {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum FacilityType {
+    Youth,
     Training,
     Medical,
     Scouting,
@@ -438,14 +439,21 @@ pub enum FacilityType {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(default)]
 pub struct Facilities {
+    #[serde(default = "default_youth_facility")]
+    pub youth: u8,
     pub training: u8,
     pub medical: u8,
     pub scouting: u8,
 }
 
+fn default_youth_facility() -> u8 {
+    1
+}
+
 impl Default for Facilities {
     fn default() -> Self {
         Self {
+            youth: 1,
             training: 1,
             medical: 1,
             scouting: 1,

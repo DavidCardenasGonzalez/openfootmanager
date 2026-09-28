@@ -409,15 +409,41 @@ fn prepare_national_squads(game: &mut Game, field: &[String]) {
 
     let current_year = game.clock.current_date.year() as u32;
     let pools = national_pools(game);
-    for code in field {
-        let have = pools.get(code).map(|ovrs| ovrs.len()).unwrap_or(0);
-        for slot in have..TOPPED_UP_POOL {
-            game.players
-                .push(crate::generator::generate_national_team_player(
-                    code,
-                    slot,
-                    current_year,
-                ));
+    let mut counts: HashMap<String, usize> = field
+        .iter()
+        .map(|code| (code.clone(), pools.get(code).map(Vec::len).unwrap_or(0)))
+        .collect();
+    let mut active = game.players.iter().filter(|p| !p.retired).count();
+    // Club worlds have a bounded international reserve. Scoreline-only national
+    // matches use the available pool when the world is full. A standalone
+    // national world has no club population to balance against.
+    let free_agents = game
+        .players
+        .iter()
+        .filter(|p| !p.retired && p.team_id.is_none())
+        .count();
+    let cap = if game.teams.is_empty() {
+        active + field.len() * TOPPED_UP_POOL
+    } else {
+        active + (game.teams.len() * 2).saturating_sub(free_agents)
+    };
+    // Round-robin allocation gives thin nations equal access to scarce places.
+    for depth in 0..TOPPED_UP_POOL {
+        for code in field {
+            let count = counts.get_mut(code).expect("field was indexed");
+            if *count > depth || active >= cap {
+                continue;
+            }
+            let player =
+                crate::generator::generate_national_team_player(code, *count, current_year);
+            game.squad_management.inactive_since.insert(
+                player.id.clone(),
+                game.clock.current_date.date_naive().to_string(),
+            );
+            game.players.push(player);
+            game.squad_management.totals.international_recruits += 1;
+            *count += 1;
+            active += 1;
         }
     }
 
@@ -2114,6 +2140,33 @@ mod tests {
             berths["uefa"] >= 16,
             "slack goes to the biggest quota first"
         );
+    }
+
+    #[test]
+    fn national_backfill_respects_club_world_population_and_records_arrival() {
+        let mut game = empty_game();
+        game.teams.push(domain::team::Team::new(
+            "club".into(),
+            "Club".into(),
+            "CLU".into(),
+            "England".into(),
+            "City".into(),
+            "Ground".into(),
+            1000,
+        ));
+        let codes = vec!["JP".into(), "KR".into(), "NG".into(), "EG".into()];
+        game.clock.advance_days(800);
+        prepare_national_squads(&mut game, &codes);
+        assert!(game.players.len() <= crate::ai_squad::MAX_SQUAD_SIZE + 2);
+        assert!(
+            game.players
+                .iter()
+                .all(|p| game.squad_management.inactive_since.get(&p.id)
+                    == Some(&game.clock.current_date.date_naive().to_string()))
+        );
+        let before = game.players.len();
+        prepare_national_squads(&mut game, &codes);
+        assert_eq!(game.players.len(), before);
     }
 
     #[test]

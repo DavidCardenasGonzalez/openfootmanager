@@ -119,6 +119,24 @@ export default function TournamentsStandingsView({
           testIdPrefix="tournaments-standing"
           zones={zones}
         />
+        {teams.userTeamId && (zones.promotionSlots > 0 || zones.relegationSlots > 0) && (() => {
+          const ordered = [...standings].sort((a, b) => b.points - a.points || (b.goals_for - b.goals_against) - (a.goals_for - a.goals_against) || b.goals_for - a.goals_for);
+          const userIndex = ordered.findIndex((entry) => entry.team_id === teams.userTeamId);
+          if (userIndex < 0) return null;
+          const distances: string[] = [];
+          if (zones.promotionSlots > 0 && zones.promotionSlots < ordered.length) {
+            const boundaryIndex = userIndex < zones.promotionSlots ? zones.promotionSlots : zones.promotionSlots - 1;
+            const signedGap = ordered[userIndex].points - ordered[boundaryIndex].points;
+            distances.push(`${t("schedule.promotionZone")}: ${signedGap > 0 ? "+" : ""}${signedGap} ${t("common.pts")}`);
+          }
+          const relegationStart = ordered.length - zones.relegationSlots;
+          if (zones.relegationSlots > 0 && relegationStart > 0) {
+            const boundaryIndex = userIndex < relegationStart ? relegationStart : relegationStart - 1;
+            const signedGap = ordered[userIndex].points - ordered[boundaryIndex].points;
+            distances.push(`${t("schedule.relegationZone")}: ${signedGap > 0 ? "+" : ""}${signedGap} ${t("common.pts")}`);
+          }
+          return distances.length ? <p className="border-t border-gray-100 px-4 py-2 text-xs text-gray-500 dark:border-navy-600 dark:text-gray-400">{teams.resolveTeamName(teams.userTeamId)}: {distances.join(" · ")}</p> : null;
+        })()}
         {(zones.promotionSlots > 0 || zones.relegationSlots > 0) && (
           <div className="flex gap-5 border-t border-gray-100 px-4 py-2.5 text-xs text-gray-500 dark:border-navy-600 dark:text-gray-400">
             {zones.promotionSlots > 0 && (

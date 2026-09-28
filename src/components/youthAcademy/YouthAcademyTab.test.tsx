@@ -9,6 +9,16 @@ vi.mock("@tauri-apps/api/core", () => ({
   invoke: vi.fn(),
 }));
 
+vi.mock("../../utils/backendI18n", () => ({
+  resolveBackendError: (error: unknown) => String(error),
+}));
+vi.mock("../../services/academyService", () => ({
+  getAcademy: vi.fn(async () => null),
+  signAcademyCandidate: vi.fn(),
+  rejectAcademyCandidate: vi.fn(),
+  upgradeYouthAcademy: vi.fn(),
+}));
+
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, params?: Record<string, string | number>) => {
@@ -116,7 +126,6 @@ function createTeam(overrides: Partial<TeamData> = {}): TeamData {
 function createPlayer(overrides: Partial<PlayerData> = {}): PlayerData {
   return {
     id: "player-1",
-    match_name: "J. Smith",
     full_name: "John Smith",
     date_of_birth: "2008-01-01",
     nationality: "GB",
@@ -169,6 +178,7 @@ function createPlayer(overrides: Partial<PlayerData> = {}): PlayerData {
     transfer_offers: [],
     traits: [],
     ...overrides,
+    match_name: overrides.match_name ?? overrides.full_name ?? "John Smith",
   };
 }
 

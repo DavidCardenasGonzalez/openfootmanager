@@ -1,12 +1,30 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, afterEach, expect, it, vi } from "vitest";
 import { LiveMatchView } from "./LiveMatchView";
 import type { EnginePlayerData, EngineTeamData, MatchSnapshot } from "./types";
 import type { RenderSample } from "../../../match-lab/src/match/types";
+import { useSettingsStore } from "../../store/settingsStore";
+vi.mock("@tauri-apps/api/core", () => ({ invoke: vi.fn().mockResolvedValue(undefined) }));
 vi.mock("react-i18next", () => ({ useTranslation: () => ({ t: (key: string) => key }) }));
 vi.mock("../../../match-lab/src/renderer/MatchCanvas", () => ({
-  MatchCanvas: ({ sample }: { sample: RenderSample }) => (
-    <output aria-label="rendered match">{JSON.stringify(sample)}</output>
+  MatchCanvas: ({
+    sample,
+    playerLabels,
+  }: {
+    sample: RenderSample;
+    playerLabels?: ReadonlyMap<string, { name?: string; rating?: number }>;
+  }) => (
+    <>
+      <output aria-label="rendered match">{JSON.stringify(sample)}</output>
+      {sample.frame.players.map((player) => (
+        <div key={player.id}>
+          {playerLabels?.get(player.id)?.name}
+          <output aria-label={`rating ${player.id}`}>
+            {playerLabels?.get(player.id)?.rating?.toFixed(1)}
+          </output>
+        </div>
+      ))}
+    </>
   ),
 }));
 const makePlayer = (overrides: Partial<EnginePlayerData> = {}): EnginePlayerData => {
@@ -104,6 +122,13 @@ let callback: FrameRequestCallback;
 const sample = () =>
   JSON.parse(screen.getByLabelText("rendered match").textContent ?? "{}") as RenderSample;
 beforeEach(() => {
+  useSettingsStore.setState({
+    settings: {
+      ...useSettingsStore.getState().settings,
+      show_match_player_names: true,
+      show_match_player_ratings: true,
+    },
+  });
   vi.spyOn(performance, "now").mockReturnValue(0);
   vi.stubGlobal(
     "requestAnimationFrame",
@@ -113,6 +138,91 @@ beforeEach(() => {
     }),
   );
   vi.stubGlobal("cancelAnimationFrame", vi.fn());
+});
+it("shows names and live ratings, lets each be hidden, and remembers the selection", () => {
+  const snapshot = createSnapshot();
+  const numbers = new Map<string, number>();
+  const view = render(
+    <LiveMatchView snapshot={snapshot} numbers={numbers} speed="normal" paused={false} />,
+  );
+  expect(screen.getByText("Starter One")).toBeInTheDocument();
+  expect(screen.getByLabelText("rating starter-1")).toHaveTextContent("6.0");
+  fireEvent.click(screen.getByRole("checkbox", { name: "match.showPlayerNames" }));
+  expect(screen.queryByText("Starter One")).not.toBeInTheDocument();
+  expect(screen.getByLabelText("rating starter-1")).toHaveTextContent("6.0");
+  fireEvent.click(screen.getByRole("checkbox", { name: "match.showPlayerRatings" }));
+  expect(screen.getByLabelText("rating starter-1")).toBeEmptyDOMElement();
+  view.unmount();
+  render(<LiveMatchView snapshot={snapshot} numbers={numbers} speed="normal" paused={false} />);
+  expect(screen.getByRole("checkbox", { name: "match.showPlayerNames" })).not.toBeChecked();
+  expect(screen.getByRole("checkbox", { name: "match.showPlayerRatings" })).not.toBeChecked();
+  fireEvent.click(screen.getByRole("checkbox", { name: "match.showPlayerNames" }));
+  fireEvent.click(screen.getByRole("checkbox", { name: "match.showPlayerRatings" }));
+  expect(screen.getByText("Starter One")).toBeInTheDocument();
+  expect(screen.getByLabelText("rating starter-1")).toHaveTextContent("6.0");
+});
+it("updates ratings when each new play completes and exposes the result while paused", () => {
+  const snapshot = createSnapshot();
+  const numbers = new Map<string, number>();
+  const { rerender } = render(
+    <LiveMatchView snapshot={snapshot} numbers={numbers} speed="normal" paused={false} />,
+  );
+  const next: MatchSnapshot = {
+    ...snapshot,
+    current_minute: 33,
+    events: [
+      {
+        minute: 33,
+        event_type: "Goal",
+        side: "Home",
+        zone: "AwayBox",
+        player_id: "starter-2",
+        secondary_player_id: "starter-1",
+      },
+    ],
+  };
+  rerender(<LiveMatchView snapshot={next} numbers={numbers} speed="normal" paused={false} />);
+  expect(screen.getByLabelText("rating starter-2")).toHaveTextContent("6.0");
+  act(() => callback(4000));
+  expect(screen.getByLabelText("rating starter-2")).toHaveTextContent("7.2");
+  expect(screen.getByLabelText("rating starter-1")).toHaveTextContent("6.7");
+  rerender(
+    <LiveMatchView
+      snapshot={{ ...next, current_minute: 34 }}
+      numbers={numbers}
+      speed="paused"
+      paused
+    />,
+  );
+  expect(screen.getByLabelText("rating starter-2")).toHaveTextContent("7.2");
+});
+it("positions names above players and ratings below them in the actual pitch", async () => {
+  const { MatchCanvas } = await vi.importActual<
+    typeof import("../../../match-lab/src/renderer/MatchCanvas")
+  >("../../../match-lab/src/renderer/MatchCanvas");
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null);
+  vi.stubGlobal("matchMedia", () => ({ matches: true }));
+  const snapshot = createSnapshot();
+  const view = render(
+    <LiveMatchView snapshot={snapshot} numbers={new Map()} speed="paused" paused />,
+  );
+  const currentSample = sample();
+  view.unmount();
+  render(
+    <MatchCanvas
+      sample={currentSample}
+      showNumbers
+      showCoordinates={false}
+      label="pitch"
+      goalLabel="goal"
+      playerLabels={new Map([["starter-1", { name: "Starter One", rating: 7.2 }]])}
+    />,
+  );
+  const name = screen.getByText("Starter One");
+  const rating = screen.getByText("7.2");
+  // The player's projected feet are at 40.76% of the pitch height.
+  expect(Number.parseFloat(name.style.top)).toBeLessThan(40.76);
+  expect(Number.parseFloat(rating.style.top)).toBeGreaterThan(40.76);
 });
 afterEach(() => {
   vi.restoreAllMocks();

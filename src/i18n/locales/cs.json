@@ -187,6 +187,7 @@
     "digestEventUserNews": "Novinky o vašem klubu nebo hráčích",
     "digestEventTransferWindow": "Otevření nebo uzávěrka přestupového okna",
     "digestContinue": "Pokračovat v postupu",
+    "digestAutoContinue": "Pokračovat automaticky",
     "digestError": "Chyba simulace"
   },
   "continueMenu": {
@@ -628,6 +629,18 @@
     "developing": "Rozvíjející se"
   },
   "squad": {
+    "styleFitShort": {
+      "strong": "Silný",
+      "good": "Dobrý",
+      "risky": "Rizikový"
+    },
+    "views": {
+      "general": "Přehled",
+      "statistics": "Statistiky",
+      "finances": "Finance"
+    },
+    "playerDetails": "Podrobnosti o hráči",
+    "viewControls": "Zobrazení kádru",
     "title": "Soupiska týmu {{team}}",
     "playerCount": "Počet hráčů: {{count}}",
     "noPlayers": "Ve vaší soupisce nebyli nalezeni žádní hráči.",
@@ -1877,6 +1890,8 @@
     "cinematicPause": "Zápas je pozastaven. Pokračujte, až budete chtít.",
     "matchView": "Zápas",
     "visualReconstruction": "Ilustrační pohyb podle událostí probíhajícího zápasu.",
+    "showPlayerNames": "Zobrazit jména hráčů",
+    "showPlayerRatings": "Zobrazit průběžná hodnocení",
     "events": "Události",
     "stats": "Statistiky",
     "lineups": "Sestavy",
@@ -1906,6 +1921,9 @@
     "substitutions": "Střídání",
     "substitutionsTitle": "Střídání",
     "subsUsed": "Využito střídání: {{used}}/{{max}}",
+    "selectedToLeave": "Odcházející hráči: {{count}}",
+    "selectedToEnter": "Příchozí hráči: {{count}}",
+    "pendingSubstitutions": "Vybráno: {{off}} odchází, {{on}} přichází · {{max}} k dispozici",
     "allSubsUsed": "Všechna střídání byla využita",
     "selectPlayerOff": "Vyberte hráče, kterého chcete vystřídat",
     "takingOff": "Střídá dolů: {{name}}",
@@ -3092,7 +3110,7 @@
         }
       },
       "trainingInjury": {
-        "subject": "Zranění — {{player}} ({{injury}})",
+        "subject": "Zranění — {{player}} ({{injury}}) — {{days}} dní",
         "body0": "Špatné zprávy z tréninkového areálu. Hráč {{player}} utrpěl během dnešního tréninku zranění: {{injury}}.\n\nLékařský tým odhaduje dobu rekonvalescence na {{days}} dní. Jeho zotavení budeme pečlivě sledovat.",
         "body1": "Hráč {{player}} se bohužel na dnešním tréninku zranil a jeho diagnózou je {{injury}}.\n\nPrvní odhad: mimo hru přibližně na {{days}} dní. O jeho pokroku vás budeme průběžně informovat."
       },
@@ -4042,5 +4060,31 @@
   "generation": {
     "title": "Generování a dokončení",
     "coverage": "Vaše balíčky pokrývají"
+  },
+  "academy": {
+    "title": "Nový ročník akademie",
+    "level": "Akademie úrovně {{level}}",
+    "description": "Kandidáti zatím nejsou v kádru. Vyber, koho rozvíjet; každý podpis zabere místo a spotřebuje sezonní limit.",
+    "capacity": "Zbývající podpisy: {{remaining}}/{{limit}} · Kádr: {{squad}}/{{maximum}}",
+    "deadline": "Rozhodni do {{date}}",
+    "nextGeneration": "Příští ročník: {{candidates}} kandidátů, až {{signings}} podpisů.",
+    "upgradeHint": "Zázemí akademie zlepšuje budoucí ročníky. Trénink a herní čas pomáhají současnému rozvoji.",
+    "upgrade": "Vylepšit akademii ({{cost}})",
+    "maxLevel": "Nejvyšší úroveň",
+    "empty": "Žádní kandidáti nejsou k dispozici. Nový ročník přijde příští sezonu.",
+    "potentialEstimate": "Odhad potenciálu",
+    "costs": "Náklady na výchovu: {{fee}} · Roční mzda: {{wage}}",
+    "sign": "Podepsat",
+    "reject": "Odmítnout",
+    "quotaError": "Všechny podpisy akademie pro tuto sezonu už byly využity.",
+    "rosterError": "Kádr je plný. Před podpisem kandidáta uvolni místo.",
+    "expiredError": "Tento ročník už není k dispozici.",
+    "wageError": "Tento podpis by překročil mzdový rozpočet.",
+    "cashError": "Na náklady na výchovu není dost peněz.",
+    "candidateError": "Tento kandidát už není k dispozici.",
+    "scoutError": "Skauti už našli všechny tři dodatečné kandidáty této sezony.",
+    "maxLevelError": "Tato zařízení již mají maximální úroveň.",
+    "upgradeError": "Akademii můžeš vylepšit jednou za sezonu.",
+    "messageBody": "Akademie má {{count}} kandidátů. V této sezoně můžeš podepsat až {{signings}}. Projdi zprávy a vyber, koho rozvíjet."
   }
 }

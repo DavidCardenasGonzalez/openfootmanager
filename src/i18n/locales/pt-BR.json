@@ -187,6 +187,7 @@
     "digestEventUserNews": "Notícias sobre seu clube ou jogadores",
     "digestEventTransferWindow": "Abertura ou fechamento da janela de transferências",
     "digestContinue": "Continuar avançando",
+    "digestAutoContinue": "Avançar automaticamente",
     "digestError": "Erro de simulação"
   },
   "continueMenu": {
@@ -628,6 +629,18 @@
     "developing": "Em Desenvolvimento"
   },
   "squad": {
+    "styleFitShort": {
+      "strong": "Forte",
+      "good": "Bom",
+      "risky": "Arriscado"
+    },
+    "views": {
+      "general": "Geral",
+      "statistics": "Estatísticas",
+      "finances": "Finanças"
+    },
+    "playerDetails": "Detalhes do jogador",
+    "viewControls": "Visão do elenco",
     "title": "Elenco do {{team}}",
     "playerCount": "{{count}} Jogadores",
     "noPlayers": "Nenhum jogador encontrado no seu elenco.",
@@ -1820,6 +1833,8 @@
     "cinematicPause": "Partida pausada. Continue quando quiser.",
     "matchView": "Partida",
     "visualReconstruction": "Movimentos ilustrativos baseados nos eventos da partida ao vivo.",
+    "showPlayerNames": "Mostrar nomes dos jogadores",
+    "showPlayerRatings": "Mostrar notas ao vivo",
     "events": "Eventos",
     "stats": "Estatísticas",
     "lineups": "Escalações",
@@ -1849,6 +1864,9 @@
     "substitutions": "Substituições",
     "substitutionsTitle": "Substituições",
     "subsUsed": "{{used}}/{{max}} usadas",
+    "selectedToLeave": "Jogadores saindo: {{count}}",
+    "selectedToEnter": "Jogadores entrando: {{count}}",
+    "pendingSubstitutions": "Selecionados: {{off}} saem, {{on}} entram · {{max}} disponíveis",
     "allSubsUsed": "Todas as substituições usadas",
     "selectPlayerOff": "Selecione um jogador para substituir",
     "takingOff": "Saindo: {{name}}",
@@ -3092,7 +3110,7 @@
         }
       },
       "trainingInjury": {
-        "subject": "Lesão — {{player}} ({{injury}})",
+        "subject": "Lesão — {{player}} ({{injury}}) — {{days}} dias",
         "body0": "Más notícias do treino. {{player}} sofreu uma {{injury}} durante a sessão de hoje.\n\nA equipe médica estima {{days}} dias afastado. Vamos acompanhar a recuperação de perto.",
         "body1": "Infelizmente, {{player}} caiu no treino hoje com uma {{injury}}.\n\nAvaliação inicial: fora por aproximadamente {{days}} dias. Manteremos você informado sobre o progresso."
       },
@@ -4042,5 +4060,31 @@
   "generation": {
     "title": "Geração e Conclusão",
     "coverage": "Seus pacotes cobrem"
+  },
+  "academy": {
+    "title": "Nova geração da base",
+    "level": "Academia de nível {{level}}",
+    "description": "Os candidatos estão fora do elenco. Escolha quem desenvolver; cada contratação ocupa uma vaga e conta para o limite da temporada.",
+    "capacity": "Contratações disponíveis: {{remaining}}/{{limit}} · Elenco: {{squad}}/{{maximum}}",
+    "deadline": "Decida antes de {{date}}",
+    "nextGeneration": "Próxima geração: {{candidates}} candidatos, até {{signings}} contratações.",
+    "upgradeHint": "As instalações da base melhoram futuras gerações. O treinamento e os minutos em campo ajudam no desenvolvimento atual.",
+    "upgrade": "Melhorar academia ({{cost}})",
+    "maxLevel": "Nível máximo",
+    "empty": "Não há candidatos disponíveis. Uma nova geração chegará na próxima temporada.",
+    "potentialEstimate": "Potencial estimado",
+    "costs": "Custo de formação: {{fee}} · Salário anual: {{wage}}",
+    "sign": "Contratar",
+    "reject": "Descartar",
+    "quotaError": "Você já usou todas as contratações da base desta temporada.",
+    "rosterError": "Seu elenco está cheio. Libere uma vaga antes de contratar um candidato.",
+    "expiredError": "Esta geração não está mais disponível.",
+    "wageError": "Esta contratação ultrapassaria seu orçamento salarial.",
+    "cashError": "Não há dinheiro suficiente para pagar o custo de formação.",
+    "candidateError": "Este candidato não está mais disponível.",
+    "scoutError": "Seus olheiros já encontraram os três candidatos adicionais desta temporada.",
+    "maxLevelError": "Estas instalações já estão no nível máximo.",
+    "upgradeError": "Você pode melhorar a academia uma vez por temporada.",
+    "messageBody": "A academia tem {{count}} candidatos. Você pode contratar até {{signings}} nesta temporada. Confira os relatórios e escolha quem desenvolver."
   }
 }

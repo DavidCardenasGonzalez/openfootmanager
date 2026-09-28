@@ -145,16 +145,18 @@ describe("SubPanel", () => {
     onClose: vi.fn(),
   });
 
-  it("shows a disabled bench context menu action until a player is selected to come off", () => {
+  it("lets the replacement be selected first through the context menu", () => {
     const props = createProps();
 
     render(<SubPanel {...props} />);
 
     fireEvent.contextMenu(screen.getByTestId("sub-panel-bench-bench-1"));
 
-    expect(
-      screen.getByRole("menuitem", { name: "Select player to take off first" }),
-    ).toBeDisabled();
+    fireEvent.click(screen.getByRole("menuitem", { name: "Select replacement" }));
+    expect(screen.getByTestId("sub-panel-bench-bench-1")).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(screen.getByTestId("sub-panel-off-starter-1"));
+    fireEvent.click(screen.getByRole("button", { name: "Confirm substitution" }));
+    expect(props.onSubstitute).toHaveBeenCalledWith([{ offId: "starter-1", onId: "bench-1" }]);
   });
 
   it("supports the substitution selection flow through context menus", () => {
@@ -170,7 +172,51 @@ describe("SubPanel", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Confirm substitution" }));
 
-    expect(props.onSubstitute).toHaveBeenCalledWith("starter-1", "bench-1");
+    expect(props.onSubstitute).toHaveBeenCalledWith([{ offId: "starter-1", onId: "bench-1" }]);
+  });
+
+  it("confirms multiple balanced changes together and respects the remaining limit", () => {
+    const props = createProps();
+    props.snapshot.max_subs = 2;
+    render(<SubPanel {...props} />);
+    fireEvent.click(screen.getByTestId("sub-panel-off-starter-1"));
+    fireEvent.click(screen.getByTestId("sub-panel-off-starter-2"));
+    fireEvent.click(screen.getByTestId("sub-panel-bench-bench-1"));
+    expect(screen.getByRole("button", { name: "Confirm substitution" })).toBeDisabled();
+    fireEvent.click(screen.getByTestId("sub-panel-bench-bench-2"));
+    fireEvent.click(screen.getByRole("button", { name: "Confirm substitution" }));
+    expect(props.onSubstitute).toHaveBeenCalledWith([
+      { offId: "starter-1", onId: "bench-1" },
+      { offId: "starter-2", onId: "bench-2" },
+    ]);
+  });
+
+  it("does not allow selecting more changes than remain", () => {
+    const props = createProps();
+    props.snapshot.max_subs = 1;
+    render(<SubPanel {...props} />);
+    fireEvent.click(screen.getByTestId("sub-panel-off-starter-1"));
+    fireEvent.click(screen.getByTestId("sub-panel-off-starter-2"));
+    expect(screen.getByTestId("sub-panel-off-starter-2")).toHaveAttribute("aria-pressed", "false");
+    fireEvent.click(screen.getByTestId("sub-panel-bench-bench-1"));
+    fireEvent.click(screen.getByTestId("sub-panel-bench-bench-2"));
+    expect(screen.getByTestId("sub-panel-bench-bench-2")).toHaveAttribute("aria-pressed", "false");
+  });
+
+  it("applies a dragged player immediately and keeps the panel open", () => {
+    const props = createProps();
+    render(<SubPanel {...props} />);
+    const dataTransfer = {
+      getData: () => "bench-1",
+      setData: vi.fn(),
+      effectAllowed: "move",
+    };
+    fireEvent.drop(screen.getByTestId("sub-panel-off-starter-2"), { dataTransfer });
+    expect(props.onSubstitute).toHaveBeenCalledWith(
+      [{ offId: "starter-2", onId: "bench-1" }],
+      true,
+    );
+    expect(screen.getByTestId("sub-panel-off-starter-2")).toBeInTheDocument();
   });
 
   it("allows clearing the selected off-player through the context menu", () => {

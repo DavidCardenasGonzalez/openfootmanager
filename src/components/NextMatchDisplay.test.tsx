@@ -120,9 +120,8 @@ describe("NextMatchDisplay", () => {
   it("renders the user team against the opponent when the user is away", () => {
     render(<NextMatchDisplay gameState={createGameState()} />);
 
-    expect(screen.getByText("FC Barcelona")).toBeInTheDocument();
-    expect(screen.getByText("Munich Bayern")).toBeInTheDocument();
-    expect(screen.getAllByText("Munich Bayern")).toHaveLength(1);
+    expect(screen.getAllByText("FCB")).toHaveLength(2);
+    expect(screen.getAllByText("MB")).toHaveLength(2);
     expect(screen.getByText("home.away")).toBeInTheDocument();
   });
 });

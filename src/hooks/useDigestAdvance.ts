@@ -30,7 +30,14 @@ export function useDigestAdvance(
   const abortRef = useRef(false);
   const inFlightRef = useRef(false);
 
-  const startDigest = async (options?: { resume?: boolean }) => {
+  const acknowledgedBlockersRef = useRef<BlockerData[]>([]);
+
+  const startDigest = async (options?: {
+    resume?: boolean;
+    continueThroughEvents?: boolean;
+    acknowledgedBlockers?: BlockerData[];
+    resetAcknowledgedBlockers?: boolean;
+  }) => {
     if (inFlightRef.current) return;
     inFlightRef.current = true;
     abortRef.current = false;
@@ -40,17 +47,46 @@ export function useDigestAdvance(
     // digest reads as one continuous run.
     if (!options?.resume) setEntries([]);
     setStopReason(null);
+    if (!options?.resume || options.resetAcknowledgedBlockers) {
+      acknowledgedBlockersRef.current = [];
+    }
+    if (options?.acknowledgedBlockers?.length) {
+      const known = new Set(
+        acknowledgedBlockersRef.current.map((blocker) =>
+          JSON.stringify([
+            blocker.id,
+            blocker.severity,
+            blocker.tab,
+            blocker.text_key,
+            blocker.text_params,
+          ]),
+        ),
+      );
+      for (const blocker of options.acknowledgedBlockers) {
+        const key = JSON.stringify([
+          blocker.id,
+          blocker.severity,
+          blocker.tab,
+          blocker.text_key,
+          blocker.text_params,
+        ]);
+        if (!known.has(key)) {
+          known.add(key);
+          acknowledgedBlockersRef.current.push(blocker);
+        }
+      }
+    }
 
     let daysProcessed = 0;
 
     try {
-      while (daysProcessed < MAX_DIGEST_DAYS) {
+      while (options?.continueThroughEvents || daysProcessed < MAX_DIGEST_DAYS) {
         if (abortRef.current) {
           setStopReason({ kind: "stopped" });
           return;
         }
 
-        const result = await advanceOneDay();
+        const result = await advanceOneDay(acknowledgedBlockersRef.current);
 
         if (abortRef.current) {
           setStopReason({ kind: "stopped" });
@@ -82,7 +118,7 @@ export function useDigestAdvance(
           setEntries((prev) => [...prev, { date: result.date, recap }]);
           daysProcessed++;
           const events = detectAttentionEvents(game, recap);
-          if (events.length > 0) {
+          if (events.length > 0 && !options?.continueThroughEvents) {
             setStopReason({ kind: "event", events });
             return;
           }

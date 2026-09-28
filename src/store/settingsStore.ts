@@ -9,6 +9,8 @@ export interface AppSettings {
   auto_save: boolean;
   match_speed: "slow" | "normal" | "fast";
   show_match_commentary: boolean;
+  show_match_player_names: boolean;
+  show_match_player_ratings: boolean;
   confirm_advance: boolean;
   continue_to_next_event: boolean;
   ui_scale: "small" | "normal" | "large" | "xlarge";
@@ -35,6 +37,8 @@ const DEFAULT_SETTINGS: AppSettings = {
   auto_save: true,
   match_speed: "normal",
   show_match_commentary: true,
+  show_match_player_names: true,
+  show_match_player_ratings: true,
   confirm_advance: false,
   continue_to_next_event: false,
   ui_scale: "normal",

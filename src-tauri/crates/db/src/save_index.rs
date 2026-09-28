@@ -493,6 +493,7 @@ mod tests {
                 extra_translations_json: "{}".to_string(),
                 package_lockfile_json: "[]".to_string(),
                 emitted_events_json: "[]".to_string(),
+                squad_management_json: "{}".to_string(),
             },
         )
         .unwrap();
@@ -617,6 +618,7 @@ mod tests {
                 extra_translations_json: "{}".to_string(),
                 package_lockfile_json: "[]".to_string(),
                 emitted_events_json: "[]".to_string(),
+                squad_management_json: "{}".to_string(),
             },
         )
         .unwrap();

@@ -102,6 +102,27 @@ describe("useTeamSelection scope toggles", () => {
     expect(result.current.mandatoryCompetitionIds.has("intl")).toBe(true);
   });
 
+  it("includes every Open Manager division when selecting a club", () => {
+    const gameState = buildGameState();
+    gameState.teams = [createTeam({ id: "top5-club-1", country: "ES" })];
+    gameState.competitions = [
+      league({ id: "open-manager-division-1", participant_ids: ["top5-club-1"] }),
+      league({ id: "open-manager-division-2", participant_ids: ["top5-club-2"] }),
+    ];
+
+    const { result } = renderHook(() => useTeamSelection({
+      gameState,
+      setGameState: vi.fn(),
+      setGameActive: vi.fn(),
+      navigate: vi.fn(),
+    }));
+
+    expect(result.current.enabledCompetitionIds).toEqual([
+      "open-manager-division-1",
+      "open-manager-division-2",
+    ]);
+  });
+
   it("refuses to toggle the home region off", () => {
     const { result } = renderController();
 

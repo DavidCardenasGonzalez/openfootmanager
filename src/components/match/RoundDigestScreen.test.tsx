@@ -329,8 +329,8 @@ describe("RoundDigestScreen", () => {
 
     expect(screen.getByText("match.yourResult")).toBeInTheDocument();
     expect(screen.getByText("match.victory")).toBeInTheDocument();
-    expect(screen.getAllByText("Alpha FC").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("Beta FC").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("ALP").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("BET").length).toBeGreaterThan(0);
   });
 
   it("renders the standings and top scorers for a league fixture", () => {

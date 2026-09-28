@@ -295,9 +295,23 @@ pub fn generate_youth_academy_recruit_with_nationality(
     nationality_override: Option<&str>,
     current_year: u32,
 ) -> Player {
-    use domain::player::SquadRole;
+    generate_youth_academy_recruit_with_rng(
+        team,
+        target_position,
+        nationality_override,
+        current_year,
+        &mut rand::rng(),
+    )
+}
 
-    let mut rng = rand::rng();
+pub(crate) fn generate_youth_academy_recruit_with_rng(
+    team: &Team,
+    target_position: Option<&Position>,
+    nationality_override: Option<&str>,
+    current_year: u32,
+    rng: &mut impl rand::Rng,
+) -> Player {
+    use domain::player::SquadRole;
     let names_def = default_names_definition();
     let country_codes = generation::nationality_distribution();
     let nationality = nationality_override
@@ -306,7 +320,7 @@ pub fn generate_youth_academy_recruit_with_nationality(
             // `team_local_nationality`, not `team.country`: a club carries both a
             // location and a football identity, and where they differ the
             // football identity is the one a youth intake should draw on.
-            pick_nationality_from_def(team_local_nationality(team), country_codes, &mut rng)
+            pick_nationality_from_def(team_local_nationality(team), country_codes, rng)
         });
     let youth_slots = youth_slots_for_target(target_position.map(Position::to_group_position));
     let slot_index = youth_slots[rng.random_range(0..youth_slots.len())];
@@ -316,7 +330,7 @@ pub fn generate_youth_academy_recruit_with_nationality(
         &nationality,
         current_year,
         &names_def,
-        &mut rng,
+        rng,
     );
     player.squad_role = SquadRole::Youth;
     player.transfer_listed = false;
@@ -351,6 +365,7 @@ pub fn generate_national_team_player(
     player.wage = 0;
     player.transfer_listed = false;
     player.loan_listed = false;
+    crate::player_rating::refresh_player_derived(&mut player, opening_year);
     player
 }
 

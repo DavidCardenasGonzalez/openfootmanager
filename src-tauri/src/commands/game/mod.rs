@@ -258,6 +258,7 @@ pub async fn load_game(
     let mut sm = map_save_manager_lock_error(sm_state.0.lock())?;
     let mut game = sm.load_game(&save_id)?;
     let stats_state = sm.load_stats_state(&save_id)?;
+    upgrade_open_manager_pyramid(&mut game);
     ofm_core::ai_hiring::seed_ai_managers(&mut game);
     ofm_core::season_context::refresh_game_context(&mut game);
 

@@ -127,6 +127,19 @@ pub fn natural_ovr(player: &Player) -> f64 {
     ovr_for_position(player, &natural_position)
 }
 
+/// Keep the stored rating in sync with the player's current attributes.
+/// This also repairs imported worlds and saves that stored a provider's rating.
+pub fn sync_player_overall(player: &mut Player) -> bool {
+    let ovr = natural_ovr(player).round() as u8;
+    let potential = player.potential.max(ovr);
+    if player.ovr == ovr && player.potential == potential {
+        return false;
+    }
+    player.ovr = ovr;
+    player.potential = potential;
+    true
+}
+
 pub fn ovr_for_position(player: &Player, position: &Position) -> f64 {
     ovr_from_attributes(&player.attributes, position)
 }
@@ -570,6 +583,24 @@ mod tests {
             rating >= 80.0,
             "a strong centre-back profile should not be dragged below 80 by field positioning, got {rating}",
         );
+    }
+
+    #[test]
+    fn syncing_overall_replaces_stale_imported_rating_without_changing_attributes() {
+        let mut player = make_specialist_keeper();
+        let attributes = player.attributes.clone();
+        player.ovr = 89;
+        player.potential = 80;
+        let expected = natural_ovr(&player).round() as u8;
+
+        assert!(sync_player_overall(&mut player));
+        assert_eq!(player.ovr, expected);
+        assert_eq!(player.potential, 80.max(expected));
+        assert_eq!(
+            serde_json::to_value(&player.attributes).unwrap(),
+            serde_json::to_value(attributes).unwrap()
+        );
+        assert!(!sync_player_overall(&mut player));
     }
 
     fn make_player(position: Position) -> Player {

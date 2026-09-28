@@ -92,7 +92,7 @@ describe("DashboardSimulatingModal batch resume", () => {
     expect(screen.queryByText("dashboard.digestStop")).not.toBeInTheDocument();
   });
 
-  it("returns to the done state with Close once the batch lands", () => {
+  it("offers automatic advancing after a quiet day and wires the action", () => {
     const onContinueAdvancing = vi.fn();
     render(
       <DashboardSimulatingModal
@@ -104,8 +104,23 @@ describe("DashboardSimulatingModal batch resume", () => {
 
     expect(screen.getByText("dashboard.digestDone")).toBeInTheDocument();
     expect(screen.getByText("common.close")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("dashboard.digestContinue"));
+    fireEvent.click(screen.getByText("dashboard.digestAutoContinue"));
     expect(onContinueAdvancing).toHaveBeenCalledOnce();
+  });
+
+  it("shows Stop while automatic advancing is running", () => {
+    const onStop = vi.fn();
+    render(
+      <DashboardSimulatingModal
+        digestEntries={[entryWith([match()])]}
+        isDigestRunning
+        onStop={onStop}
+      />,
+    );
+
+    fireEvent.click(screen.getByText("dashboard.digestStop"));
+    expect(onStop).toHaveBeenCalledOnce();
+    expect(screen.queryByText("dashboard.digestAutoContinue")).not.toBeInTheDocument();
   });
 });
 

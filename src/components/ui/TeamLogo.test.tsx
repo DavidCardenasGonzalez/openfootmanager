@@ -33,7 +33,7 @@ describe("TeamLogo", () => {
       />,
     );
 
-    expect(screen.getByRole("img", { name: "Media FC logo" })).toHaveAttribute(
+    expect(screen.getByRole("img", { name: "MFC logo" })).toHaveAttribute(
       "src",
       "/assets/worlds/test-world/teams/media-fc.png",
     );
@@ -49,7 +49,7 @@ describe("TeamLogo", () => {
       />,
     );
 
-    fireEvent.error(screen.getByRole("img", { name: "Media FC logo" }));
+    fireEvent.error(screen.getByRole("img", { name: "MFC logo" }));
 
     expect(screen.getByText("MFC")).toBeInTheDocument();
   });
@@ -64,7 +64,7 @@ describe("TeamLogo", () => {
       />,
     );
 
-    fireEvent.error(screen.getByRole("img", { name: "Media FC logo" }));
+    fireEvent.error(screen.getByRole("img", { name: "MFC logo" }));
     expect(screen.getByText("MFC")).toBeInTheDocument();
 
     rerender(
@@ -76,7 +76,7 @@ describe("TeamLogo", () => {
       />,
     );
 
-    expect(screen.getByRole("img", { name: "Media FC logo" })).toHaveAttribute(
+    expect(screen.getByRole("img", { name: "MFC logo" })).toHaveAttribute(
       "src",
       "/assets/worlds/test-world/teams/media-fc.png",
     );

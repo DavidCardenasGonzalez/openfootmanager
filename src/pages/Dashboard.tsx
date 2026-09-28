@@ -294,6 +294,7 @@ export default function Dashboard(): JSX.Element {
     abortDigest,
     dismissDigest,
     resumeDigest,
+    continueDigestAutomatically,
     resumeAfterBlocker,
   } = useAdvanceTime(
     setGameState,
@@ -534,10 +535,7 @@ export default function Dashboard(): JSX.Element {
         isDigestAborting={isDigestAborting}
         onDigestContinueAfterBlocker={resumeAfterBlocker}
         onDigestResume={resumeDigest}
-        onContinueAdvancing={() => {
-          dismissDigest();
-          void handleContinue();
-        }}
+        onContinueAdvancing={continueDigestAutomatically}
         onDismissDigest={dismissDigest}
         onDigestStop={abortDigest}
       />

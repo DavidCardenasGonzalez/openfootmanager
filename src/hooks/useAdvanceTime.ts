@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import type { GameStateData } from "../store/gameStore";
 import { useGameStore } from "../store/gameStore";
 import type { BlockerModal } from "./useAdvanceTime.helpers";
+import type { BlockerData } from "../services/advanceTimeService";
 import {
   advanceTimeWithMode,
   checkBlockingActions,
@@ -38,6 +39,8 @@ export interface AdvanceTimeState {
   dismissDigest: () => void;
   /** Resume the streaming digest after an attention-event pause. */
   resumeDigest: () => void;
+  /** Keep advancing day by day, ignoring attention events until a hard stop. */
+  continueDigestAutomatically: () => void;
   /** Re-run the flow that hit a mid-advance blocker ("Continue Anyway"). */
   resumeAfterBlocker: () => void;
 }
@@ -104,8 +107,14 @@ export function useAdvanceTime(
     setBlockerModal(options?.blockerModal ?? null);
   }
 
-  const runStreamingDigest = (options?: { resume?: boolean }) => {
-    resumeAfterBlockerRef.current = () => void startDigest({ resume: true });
+  const runStreamingDigest = (options?: {
+    resume?: boolean;
+    continueThroughEvents?: boolean;
+    acknowledgedBlockers?: BlockerData[];
+    resetAcknowledgedBlockers?: boolean;
+  }) => {
+    resumeAfterBlockerRef.current = () =>
+      void startDigest({ ...options, resume: true });
     void startDigest(options);
   };
 
@@ -289,6 +298,22 @@ export function useAdvanceTime(
     abortDigest,
     dismissDigest,
     resumeDigest: () => runStreamingDigest({ resume: true }),
-    resumeAfterBlocker: () => resumeAfterBlockerRef.current(),
+    continueDigestAutomatically: () =>
+      runStreamingDigest({
+        resume: true,
+        continueThroughEvents: true,
+        resetAcknowledgedBlockers: true,
+      }),
+    resumeAfterBlocker: () => {
+      if (digestStopReason?.kind === "blocked") {
+        runStreamingDigest({
+          resume: true,
+          continueThroughEvents: true,
+          acknowledgedBlockers: digestStopReason.blockers,
+        });
+      } else {
+        resumeAfterBlockerRef.current();
+      }
+    },
   };
 }

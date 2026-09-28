@@ -212,6 +212,9 @@ All frontend↔backend communication goes through Tauri's `invoke()` mechanism. 
 | `set_training_schedule` | schedule | `Game` | Set weekly training schedule |
 | `hire_staff` | staff_id | `Game` | Hire an unattached staff member |
 | `release_staff` | staff_id | `Game` | Release a staff member |
+| `get_academy` | — | `AcademyView` | Current candidate intake and next generation preview |
+| `sign_academy_candidate` | candidate_id | `Game` | Pay for a candidate within roster, wage and seasonal limits |
+| `reject_academy_candidate` | candidate_id | `Game` | Remove a temporary candidate without adding a world player |
 
 ### Settings Commands
 

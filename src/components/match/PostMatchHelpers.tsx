@@ -4,6 +4,7 @@ import { getPlayerName } from "./helpers";
 import { Badge } from "../ui";
 import { Circle, Star } from "lucide-react";
 import { translatePositionAbbreviation } from "../squad/SquadTab.helpers";
+import { calculateMatchRatings } from "./playerRatings";
 
 // ---------------------------------------------------------------------------
 // QuickStat bar
@@ -95,54 +96,25 @@ export function PlayerRatingsPanel({
   side,
   teamColor,
   userSide,
+  includeResultBonus = true,
+  showMotm = true,
+  includeBench = false,
 }: {
   snapshot: MatchSnapshot;
   side: "Home" | "Away";
   teamColor: string;
   userSide: "Home" | "Away" | null;
+  includeResultBonus?: boolean;
+  showMotm?: boolean;
+  includeBench?: boolean;
 }) {
   const { t } = useTranslation();
   const team = side === "Home" ? snapshot.home_team : snapshot.away_team;
-  const ratings: Record<string, number> = {};
-  team.players.forEach((p) => {
-    ratings[p.id] = 6.0;
-  });
-  snapshot.events.forEach((evt) => {
-    if (evt.side !== side || !evt.player_id) return;
-    if (!ratings[evt.player_id] && ratings[evt.player_id] !== 0) return;
-    if (evt.event_type === "Goal" || evt.event_type === "PenaltyGoal")
-      ratings[evt.player_id] = (ratings[evt.player_id] || 6) + 1.2;
-    else if (evt.event_type === "ShotSaved" || evt.event_type === "ShotOnTarget")
-      ratings[evt.player_id] = (ratings[evt.player_id] || 6) + 0.2;
-    else if (evt.event_type === "ShotOffTarget")
-      ratings[evt.player_id] = (ratings[evt.player_id] || 6) - 0.1;
-    else if (evt.event_type === "PassCompleted")
-      ratings[evt.player_id] = (ratings[evt.player_id] || 6) + 0.02;
-    else if (evt.event_type === "Tackle" || evt.event_type === "Interception")
-      ratings[evt.player_id] = (ratings[evt.player_id] || 6) + 0.15;
-    else if (evt.event_type === "Foul")
-      ratings[evt.player_id] = (ratings[evt.player_id] || 6) - 0.2;
-    else if (evt.event_type === "YellowCard" || evt.event_type === "SecondYellow")
-      ratings[evt.player_id] = (ratings[evt.player_id] || 6) - 0.5;
-    else if (evt.event_type === "RedCard")
-      ratings[evt.player_id] = (ratings[evt.player_id] || 6) - 1.5;
-    if (evt.secondary_player_id && ratings[evt.secondary_player_id] !== undefined) {
-      if (evt.event_type === "Goal" || evt.event_type === "PenaltyGoal")
-        ratings[evt.secondary_player_id] += 0.7;
-    }
-  });
-  const won =
-    (side === "Home" && snapshot.home_score > snapshot.away_score) ||
-    (side === "Away" && snapshot.away_score > snapshot.home_score);
-  if (won)
-    Object.keys(ratings).forEach((id) => {
-      ratings[id] += 0.5;
-    });
-  Object.keys(ratings).forEach((id) => {
-    ratings[id] = Math.max(1, Math.min(10, ratings[id]));
-  });
-  const sorted = team.players
-    .map((p) => ({ ...p, rating: Math.round(ratings[p.id] * 10) / 10 }))
+  const bench = side === "Home" ? snapshot.home_bench : snapshot.away_bench;
+  const ratings = calculateMatchRatings(snapshot, side, { includeResultBonus });
+  const players = includeBench ? [...team.players, ...bench] : team.players;
+  const sorted = players
+    .map((p) => ({ ...p, rating: ratings.get(p.id) ?? 6 }))
     .sort((a, b) => b.rating - a.rating);
   const motm = sorted[0];
 
@@ -155,7 +127,7 @@ export function PlayerRatingsPanel({
         </h3>
         <div className="w-2 h-2 rounded-full ml-auto" style={{ backgroundColor: teamColor }} />
       </div>
-      {motm && side === (userSide || "Home") && (
+      {showMotm && motm && side === (userSide || "Home") && (
         <div className="flex items-center gap-3 mb-3 p-2 bg-accent-50 dark:bg-accent-500/10 rounded-lg border border-accent-200 dark:border-accent-500/20 transition-colors duration-300">
           <div className="w-8 h-8 rounded-lg bg-accent-100 dark:bg-accent-500/20 flex items-center justify-center transition-colors duration-300">
             <span className="text-sm font-heading font-bold text-accent-700 dark:text-accent-400">
