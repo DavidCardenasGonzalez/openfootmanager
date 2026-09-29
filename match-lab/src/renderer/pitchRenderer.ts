@@ -10,11 +10,21 @@ export function drawPitch(ctx: CanvasRenderingContext2D) {
   ctx.fillRect(0, 0, 100, 68);
   ctx.fillStyle = p.stripe;
   for (let x = 0; x < 100; x += 20) ctx.fillRect(x, 0, 10, 68);
-  // Deterministic sparse turf flecks: cached with the static ground layer.
-  ctx.globalAlpha = 0.28;
-  for (let i = 0; i < 760; i++) {
+  // Two spatial scales of seeded grass clusters, generated once in the cache.
+  // Irregular patches break up flat bands without competing with white markings.
+  let seed = 314159;
+  const random = () => {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    return seed / 4294967296;
+  };
+  for (let i = 0; i < 10500; i++) {
+    const x = random() * 99.4;
+    const y = random() * 67.6;
+    ctx.globalAlpha = 0.12 + random() * 0.16;
     ctx.fillStyle = i % 3 ? p.grassLight : p.grassDark;
-    ctx.fillRect(((i * 733) % 990) / 10, ((i * 359) % 670) / 10, 0.2, 0.1);
+    const width = 0.15 + random() * 0.5;
+    ctx.fillRect(x, y, width, 0.12 + random() * 0.2);
+    if (i % 4 === 0) ctx.fillRect(x + width * 0.3, y + 0.16, width * 0.5, 0.12);
   }
   ctx.globalAlpha = 1;
   ctx.strokeStyle = p.line;

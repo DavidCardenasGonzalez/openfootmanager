@@ -102,3 +102,30 @@ rectangle. Contact shadows are slightly tighter. Pitch stripes have a little mor
 markings use a lighter chalk color. Corner flags have a one-pixel pole highlight and a stepped
 cloth edge. Spectators snap to whole logical pixels, use simple clothing/jaw shading and a muted
 palette; their count and the size of the stadium remain unchanged.
+
+## Reference-quality figure redesign
+
+The articulated figure renderer supersedes the earlier rectangular sprite refinements.
+`playerPose.ts` calculates knees, ankles, elbows and hands from a deterministic 640 ms stride,
+with opposing arm motion, directional strikes and raised arms. `pixelFigure.ts` rasterizes
+limbs and faceted polygons into integer one-pixel rows, avoiding filtered vector strokes.
+`playerRenderer.ts` draws this anatomy at native scale: approximately 52 pixels tall, with a
+12-pixel head, tapered shirt, separate shorts, longer legs, kit highlights and directional face.
+It no longer doubles a coarse sprite. Existing event timing, celebration hops and goalkeeper
+dives still drive the figure; player labels and match coordinates remain unchanged.
+
+The field now uses 10,500 seeded, irregular grass clusters at two spatial scales. They render
+only when the static layer is created, never per animation frame. A greener turf palette and
+subtle light/dark variation preserve broad mowing bands and clean markings. The reference
+image guides proportions and material richness; no pixels or generated assets were copied.
+
+Tests cover stride periodicity, stable idle poses, striking/raised limbs and integer-row
+rasterization, alongside the existing camera, kits, resolution and replay tests.
+
+### Running gait correction
+
+Running feet remain in separate hip lanes (maximum lateral travel 2.5 native pixels),
+with knees following the foot instead of bending in the opposite direction. Travel follows
+the projected heading, and the returning foot lifts during recovery. Elbows stay close and
+hands swing opposite the legs. Torso bob uses the same stride clock with an amplitude below
+one pixel. Tests sweep the full cycle to prevent crossed feet and flared arms from returning.

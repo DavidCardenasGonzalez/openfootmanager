@@ -2,6 +2,8 @@ import type { PlayerState, MatchFrame, MatchEvent } from "../match/types";
 import { palette as p } from "./palette";
 import { project, projectDirection } from "./projection";
 import { resolveMatchKits, spriteKit, type MatchKits } from "./kits";
+import { playerPose, type Joint } from "./playerPose";
+import { pixelLimb, pixelPolygon } from "./pixelFigure";
 const defaultKits = resolveMatchKits();
 const digits = [
   "111101101101111",
@@ -58,8 +60,8 @@ export function drawPlayer(
   const back = facing.y < -0.25;
   const running = player.action === "run";
   const kicking = player.action === "pass" || player.action === "shoot";
-  const phase = Math.floor(timeMs / 110 + player.shirtNumber) % 4;
-  const stride = running ? [-2, 0, 2, 0][phase] : 0;
+  const gaitTime = timeMs + player.shirtNumber * 71;
+
   // One wind-up/contact/follow-through per event, never a looping kick.
   const releaseDelay =
     event?.kind === "shot"
@@ -79,7 +81,7 @@ export function drawPlayer(
     receiving || (defending && event?.kind === "shot" && dive === 0)
       ? -2
       : running
-        ? phase % 2
+        ? Math.abs(Math.sin(((gaitTime % 640) / 640) * Math.PI * 2)) * 0.65
         : kicking
           ? -1
           : Math.floor(timeMs / 700 + player.shirtNumber) % 2;
@@ -117,87 +119,142 @@ export function drawPlayer(
     ctx.translate(0, -8 * Math.sin(dive * Math.PI));
     ctx.rotate((Math.atan2(facing.y, facing.x) + Math.PI / 2) * dive);
   } else if (windup) ctx.rotate(-side * 0.09);
-  ctx.scale(2, 2);
-  // Keep the silhouette at its existing size. Half-unit details now occupy real
-  // native pixels instead of disappearing in the old half-resolution framebuffer.
-  // Upright billboards remain independent of the ground-plane skew.
+  // Draw at native resolution: a smaller head, longer articulated legs and a
+  // shaped torso replace the old doubled rectangular sprite.
   const rect = (color: string, x: number, y: number, w: number, h: number) => {
     ctx.fillStyle = color;
-    ctx.fillRect(x, y, w, h);
+    ctx.fillRect(Math.round(x), Math.round(y), w, h);
   };
-  const leg = (x: number, offset: number, active: boolean) => {
-    const kx = active ? Math.round(facing.x * kick) : 0;
-    const ky = active ? Math.round(facing.y * kick * 0.4) - Math.floor(kick / 3) : 0;
-    rect(p.ink, x + kx - 1, -7 + offset + ky, 5, 8);
-    rect(skin, x + kx, -7 + offset + ky, 3, 3);
-    rect(uniform.socks, x + kx, -4 + offset + ky, 3, 3);
-    rect(uniform.trim, x + kx, -4 + offset + ky, 3, 0.5);
-    const bootX = x + kx + (side > 0 ? 0 : -2);
-    rect(p.ink, bootX, -1 + offset + ky, 5, 2);
-    rect(p.concreteLight, bootX + (side > 0 ? 3 : 0.5), -0.5 + offset + ky, 1.5, 0.5);
+  const pose = playerPose(gaitTime, running, side, kick, celebrate || dive > 0, facing);
+  const limb = (a: Joint, b: Joint, color: string, width: number) => {
+    pixelLimb(ctx, p.ink, a, b, width + 2);
+    pixelLimb(ctx, color, a, b, width);
   };
-  leg(-4, stride, side < 0);
-  leg(2, -stride, side > 0);
-  const body = -15 - bob;
-  // Stepped shoulders and a tapered waist avoid a single rectangular torso.
-  rect(p.ink, -4, body - 1, 9, 1);
-  rect(p.ink, -6, body, 13, 7);
-  rect(p.ink, -5.5, body + 7, 12, 3);
-  rect(skin, -1, body - 2, 3, 2);
-  rect(kit, -5, body, 11, 9);
-  // Broad, quiet fabric shading leaves the number area clean.
-  rect(p.fabricShadow, -5, body + 1, 1, 7);
-  rect(p.fabricLight, 4.5, body + 1, 1, 7);
-  rect(uniform.trim, -5, body + 8, 11, 1);
-  rect(p.ink, -5.5, body + 9, 5.5, 4.5);
-  rect(p.ink, 1, body + 9, 5.5, 4.5);
-  rect(uniform.shorts, -5, body + 9, 4.5, 4);
-  rect(uniform.shorts, 1.5, body + 9, 4.5, 4);
-  rect(p.fabricShadow, -5, body + 9, 11, 0.5);
-
-  rect(kit, -4.5, body + 10, 0.5, 2.5);
-  // Collar and shoulder piping improve kit readability at low resolution.
-  rect(uniform.trim, -5, body, 3, 1);
-  rect(uniform.trim, 3, body, 3, 1);
-  rect(uniform.trim, -1.5, body, 4, 1);
-  rect(p.ink, -0.5, body, 2, 1.5);
-  for (const arm of [-1, 1]) {
-    const swing = celebrate
-      ? -10
-      : dive > 0
-        ? -7
-        : receiving
-          ? -2
-          : kicking
-            ? arm === side
-              ? -3
-              : 1
-            : arm * stride;
-    const x = arm < 0 ? -9 : 7;
-    // A narrow cuff and wrist separate the sleeve from the forearm.
-    rect(p.ink, x, body + 1 + swing, 4, 5);
-    rect(p.ink, x + 0.5, body + 6 + swing, 3, 3);
-    rect(kit, x + 1, body + 1 + swing, 3, 4);
-    rect(uniform.trim, x + 1, body + 4.5 + swing, 3, 0.5);
-    rect(player.goalkeeper ? p.white : skin, x + 1, body + 5 + swing, 2, 3);
+  for (const [hip, knee, ankle] of pose.legs) {
+    limb(hip, knee, skin, 4);
+    limb(knee, ankle, uniform.socks, 4);
+    rect(uniform.trim, knee[0] - 2, knee[1], 4, 2);
+    rect(p.ink, ankle[0] - 3 + side, ankle[1], 7, 3);
+    rect(p.concreteLight, ankle[0] + (side > 0 ? 2 : -2), ankle[1], 2, 1);
   }
-  // Chunky head, outlined hair, face direction, and a small highlight.
-  rect(p.ink, -4, body - 10, 9, 8);
-  rect(p.ink, -3, body - 2, 7, 1);
-  rect(skin, -3, body - 9, 7, 7);
-  rect(player.shirtNumber % 4 === 0 ? p.gold : p.hair, -4, body - 10, 9, 4);
-  rect(p.hair, back ? -3 : -side * 3, body - 6, back ? 7 : 2, back ? 3 : 4);
-  if (!back) {
-    rect(skin, side > 0 ? 4 : -5, body - 5, 2, 2);
-    rect(p.ink, side > 0 ? 2 : -3, body - 6, 1, 1);
-    rect(p.fabricShadow, -2, body - 2, 5, 0.5);
-    rect(p.fabricLight, side > 0 ? 3 : -3, body - 7, 0.5, 2);
+  const arm = (index: number) => {
+    const [shoulder, elbow, hand] = pose.arms[index];
+    limb(shoulder, elbow, skin, 4);
+    limb(elbow, hand, skin, 3);
+    const cuff: Joint = [
+      shoulder[0] + (elbow[0] - shoulder[0]) * 0.5,
+      shoulder[1] + (elbow[1] - shoulder[1]) * 0.5,
+    ];
+    limb(shoulder, cuff, kit, 5);
+    rect(uniform.trim, cuff[0] - 2, cuff[1], 4, 1);
+    rect(player.goalkeeper ? p.white : skin, hand[0] - 1, hand[1] - 1, 3, 3);
+  };
+  arm(side > 0 ? 0 : 1);
+  const lean = running ? side * 2 : 0;
+  ctx.translate(lean, -bob);
+  pixelPolygon(ctx, p.ink, [
+    [-6, -39],
+    [5, -39],
+    [9, -35],
+    [7, -24],
+    [6, -20],
+    [-6, -20],
+    [-8, -27],
+    [-9, -35],
+  ]);
+  pixelPolygon(ctx, kit, [
+    [-5, -38],
+    [4, -38],
+    [8, -34],
+    [6, -24],
+    [-5, -24],
+    [-7, -28],
+    [-8, -34],
+  ]);
+  pixelPolygon(ctx, p.fabricShadow, [
+    [-7, -34],
+    [-4, -32],
+    [-4, -25],
+    [-6, -25],
+  ]);
+  pixelPolygon(ctx, p.fabricLight, [
+    [2, -37],
+    [5, -36],
+    [6, -33],
+    [4, -27],
+    [3, -27],
+  ]);
+  rect(uniform.trim, -5, -25, 11, 1);
+  pixelPolygon(ctx, p.ink, [
+    [-6, -24],
+    [7, -24],
+    [8, -17],
+    [2, -16],
+    [0, -20],
+    [-1, -16],
+    [-7, -17],
+  ]);
+  pixelPolygon(ctx, uniform.shorts, [
+    [-5, -23],
+    [6, -23],
+    [7, -18],
+    [3, -17],
+    [0, -22],
+    [-2, -17],
+    [-6, -18],
+  ]);
+  rect(kit, -5, -22, 1, 4);
+  rect(uniform.trim, -6, -37, 3, 1);
+  rect(uniform.trim, 4, -37, 3, 1);
+  rect(p.ink, -2, -40, 5, 3);
+  rect(skin, -1, -41, 3, 4);
+  rect(uniform.trim, -2, -37, 5, 1);
+  // Faceted head, ear and jaw: twelve native pixels instead of eighteen.
+  pixelPolygon(ctx, p.ink, [
+    [-4, -52],
+    [4, -52],
+    [6, -49],
+    [6, -42],
+    [3, -39],
+    [-3, -40],
+    [-5, -44],
+    [-5, -49],
+  ]);
+  pixelPolygon(ctx, skin, [
+    [-3, -50],
+    [4, -50],
+    [5, -47],
+    [4, -42],
+    [2, -40],
+    [-2, -41],
+    [-4, -44],
+  ]);
+  const hair = player.shirtNumber % 4 === 0 ? p.gold : p.hair;
+  pixelPolygon(ctx, hair, [
+    [-4, -51],
+    [4, -51],
+    [5, -48],
+    [1, -49],
+    [-2, -47],
+    [-4, -46],
+  ]);
+  if (back) {
+    rect(hair, -4, -48, 8, 6);
+    rect(p.fabricLight, -3, -50, 5, 1);
+  } else {
+    rect(hair, -side * 3 - 1, -48, 2, 5);
+    rect(p.ink, side > 0 ? 2 : -3, -46, 1, 2);
+    rect(skin, side > 0 ? 5 : -5, -44, 2, 2);
+    rect(p.fabricShadow, -2, -42, 5, 1);
+    rect(p.fabricLight, side > 0 ? 3 : -3, -48, 1, 2);
   }
-  if (showNumbers) shirtNumber(ctx, player.shirtNumber, body + 2, uniform.number);
+  if (showNumbers) shirtNumber(ctx, player.shirtNumber, -34, uniform.number);
+  ctx.translate(-lean, bob);
+  arm(side > 0 ? 1 : 0);
   if (selected) {
-    rect(p.gold, -3, body - 17, 7, 2);
-    rect(p.gold, -2, body - 15, 5, 2);
-    rect(p.gold, 0, body - 13, 1, 1);
+    rect(p.gold, -4, -61, 9, 2);
+    rect(p.gold, -2, -59, 5, 2);
+    rect(p.gold, 0, -57, 1, 1);
   }
   ctx.restore();
 }
