@@ -160,9 +160,22 @@ and camera zoom are unchanged.
 
 ## Live incident announcements
 
-Goals, fouls and cards appear in a compact banner above the pitch. The banner uses
-the current replay sample, so it follows playback speed and manual pauses; goals
-are announced at the goal marker, after the shot reaches the net. It clears when
-the next play begins and does not replay incidents from restored match history.
-Announcements leave controls active and never block engine advancement or require
-acknowledgement. Half time, shootouts and full time still wait for the final clip.
+Goals use a large opening headline, which settles into a smaller banner after 2.4
+replay seconds so the team celebration remains visible. Fouls and cards keep their
+compact banner. Announcements follow replay time and manual pauses; goals appear
+only when the ball reaches the goal line, together with the presented score and
+the goal entry in the event feed. Restored match history is not replayed.
+
+After each confirmed goal, the scorer moves to a nearby gathering point. Every
+available teammate, including the goalkeeper, runs into two rings around the
+scorer with staggered starts, acceleration and braking. Running speed stays below
+eight pitch units per replay second. Arriving players face the group, raise their
+arms and bounce with separate timing. Opponents walk slowly toward midfield while their goalkeeper stays by the net;
+the confirmed ball and score stay fixed. Sent-off players never join.
+
+The celebration lasts at least 14 replay seconds, extending when a distant player
+needs more time so everyone shares at least two seconds together. At fast and
+maximum speed, celebration time remains at normal speed. Reduced motion shows a
+static completed huddle. The next engine step, half time, shootout or final whistle
+waits for playback completion. Controls remain active and no acknowledgement is
+required. Celebration positions carry into the following passage.

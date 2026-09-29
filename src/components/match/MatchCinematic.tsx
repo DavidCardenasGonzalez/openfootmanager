@@ -9,12 +9,14 @@ interface Props {
   event: MatchEvent;
   playerName: string;
   teamName: string;
+  elapsedMs?: number;
 }
 
 /** An announcement tied to replay time, leaving the pitch and controls active. */
-export function MatchCinematic({ event, playerName, teamName }: Props) {
+export function MatchCinematic({ event, playerName, teamName, elapsedMs = 0 }: Props) {
   const { t } = useTranslation();
   const goal = event.event_type === "Goal" || event.event_type === "PenaltyGoal";
+  const prominentGoal = goal && elapsedMs < 2400;
   const foul = event.event_type === "Foul";
   const red = event.event_type === "RedCard" || event.event_type === "SecondYellow";
   return (
@@ -27,9 +29,11 @@ export function MatchCinematic({ event, playerName, teamName }: Props) {
     >
       <div
         className={
-          goal
+          prominentGoal
             ? "flex max-w-full flex-col items-center gap-2 rounded-2xl border-2 border-accent-400 bg-navy-900/95 px-8 py-4 text-center text-white shadow-2xl dark:border-accent-400 dark:bg-navy-900/95 dark:text-white sm:px-12 sm:py-5"
-            : "flex max-w-full items-center gap-3 rounded-xl border border-accent-400 bg-white/95 px-4 py-2 text-gray-900 shadow-lg dark:border-accent-400 dark:bg-navy-900/95 dark:text-white"
+            : goal
+              ? "flex max-w-full items-center gap-3 rounded-xl border border-accent-400 bg-navy-900/95 px-4 py-2 text-white shadow-lg dark:border-accent-400 dark:bg-navy-900/95 dark:text-white"
+              : "flex max-w-full items-center gap-3 rounded-xl border border-accent-400 bg-white/95 px-4 py-2 text-gray-900 shadow-lg dark:border-accent-400 dark:bg-navy-900/95 dark:text-white"
         }
       >
         {goal ? null : foul ? (
@@ -46,7 +50,7 @@ export function MatchCinematic({ event, playerName, teamName }: Props) {
         <div className="min-w-0">
           <p
             className={
-              goal
+              prominentGoal
                 ? "font-heading text-6xl font-black uppercase leading-none tracking-wider text-accent-400 dark:text-accent-400 sm:text-8xl"
                 : "font-heading text-2xl font-bold uppercase tracking-wide"
             }
@@ -60,9 +64,11 @@ export function MatchCinematic({ event, playerName, teamName }: Props) {
           )}
           <p
             className={
-              goal
+              prominentGoal
                 ? "mt-3 text-sm font-semibold text-white dark:text-white sm:text-lg"
-                : "truncate text-xs text-gray-600 dark:text-gray-300"
+                : goal
+                  ? "truncate text-xs text-white dark:text-white"
+                  : "truncate text-xs text-gray-600 dark:text-gray-300"
             }
           >
             {event.minute}′ · {playerName} · {teamName}

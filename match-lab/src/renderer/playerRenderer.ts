@@ -53,8 +53,11 @@ export function drawPlayer(
         : 0;
   const celebrate =
     player.action === "celebrate" ||
-    (event?.kind === "goal" && player.team === event.team &&
-      !player.goalkeeper && nearBall < 30 && player.action !== "run");
+    (event?.kind === "goal" &&
+      player.team === event.team &&
+      !player.goalkeeper &&
+      nearBall < 30 &&
+      player.action !== "run");
   const receiving = selected && player.action === "idle";
   const windup = selected && (player.action === "pass" || player.action === "shoot");
   const point = project(player.x, player.y);
@@ -63,9 +66,10 @@ export function drawPlayer(
   );
   const side = facing.x >= 0 ? 1 : -1;
   const back = facing.y < -0.25;
-  const running = player.action === "run";
+  const running = player.action === "run" || player.action === "walk";
   const kicking = player.action === "pass" || player.action === "shoot";
-  const gaitTime = (reducedMotion ? 0 : timeMs) + player.shirtNumber * 71;
+  const gaitTime =
+    (reducedMotion ? 0 : timeMs / (player.action === "walk" ? 2 : 1)) + player.shirtNumber * 71;
 
   // One wind-up/contact/follow-through per event, never a looping kick.
   const releaseDelay =
@@ -118,8 +122,8 @@ export function drawPlayer(
     ctx.stroke();
   }
   if (celebrate) {
-    const hop = Math.max(0, Math.sin(age / 150));
-    ctx.translate(0, -hop * (player.shirtNumber === event?.from ? 10 : 5));
+    const hop = reducedMotion ? 0 : Math.max(0, Math.sin(age / 180 + player.shirtNumber * 0.63));
+    ctx.translate(0, -hop * (player.shirtNumber === event?.from ? 7 : 3));
   }
   if (dive > 0) {
     ctx.translate(0, -8 * Math.sin(dive * Math.PI));

@@ -128,6 +128,16 @@ export function LiveMatchView({
           else clock.seek(goal?.timeMs ?? clock.replay.durationMs);
         } else advanceLivePlayback(clock, now - previous, rate.current);
         current.current = sampleReplay(clock.replay, clock.timeMs);
+        if (motion?.matches && current.current.event?.kind === "goal") {
+          const next = clock.replay.events.find((e) => e.timeMs > clock.timeMs);
+          const end = sampleReplay(clock.replay, (next?.timeMs ?? clock.replay.durationMs) - 0.001);
+          // Show the completed huddle without animating the runs or the ball.
+          current.current.frame = {
+            ...current.current.frame,
+            players: end.frame.players,
+            ball: end.frame.ball,
+          };
+        }
         setSample(current.current);
         callbacks.current.onPresentedScore?.(current.current.frame.score);
         announceGoals();
@@ -224,6 +234,7 @@ export function LiveMatchView({
         {incident && (
           <MatchCinematic
             event={incident}
+            elapsedMs={sample.frame.timeMs - (sample.event?.timeMs ?? 0)}
             playerName={getPlayerName(snapshot, incident.player_id)}
             teamName={incident.side === "Home" ? snapshot.home_team.name : snapshot.away_team.name}
           />

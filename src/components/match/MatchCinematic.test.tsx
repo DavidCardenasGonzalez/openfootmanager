@@ -29,3 +29,21 @@ it("announces the incident without a modal, a continue button or moving focus", 
   expect(screen.queryByRole("button", { name: "match.continue" })).not.toBeInTheDocument();
   expect(control).toHaveFocus();
 });
+
+it("keeps the goal announcement and scorer visible after the opening headline settles", () => {
+  const view = render(
+    <MatchCinematic event={event("Goal")} playerName="Alex" teamName="Home United" elapsedMs={0} />,
+  );
+  const announcement = screen.getByRole("status", { name: "match.eventTypes.Goal" });
+  view.rerender(
+    <MatchCinematic
+      event={event("Goal")}
+      playerName="Alex"
+      teamName="Home United"
+      elapsedMs={5000}
+    />,
+  );
+  expect(screen.getByRole("status", { name: "match.eventTypes.Goal" })).toBe(announcement);
+  expect(announcement).toHaveTextContent("Alex");
+  expect(announcement).toHaveTextContent("Home United");
+});

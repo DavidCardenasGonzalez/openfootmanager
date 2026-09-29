@@ -217,42 +217,61 @@ it("reveals each score at the goal line and reserves time for every celebration"
   expect(replay.frames[replay.frames.length - 1].score).toEqual({ home: 2, away: 1 });
 });
 
-it.each(["Home", "Away"] as const)("runs the entire %s team into a huddle around the scorer, including the goalkeeper", (side) => {
-  const data = snapshot();
-  const team = side === "Home" ? "home" : "away";
-  const scorerId = side === "Home" ? "h9" : "a9";
-  const replay = buildLiveReplay(data, [{ ...event("Goal"), side, player_id: scorerId }], new Map());
-  const goal = replay.events.find((e) => e.kind === "goal");
-  if (!goal) throw new Error("Missing goal marker");
-  expect(replay.durationMs - goal.timeMs).toBeGreaterThanOrEqual(14000);
-  const start = replay.frames.find((f) => f.timeMs === 4000);
-  const end = replay.frames[replay.frames.length - 1];
-  if (!start) throw new Error("Missing celebration start");
-  const scorer = end.players.find((p) => p.id === scorerId);
-  if (!scorer) throw new Error("Missing scorer");
-  const winners = end.players.filter((p) => p.team === team);
-  expect(winners).toHaveLength(11);
-  for (const player of winners) {
-    expect(Math.hypot(player.x - scorer.x, player.y - scorer.y)).toBeLessThanOrEqual(6.1);
-    expect(player.action).toBe("celebrate");
-    expect(replay.frames.some((f) => f.timeMs > 4000 && f.players.find((p) => p.id === player.id)?.action === "run")).toBe(true);
-  }
-  expect(end.players.filter((p) => p.team !== team).map((p) => [p.id, p.x, p.y])).toEqual(start.players.filter((p) => p.team !== team).map((p) => [p.id, p.x, p.y]));
-  for (let i = replay.frames.indexOf(start) + 1; i < replay.frames.length; i++) {
-    const frame = replay.frames[i];
-    const previous = replay.frames[i - 1];
-    for (const player of frame.players.filter((p) => p.team === team)) {
-      const from = previous.players.find((p) => p.id === player.id);
-      if (!from) throw new Error("Missing preceding player");
-      const dx = player.x - from.x;
-      const dy = player.y - from.y;
-      expect(Math.hypot(dx, dy) / ((frame.timeMs - previous.timeMs) / 1000)).toBeLessThanOrEqual(8.1);
-      if (player.action === "run") expect(Math.cos(player.direction) * dx + Math.sin(player.direction) * dy).toBeGreaterThan(0);
+it.each(["Home", "Away"] as const)(
+  "runs the entire %s team into a huddle around the scorer, including the goalkeeper",
+  (side) => {
+    const data = snapshot();
+    const team = side === "Home" ? "home" : "away";
+    const scorerId = side === "Home" ? "h9" : "a9";
+    const replay = buildLiveReplay(
+      data,
+      [{ ...event("Goal"), side, player_id: scorerId }],
+      new Map(),
+    );
+    const goal = replay.events.find((e) => e.kind === "goal");
+    if (!goal) throw new Error("Missing goal marker");
+    expect(replay.durationMs - goal.timeMs).toBeGreaterThanOrEqual(14000);
+    const start = replay.frames.find((f) => f.timeMs === 4000);
+    const end = replay.frames[replay.frames.length - 1];
+    if (!start) throw new Error("Missing celebration start");
+    const scorer = end.players.find((p) => p.id === scorerId);
+    if (!scorer) throw new Error("Missing scorer");
+    const winners = end.players.filter((p) => p.team === team);
+    expect(winners).toHaveLength(11);
+    for (const player of winners) {
+      expect(Math.hypot(player.x - scorer.x, player.y - scorer.y)).toBeLessThanOrEqual(6.1);
+      expect(player.action).toBe("celebrate");
+      expect(
+        replay.frames.some(
+          (f) => f.timeMs > 4000 && f.players.find((p) => p.id === player.id)?.action === "run",
+        ),
+      ).toBe(true);
     }
-    expect(frame.ball).toEqual(start.ball);
-    expect(frame.score).toEqual(end.score);
-  }
-});
+    for (const opponent of end.players.filter((p) => p.team !== team)) {
+      expect(opponent.action).not.toBe("celebrate");
+      expect(Math.hypot(opponent.x - scorer.x, opponent.y - scorer.y)).toBeGreaterThan(8);
+    }
+    for (let i = replay.frames.indexOf(start) + 1; i < replay.frames.length; i++) {
+      const frame = replay.frames[i];
+      const previous = replay.frames[i - 1];
+      for (const player of frame.players.filter((p) => p.team === team)) {
+        const from = previous.players.find((p) => p.id === player.id);
+        if (!from) throw new Error("Missing preceding player");
+        const dx = player.x - from.x;
+        const dy = player.y - from.y;
+        expect(Math.hypot(dx, dy) / ((frame.timeMs - previous.timeMs) / 1000)).toBeLessThanOrEqual(
+          8.1,
+        );
+        if (player.action === "run")
+          expect(Math.cos(player.direction) * dx + Math.sin(player.direction) * dy).toBeGreaterThan(
+            0,
+          );
+      }
+      expect(frame.ball).toEqual(start.ball);
+      expect(frame.score).toEqual(end.score);
+    }
+  },
+);
 
 it("celebrates a penalty with the players still on the pitch and carries the huddle into the next play", () => {
   const data = snapshot();
@@ -264,5 +283,7 @@ it("celebrates a penalty with the players still on the pitch and carries the hud
   expect(end.players.some((p) => p.id === "h4")).toBe(false);
   expect(JSON.stringify(data)).toBe(before);
   const next = buildLiveReplay(data, [event("KickOff")], new Map(), end);
-  expect(next.frames[0].players.map((p) => [p.id, p.x, p.y])).toEqual(end.players.map((p) => [p.id, p.x, p.y]));
+  expect(next.frames[0].players.map((p) => [p.id, p.x, p.y])).toEqual(
+    end.players.map((p) => [p.id, p.x, p.y]),
+  );
 });
