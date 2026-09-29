@@ -5,6 +5,8 @@ import { resolveMatchKits, spriteKit, type MatchKits } from "./kits";
 import { playerPose, type Joint } from "./playerPose";
 import { pixelLimb, pixelPolygon } from "./pixelFigure";
 const defaultKits = resolveMatchKits();
+// Scale around the feet so smaller figures stay anchored to their pitch positions.
+export const PLAYER_SCALE = 0.72;
 const digits = [
   "111101101101111",
   "010110010010111",
@@ -36,9 +38,10 @@ export function drawPlayer(
   showNumbers: boolean,
   event?: MatchEvent,
   kits: MatchKits = defaultKits,
+  reducedMotion = false,
 ) {
   const timeMs = frame.timeMs;
-  const age = Math.max(0, timeMs - (event?.timeMs ?? timeMs));
+  const age = reducedMotion ? 0 : Math.max(0, timeMs - (event?.timeMs ?? timeMs));
   const nearBall = Math.hypot(player.x - frame.ball.x, player.y - frame.ball.y);
   const saved = player.goalkeeper && event?.kind === "save" && frame.ball.ownerId === player.id;
   const defending = player.goalkeeper && (player.team !== event?.team || saved) && nearBall < 20;
@@ -49,7 +52,9 @@ export function drawPlayer(
         ? Math.max(0, 1 - Math.max(0, age - 1200) / 500)
         : 0;
   const celebrate =
-    event?.kind === "goal" && player.team === event.team && !player.goalkeeper && nearBall < 30;
+    player.action === "celebrate" ||
+    (event?.kind === "goal" && player.team === event.team &&
+      !player.goalkeeper && nearBall < 30 && player.action !== "run");
   const receiving = selected && player.action === "idle";
   const windup = selected && (player.action === "pass" || player.action === "shoot");
   const point = project(player.x, player.y);
@@ -60,7 +65,7 @@ export function drawPlayer(
   const back = facing.y < -0.25;
   const running = player.action === "run";
   const kicking = player.action === "pass" || player.action === "shoot";
-  const gaitTime = timeMs + player.shirtNumber * 71;
+  const gaitTime = (reducedMotion ? 0 : timeMs) + player.shirtNumber * 71;
 
   // One wind-up/contact/follow-through per event, never a looping kick.
   const releaseDelay =
@@ -100,6 +105,7 @@ export function drawPlayer(
   const skin = player.shirtNumber % 3 === 0 ? p.skinDark : p.skin;
   ctx.save();
   ctx.translate(point.x, point.y);
+  ctx.scale(PLAYER_SCALE, PLAYER_SCALE);
   ctx.fillStyle = p.shadow;
   ctx.beginPath();
   ctx.ellipse(2, 2, 13, 4, 0, 0, Math.PI * 2);

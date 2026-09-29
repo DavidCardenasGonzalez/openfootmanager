@@ -142,7 +142,42 @@ describe("SubPanel", () => {
     onSubstitute: vi.fn(),
     onFormationChange: vi.fn(),
     onPlayStyleChange: vi.fn(),
+    onPlayerRoleChange: vi.fn(),
+    onSwapPositions: vi.fn(),
     onClose: vi.fn(),
+  });
+
+  it("changes an on-field player's tactical role", () => {
+    const props = createProps();
+    render(<SubPanel {...props} />);
+
+    fireEvent.click(
+      screen.getByRole("combobox", { name: "Starter One · tactics.playerRoleLabel" }),
+    );
+    fireEvent.click(screen.getByRole("option", { name: "BoxToBox" }));
+
+    expect(props.onPlayerRoleChange).toHaveBeenCalledWith("starter-1", "BoxToBox");
+  });
+
+  it("swaps the tactical positions of two on-field players", () => {
+    const props = createProps();
+    render(<SubPanel {...props} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "match.selectForSwap: Starter One" }));
+    fireEvent.click(screen.getByRole("button", { name: "match.selectForSwap: Starter Two" }));
+
+    expect(props.onSwapPositions).toHaveBeenCalledWith("starter-1", "starter-2");
+  });
+
+  it("keeps tactical controls available after all substitutions are used", () => {
+    const props = createProps();
+    props.snapshot.home_subs_made = props.snapshot.max_subs;
+    render(<SubPanel {...props} />);
+
+    expect(
+      screen.getByRole("combobox", { name: "Starter One · tactics.playerRoleLabel" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "tactics.formation" })).toBeInTheDocument();
   });
 
   it("lets the replacement be selected first through the context menu", () => {

@@ -5,6 +5,8 @@ import type {
   EventKind,
 } from "../../../match-lab/src/match/types";
 import { easeMovement, supportingPaths } from "./presentationMovement";
+import { createDefensiveMovement } from "./defensiveMovement";
+import { buildGoalCelebration } from "./goalCelebration";
 import { buildPitchRows } from "../squad/SquadTab.helpers";
 import type { MatchSnapshot, MatchEvent, SimSpeed, EngineTeamData } from "./types";
 
@@ -17,6 +19,7 @@ export const LIVE_SPEED_MS: Record<SimSpeed, number> = {
   instant: 100,
 };
 export const LIVE_CLIP_MS = 4000;
+export const LIVE_GOAL_CELEBRATION_MS = 14000;
 type TeamInput = Pick<EngineTeamData, "id" | "formation"> & {
   players: Pick<EngineTeamData["players"][number], "id" | "position">[];
 };
@@ -84,10 +87,14 @@ export function buildLiveReplay(
     });
   }
   const score = { home: snapshot.home_score, away: snapshot.away_score };
+  for (const event of sourceEvents) {
+    if (["Goal", "PenaltyGoal"].includes(event.event_type))
+      score[event.side === "Home" ? "home" : "away"]--;
+  }
   const initial: MatchFrame = {
     timeMs: 0,
     matchTimeSeconds: snapshot.current_minute * 60,
-    score,
+    score: { ...score },
     players: players.map((p) => {
       const old = previous?.players.find((o) => o.id === p.id);
       return old ? { ...p, x: old.x, y: old.y, direction: old.direction, action: "idle" } : p;
@@ -102,11 +109,13 @@ export function buildLiveReplay(
       : { x: zoneX[snapshot.ball_zone] ?? 50, y: 34, height: 0, motion: "reset" },
   };
   const frames: MatchFrame[] = [initial];
+  const moveDefense = createDefensiveMovement(players);
   const events: ReplayData["events"][number][] = [];
   const source = sourceEvents.length ? sourceEvents : [null];
   const segment = LIVE_CLIP_MS / source.length;
+  let celebrationTime = 0;
   source.forEach((event, index) => {
-    const start = index * segment;
+    const start = index * segment + celebrationTime;
     const team = (event?.side ?? snapshot.possession) === "Home" ? "home" : "away";
     const sign = team === "home" ? 1 : -1;
     const kind = event ? (kinds[event.event_type] ?? "reposition") : "reposition";
@@ -252,7 +261,12 @@ export function buildLiveReplay(
                   motion: "possession",
                 }
               : {
-                  x: x + (targetX - x) * (blocked ? flight * 0.3 : flight),
+                  x:
+                    kind === "goal"
+                      ? x +
+                        ((team === "home" ? 100 : 0) - x) * flight +
+                        sign * 2 * Math.max(0, (fraction - 0.8) / 0.2)
+                      : x + (targetX - x) * (blocked ? flight * 0.3 : flight),
                   y: y + (targetY - y) * flight,
                   height: isRelease
                     ? Math.sin(flight * Math.PI) * (shot ? 1.7 : kind === "longPass" ? 3 : 0.3)
@@ -267,18 +281,45 @@ export function buildLiveReplay(
                           ? "shot"
                           : "pass",
                 };
+      // Follow the actual carrier/pass. For shots the defensive threat remains
+      // at the shooter; chasing the ball into the net would break the block.
+      const defensiveFocus = shot ? (carrier ?? { x, y }) : ball;
+      const defense = moveDefense(last.players, defensiveFocus, team, segment / samples);
+      const coordinated = staged.map((p) => {
+        const position = defense.get(p.id);
+        if (!position) return p;
+        const old = last.players.find((q) => q.id === p.id) ?? p;
+        const dx = position.x - old.x;
+        const dy = position.y - old.y;
+        const moving = Math.hypot(dx, dy) / (segment / samples / 1000) > 0.15;
+        return {
+          ...p,
+          ...position,
+          direction: moving
+            ? Math.atan2(dy, dx)
+            : Math.atan2(defensiveFocus.y - position.y, defensiveFocus.x - position.x),
+          action: moving ? ("run" as const) : ("idle" as const),
+        };
+      });
+      if (kind === "goal" && step === samples * 0.8) score[team]++;
       frames.push({
         timeMs: start + segment * fraction,
         matchTimeSeconds: snapshot.current_minute * 60,
-        score,
-        players: staged,
+        score: { ...score },
+        players: coordinated,
         ball,
       });
+    }
+    if (kind === "goal") {
+      const end = frames[frames.length - 1];
+      const celebration = buildGoalCelebration(end, team, actor?.id, LIVE_GOAL_CELEBRATION_MS);
+      frames.push(...celebration);
+      celebrationTime += celebration[celebration.length - 1].timeMs - end.timeMs;
     }
   });
   return {
     id: `${snapshot.current_minute}:${sourceEvents.length}`,
-    durationMs: LIVE_CLIP_MS,
+    durationMs: LIVE_CLIP_MS + celebrationTime,
     frames,
     events,
   };

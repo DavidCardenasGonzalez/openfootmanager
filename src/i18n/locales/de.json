@@ -1803,7 +1803,9 @@
     "enterFullscreen": "Aktivieren",
     "exitFullscreen": "Beenden",
     "switchToLightMode": "Zum hellen Modus wechseln",
-    "switchToDarkMode": "Zum dunklen Modus wechseln"
+    "switchToDarkMode": "Zum dunklen Modus wechseln",
+    "autoSaveAfterMatch": "Nach jedem Spiel automatisch speichern",
+    "autoSaveAfterMatchDesc": "Das Spiel nach jedem Spiel automatisch speichern"
   },
   "preMatch": {
     "formationFit": "Formationsanpassung",

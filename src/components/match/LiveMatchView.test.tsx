@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, afterEach, expect, it, vi } from "vitest";
 import { LiveMatchView } from "./LiveMatchView";
+import { LIVE_CLIP_MS, LIVE_GOAL_CELEBRATION_MS } from "./livePresentation";
 import type { EnginePlayerData, EngineTeamData, MatchSnapshot } from "./types";
 import type { RenderSample } from "../../../match-lab/src/match/types";
 import type { Kit, MatchKits } from "../../../match-lab/src/renderer/kits";
@@ -312,4 +313,324 @@ it("passes the actual match teams' world kits to the renderer by ID", () => {
     home,
     away,
   });
+});
+
+it("announces each incident at its replay position and a goal only when the ball reaches the net", () => {
+  const snapshot = createSnapshot();
+  const numbers = new Map<string, number>();
+  const { rerender } = render(
+    <LiveMatchView snapshot={snapshot} numbers={numbers} speed="normal" paused={false} />,
+  );
+  const events = ["PassCompleted", "Foul", "YellowCard", "Goal"].map((event_type) => ({
+    minute: 33,
+    event_type,
+    side: "Home" as const,
+    zone: "AwayBox",
+    player_id: "starter-2",
+    secondary_player_id: null,
+  }));
+  const next = { ...snapshot, current_minute: 33, home_score: 2, events };
+  rerender(<LiveMatchView snapshot={next} numbers={numbers} speed="normal" paused={false} />);
+  expect(screen.queryByRole("status", { name: /match.eventTypes/ })).not.toBeInTheDocument();
+  act(() => callback(1000));
+  expect(screen.getByRole("status", { name: /match.eventTypes/ })).toHaveTextContent(
+    "match.eventTypes.Foul",
+  );
+  act(() => callback(2000));
+  expect(screen.getByRole("status", { name: /match.eventTypes/ })).toHaveTextContent(
+    "match.eventTypes.YellowCard",
+  );
+  act(() => callback(3000));
+  expect(screen.queryByRole("status", { name: /match.eventTypes/ })).not.toBeInTheDocument();
+  act(() => callback(3799));
+  expect(screen.queryByRole("status", { name: /match.eventTypes/ })).not.toBeInTheDocument();
+  act(() => callback(3800));
+  expect(screen.getByRole("status", { name: /match.eventTypes/ })).toHaveTextContent(
+    "match.eventTypes.Goal",
+  );
+  expect(sample().frame.ball.motion).toBe("goal");
+  act(() => callback(4000));
+  expect(sample().frame.timeMs).toBe(4000);
+  rerender(
+    <LiveMatchView
+      snapshot={{ ...next, current_minute: 34 }}
+      numbers={numbers}
+      speed="normal"
+      paused={false}
+    />,
+  );
+  expect(screen.queryByRole("status", { name: /match.eventTypes/ })).not.toBeInTheDocument();
+});
+
+it.each([
+  ["slow", 8000],
+  ["normal", 4000],
+  ["fast", 1000],
+  ["instant", 100],
+] as const)("keeps the goal announcement on replay time at %s speed", (speed, duration) => {
+  const snapshot = createSnapshot();
+  const numbers = new Map<string, number>();
+  const { rerender } = render(
+    <LiveMatchView snapshot={snapshot} numbers={numbers} speed={speed} paused={false} />,
+  );
+  const next = {
+    ...snapshot,
+    current_minute: 33,
+    events: [
+      {
+        minute: 33,
+        event_type: "PenaltyGoal",
+        side: "Home" as const,
+        zone: "AwayBox",
+        player_id: "starter-2",
+        secondary_player_id: null,
+      },
+    ],
+  };
+  rerender(<LiveMatchView snapshot={next} numbers={numbers} speed={speed} paused={false} />);
+  act(() => callback(duration * 0.79));
+  expect(screen.queryByRole("status", { name: /match.eventTypes/ })).not.toBeInTheDocument();
+  act(() => callback(duration * 0.8));
+  expect(screen.getByRole("status", { name: "match.eventTypes.PenaltyGoal" })).toBeVisible();
+  act(() => callback(duration));
+  expect(screen.getByRole("status", { name: "match.eventTypes.PenaltyGoal" })).toBeVisible();
+  act(() => callback(duration + 2 * LIVE_GOAL_CELEBRATION_MS));
+  expect(sample().frame.timeMs).toBe(LIVE_CLIP_MS + LIVE_GOAL_CELEBRATION_MS);
+});
+it("does not replay saved incidents and shows a manually stepped card while remaining paused", () => {
+  const snapshot = {
+    ...createSnapshot(),
+    events: [
+      {
+        minute: 32,
+        event_type: "Foul",
+        side: "Home" as const,
+        zone: "Midfield",
+        player_id: "starter-2",
+        secondary_player_id: null,
+      },
+    ],
+  };
+  const numbers = new Map<string, number>();
+  const { rerender } = render(
+    <LiveMatchView snapshot={snapshot} numbers={numbers} speed="paused" paused />,
+  );
+  expect(screen.queryByRole("status", { name: /match.eventTypes/ })).not.toBeInTheDocument();
+  const next = {
+    ...snapshot,
+    current_minute: 33,
+    events: [
+      ...snapshot.events,
+      {
+        ...snapshot.events[0],
+        minute: 33,
+        event_type: "RedCard",
+      },
+    ],
+  };
+  rerender(<LiveMatchView snapshot={next} numbers={numbers} speed="paused" paused />);
+  expect(screen.getByRole("status", { name: "match.eventTypes.RedCard" })).toBeVisible();
+  act(() => callback(8000));
+  expect(sample().frame.timeMs).toBe(4000);
+  expect(screen.getByRole("status", { name: "match.eventTypes.RedCard" })).toBeVisible();
+});
+
+it("keeps goal commentary and the presented score hidden until confirmation", () => {
+  const snapshot = createSnapshot();
+  const numbers = new Map<string, number>();
+  const onPresentedScore = vi.fn();
+  const view = render(
+    <LiveMatchView
+      snapshot={snapshot}
+      numbers={numbers}
+      speed="normal"
+      paused={false}
+      onPresentedScore={onPresentedScore}
+    />,
+  );
+  const next = {
+    ...snapshot,
+    home_score: 2,
+    events: [
+      {
+        minute: 33,
+        event_type: "Goal",
+        side: "Home" as const,
+        zone: "AwayBox",
+        player_id: "starter-2",
+        secondary_player_id: null,
+      },
+    ],
+  };
+  view.rerender(
+    <LiveMatchView
+      snapshot={next}
+      numbers={numbers}
+      speed="normal"
+      paused={false}
+      onPresentedScore={onPresentedScore}
+    />,
+  );
+  act(() => callback(2000));
+  expect(screen.queryByText(/33' · match.eventTypes.Goal/)).not.toBeInTheDocument();
+  expect(sample().frame.score.home).toBe(1);
+  expect(onPresentedScore).toHaveBeenLastCalledWith({ home: 1, away: 0 });
+  act(() => callback(3200));
+  expect(screen.getByRole("status", { name: "match.eventTypes.Goal" })).toBeVisible();
+  expect(onPresentedScore).toHaveBeenLastCalledWith({ home: 2, away: 0 });
+  expect(screen.getByText(/33' · match.eventTypes.Goal/)).toBeVisible();
+});
+
+it("publishes a goal to the event feed once, together with its visual confirmation", () => {
+  const snapshot = createSnapshot();
+  const numbers = new Map<string, number>();
+  const onGoalConfirmed = vi.fn();
+  const view = render(
+    <LiveMatchView
+      snapshot={snapshot}
+      numbers={numbers}
+      speed="fast"
+      paused={false}
+      onGoalConfirmed={onGoalConfirmed}
+    />,
+  );
+  const goal = {
+    minute: 33,
+    event_type: "Goal",
+    side: "Home" as const,
+    zone: "AwayBox",
+    player_id: "starter-2",
+    secondary_player_id: null,
+  };
+  view.rerender(
+    <LiveMatchView
+      snapshot={{ ...snapshot, home_score: 2, events: [goal] }}
+      numbers={numbers}
+      speed="fast"
+      paused={false}
+      onGoalConfirmed={onGoalConfirmed}
+    />,
+  );
+  act(() => callback(799));
+  expect(onGoalConfirmed).not.toHaveBeenCalled();
+  act(() => callback(800));
+  expect(onGoalConfirmed).toHaveBeenCalledExactlyOnceWith(goal);
+  act(() => callback(1800));
+  expect(onGoalConfirmed).toHaveBeenCalledTimes(1);
+});
+
+it("waits for the entire celebration before allowing another step or the final whistle", () => {
+  const snapshot = createSnapshot();
+  const numbers = new Map<string, number>();
+  const onPlaybackComplete = vi.fn();
+  const view = render(
+    <LiveMatchView
+      snapshot={snapshot}
+      numbers={numbers}
+      speed="instant"
+      paused={false}
+      onPlaybackComplete={onPlaybackComplete}
+    />,
+  );
+  const next = {
+    ...snapshot,
+    phase: "Finished",
+    home_score: 2,
+    events: [
+      {
+        minute: 90,
+        event_type: "Goal",
+        side: "Home" as const,
+        zone: "AwayBox",
+        player_id: "starter-2",
+        secondary_player_id: null,
+      },
+    ],
+  };
+  view.rerender(
+    <LiveMatchView
+      snapshot={next}
+      numbers={numbers}
+      speed="paused"
+      paused={false}
+      onPlaybackComplete={onPlaybackComplete}
+    />,
+  );
+  act(() => callback(80));
+  expect(screen.getByRole("status", { name: "match.eventTypes.Goal" })).toBeVisible();
+  act(() => callback(2080));
+  expect(onPlaybackComplete).not.toHaveBeenCalled();
+  act(() => callback(880 + LIVE_GOAL_CELEBRATION_MS));
+  expect(onPlaybackComplete).toHaveBeenCalledOnce();
+  act(() => callback(20000));
+  expect(onPlaybackComplete).toHaveBeenCalledOnce();
+});
+
+it("retains every goal announcement with reduced motion, including goals followed by another play", () => {
+  vi.stubGlobal("matchMedia", () => ({ matches: true }));
+  const snapshot = createSnapshot();
+  const numbers = new Map<string, number>();
+  const onGoalConfirmed = vi.fn();
+  const view = render(
+    <LiveMatchView
+      snapshot={snapshot}
+      numbers={numbers}
+      speed="instant"
+      paused={false}
+      onGoalConfirmed={onGoalConfirmed}
+    />,
+  );
+  const next = {
+    ...snapshot,
+    home_score: 2,
+    away_score: 1,
+    events: [
+      {
+        minute: 33,
+        event_type: "Goal",
+        side: "Home" as const,
+        zone: "AwayBox",
+        player_id: "starter-2",
+        secondary_player_id: null,
+      },
+      {
+        minute: 34,
+        event_type: "Goal",
+        side: "Away" as const,
+        zone: "HomeBox",
+        player_id: "opp-1",
+        secondary_player_id: null,
+      },
+      {
+        minute: 35,
+        event_type: "PassCompleted",
+        side: "Home" as const,
+        zone: "Midfield",
+        player_id: "starter-2",
+        secondary_player_id: null,
+      },
+    ],
+  };
+  view.rerender(
+    <LiveMatchView
+      snapshot={next}
+      numbers={numbers}
+      speed="instant"
+      paused={false}
+      onGoalConfirmed={onGoalConfirmed}
+    />,
+  );
+  act(() => callback(16));
+  expect(screen.getByRole("status", { name: "match.eventTypes.Goal" })).toHaveTextContent(
+    "Starter Two",
+  );
+  const firstPose = sample().frame.players.map((p) => [p.id, p.x, p.y, p.action]);
+  act(() => callback(1016));
+  expect(sample().frame.players.map((p) => [p.id, p.x, p.y, p.action])).toEqual(firstPose);
+  expect(onGoalConfirmed).toHaveBeenCalledTimes(1);
+  act(() => callback(LIVE_GOAL_CELEBRATION_MS + 2016));
+  expect(screen.getByRole("status", { name: "match.eventTypes.Goal" })).toHaveTextContent(
+    "Opponent One",
+  );
+  expect(onGoalConfirmed).toHaveBeenCalledTimes(2);
 });

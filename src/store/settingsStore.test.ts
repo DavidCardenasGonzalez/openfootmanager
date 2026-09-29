@@ -12,6 +12,7 @@ const DEFAULT_SETTINGS = {
   currency: "EUR",
   default_match_mode: "live",
   auto_save: true,
+  auto_save_after_match: true,
   match_speed: "normal",
   show_match_commentary: true,
   show_match_player_names: true,

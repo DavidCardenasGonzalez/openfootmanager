@@ -1,13 +1,22 @@
 import type { BallState } from "../match/types";
 import { palette as p } from "./palette";
 import { project } from "./projection";
+export const BALL_SCALE = 0.7;
 export function drawBall(ctx: CanvasRenderingContext2D, ball: BallState, timeMs: number) {
   const ground = project(ball.x, ball.y);
   const air = project(ball.x, ball.y, ball.height);
   ctx.save();
   ctx.fillStyle = p.shadow;
   ctx.beginPath();
-  ctx.ellipse(ground.x + 2, ground.y + 2, 10 + ball.height * 0.7, 4, 0, 0, Math.PI * 2);
+  ctx.ellipse(
+    ground.x + 2,
+    ground.y + 2,
+    (10 + ball.height * 0.7) * BALL_SCALE,
+    4 * BALL_SCALE,
+    0,
+    0,
+    Math.PI * 2,
+  );
   ctx.fill();
   if (ball.height > 1) {
     // Broken vertical guide ties a lofted pass to its landing footprint.
@@ -17,14 +26,16 @@ export function drawBall(ctx: CanvasRenderingContext2D, ball: BallState, timeMs:
   // Pixel-stepped round silhouette with one-pixel seams, at the same world size.
   const x = Math.round(air.x);
   const y = Math.round(air.y - 8);
+  ctx.translate(x, y);
+  ctx.scale(BALL_SCALE, BALL_SCALE);
   ctx.strokeStyle = ball.motion === "shot" ? p.gold : p.white;
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.ellipse(x, y, 11, 10, 0, 0, Math.PI * 2);
+  ctx.ellipse(0, 0, 11, 10, 0, 0, Math.PI * 2);
   ctx.stroke();
   const rect = (color: string, dx: number, dy: number, w: number, h: number) => {
     ctx.fillStyle = color;
-    ctx.fillRect(x + dx, y + dy, w, h);
+    ctx.fillRect(dx, dy, w, h);
   };
   rect(p.ink, -4, -8, 8, 16);
   rect(p.ink, -6, -6, 12, 12);

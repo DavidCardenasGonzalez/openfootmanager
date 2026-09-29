@@ -1,7 +1,7 @@
 /** Match-space units, independent of the renderer: x 0–100, y 0–68.
  * The ball may cross the goal line (x -3–103). Times are replay milliseconds. */
 export type Team = "home" | "away";
-export type Action = "idle" | "run" | "pass" | "shoot";
+export type Action = "idle" | "run" | "pass" | "shoot" | "celebrate";
 export interface Position {
   x: number;
   y: number;

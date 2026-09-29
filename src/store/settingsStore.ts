@@ -7,6 +7,7 @@ export interface AppSettings {
   currency: "EUR" | "GBP" | "USD";
   default_match_mode: "live" | "spectator" | "delegate";
   auto_save: boolean;
+  auto_save_after_match: boolean;
   match_speed: "slow" | "normal" | "fast";
   show_match_commentary: boolean;
   show_match_player_names: boolean;
@@ -35,6 +36,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   currency: "EUR",
   default_match_mode: "live",
   auto_save: true,
+  auto_save_after_match: true,
   match_speed: "normal",
   show_match_commentary: true,
   show_match_player_names: true,

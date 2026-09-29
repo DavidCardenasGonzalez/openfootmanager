@@ -309,6 +309,15 @@ export default function Settings() {
           <SettingRow label={t("settings.autoSave")} description={t("settings.autoSaveDesc")}>
             <Toggle checked={settings.auto_save} onChange={(v) => handleUpdate({ auto_save: v })} />
           </SettingRow>
+          <SettingRow
+            label={t("settings.autoSaveAfterMatch")}
+            description={t("settings.autoSaveAfterMatchDesc")}
+          >
+            <Toggle
+              checked={settings.auto_save_after_match}
+              onChange={(v) => handleUpdate({ auto_save_after_match: v })}
+            />
+          </SettingRow>
 
           <SettingRow label={t("settings.exportWorld")} description={t("settings.exportWorldDesc")}>
             <button

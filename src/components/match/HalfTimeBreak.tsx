@@ -2,6 +2,7 @@ import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
 import type { GameStateData } from "../../store/gameStore";
+import type { PlayerRole } from "../../store/types";
 import {
   type MatchSnapshot,
   type MatchEvent,
@@ -100,6 +101,34 @@ export default function HalfTimeBreak({
       onUpdateSnapshot(snap);
     } catch (err) {
       console.error("Play style change failed:", err);
+    }
+  };
+
+  const handlePlayerRoleChange = async (playerId: string, role: PlayerRole) => {
+    try {
+      const snap = await invoke<MatchSnapshot>("apply_match_command", {
+        command: { ChangePlayerRole: { side: userSide, player_id: playerId, role } },
+      });
+      onUpdateSnapshot(snap);
+    } catch (err) {
+      console.error("Player role change failed:", err);
+    }
+  };
+
+  const handleSwapPositions = async (firstPlayerId: string, secondPlayerId: string) => {
+    try {
+      const snap = await invoke<MatchSnapshot>("apply_match_command", {
+        command: {
+          SwapPlayerPositions: {
+            side: userSide,
+            first_player_id: firstPlayerId,
+            second_player_id: secondPlayerId,
+          },
+        },
+      });
+      onUpdateSnapshot(snap);
+    } catch (err) {
+      console.error("Player position swap failed:", err);
     }
   };
 
@@ -502,7 +531,7 @@ export default function HalfTimeBreak({
                     className="w-full flex items-center justify-center gap-2 py-2.5 bg-gray-200 hover:bg-gray-300 dark:bg-navy-700 dark:hover:bg-navy-600 rounded-lg text-sm font-heading uppercase tracking-wider text-gray-700 dark:text-gray-300 transition-colors"
                   >
                     <RefreshCw className="w-4 h-4" />
-                    {t("match.makeSubstitution")}
+                    {t("dashboard.tactics")} / {t("match.makeSubstitution")}
                   </button>
                 </div>
               </>
@@ -520,6 +549,8 @@ export default function HalfTimeBreak({
           onSubstitute={handleSubstitution}
           onFormationChange={handleFormationChange}
           onPlayStyleChange={handlePlayStyleChange}
+          onPlayerRoleChange={handlePlayerRoleChange}
+          onSwapPositions={handleSwapPositions}
           onClose={() => setShowSubPanel(false)}
         />
       )}

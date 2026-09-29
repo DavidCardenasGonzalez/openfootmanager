@@ -34,7 +34,7 @@ vi.mock("../store/gameStore", () => ({
 
 vi.mock("../store/settingsStore", () => ({
   useSettingsStore: () => ({
-    settings: { match_speed: "normal" },
+    settings: { match_speed: "normal", auto_save_after_match: true },
   }),
 }));
 
@@ -461,7 +461,8 @@ describe("MatchSimulation", (): void => {
     fireEvent.click(screen.getByTestId("match-live"));
 
     await waitFor((): void => {
-      expect(mockedInvoke).toHaveBeenLastCalledWith("finish_live_match");
+      expect(mockedInvoke).toHaveBeenCalledWith("finish_live_match");
+      expect(mockedInvoke).toHaveBeenCalledWith("save_game");
       expect(screen.getByTestId("postmatch-finish")).toBeInTheDocument();
     });
 
@@ -511,7 +512,8 @@ describe("MatchSimulation", (): void => {
     fireEvent.click(screen.getByTestId("match-live"));
 
     await waitFor((): void => {
-      expect(mockedInvoke).toHaveBeenLastCalledWith("finish_live_match");
+      expect(mockedInvoke).toHaveBeenCalledWith("finish_live_match");
+      expect(mockedInvoke).toHaveBeenCalledWith("save_game");
       expect(screen.getByTestId("postmatch-finish")).toBeInTheDocument();
     });
 

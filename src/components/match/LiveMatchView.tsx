@@ -1,15 +1,17 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MatchCanvas, type PlayerLabel } from "../../../match-lab/src/renderer/MatchCanvas";
 import { PlaybackController } from "../../../match-lab/src/match/playbackController";
 import { sampleReplay } from "../../../match-lab/src/match/interpolation";
 import { buildLiveReplay, LIVE_CLIP_MS, LIVE_SPEED_MS } from "./livePresentation";
+import { advanceLivePlayback } from "./livePlayback";
 import { getCommentary } from "./commentary";
 import { getPlayerName } from "./helpers";
 import type { MatchSnapshot, SimSpeed, MatchEvent } from "./types";
 import { calculateMatchRatings } from "./playerRatings";
 import { useSettingsStore } from "../../store/settingsStore";
 import { Checkbox } from "../ui";
+import { MatchCinematic, isCinematicEvent } from "./MatchCinematic";
 
 import { useGameStore } from "../../store/gameStore";
 import { resolveMatchKits } from "../../../match-lab/src/renderer/kits";
@@ -19,9 +21,20 @@ interface Props {
   numbers: ReadonlyMap<string, number>;
   speed: SimSpeed;
   paused: boolean;
+  onPlaybackComplete?: () => void;
+  onGoalConfirmed?: (event: MatchEvent) => void;
+  onPresentedScore?: (score: { home: number; away: number }) => void;
 }
 
-export function LiveMatchView({ snapshot, numbers, speed, paused }: Props) {
+export function LiveMatchView({
+  snapshot,
+  numbers,
+  speed,
+  paused,
+  onPlaybackComplete,
+  onPresentedScore,
+  onGoalConfirmed,
+}: Props) {
   const { t } = useTranslation();
   const homeTeam = useGameStore((state) =>
     state.gameState?.teams.find((team) => team.id === snapshot.home_team.id),
@@ -34,6 +47,10 @@ export function LiveMatchView({ snapshot, numbers, speed, paused }: Props) {
   const [sample, setSample] = useState(() =>
     sampleReplay(buildLiveReplay(snapshot, [], numbers), 0),
   );
+  const callbacks = useRef({ onPlaybackComplete, onPresentedScore, onGoalConfirmed });
+  callbacks.current = { onPlaybackComplete, onPresentedScore, onGoalConfirmed };
+  const completed = useRef(false);
+  const confirmedGoals = useRef(new Set<string>());
   const current = useRef(sample);
   const controller = useRef<PlaybackController | null>(null);
   const lastSnapshot = useRef(snapshot);
@@ -42,6 +59,22 @@ export function LiveMatchView({ snapshot, numbers, speed, paused }: Props) {
   const pausedRef = useRef(paused);
   pausedRef.current = paused;
   if (speed !== "paused") rate.current = LIVE_CLIP_MS / LIVE_SPEED_MS[speed];
+
+  const announceGoals = useCallback(() => {
+    const clock = controller.current;
+    if (!clock) return;
+    for (const marker of clock.replay.events) {
+      if (
+        marker.kind !== "goal" ||
+        marker.timeMs > clock.timeMs ||
+        confirmedGoals.current.has(marker.id)
+      )
+        continue;
+      confirmedGoals.current.add(marker.id);
+      const event = sourceEvents.current[Number(marker.id)];
+      if (event) callbacks.current.onGoalConfirmed?.(event);
+    }
+  }, []);
 
   useEffect(() => {
     const previous = lastSnapshot.current;
@@ -66,9 +99,17 @@ export function LiveMatchView({ snapshot, numbers, speed, paused }: Props) {
     if (pausedRef.current) clock.seek(replay.durationMs);
     else clock.play();
     controller.current = clock;
+    completed.current = false;
+    confirmedGoals.current.clear();
     current.current = sampleReplay(replay, clock.timeMs);
     setSample(current.current);
-  }, [snapshot, numbers]);
+    callbacks.current.onPresentedScore?.(current.current.frame.score);
+    announceGoals();
+    if (!clock.playing) {
+      completed.current = true;
+      callbacks.current.onPlaybackComplete?.();
+    }
+  }, [snapshot, numbers, announceGoals]);
 
   useEffect(() => {
     const motion = window.matchMedia?.("(prefers-reduced-motion: reduce)");
@@ -77,23 +118,48 @@ export function LiveMatchView({ snapshot, numbers, speed, paused }: Props) {
     const tick = (now: number) => {
       const clock = controller.current;
       if (clock?.playing && !paused) {
-        if (motion?.matches) clock.seek(clock.replay.durationMs);
-        else clock.tick((now - previous) * rate.current);
+        if (motion?.matches) {
+          // Retain goal announcements in reduced motion, without playing the shot.
+          const goal = clock.replay.events.find(
+            (e) => e.kind === "goal" && e.timeMs > clock.timeMs,
+          );
+          if (current.current.event?.kind === "goal")
+            advanceLivePlayback(clock, now - previous, rate.current);
+          else clock.seek(goal?.timeMs ?? clock.replay.durationMs);
+        } else advanceLivePlayback(clock, now - previous, rate.current);
         current.current = sampleReplay(clock.replay, clock.timeMs);
         setSample(current.current);
+        callbacks.current.onPresentedScore?.(current.current.frame.score);
+        announceGoals();
+        if (!clock.playing && !completed.current) {
+          completed.current = true;
+          callbacks.current.onPlaybackComplete?.();
+        }
       }
       previous = now;
       request = requestAnimationFrame(tick);
     };
     request = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(request);
-  }, [paused]);
+  }, [paused, announceGoals]);
 
   const freshCount = sourceEvents.current.length;
   const visibleEventCount =
     snapshot.events.length -
     freshCount +
-    Math.min(freshCount, Math.floor((sample.frame.timeMs / LIVE_CLIP_MS) * freshCount));
+    Math.min(
+      freshCount,
+      sourceEvents.current.filter((_, index) => {
+        const replay = controller.current?.replay;
+        if (!replay) return false;
+        const goal = replay.events.find(
+          (marker) => marker.id === `${index}` && marker.kind === "goal",
+        );
+        const next = replay.events.find((marker) => marker.id === `${index + 1}`);
+        const confirmationTime = goal?.timeMs ?? next?.timeMs ?? replay.durationMs;
+        return sample.frame.timeMs >= confirmationTime;
+      }).length,
+    );
   const playerLabels = useMemo(() => {
     const labels = new Map<string, PlayerLabel>();
     for (const side of ["Home", "Away"] as const) {
@@ -114,7 +180,14 @@ export function LiveMatchView({ snapshot, numbers, speed, paused }: Props) {
     settings.show_match_player_ratings,
   ]);
 
-  const event = sample.event ? sourceEvents.current[Number(sample.event.id)] : undefined;
+  const sourceEvent = sample.event ? sourceEvents.current[Number(sample.event.id)] : undefined;
+  const event =
+    sourceEvent &&
+    (!["Goal", "PenaltyGoal"].includes(sourceEvent.event_type) || sample.event?.kind === "goal")
+      ? sourceEvent
+      : undefined;
+  // Goal sources first stage a shot. Announce only at its confirmed goal marker.
+  const incident = event && isCinematicEvent(event) ? event : undefined;
   const commentary = event ? getCommentary(event, snapshot, t) : null;
   return (
     <section
@@ -147,15 +220,25 @@ export function LiveMatchView({ snapshot, numbers, speed, paused }: Props) {
           </label>
         </div>
       </div>
-      <MatchCanvas
-        sample={sample}
-        kits={kits}
-        showNumbers
-        showCoordinates={false}
-        label={t("match.matchView")}
-        goalLabel={t("match.eventTypes.Goal")}
-        playerLabels={playerLabels}
-      />
+      <div className="relative">
+        {incident && (
+          <MatchCinematic
+            event={incident}
+            playerName={getPlayerName(snapshot, incident.player_id)}
+            teamName={incident.side === "Home" ? snapshot.home_team.name : snapshot.away_team.name}
+          />
+        )}
+        <MatchCanvas
+          sample={sample}
+          kits={kits}
+          showNumbers
+          showCoordinates={false}
+          label={t("match.matchView")}
+          goalLabel={t("match.eventTypes.Goal")}
+          playerLabels={playerLabels}
+          showGoalBanner={false}
+        />
+      </div>
       <div className="border-t border-gray-200 px-4 py-3 text-sm text-gray-700 dark:border-navy-700 dark:text-gray-200">
         <p className="font-heading font-bold">
           {event

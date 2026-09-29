@@ -237,12 +237,19 @@ export default function MatchSimulation() {
       setGameState(response.game);
       setRoundSummary(response.round_summary ?? null);
       setHasFinalizedMatch(true);
+      if (settings.auto_save_after_match) {
+        try {
+          await invoke("save_game");
+        } catch (saveError) {
+          console.error("Failed to auto-save after match:", saveError);
+        }
+      }
       return true;
     } catch (err) {
       console.error("Failed to finish match:", err);
       return false;
     }
-  }, [hasFinalizedMatch, setGameState]);
+  }, [hasFinalizedMatch, setGameState, settings.auto_save_after_match]);
 
   const handleFullTime = useCallback(() => {
     console.info("[MatchSimulation] handleFullTime");

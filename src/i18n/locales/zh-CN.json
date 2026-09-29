@@ -1803,7 +1803,9 @@
     "enterFullscreen": "进入",
     "exitFullscreen": "退出",
     "switchToLightMode": "切换到浅色模式",
-    "switchToDarkMode": "切换到深色模式"
+    "switchToDarkMode": "切换到深色模式",
+    "autoSaveAfterMatch": "每场比赛后自动保存",
+    "autoSaveAfterMatchDesc": "每场比赛结束后自动保存游戏"
   },
   "preMatch": {
     "formationFit": "阵型契合度",

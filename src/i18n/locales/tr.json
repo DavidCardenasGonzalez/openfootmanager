@@ -1803,7 +1803,9 @@
     "enterFullscreen": "Aç",
     "exitFullscreen": "Çık",
     "switchToLightMode": "Açık moda geç",
-    "switchToDarkMode": "Koyu moda geç"
+    "switchToDarkMode": "Koyu moda geç",
+    "autoSaveAfterMatch": "Maçlardan Sonra Otomatik Kaydet",
+    "autoSaveAfterMatchDesc": "Her maçtan sonra oyunu otomatik kaydet"
   },
   "preMatch": {
     "formationFit": "Diziliş Uyumu",

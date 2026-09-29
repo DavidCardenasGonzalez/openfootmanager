@@ -77,6 +77,11 @@ pub enum MatchCommand {
         player_id: String,
         role: PlayerRole,
     },
+    SwapPlayerPositions {
+        side: Side,
+        first_player_id: String,
+        second_player_id: String,
+    },
 }
 
 // ---------------------------------------------------------------------------
@@ -368,6 +373,11 @@ impl LiveMatchState {
                 }
                 Ok(())
             }
+            MatchCommand::SwapPlayerPositions {
+                side,
+                first_player_id,
+                second_player_id,
+            } => self.do_position_swap(side, &first_player_id, &second_player_id),
         }
     }
 

@@ -1803,7 +1803,9 @@
     "enterFullscreen": "Enter",
     "exitFullscreen": "Exit",
     "switchToLightMode": "Switch to light mode",
-    "switchToDarkMode": "Switch to dark mode"
+    "switchToDarkMode": "Switch to dark mode",
+    "autoSaveAfterMatch": "Auto-Save After Matches",
+    "autoSaveAfterMatchDesc": "Automatically save your game after each match"
   },
   "preMatch": {
     "formationFit": "Formation Fit",

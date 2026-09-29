@@ -159,3 +159,110 @@ it("handles an away attack and eases supporting runs without changing the engine
   expect(travel(20)).toBeGreaterThan(travel(2));
   expect(travel(20)).toBeGreaterThan(travel(39));
 });
+
+it("moves the defensive block toward the receiving lane as a pass travels", () => {
+  const pass = { ...event("PassCompleted"), zone: "Midfield", player_id: "h6" };
+  const left = buildLiveReplay(snapshot(), [{ ...pass, secondary_player_id: "h1" }], new Map());
+  const right = buildLiveReplay(snapshot(), [{ ...pass, secondary_player_id: "h4" }], new Map());
+  const leftEnd = left.frames[left.frames.length - 1];
+  const rightEnd = right.frames[right.frames.length - 1];
+  const leftDefender = leftEnd.players.find((p) => p.id === "a4");
+  const rightDefender = rightEnd.players.find((p) => p.id === "a4");
+  if (!leftDefender || !rightDefender) throw new Error("Missing defender");
+  expect(rightEnd.ball.y).toBeGreaterThan(leftEnd.ball.y + 10);
+  expect(rightDefender.y).toBeGreaterThan(leftDefender.y + 0.2);
+});
+
+it("keeps defensive runs continuous and bounded across a dense sequence and the next clip", () => {
+  const events = ["PassCompleted", "Dribble", "Cross", "ShotSaved"].map(event);
+  const replay = buildLiveReplay(snapshot(), events, new Map());
+  const end = replay.frames[replay.frames.length - 1];
+  const next = buildLiveReplay(snapshot(), [event("Dribble")], new Map(), end);
+  expect(next.frames[0].players).toEqual(end.players.map((p) => ({ ...p, action: "idle" })));
+  for (const clip of [replay, next]) {
+    for (let i = 1; i < clip.frames.length; i++) {
+      const frame = clip.frames[i];
+      const old = clip.frames[i - 1];
+      for (const p of frame.players.filter((p) => p.team === "away" && !p.goalkeeper)) {
+        const from = old.players.find((q) => q.id === p.id);
+        if (!from) throw new Error("Missing defender");
+        expect(
+          Math.hypot(p.x - from.x, p.y - from.y) / ((frame.timeMs - old.timeMs) / 1000),
+        ).toBeLessThanOrEqual(8.01);
+      }
+    }
+  }
+});
+
+it("reveals each score at the goal line and reserves time for every celebration", () => {
+  const replay = buildLiveReplay(
+    { ...snapshot(), home_score: 2, away_score: 1 },
+    [
+      event("Goal"),
+      { ...event("PenaltyGoal"), side: "Away", player_id: "a9" },
+      event("PassCompleted"),
+    ],
+    new Map(),
+  );
+  expect(replay.frames[0].score).toEqual({ home: 1, away: 0 });
+  const goals = replay.events.filter((e) => e.kind === "goal");
+  for (const goal of goals) {
+    const frame = replay.frames.find((f) => f.timeMs === goal.timeMs);
+    if (!frame) throw new Error("Missing confirmed goal frame");
+    expect(frame.ball.motion).toBe("goal");
+    expect(frame.ball.x).toBe(goal.team === "home" ? 100 : 0);
+    const next = replay.events.find((e) => e.timeMs > goal.timeMs);
+    expect((next?.timeMs ?? replay.durationMs) - goal.timeMs).toBeGreaterThanOrEqual(2200);
+  }
+  expect(replay.frames[replay.frames.length - 1].score).toEqual({ home: 2, away: 1 });
+});
+
+it.each(["Home", "Away"] as const)("runs the entire %s team into a huddle around the scorer, including the goalkeeper", (side) => {
+  const data = snapshot();
+  const team = side === "Home" ? "home" : "away";
+  const scorerId = side === "Home" ? "h9" : "a9";
+  const replay = buildLiveReplay(data, [{ ...event("Goal"), side, player_id: scorerId }], new Map());
+  const goal = replay.events.find((e) => e.kind === "goal");
+  if (!goal) throw new Error("Missing goal marker");
+  expect(replay.durationMs - goal.timeMs).toBeGreaterThanOrEqual(14000);
+  const start = replay.frames.find((f) => f.timeMs === 4000);
+  const end = replay.frames[replay.frames.length - 1];
+  if (!start) throw new Error("Missing celebration start");
+  const scorer = end.players.find((p) => p.id === scorerId);
+  if (!scorer) throw new Error("Missing scorer");
+  const winners = end.players.filter((p) => p.team === team);
+  expect(winners).toHaveLength(11);
+  for (const player of winners) {
+    expect(Math.hypot(player.x - scorer.x, player.y - scorer.y)).toBeLessThanOrEqual(6.1);
+    expect(player.action).toBe("celebrate");
+    expect(replay.frames.some((f) => f.timeMs > 4000 && f.players.find((p) => p.id === player.id)?.action === "run")).toBe(true);
+  }
+  expect(end.players.filter((p) => p.team !== team).map((p) => [p.id, p.x, p.y])).toEqual(start.players.filter((p) => p.team !== team).map((p) => [p.id, p.x, p.y]));
+  for (let i = replay.frames.indexOf(start) + 1; i < replay.frames.length; i++) {
+    const frame = replay.frames[i];
+    const previous = replay.frames[i - 1];
+    for (const player of frame.players.filter((p) => p.team === team)) {
+      const from = previous.players.find((p) => p.id === player.id);
+      if (!from) throw new Error("Missing preceding player");
+      const dx = player.x - from.x;
+      const dy = player.y - from.y;
+      expect(Math.hypot(dx, dy) / ((frame.timeMs - previous.timeMs) / 1000)).toBeLessThanOrEqual(8.1);
+      if (player.action === "run") expect(Math.cos(player.direction) * dx + Math.sin(player.direction) * dy).toBeGreaterThan(0);
+    }
+    expect(frame.ball).toEqual(start.ball);
+    expect(frame.score).toEqual(end.score);
+  }
+});
+
+it("celebrates a penalty with the players still on the pitch and carries the huddle into the next play", () => {
+  const data = snapshot();
+  data.sent_off = ["h4"];
+  const before = JSON.stringify(data);
+  const replay = buildLiveReplay(data, [event("PenaltyGoal")], new Map());
+  const end = replay.frames[replay.frames.length - 1];
+  expect(end.players.filter((p) => p.team === "home" && p.action === "celebrate")).toHaveLength(10);
+  expect(end.players.some((p) => p.id === "h4")).toBe(false);
+  expect(JSON.stringify(data)).toBe(before);
+  const next = buildLiveReplay(data, [event("KickOff")], new Map(), end);
+  expect(next.frames[0].players.map((p) => [p.id, p.x, p.y])).toEqual(end.players.map((p) => [p.id, p.x, p.y]));
+});

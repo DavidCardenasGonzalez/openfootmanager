@@ -1803,7 +1803,9 @@
     "enterFullscreen": "Включить",
     "exitFullscreen": "Выключить",
     "switchToLightMode": "Переключиться в светлый режим",
-    "switchToDarkMode": "Переключиться в темный режим"
+    "switchToDarkMode": "Переключиться в темный режим",
+    "autoSaveAfterMatch": "Автосохранение после матчей",
+    "autoSaveAfterMatchDesc": "Автоматически сохранять игру после каждого матча"
   },
   "preMatch": {
     "formationFit": "Формирование",

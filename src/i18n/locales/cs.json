@@ -1803,7 +1803,9 @@
     "enterFullscreen": "Vstoupit",
     "exitFullscreen": "Ukončit",
     "switchToLightMode": "Přepnout do světlého motivu",
-    "switchToDarkMode": "Přepnout do tmavého motivu"
+    "switchToDarkMode": "Přepnout do tmavého motivu",
+    "autoSaveAfterMatch": "Automaticky ukládat po zápasech",
+    "autoSaveAfterMatchDesc": "Automaticky uložit hru po každém zápase"
   },
   "preMatch": {
     "formationFit": "Vhodnost rozestavení",

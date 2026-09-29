@@ -15,11 +15,11 @@ import { getEventDisplay, getPlayerName, makeTeamFallback, phaseLabel } from "./
 import { Badge, TeamLogo } from "../ui";
 import { useSettingsStore } from "../../store/settingsStore";
 import { EventFeed, MatchStats, Lineups } from "./MatchPanels";
-import { MatchCinematic, isCinematicEvent } from "./MatchCinematic";
 import { LiveMatchView } from "./LiveMatchView";
 import { LIVE_SPEED_MS } from "./livePresentation";
 import MatchScreenLayout from "./MatchScreenLayout";
 import { SubPanel, type PendingSubstitution } from "./SubPanel";
+import type { PlayerRole } from "../../store/types";
 import {
   Play,
   Pause,
@@ -80,19 +80,32 @@ export default function MatchLive({
   const [activePanel, setActivePanel] = useState<ActivePanel>("match");
   const [isRunning, setIsRunning] = useState(true);
   const [showSubPanel, setShowSubPanel] = useState(false);
-  const [cinematics, setCinematics] = useState<MatchEvent[]>([]);
   const [presentationPending, setPresentationPending] = useState(false);
-  const presentationLock = useRef(false);
+  const [presentedScore, setPresentedScore] = useState({
+    home: snapshot.home_score,
+    away: snapshot.away_score,
+  });
+  const pendingFinish = useRef<(() => void) | null>(null);
+  const handlePlaybackComplete = useCallback(() => {
+    setPresentationPending(false);
+    const finish = pendingFinish.current;
+    pendingFinish.current = null;
+    finish?.();
+  }, []);
+  const handlePresentedScore = useCallback((score: { home: number; away: number }) => {
+    setPresentedScore((previous) =>
+      previous.home === score.home && previous.away === score.away ? previous : score,
+    );
+  }, []);
+  const hasStepped = useRef(false);
   const stepInFlight = useRef(false);
   const mounted = useRef(true);
-  const pendingPhase = useRef<(() => void) | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const transitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     mounted.current = true;
     return () => {
       mounted.current = false;
-      if (transitionTimerRef.current) clearTimeout(transitionTimerRef.current);
+      pendingFinish.current = null;
     };
   }, []);
   const eventFeedRef = useRef<HTMLDivElement>(null);
@@ -120,7 +133,7 @@ export default function MatchLive({
   // ofm_core/live_match_manager.rs; MINUTES_PER_TICK on this side is what makes batches possible.
   const stepMatch = useCallback(
     async (minutes: number) => {
-      if (presentationLock.current || stepInFlight.current) return;
+      if (stepInFlight.current) return;
       stepInFlight.current = true;
       try {
         const results = await invoke<MinuteResult[]>("step_live_match", { minutes });
@@ -132,7 +145,7 @@ export default function MatchLive({
           for (const r of results) {
             for (const evt of r.events) {
               const display = getEventDisplay(evt);
-              if (display.important) {
+              if (display.important && !["Goal", "PenaltyGoal"].includes(evt.event_type)) {
                 onImportantEvent(evt);
               }
             }
@@ -141,9 +154,10 @@ export default function MatchLive({
           // Fetch full snapshot
           const snap = await invoke<MatchSnapshot>("get_match_snapshot");
           if (!mounted.current) return;
+          hasStepped.current = true;
+          setPresentationPending(true);
           onSnapshotUpdate(snap);
 
-          const incidents = results.flatMap((result) => result.events).filter(isCinematicEvent);
           const phase = lastResult.phase;
           let finish: (() => void) | null = null;
           if (!signaledRef.current.has(phase)) {
@@ -157,21 +171,8 @@ export default function MatchLive({
             setIsRunning(false);
             setSpeed("paused");
           }
-          // Finish the current visual passage before showing each confirmed incident.
-          // Block additional engine steps immediately, including instant/ten-minute batches.
-          if (incidents.length) {
-            presentationLock.current = true;
-            setPresentationPending(true);
-            pendingPhase.current = finish;
-            transitionTimerRef.current = setTimeout(() => {
-              setCinematics(incidents);
-            }, LIVE_SPEED_MS[speed] || LIVE_SPEED_MS.normal);
-          } else if (finish) {
-            transitionTimerRef.current = setTimeout(
-              finish,
-              LIVE_SPEED_MS[speed] || LIVE_SPEED_MS.normal,
-            );
-          }
+          // The playback clock includes celebrations and follows pause/speed changes.
+          pendingFinish.current = finish;
         }
       } catch (err) {
         console.error("Failed to step match:", err);
@@ -191,9 +192,12 @@ export default function MatchLive({
     }
 
     if (isRunning && speed !== "paused" && !isFinished && !showSubPanel && !presentationPending) {
-      timerRef.current = setTimeout(async () => {
-        await stepMatch(MINUTES_PER_TICK[speed]);
-      }, LIVE_SPEED_MS[speed]);
+      timerRef.current = setTimeout(
+        async () => {
+          await stepMatch(MINUTES_PER_TICK[speed]);
+        },
+        hasStepped.current ? 0 : LIVE_SPEED_MS[speed],
+      );
     }
 
     return () => {
@@ -209,19 +213,6 @@ export default function MatchLive({
     showSubPanel,
     presentationPending,
   ]);
-
-  const continueCinematic = () => {
-    if (cinematics.length > 1) {
-      setCinematics(cinematics.slice(1));
-      return;
-    }
-    setCinematics([]);
-    presentationLock.current = false;
-    setPresentationPending(false);
-    const finish = pendingPhase.current;
-    pendingPhase.current = null;
-    finish?.();
-  };
 
   // Auto-scroll event feed
   useEffect(() => {
@@ -273,6 +264,36 @@ export default function MatchLive({
     }
   };
 
+  const handlePlayerRoleChange = async (playerId: string, role: PlayerRole) => {
+    if (!userSide || isSpectator) return;
+    try {
+      const snap = await invoke<MatchSnapshot>("apply_match_command", {
+        command: { ChangePlayerRole: { side: userSide, player_id: playerId, role } },
+      });
+      onSnapshotUpdate(snap);
+    } catch (err) {
+      console.error("Player role change failed:", err);
+    }
+  };
+
+  const handleSwapPositions = async (firstPlayerId: string, secondPlayerId: string) => {
+    if (!userSide || isSpectator) return;
+    try {
+      const snap = await invoke<MatchSnapshot>("apply_match_command", {
+        command: {
+          SwapPlayerPositions: {
+            side: userSide,
+            first_player_id: firstPlayerId,
+            second_player_id: secondPlayerId,
+          },
+        },
+      });
+      onSnapshotUpdate(snap);
+    } catch (err) {
+      console.error("Player position swap failed:", err);
+    }
+  };
+
   return (
     <MatchScreenLayout
       headerClassName="bg-linear-to-r from-gray-200 via-white to-gray-200 dark:from-navy-800 dark:via-navy-900 dark:to-navy-800"
@@ -319,7 +340,7 @@ export default function MatchLive({
 
               <div className="flex items-center gap-3">
                 <span className="text-4xl font-heading font-bold text-gray-900 dark:text-white tabular-nums">
-                  {snapshot.home_score}
+                  {presentedScore.home}
                 </span>
                 <div className="flex flex-col items-center">
                   <span className="text-xs font-heading uppercase tracking-widest text-accent-700 dark:text-accent-400">
@@ -330,7 +351,7 @@ export default function MatchLive({
                   </span>
                 </div>
                 <span className="text-4xl font-heading font-bold text-gray-900 dark:text-white tabular-nums">
-                  {snapshot.away_score}
+                  {presentedScore.away}
                 </span>
               </div>
 
@@ -437,14 +458,16 @@ export default function MatchLive({
               <LiveMatchView
                 snapshot={snapshot}
                 numbers={playerJerseyMap}
+                onPlaybackComplete={handlePlaybackComplete}
+                onPresentedScore={handlePresentedScore}
+                onGoalConfirmed={onImportantEvent}
                 speed={speed}
                 paused={
                   (speed === "paused" &&
                     !["HalfTime", "ExtraTimeHalfTime", "PenaltyShootout", "Finished"].includes(
                       snapshot.phase,
                     )) ||
-                  showSubPanel ||
-                  cinematics.length > 0
+                  showSubPanel
                 }
               />
             </div>
@@ -549,7 +572,7 @@ export default function MatchLive({
                 className="flex items-center gap-2 px-3 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-navy-700 dark:hover:bg-navy-600 rounded-lg text-sm font-heading uppercase tracking-wider text-gray-700 dark:text-gray-300 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                {t("match.subs")} (
+                {t("dashboard.tactics")} / {t("match.subs")} (
                 {userSide === "Home" ? snapshot.home_subs_made : snapshot.away_subs_made}/
                 {snapshot.max_subs})
               </button>
@@ -658,19 +681,6 @@ export default function MatchLive({
         </aside>
       </div>
 
-      {cinematics[0] && (
-        <MatchCinematic
-          event={cinematics[0]}
-          playerName={
-            gameState.players.find((player) => player.id === cinematics[0].player_id)?.full_name ??
-            getPlayerName(snapshot, cinematics[0].player_id)
-          }
-          teamName={
-            cinematics[0].side === "Home" ? snapshot.home_team.name : snapshot.away_team.name
-          }
-          onContinue={continueCinematic}
-        />
-      )}
       {/* Substitution Modal */}
       {showSubPanel && userSide && (
         <SubPanel
@@ -679,6 +689,8 @@ export default function MatchLive({
           onSubstitute={handleSubstitution}
           onFormationChange={handleFormationChange}
           onPlayStyleChange={handlePlayStyleChange}
+          onPlayerRoleChange={handlePlayerRoleChange}
+          onSwapPositions={handleSwapPositions}
           onClose={() => setShowSubPanel(false)}
         />
       )}

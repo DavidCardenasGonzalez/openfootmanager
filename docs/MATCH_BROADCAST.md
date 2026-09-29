@@ -129,3 +129,40 @@ with knees following the foot instead of bending in the opposite direction. Trav
 the projected heading, and the returning foot lifts during recovery. Elbows stay close and
 hands swing opposite the legs. Torso bob uses the same stride clock with an amplitude below
 one pixel. Tests sweep the full cycle to prevent crossed feet and flared arms from returning.
+
+## Coordinated defensive presentation
+
+The live replay adapter advances outfield defenders on every sampled frame via
+`src/components/match/defensiveMovement.ts`. One player presses from the goal side,
+a second covers deeper toward the centre, and the remaining players shift as a
+narrower block. The block retreats as the attack advances and follows the actual
+carrier or pass destination. During shots it responds to the shooter instead of
+chasing the ball into the goal.
+
+Assignments have a distance margin to avoid switching responsibilities on every
+frame. Velocity eases toward each target and remains at most eight pitch units per
+replay second. Positions continue from the preceding frame, including across clips;
+assignment and velocity memory last for the current clip. Goalkeeper staging remains
+owned by the replay adapter. These are illustrative movements: they do not change
+engine events, possession, scores or tactical probabilities.
+
+Co-located movement tests cover pressure/cover separation, far-side narrowing,
+retreat, switches of play, mirrored attacks, depleted teams and speed limits.
+Adapter tests also verify reaction to the receiving lane and continuity through
+dense event sequences and the next clip.
+
+### Player display scale
+
+`PLAYER_SCALE` in `playerRenderer.ts` reduces figures to 72% of their native size,
+anchored at the feet. Shadows and selection markers use the same transform, and
+name/rating offsets follow it while keeping their text readable. Pitch coordinates
+and camera zoom are unchanged.
+
+## Live incident announcements
+
+Goals, fouls and cards appear in a compact banner above the pitch. The banner uses
+the current replay sample, so it follows playback speed and manual pauses; goals
+are announced at the goal marker, after the shot reaches the net. It clears when
+the next play begins and does not replay incidents from restored match history.
+Announcements leave controls active and never block engine advancement or require
+acknowledgement. Half time, shootouts and full time still wait for the final clip.

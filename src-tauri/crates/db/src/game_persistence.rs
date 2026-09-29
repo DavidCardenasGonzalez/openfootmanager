@@ -620,7 +620,11 @@ mod tests {
         let mut game = sample_game_with_clock(2032, 18);
         game.manager.team_id = Some(game.teams[0].id.clone());
         ofm_core::academy::process_human_intake(&mut game);
-        game.squad_management.academies.get_mut("team-1").unwrap().signed = 1;
+        game.squad_management
+            .academies
+            .get_mut("team-1")
+            .unwrap()
+            .signed = 1;
         game.squad_management.last_intake_cycle = 6;
         game.squad_management.last_review_week = Some("2032-20".into());
         game.squad_management.totals.renewals = 42;

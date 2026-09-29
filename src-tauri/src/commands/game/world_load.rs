@@ -16,7 +16,7 @@ use log::warn;
 use ofm_core::clock::GameClock;
 
 use super::{
-    StartupOptions, current_date_for_phase, first_package_error_message, start_date_for_year,
+    current_date_for_phase, first_package_error_message, start_date_for_year, StartupOptions,
 };
 
 pub(super) fn load_world_data_from_path(
@@ -204,7 +204,7 @@ pub(super) fn game_clock_for_world(
 mod tests {
     use super::*;
     use crate::commands::game::testkit::{make_historical_snapshot_world, temp_pkg_dir};
-    use crate::commands::game::{DEFAULT_GENERATED_HISTORY_DEPTH_YEARS, StartPhase};
+    use crate::commands::game::{StartPhase, DEFAULT_GENERATED_HISTORY_DEPTH_YEARS};
 
     #[test]
     fn open_manager_generated_world_matches_runtime_schema() {
@@ -303,18 +303,19 @@ mod tests {
             .fixtures[0]
             .date
             .clone();
-        game.clock.current_date = chrono::DateTime::parse_from_rfc3339(&format!("{date}T12:00:00Z"))
-            .unwrap().with_timezone(&Utc);
-        ofm_core::turn::process_day(&mut game);
-        assert!(
-            game.competitions
-                .iter()
-                .find(|c| c.id == "open-manager-division-1")
+        game.clock.current_date =
+            chrono::DateTime::parse_from_rfc3339(&format!("{date}T12:00:00Z"))
                 .unwrap()
-                .fixtures
-                .iter()
-                .any(|f| f.result.is_some())
-        );
+                .with_timezone(&Utc);
+        ofm_core::turn::process_day(&mut game);
+        assert!(game
+            .competitions
+            .iter()
+            .find(|c| c.id == "open-manager-division-1")
+            .unwrap()
+            .fixtures
+            .iter()
+            .any(|f| f.result.is_some()));
     }
 
     #[test]

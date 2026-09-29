@@ -17,15 +17,13 @@ export function supportingPaths(
   durationMs: number,
 ): Map<string, (fraction: number) => Position> {
   const sign = attackingTeam === "home" ? 1 : -1;
-  const defenders = origin
-    .filter((p) => p.team !== attackingTeam && !p.goalkeeper)
-    .sort(
-      (a, b) => Math.hypot(a.x - focus.x, a.y - focus.y) - Math.hypot(b.x - focus.x, b.y - focus.y),
-    );
   return new Map(
     formation.map((base, index) => {
       const from = origin.find((p) => p.id === base.id) ?? base;
-      // Both teams slide toward the active lane; distant players retain their formation.
+      // Outfield defenders are advanced frame by frame by defensiveMovement.
+      if (base.team !== attackingTeam && !base.goalkeeper) {
+        return [base.id, () => ({ x: from.x, y: from.y })];
+      }
       let x = base.x + (focus.x - 50) * 0.24;
       let y = base.y + (focus.y - 34) * 0.3;
       const nearby = Math.hypot(from.x - focus.x, from.y - focus.y) < 32;
@@ -38,9 +36,6 @@ export function supportingPaths(
       } else if (base.team === attackingTeam && base.id !== actorId) {
         x += sign * (nearby ? 7 : 2);
         y += (base.y < focus.y ? -1 : 1) * (nearby ? 4 : 1.5);
-      } else if (defenders[0]?.id === base.id || defenders[1]?.id === base.id) {
-        x = focus.x + sign * (defenders[0]?.id === base.id ? 5 : 10);
-        y = focus.y + (base.y < focus.y ? -4 : 4);
       }
       const dx = clamp(x, 3, 97) - from.x;
       const dy = clamp(y, 4, 64) - from.y;

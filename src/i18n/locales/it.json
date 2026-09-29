@@ -1822,7 +1822,9 @@
     "enterFullscreen": "Entra",
     "exitFullscreen": "Esci",
     "switchToLightMode": "Passa alla modalità chiara",
-    "switchToDarkMode": "Passa alla modalità scura"
+    "switchToDarkMode": "Passa alla modalità scura",
+    "autoSaveAfterMatch": "Salvataggio automatico dopo le partite",
+    "autoSaveAfterMatchDesc": "Salva automaticamente la partita dopo ogni incontro"
   },
   "preMatch": {
     "formationFit": "Adattamento alla formazione",

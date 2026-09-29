@@ -16,6 +16,8 @@ pub struct AppSettings {
     pub currency: String, // "EUR" | "GBP" | "USD"
     pub default_match_mode: String, // "live" | "spectator" | "delegate"
     pub auto_save: bool,
+    #[serde(default = "default_auto_save_after_match")]
+    pub auto_save_after_match: bool,
     pub match_speed: String, // "slow" | "normal" | "fast"
     pub show_match_commentary: bool,
     #[serde(default = "default_player_labels")]
@@ -49,6 +51,9 @@ fn default_ui_scale() -> String {
 fn default_player_labels() -> bool {
     true
 }
+fn default_auto_save_after_match() -> bool {
+    true
+}
 
 impl Default for AppSettings {
     fn default() -> Self {
@@ -58,6 +63,7 @@ impl Default for AppSettings {
             currency: "EUR".to_string(),
             default_match_mode: "live".to_string(),
             auto_save: true,
+            auto_save_after_match: true,
             match_speed: "normal".to_string(),
             show_match_commentary: true,
             show_match_player_names: true,
@@ -174,6 +180,16 @@ mod tests {
         let saved = serde_json::to_value(hidden).unwrap();
         assert_eq!(saved["show_match_player_names"], false);
         assert_eq!(saved["show_match_player_ratings"], false);
+    }
+
+    #[test]
+    fn legacy_settings_enable_auto_save_after_match_by_default() {
+        let mut json = serde_json::to_value(AppSettings::default()).unwrap();
+        json.as_object_mut().unwrap().remove("auto_save_after_match");
+
+        let loaded: AppSettings = serde_json::from_value(json).unwrap();
+
+        assert!(loaded.auto_save_after_match);
     }
 
     fn make_settings(currency: &str) -> AppSettings {

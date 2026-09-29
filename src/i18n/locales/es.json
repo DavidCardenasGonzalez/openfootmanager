@@ -1803,7 +1803,9 @@
     "enterFullscreen": "Entrar",
     "exitFullscreen": "Salir",
     "switchToLightMode": "Cambiar al modo claro",
-    "switchToDarkMode": "Cambiar al modo oscuro"
+    "switchToDarkMode": "Cambiar al modo oscuro",
+    "autoSaveAfterMatch": "Autoguardar después de los partidos",
+    "autoSaveAfterMatchDesc": "Guardar automáticamente la partida después de cada partido"
   },
   "preMatch": {
     "formationFit": "Ajuste de Formación",

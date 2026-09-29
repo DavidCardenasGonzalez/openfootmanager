@@ -1698,6 +1698,68 @@ fn valid_substitution_still_works_after_guards() {
     assert!(!snap.home_team.players.iter().any(|p| p.id == off_id));
 }
 
+#[test]
+fn live_position_swap_exchanges_slots_without_using_a_substitution() {
+    let mut state = make_live_match(false);
+    let mut rng = seeded_rng(42);
+    state.step_minute(&mut rng);
+
+    let before = state.snapshot();
+    let defender_id = before.home_team.players[1].id.clone();
+    let midfielder_id = before.home_team.players[5].id.clone();
+
+    state
+        .apply_command(MatchCommand::ChangePlayerRole {
+            side: Side::Home,
+            player_id: defender_id.clone(),
+            role: PlayerRole::Stopper,
+        })
+        .expect("a role can be changed during live play");
+    state
+        .apply_command(MatchCommand::ChangePlayerRole {
+            side: Side::Home,
+            player_id: midfielder_id.clone(),
+            role: PlayerRole::BoxToBox,
+        })
+        .expect("a role can be changed during live play");
+
+    state
+        .apply_command(MatchCommand::SwapPlayerPositions {
+            side: Side::Home,
+            first_player_id: defender_id.clone(),
+            second_player_id: midfielder_id.clone(),
+        })
+        .expect("two active players can exchange tactical slots during the match");
+
+    let after = state.snapshot();
+    assert_eq!(after.home_team.players[1].id, midfielder_id);
+    assert_eq!(after.home_team.players[1].position, Position::Defender);
+    assert_eq!(after.home_team.players[1].role, PlayerRole::Standard);
+    assert_eq!(after.home_team.players[5].id, defender_id);
+    assert_eq!(after.home_team.players[5].position, Position::Midfielder);
+    assert_eq!(after.home_team.players[5].role, PlayerRole::Standard);
+    assert_eq!(after.home_subs_made, 0);
+}
+
+#[test]
+fn live_position_swap_rejects_a_player_who_is_not_on_the_pitch() {
+    let mut state = make_live_match(false);
+    let mut rng = seeded_rng(42);
+    state.step_minute(&mut rng);
+    let starter_id = state.snapshot().home_team.players[1].id.clone();
+    let bench_id = state.bench(Side::Home)[0].id.clone();
+
+    let error = state
+        .apply_command(MatchCommand::SwapPlayerPositions {
+            side: Side::Home,
+            first_player_id: starter_id,
+            second_player_id: bench_id,
+        })
+        .unwrap_err();
+
+    assert_eq!(error, "be.error.liveMatch.playerNotOnPitch");
+}
+
 // ===========================================================================
 // Tests: Snapshot edge cases
 // ===========================================================================

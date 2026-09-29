@@ -1,7 +1,7 @@
 use crate::event::{EventType, MatchEvent};
-use crate::types::{Position, Side, Zone};
+use crate::types::{PlayerRole, Position, Side, Zone};
 
-use super::{LiveMatchState, SubstitutionRecord};
+use super::{LiveMatchState, SubstitutionRecord, is_role_valid_for_position};
 
 // ---------------------------------------------------------------------------
 // Substitution mechanics
@@ -145,6 +145,51 @@ impl LiveMatchState {
         match side {
             Side::Home => self.home_bench.push(player_off),
             Side::Away => self.away_bench.push(player_off),
+        }
+
+        Ok(())
+    }
+
+    /// Exchange the tactical slots occupied by two active players. The XI is
+    /// slot-aligned, so swapping the entries moves each player on the pitch;
+    /// the deployed coarse position remains attached to the slot.
+    pub(super) fn do_position_swap(
+        &mut self,
+        side: Side,
+        first_player_id: &str,
+        second_player_id: &str,
+    ) -> Result<(), String> {
+        if first_player_id == second_player_id {
+            return Ok(());
+        }
+        if self.sent_off.contains(first_player_id) || self.sent_off.contains(second_player_id) {
+            return Err("be.error.liveMatch.playerNotOnPitch".into());
+        }
+
+        let team = self.team_mut(side);
+        let first_idx = team
+            .players
+            .iter()
+            .position(|player| player.id == first_player_id)
+            .ok_or("be.error.liveMatch.playerNotOnPitch")?;
+        let second_idx = team
+            .players
+            .iter()
+            .position(|player| player.id == second_player_id)
+            .ok_or("be.error.liveMatch.playerNotOnPitch")?;
+        let first_slot_position = team.players[first_idx].position;
+        let second_slot_position = team.players[second_idx].position;
+
+        team.players.swap(first_idx, second_idx);
+        team.players[first_idx].position = first_slot_position;
+        team.players[second_idx].position = second_slot_position;
+
+        // A role can become invalid when a player crosses position groups.
+        // Keep compatible instructions and fall back safely for incompatible ones.
+        for idx in [first_idx, second_idx] {
+            if !is_role_valid_for_position(team.players[idx].role, team.players[idx].position) {
+                team.players[idx].role = PlayerRole::Standard;
+            }
         }
 
         Ok(())

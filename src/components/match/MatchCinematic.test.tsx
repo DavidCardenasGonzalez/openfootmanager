@@ -1,16 +1,8 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { beforeEach, expect, it, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { expect, it, vi } from "vitest";
 import { MatchCinematic, isCinematicEvent } from "./MatchCinematic";
 import type { MatchEvent } from "./types";
 vi.mock("react-i18next", () => ({ useTranslation: () => ({ t: (key: string) => key }) }));
-beforeEach(() => {
-  HTMLDialogElement.prototype.showModal = function () {
-    this.setAttribute("open", "");
-  };
-  HTMLDialogElement.prototype.close = function () {
-    this.removeAttribute("open");
-  };
-});
 const event = (event_type: string): MatchEvent => ({
   minute: 34,
   event_type,
@@ -19,26 +11,21 @@ const event = (event_type: string): MatchEvent => ({
   player_id: "p1",
   secondary_player_id: null,
 });
-it("only interrupts for confirmed goals, fouls and cards", () => {
+it("only announces confirmed goals, fouls and cards", () => {
   for (const kind of ["Goal", "PenaltyGoal", "Foul", "YellowCard", "RedCard", "SecondYellow"])
     expect(isCinematicEvent(event(kind))).toBe(true);
   for (const kind of ["ShotSaved", "ShotOnTarget", "PassCompleted", "PenaltyMiss"])
     expect(isCinematicEvent(event(kind))).toBe(false);
 });
-it("names the incident and player, focuses Continue, and permits keyboard dismissal", () => {
-  const onContinue = vi.fn();
-  render(
-    <MatchCinematic
-      event={event("SecondYellow")}
-      playerName="Alex"
-      teamName="Home United"
-      onContinue={onContinue}
-    />,
-  );
-  const dialog = screen.getByRole("dialog", { name: "match.eventTypes.SecondYellow" });
-  expect(screen.getByText("Alex")).toBeVisible();
-  expect(screen.getByText(/Home United/)).toBeVisible();
-  expect(screen.getByRole("button", { name: "match.continue" })).toHaveFocus();
-  fireEvent(dialog, new Event("cancel", { cancelable: true }));
-  expect(onContinue).toHaveBeenCalledOnce();
+it("announces the incident without a modal, a continue button or moving focus", () => {
+  render(<button type="button">Match controls</button>);
+  const control = screen.getByRole("button");
+  control.focus();
+  render(<MatchCinematic event={event("SecondYellow")} playerName="Alex" teamName="Home United" />);
+  expect(screen.getByRole("status")).toHaveTextContent("match.eventTypes.SecondYellow");
+  expect(screen.getByRole("status")).toHaveTextContent("Alex");
+  expect(screen.getByRole("status")).toHaveTextContent("Home United");
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "match.continue" })).not.toBeInTheDocument();
+  expect(control).toHaveFocus();
 });

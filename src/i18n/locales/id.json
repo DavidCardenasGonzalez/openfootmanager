@@ -1803,7 +1803,9 @@
     "enterFullscreen": "Masuk",
     "exitFullscreen": "Keluar",
     "switchToLightMode": "Beralih ke mode terang",
-    "switchToDarkMode": "Beralih ke mode gelap"
+    "switchToDarkMode": "Beralih ke mode gelap",
+    "autoSaveAfterMatch": "Simpan Otomatis Setelah Pertandingan",
+    "autoSaveAfterMatchDesc": "Simpan permainan secara otomatis setelah setiap pertandingan"
   },
   "preMatch": {
     "formationFit": "Kecocokan Formasi",

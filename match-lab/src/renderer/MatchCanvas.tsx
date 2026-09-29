@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import type { RenderSample } from "../match/types";
 import { drawGoal, drawPitch } from "./pitchRenderer";
-import { drawPlayer } from "./playerRenderer";
+import { drawPlayer, PLAYER_SCALE } from "./playerRenderer";
 import { drawBall } from "./ballRenderer";
 import { drawForeground, drawStadium } from "./stadiumRenderer";
 import { palette } from "./palette";
@@ -20,6 +20,7 @@ interface Props {
   showCoordinates: boolean;
   label: string;
   goalLabel: string;
+  showGoalBanner?: boolean;
   playerLabels?: ReadonlyMap<string, PlayerLabel>;
 }
 export function MatchCanvas({
@@ -29,15 +30,14 @@ export function MatchCanvas({
   showCoordinates,
   label,
   goalLabel,
+  showGoalBanner = true,
   playerLabels,
 }: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
   const background = useRef<HTMLCanvasElement | null>(null);
   const foreground = useRef<HTMLCanvasElement | null>(null);
-  const framing = actionCamera(
-    sample.frame.ball,
-    !showCoordinates && !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
-  );
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  const framing = actionCamera(sample.frame.ball, !showCoordinates && !reducedMotion);
   useEffect(() => {
     const ctx = ref.current?.getContext("2d");
     if (!ctx) return;
@@ -85,6 +85,7 @@ export function MatchCanvas({
             showNumbers,
             event,
             kits,
+            reducedMotion,
           ),
       })),
       { x: 0, y: 34, draw: () => drawGoal(ctx, false) },
@@ -106,23 +107,36 @@ export function MatchCanvas({
     drawBall(ctx, frame.ball, frame.timeMs);
     ctx.restore(); // Keep overlays in screen space, independent of pitch framing.
     if (event?.kind === "goal") {
-      const elapsed = (frame.timeMs - event.timeMs) / 1000;
+      const elapsed = reducedMotion ? 0 : (frame.timeMs - event.timeMs) / 1000;
       for (let i = 0; i < 42; i++) {
         ctx.fillStyle = i % 2 ? palette.home : palette.gold;
         ctx.fillRect(310 + ((i * 67) % 420), 10 + ((i * 29 + elapsed * 40) % 135), 4, 6);
       }
-      ctx.fillStyle = palette.ink;
-      ctx.fillRect(390, 32, 340, 58);
-      ctx.strokeStyle = palette.gold;
-      ctx.lineWidth = 2;
-      ctx.strokeRect(390, 32, 340, 58);
-      ctx.fillStyle = palette.white;
-      ctx.font = "bold 28px monospace";
-      ctx.textAlign = "center";
-      ctx.fillText(goalLabel.toUpperCase(), viewport.width / 2, 71, 310);
+      if (showGoalBanner) {
+        ctx.fillStyle = palette.ink;
+        ctx.fillRect(390, 32, 340, 58);
+        ctx.strokeStyle = palette.gold;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(390, 32, 340, 58);
+        ctx.fillStyle = palette.white;
+        ctx.font = "bold 28px monospace";
+        ctx.textAlign = "center";
+        ctx.fillText(goalLabel.toUpperCase(), viewport.width / 2, 71, 310);
+      }
     }
     ctx.restore();
-  }, [kits, sample, showNumbers, showCoordinates, goalLabel, framing.x, framing.y, framing.zoom]);
+  }, [
+    kits,
+    sample,
+    showNumbers,
+    showCoordinates,
+    goalLabel,
+    showGoalBanner,
+    reducedMotion,
+    framing.x,
+    framing.y,
+    framing.zoom,
+  ]);
   return (
     <div className="relative overflow-hidden">
       <canvas
@@ -148,7 +162,7 @@ export function MatchCanvas({
               <span
                 title={info.name}
                 className="pointer-events-auto absolute max-w-24 -translate-x-1/2 -translate-y-full truncate rounded bg-navy-900/90 px-1.5 py-0.5 text-[10px] font-semibold leading-tight text-white dark:bg-navy-900/90 dark:text-white sm:max-w-32 sm:text-xs"
-                style={{ left, top: top(-70) }}
+                style={{ left, top: top(-70 * PLAYER_SCALE) }}
               >
                 {info.name}
               </span>
@@ -156,7 +170,7 @@ export function MatchCanvas({
             {info.rating !== undefined && (
               <span
                 className="absolute -translate-x-1/2 rounded bg-navy-900/90 px-1.5 py-0.5 text-[10px] font-bold leading-tight text-white tabular-nums dark:bg-navy-900/90 dark:text-white sm:text-xs"
-                style={{ left, top: top(8) }}
+                style={{ left, top: top(8 * PLAYER_SCALE) }}
               >
                 {info.rating.toFixed(1)}
               </span>
