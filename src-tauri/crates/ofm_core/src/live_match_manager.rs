@@ -4,8 +4,8 @@ use team_builder::build_team_with_bench;
 pub(crate) use team_builder::domain_to_engine_role;
 pub(crate) use team_builder::domain_to_engine_tactics;
 
-use rand::SeedableRng;
 use rand::rngs::StdRng;
+use rand::{RngExt, SeedableRng};
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
 
@@ -115,6 +115,8 @@ pub enum MatchMode {
 pub struct LiveMatchSession {
     pub match_state: LiveMatchState,
     pub rng: StdRng,
+    pub(crate) rng_seed: u64,
+    pub(crate) recorder: Option<crate::match_recording::Recorder>,
     pub mode: MatchMode,
     /// Index into the fixtures of the competition identified by
     /// `competition_id` — NOT necessarily into `game.league`, which
@@ -135,14 +137,29 @@ pub struct LiveMatchSession {
 impl LiveMatchSession {
     /// Step one minute and apply AI decisions for computer-controlled sides.
     pub fn step(&mut self) -> MinuteResult {
+        let (result, ai_commands) = self.step_with_ai();
+        if self.recorder.is_some() {
+            self.record(crate::match_recording::Entry {
+                kind: "step".into(),
+                result: Some(result.clone()),
+                snapshot: Some(self.snapshot()),
+                ai_commands,
+                ..Default::default()
+            });
+        }
+        result
+    }
+
+    pub(crate) fn step_with_ai(&mut self) -> (MinuteResult, Vec<MatchCommand>) {
         let result = self.match_state.step_minute(&mut self.rng);
 
         // Apply AI decisions for non-user sides (only during playing phases)
-        if !result.is_finished {
-            self.apply_ai_decisions();
-        }
-
-        result
+        let ai_commands = if !result.is_finished {
+            self.apply_ai_decisions()
+        } else {
+            Vec::new()
+        };
+        (result, ai_commands)
     }
 
     /// Step multiple minutes at once (for fast-forward / instant sim).
@@ -191,19 +208,31 @@ impl LiveMatchSession {
     }
 
     pub fn apply_command(&mut self, cmd: MatchCommand) -> Result<(), String> {
-        self.match_state.apply_command(cmd)
+        self.match_state.apply_command(cmd.clone())?;
+        if self.recorder.is_some() {
+            self.record(crate::match_recording::Entry {
+                kind: "command".into(),
+                command: Some(cmd),
+                snapshot: Some(self.snapshot()),
+                ..Default::default()
+            });
+        }
+        Ok(())
     }
 
     pub fn is_finished(&self) -> bool {
         self.match_state.is_finished()
     }
 
-    fn apply_ai_decisions(&mut self) {
+    fn apply_ai_decisions(&mut self) -> Vec<MatchCommand> {
+        let mut applied = Vec::new();
         // AI for home team (if not user-controlled)
         if self.user_side != Some(Side::Home) {
             let cmds = ai::ai_decide(&self.match_state, Side::Home, &self.ai_home, &mut self.rng);
             for cmd in cmds {
-                let _ = self.match_state.apply_command(cmd);
+                if self.match_state.apply_command(cmd.clone()).is_ok() {
+                    applied.push(cmd);
+                }
             }
         }
 
@@ -211,9 +240,12 @@ impl LiveMatchSession {
         if self.user_side != Some(Side::Away) {
             let cmds = ai::ai_decide(&self.match_state, Side::Away, &self.ai_away, &mut self.rng);
             for cmd in cmds {
-                let _ = self.match_state.apply_command(cmd);
+                if self.match_state.apply_command(cmd.clone()).is_ok() {
+                    applied.push(cmd);
+                }
             }
         }
+        applied
     }
 }
 
@@ -330,9 +362,12 @@ pub fn create_live_match(
         personality: derive_personality(away_rep, manager_for_team(game, &away_team_id)),
     };
 
+    let rng_seed = rand::rng().random::<u64>();
     Ok(LiveMatchSession {
         match_state,
-        rng: StdRng::from_rng(&mut rand::rng()),
+        rng: StdRng::seed_from_u64(rng_seed),
+        rng_seed,
+        recorder: None,
         mode,
         fixture_index,
         competition_id: league.id.clone(),

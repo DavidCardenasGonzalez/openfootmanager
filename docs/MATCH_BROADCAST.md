@@ -179,3 +179,18 @@ maximum speed, celebration time remains at normal speed. Reduced motion shows a
 static completed huddle. The next engine step, half time, shootout or final whistle
 waits for playback completion. Controls remain active and no acknowledgement is
 required. Celebration positions carry into the following passage.
+
+## Attacking support and off-ball runs
+
+`attackingMovement.ts` assigns complementary destinations from deployed formation
+slots: a short midfield support, one forward run into an available lane, and one
+central midfielder arriving late when play reaches the final third. Other teammates
+retain width and deeper positions. Lane selection considers nearby players and
+reserved destinations to reduce crowding. The replay's designated receiver remains
+under the existing pass staging; idle/restart events do not trigger these runs.
+
+The existing eased paths preserve positions across passages and cap supporting
+movement at eight pitch units per replay second. Tests cover the delayed arrival,
+retained defensive cover, occupied lanes, away-side symmetry, missing teammates,
+receiver ownership and multi-clip progression into the box. This layer cannot award
+shots or goals to the arriving midfielder; the engine still owns those decisions.

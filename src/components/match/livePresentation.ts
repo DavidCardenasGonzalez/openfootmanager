@@ -162,6 +162,7 @@ export function buildLiveReplay(
       actor?.id,
       pass ? receiver?.id : undefined,
       segment,
+      Boolean(actor && kind !== "reposition" && kind !== "kickoff"),
     );
     const actorOrigin = origin.find((p) => p.id === actor?.id);
     const receiverLanding = receiver ? paths.get(receiver.id)?.(0.8) : undefined;

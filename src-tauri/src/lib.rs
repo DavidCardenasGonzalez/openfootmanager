@@ -49,6 +49,15 @@ pub fn run() {
             std::fs::create_dir_all(&app_data_dir)
                 .map_err(|_| std::io::Error::other(SAVE_MANAGER_UNAVAILABLE_ERROR))?;
 
+            // Development matches are captured locally for reproducible engine analysis.
+            // Packaged releases opt in by explicitly setting the output directory.
+            let recording_directory = std::env::var_os("OFM_MATCH_RECORDINGS_DIR")
+                .map(std::path::PathBuf::from)
+                .or_else(|| cfg!(debug_assertions).then(|| app_data_dir.join("match-recordings")));
+            if let Some(directory) = recording_directory {
+                state_manager.set_recording_directory(directory);
+            }
+
             let saves_dir = app_data_dir.join("saves");
             let mut save_manager = SaveManager::init(&saves_dir).map_err(std::io::Error::other)?;
 

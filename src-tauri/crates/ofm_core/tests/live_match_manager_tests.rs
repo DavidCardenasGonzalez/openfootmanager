@@ -776,3 +776,113 @@ fn extra_time_flag_passed_through() {
     let session = live_match_manager::create_live_match(&game, 0, MatchMode::Instant, true);
     assert!(session.is_ok());
 }
+
+#[test]
+fn recording_replays_live_steps_commands_and_ai_after_json_round_trip() {
+    use engine::{MatchCommand, PlayStyle, Side};
+    use ofm_core::match_recording::Recording;
+    let game = make_game_with_fixture();
+    let mut session =
+        live_match_manager::create_live_match(&game, 0, MatchMode::Live, true).unwrap();
+    let path = std::env::temp_dir().join(format!("ofm-recording-{}.jsonl", uuid::Uuid::new_v4()));
+    session.start_recording(&path, "test-build").unwrap();
+    session.step_many(20);
+    session
+        .apply_command(MatchCommand::ChangePlayStyle {
+            side: Side::Home,
+            play_style: PlayStyle::Attacking,
+        })
+        .unwrap();
+    let before = session.snapshot();
+    session
+        .apply_command(MatchCommand::Substitute {
+            side: Side::Home,
+            player_off_id: before.home_team.players[5].id.clone(),
+            player_on_id: before.home_bench[0].id.clone(),
+        })
+        .unwrap();
+    session.run_to_completion();
+    let recording = Recording::read(&path).unwrap();
+    let actual = recording.verify().unwrap();
+    assert_eq!(actual.home_score, session.snapshot().home_score);
+    assert_eq!(actual.away_score, session.snapshot().away_score);
+    assert_eq!(actual.events.len(), session.snapshot().events.len());
+    assert!(recording.at_minute(20).is_some());
+    assert!(recording.verify_with_build("another-build").is_err());
+    let mut altered = recording;
+    altered
+        .entries
+        .iter_mut()
+        .find_map(|e| e.snapshot.as_mut())
+        .unwrap()
+        .home_score += 1;
+    assert!(altered.verify().unwrap_err().contains("divergence"));
+    std::fs::remove_file(path).unwrap();
+}
+
+#[test]
+fn recording_handles_partial_matches_and_refuses_to_overwrite_or_start_midmatch() {
+    use ofm_core::match_recording::Recording;
+    let game = make_game_with_fixture();
+    let mut session =
+        live_match_manager::create_live_match(&game, 0, MatchMode::Live, false).unwrap();
+    let path = std::env::temp_dir().join(format!("ofm-recording-{}.jsonl", uuid::Uuid::new_v4()));
+    session.start_recording(&path, "test").unwrap();
+    assert!(session.start_recording(&path, "test").is_err());
+    session.step_many(4);
+    assert!(Recording::read(&path).unwrap().verify().is_ok());
+    let other = path.with_extension("other");
+    assert!(session.start_recording(&other, "test").is_err());
+    assert!(!other.exists());
+    std::fs::write(&path, "{truncated").unwrap();
+    assert!(Recording::read(&path).is_err());
+    std::fs::remove_file(path).unwrap();
+}
+
+#[test]
+fn desktop_state_records_steps_and_commands_and_tolerates_an_unwritable_destination() {
+    use ofm_core::{match_recording::Recording, state::StateManager};
+    let game = make_game_with_fixture();
+    let directory = std::env::temp_dir().join(format!("ofm-recordings-{}", uuid::Uuid::new_v4()));
+    let state = StateManager::new();
+    state.set_recording_directory(directory.clone());
+    state.set_live_match(
+        live_match_manager::create_live_match(&game, 0, MatchMode::Live, false).unwrap(),
+    );
+    state.with_live_match(|session| {
+        session.step_many(5);
+        assert!(
+            session
+                .apply_command(engine::MatchCommand::Substitute {
+                    side: engine::Side::Home,
+                    player_off_id: "missing".into(),
+                    player_on_id: "missing".into(),
+                })
+                .is_err()
+        );
+    });
+    let files = std::fs::read_dir(&directory)
+        .unwrap()
+        .collect::<Result<Vec<_>, _>>()
+        .unwrap();
+    assert_eq!(files.len(), 1);
+    let recording = Recording::read(&files[0].path()).unwrap();
+    assert_eq!(recording.entries.len(), 5);
+    recording.verify().unwrap();
+    drop(state.take_live_match());
+    std::fs::remove_file(files[0].path()).unwrap();
+    std::fs::remove_dir(directory).unwrap();
+
+    let blocked = std::env::temp_dir().join(format!("ofm-blocked-{}", uuid::Uuid::new_v4()));
+    std::fs::write(&blocked, "file, not directory").unwrap();
+    state.set_recording_directory(blocked.clone());
+    state.set_live_match(
+        live_match_manager::create_live_match(&game, 0, MatchMode::Live, false).unwrap(),
+    );
+    assert!(
+        state
+            .with_live_match(|session| session.step_many(3).len() == 3)
+            .unwrap()
+    );
+    std::fs::remove_file(blocked).unwrap();
+}

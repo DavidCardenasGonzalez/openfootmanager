@@ -7,7 +7,7 @@ use crate::types::{PlayStyle, PlayerData, PlayerRole, Position, Side, Zone};
 // AiPersonality — determines decision-making style
 // ---------------------------------------------------------------------------
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub enum AiPersonality {
     /// Safe play: subs early for fatigue, incremental style changes.
     Pragmatist,
@@ -21,7 +21,8 @@ pub enum AiPersonality {
 // AI Manager profile — drives decision-making style
 // ---------------------------------------------------------------------------
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(default)]
 pub struct AiProfile {
     /// Team reputation 0–1000. Higher = more sophisticated decisions.
     pub reputation: u32,

@@ -51,6 +51,7 @@ pub struct StateManager {
     active_stats: Mutex<Option<StatsState>>,
     live_match: Mutex<Option<LiveMatchSession>>,
     active_save_id: Mutex<Option<String>>,
+    recording_directory: Mutex<Option<std::path::PathBuf>>,
 }
 
 impl Default for StateManager {
@@ -66,6 +67,7 @@ impl StateManager {
             active_stats: Mutex::new(None),
             live_match: Mutex::new(None),
             active_save_id: Mutex::new(None),
+            recording_directory: Mutex::new(None),
         }
     }
 
@@ -137,7 +139,25 @@ impl StateManager {
         clear_option(&self.active_save_id);
     }
 
-    pub fn set_live_match(&self, session: LiveMatchSession) {
+    /// Local diagnostic output, configured by the desktop shell. Saves are separate.
+    pub fn set_recording_directory(&self, directory: std::path::PathBuf) {
+        set_option(&self.recording_directory, directory);
+    }
+
+    pub fn set_live_match(&self, mut session: LiveMatchSession) {
+        if let Some(directory) = cloned_option(&self.recording_directory) {
+            let path = directory.join(format!(
+                "match-{}-{}.jsonl",
+                chrono::Utc::now().format("%Y%m%dT%H%M%SZ"),
+                uuid::Uuid::new_v4()
+            ));
+            match std::fs::create_dir_all(&directory)
+                .and_then(|()| session.start_recording(&path, env!("CARGO_PKG_VERSION")))
+            {
+                Ok(()) => log::info!("Match recording: {}", path.display()),
+                Err(error) => log::warn!("Cannot start match recording: {error}"),
+            }
+        }
         set_option(&self.live_match, session);
     }
 

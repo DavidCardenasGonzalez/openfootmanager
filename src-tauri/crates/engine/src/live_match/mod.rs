@@ -251,6 +251,11 @@ pub struct LiveMatchState {
 }
 
 impl LiveMatchState {
+    /// Configuration captured by diagnostic recordings.
+    pub fn config(&self) -> &MatchConfig {
+        &self.config
+    }
+
     /// Create a new live match. `starting_xi` are already in `home.players` / `away.players`.
     /// Bench players are separate and available for substitution.
     pub fn new(

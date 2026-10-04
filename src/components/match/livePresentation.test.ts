@@ -287,3 +287,20 @@ it("celebrates a penalty with the players still on the pitch and carries the hud
     end.players.map((p) => [p.id, p.x, p.y]),
   );
 });
+
+it("carries a late midfield run into the box across consecutive passages without changing the scorer", () => {
+  const data = snapshot();
+  const attack = { ...event("Dribble"), zone: "AwayDefense" };
+  let replay = buildLiveReplay(data, [attack], new Map());
+  const initial = replay.frames[0].players.find((p) => p.id === "h7");
+  expect(initial?.x).toBeLessThan(50);
+  for (let i = 0; i < 4; i++) {
+    replay = buildLiveReplay(data, [attack], new Map(), replay.frames[replay.frames.length - 1]);
+  }
+  const end = replay.frames[replay.frames.length - 1];
+  expect(end.players.find((p) => p.id === "h7")?.x).toBeGreaterThan(80);
+  expect(end.players.find((p) => p.id === "h1")?.x).toBeLessThan(40);
+  expect(end.ball.ownerId).toBe("h9");
+  expect(end.score).toEqual({ home: data.home_score, away: data.away_score });
+  expect(replay.events.some((e) => e.kind === "goal")).toBe(false);
+});
