@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { invoke } from "@tauri-apps/api/core";
 import type { GameStateData, PlayerData, TeamData } from "../../store/gameStore";
 import TacticsTab from "./TacticsTab";
+import { getFieldRating } from "./fieldRating";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
@@ -252,6 +253,44 @@ describe("TacticsTab", () => {
     expect(screen.getAllByText(/preMatch\.substitutes/).length).toBeGreaterThan(0);
     expect(screen.getByTestId("bench-player-d5")).toBeInTheDocument();
     expect(screen.getByTestId("pitch-bench-player-d5")).toBeInTheDocument();
+  });
+
+  it("shows the assigned slot and tactical role rating on the pitch", () => {
+    const gameState = makeGameState();
+    const centerBack = gameState.players.find((player) => player.id === "d1");
+    if (!centerBack) throw new Error("Missing test player d1");
+    centerBack.ovr = 70;
+    gameState.teams[0].player_roles = { d1: "AttackingFB" };
+
+    const onSelectPlayer = vi.fn();
+    const onGameUpdate = vi.fn();
+    const { rerender } = render(
+      <TacticsTab
+        gameState={gameState}
+        onSelectPlayer={onSelectPlayer}
+        onGameUpdate={onGameUpdate}
+      />,
+    );
+
+    const card = screen.getByTestId("pitch-player-d1");
+    const rating = getFieldRating(centerBack, "LeftBack", "AttackingFB");
+    expect(within(card).getByTitle("tactics.fieldRating")).toHaveTextContent(String(rating));
+    expect(rating).not.toBe(70);
+
+    const defensiveGameState = {
+      ...gameState,
+      teams: [{ ...gameState.teams[0], player_roles: { d1: "DefensiveFB" as const } }],
+    };
+    rerender(
+      <TacticsTab
+        gameState={defensiveGameState}
+        onSelectPlayer={onSelectPlayer}
+        onGameUpdate={onGameUpdate}
+      />,
+    );
+    expect(
+      within(screen.getByTestId("pitch-player-d1")).getByTitle("tactics.fieldRating"),
+    ).toHaveTextContent(String(getFieldRating(centerBack, "LeftBack", "DefensiveFB")));
   });
 
   it("shows the compact tactics toolbar across the top of the lineup workspace", () => {
@@ -579,7 +618,7 @@ describe("TacticsTab", () => {
     fireEvent.click(screen.getByTestId("pitch-player-m1"));
 
     expect(screen.getByText("tactics.comparePlayer")).toBeInTheDocument();
-    expect(screen.getAllByText("Player m1").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("M1").length).toBeGreaterThan(0);
     expect(screen.getAllByText("common.attributes.vision").length).toBeGreaterThan(0);
     expect(screen.getByRole("button", { name: "tactics.confirmSwap" })).toBeInTheDocument();
   });

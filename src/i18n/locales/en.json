@@ -728,6 +728,7 @@
     }
   },
   "tactics": {
+    "fieldRating": "Field rating (position and role)",
     "formationStyle": "Formation & Style",
     "formation": "Formation",
     "playStyle": "Play Style",

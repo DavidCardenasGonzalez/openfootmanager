@@ -728,6 +728,7 @@
     }
   },
   "tactics": {
+    "fieldRating": "Hodnocení na hřišti (pozice a role)",
     "formationStyle": "Rozestavení a styl",
     "formation": "Rozestavení",
     "playStyle": "Herní styl",

@@ -72,6 +72,21 @@ fn infer_world_regions(teams: &[domain::team::Team]) -> Vec<WorldRegionDefinitio
 }
 
 fn normalize_world(mut world: WorldData) -> WorldData {
+    let valuation_date = world
+        .metadata
+        .snapshot_date
+        .as_deref()
+        .and_then(|value| value.get(..10))
+        .and_then(|value| chrono::NaiveDate::parse_from_str(value, "%Y-%m-%d").ok())
+        .or_else(|| {
+            world
+                .metadata
+                .base_year
+                .and_then(|year| chrono::NaiveDate::from_ymd_opt(year, 7, 1))
+        })
+        .unwrap_or_else(|| {
+            chrono::NaiveDate::from_ymd_opt(super::default_opening_year() as i32, 7, 1).unwrap()
+        });
     for player in &mut world.players {
         player.apply_source_short_name();
         crate::player_rating::sync_player_overall(player);
@@ -84,6 +99,7 @@ fn normalize_world(mut world: WorldData) -> WorldData {
                 .and_then(parse_jersey_number);
         }
     }
+    crate::player_value::refresh_market_values(&mut world.players, valuation_date);
     crate::football_identity::upgrade_world_football_identities(
         &mut world.teams,
         &mut world.players,
@@ -488,6 +504,17 @@ mod tests {
     use std::fs;
     use std::path::PathBuf;
     use std::time::{SystemTime, UNIX_EPOCH};
+
+    #[test]
+    fn imported_world_market_values_are_calculated_at_snapshot_date() {
+        let mut world = generate_world_data(&crate::generator::DefinitionSources::embedded_only());
+        world.metadata.snapshot_date = Some("2025-09-19T00:00:00Z".into());
+        world.players[0].market_value = 1;
+        let day = chrono::NaiveDate::from_ymd_opt(2025, 9, 19).unwrap();
+        let expected = crate::player_value::calculate_market_value(&world.players[0], day);
+        let normalized = normalize_world(world);
+        assert_eq!(normalized.players[0].market_value, expected);
+    }
 
     #[test]
     fn imported_world_ovr_is_recalculated_from_attributes() {

@@ -728,6 +728,7 @@
     }
   },
   "tactics": {
+    "fieldRating": "Saha puanı (pozisyon ve rol)",
     "formationStyle": "Diziliş ve Stil",
     "formation": "Diziliş",
     "playStyle": "Oyun Stili",

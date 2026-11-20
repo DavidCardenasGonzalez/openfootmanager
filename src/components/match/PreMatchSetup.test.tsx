@@ -156,8 +156,18 @@ it("waits for a role change to reach the match before enabling kickoff", async (
   renderSetup();
   fireEvent.click(screen.getByRole("combobox", { name: /match\.playerRoles.*Home GK/ }));
   fireEvent.click(screen.getByRole("option", { name: "SweeperKeeper" }));
-  const unity = screen.getByRole<HTMLButtonElement>("button", { name: /Unity 3D/ });
+  const unity = screen.getByRole<HTMLButtonElement>("button", { name: /match\.startMatch/ });
   expect(unity.disabled).toBe(true);
   await act(async () => complete());
   expect(unity.disabled).toBe(false);
+});
+
+it("starts supported matches in Unity from the main kickoff button", () => {
+  const start = vi.fn();
+  const unityStart = vi.fn();
+  render(<PreMatchSetup snapshot={snapshot() as unknown as MatchSnapshot} gameState={gameState() as unknown as GameStateData} userSide="Home" onStart={start} onUnityStart={unityStart} onUpdateSnapshot={vi.fn()} />);
+  fireEvent.click(screen.getByRole("button", { name: /match\.startMatch/ }));
+  expect(unityStart).toHaveBeenCalledOnce();
+  expect(start).not.toHaveBeenCalled();
+  expect(screen.queryByRole("button", { name: /Unity 3D/ })).toBeNull();
 });

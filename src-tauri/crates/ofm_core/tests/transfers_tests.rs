@@ -179,10 +179,12 @@ fn make_game_with_player(
             make_user_team(user_finance, user_transfer_budget),
             make_seller_team(seller_starting_xi_ids),
         ],
-        vec![player],
+        vec![],
         vec![],
         vec![],
     );
+    // Negotiation scenarios author their price after the startup valuation.
+    game.players = vec![player];
     game.season_context.transfer_window.status = TransferWindowStatus::Open;
     game
 }

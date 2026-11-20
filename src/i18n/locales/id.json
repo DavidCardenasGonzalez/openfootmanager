@@ -728,6 +728,7 @@
     }
   },
   "tactics": {
+    "fieldRating": "Rating di lapangan (posisi dan peran)",
     "formationStyle": "Formasi & Gaya",
     "formation": "Formasi",
     "playStyle": "Gaya Bermain",

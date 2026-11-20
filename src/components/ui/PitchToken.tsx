@@ -23,6 +23,8 @@ export interface PitchTokenProps {
   /** Raw position enum (e.g. "CenterBack"); colours the position badge. */
   position?: string;
   ovr: number;
+  /** Accessible explanation of the displayed rating, when it is contextual. */
+  ovrLabel?: string;
   /** 0–100 short-term condition; drives the bar at the bottom. */
   condition: number;
   fitTone?: PitchFitTone;
@@ -87,6 +89,7 @@ export function PitchToken({
   positionAbbr,
   position,
   ovr,
+  ovrLabel,
   condition,
   fitTone = "empty",
   avatar,
@@ -128,7 +131,10 @@ export function PitchToken({
           />
         )}
         <div className="absolute -bottom-1 -right-1.5 z-10">
-          <span className="rounded-full bg-gray-900 px-2 py-0.5 text-xs font-heading font-bold leading-4 text-white ring-1 ring-white/30">
+          <span
+            title={ovrLabel}
+            className="rounded-full bg-gray-900 px-2 py-0.5 text-xs font-heading font-bold leading-4 text-white ring-1 ring-white/30"
+          >
             {ovr}
           </span>
         </div>

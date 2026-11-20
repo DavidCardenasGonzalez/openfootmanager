@@ -187,6 +187,10 @@ impl Game {
             squad_management: Default::default(),
         };
         game.promote_legacy_league();
+        crate::player_value::refresh_market_values(
+            &mut game.players,
+            game.clock.current_date.date_naive(),
+        );
         crate::football_identity::upgrade_game_football_identities(&mut game);
         crate::season_context::refresh_game_context(&mut game);
         game

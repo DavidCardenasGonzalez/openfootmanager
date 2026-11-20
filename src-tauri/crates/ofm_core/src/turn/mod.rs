@@ -226,6 +226,10 @@ where
     scouting::process_scouting(game);
     transfers::process_pending_transfer_registrations(game);
     transfers::process_pending_loan_registrations(game);
+    crate::player_value::refresh_market_values(
+        &mut game.players,
+        game.clock.current_date.date_naive(),
+    );
     transfers::generate_incoming_transfer_offers(game);
     crate::generator::process_available_staff_market(game);
     crate::ai_hiring::update_ai_manager_satisfaction(game);
@@ -239,6 +243,10 @@ where
 
     debug!("[turn] process_day {}: complete, advancing clock", today);
     game.clock.advance_days(1);
+    crate::player_value::refresh_market_values(
+        &mut game.players,
+        game.clock.current_date.date_naive(),
+    );
     crate::season_context::refresh_game_context(game);
 }
 
@@ -265,6 +273,10 @@ pub fn finish_live_match_day(game: &mut Game) {
     scouting::process_scouting(game);
     transfers::process_pending_transfer_registrations(game);
     transfers::process_pending_loan_registrations(game);
+    crate::player_value::refresh_market_values(
+        &mut game.players,
+        game.clock.current_date.date_naive(),
+    );
     transfers::generate_incoming_transfer_offers(game);
     crate::generator::process_available_staff_market(game);
     crate::ai_hiring::update_ai_manager_satisfaction(game);
@@ -277,6 +289,10 @@ pub fn finish_live_match_day(game: &mut Game) {
 
     game.clock.advance_days(1);
     game.sync_legacy_league();
+    crate::player_value::refresh_market_values(
+        &mut game.players,
+        game.clock.current_date.date_naive(),
+    );
     crate::season_context::refresh_game_context(game);
 }
 
@@ -361,6 +377,53 @@ mod tests {
         staff.nationality = "GB".to_string();
         staff.wage = 10_400;
         staff
+    }
+
+    #[test]
+    fn market_values_refresh_on_creation_and_both_day_advance_paths() {
+        for advance in [super::process_day, super::finish_live_match_day] {
+            let clock = GameClock::new(Utc.with_ymd_and_hms(2025, 9, 18, 12, 0, 0).unwrap());
+            let manager = Manager::new(
+                "mgr".into(),
+                "Test".into(),
+                "Manager".into(),
+                "1980-01-01".into(),
+                "England".into(),
+            );
+            let mut player = make_player();
+            player.date_of_birth = "2000-09-19".into();
+            player.market_value = 1;
+            let mut game = Game::new(
+                clock,
+                manager,
+                vec![make_team()],
+                vec![player],
+                vec![],
+                vec![],
+            );
+            assert_eq!(
+                game.players[0].market_value,
+                crate::player_value::calculate_market_value(
+                    &game.players[0],
+                    game.clock.current_date.date_naive()
+                )
+            );
+            game.players[0].market_value = 1;
+            game.players[0].attributes.passing = 90;
+            advance(&mut game);
+            assert_eq!(
+                game.clock.current_date.format("%Y-%m-%d").to_string(),
+                "2025-09-19"
+            );
+            assert_eq!(
+                game.players[0].market_value,
+                crate::player_value::calculate_market_value(
+                    &game.players[0],
+                    game.clock.current_date.date_naive()
+                )
+            );
+            assert!(game.players[0].market_value > 1);
+        }
     }
 
     #[test]

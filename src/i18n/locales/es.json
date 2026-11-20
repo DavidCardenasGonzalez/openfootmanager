@@ -728,6 +728,7 @@
     }
   },
   "tactics": {
+    "fieldRating": "Valoración en el campo (posición y rol)",
     "formationStyle": "Formación y Estilo",
     "formation": "Formación",
     "playStyle": "Estilo de Juego",

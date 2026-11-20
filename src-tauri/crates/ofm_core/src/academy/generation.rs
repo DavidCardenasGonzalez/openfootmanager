@@ -82,7 +82,8 @@ pub fn generate_prospect(game: &Game, team: &Team, position: &Position, id: &str
     set_quality(&mut p, target.min(i32::from(ceiling) - 4), year);
     p.potential = ceiling.max(p.ovr);
     crate::player_rating::refresh_player_derived(&mut p, year);
-    p.market_value = u64::from(p.ovr).pow(2) * 200;
+    p.market_value =
+        crate::player_value::calculate_market_value(&p, game.clock.current_date.date_naive());
     let margin = (team.wage_budget - crate::finances::calc_annual_wages(game, &team.id)).max(0);
     p.wage = (margin / crate::ai_squad::MAX_SQUAD_SIZE as i64).clamp(0, 5000) as u32;
     p.jersey_number = crate::roster::resolve_jersey_for(game, &p, team);

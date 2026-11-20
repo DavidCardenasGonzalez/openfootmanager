@@ -658,18 +658,13 @@ export default function PreMatchSetup({
             </div>
             <button
               type="button"
-              onClick={onStart}
-              disabled={savingPlayerRole}
+              onClick={onUnityStart && !snapshot.allows_extra_time ? onUnityStart : onStart}
+              disabled={savingPlayStyle || savingPlayerRole}
               className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 px-8 py-3 font-heading font-bold uppercase tracking-wider text-sm text-white shadow-lg shadow-primary-500/20 transition-all hover:from-primary-600 hover:to-primary-700 hover:scale-[1.02] active:scale-[0.98]"
             >
               {t("match.startMatch")}
               <ChevronRight className="h-4 w-4" />
             </button>
-            {onUnityStart && !snapshot.allows_extra_time && (
-              <button type="button" onClick={onUnityStart} disabled={savingPlayStyle || savingPlayerRole} className="font-heading text-primary-600">
-                Unity 3D · {t(`common.playStyles.${userTeam.play_style === "Possession" ? "Balanced" : userTeam.play_style}`)}
-              </button>
-            )}
           </div>
 
           {/* Away team */}

@@ -540,8 +540,8 @@ pub(super) fn generate_random_player_from_def(
         0.4
     };
     let base_value = (approx_ovr as f64).powi(2) * 500.0;
-    let market_value = (base_value * age_factor) as u64;
-    let wage = (market_value / 200).max(500) as u32;
+    // Preserve the wage scale independently of the market valuation model.
+    let wage = ((base_value * age_factor) as u64 / 200).max(500) as u32;
     let contract_years = if age <= 21 {
         rng.random_range(3..6)
     } else if age <= 27 {
@@ -565,7 +565,6 @@ pub(super) fn generate_random_player_from_def(
         attributes,
     );
     player.team_id = Some(team_id.to_string());
-    player.market_value = market_value;
     player.wage = wage;
     player.contract_end = Some(contract_end);
     player.condition = rng.random_range(75..100);
@@ -588,6 +587,10 @@ pub(super) fn generate_random_player_from_def(
     };
     player.potential = generate_potential(temp_ovr, player_age);
     refresh_player_derived(&mut player, current_year);
+    player.market_value = crate::player_value::calculate_market_value(
+        &player,
+        chrono::NaiveDate::from_ymd_opt(current_year as i32, 7, 1).unwrap(),
+    );
 
     player.jersey_number = jersey_number_for_slot(index);
 
@@ -1019,8 +1022,8 @@ pub(super) fn generate_player_from_def(
     } else {
         0.4
     };
-    let market_value = ((approx_ovr as f64).powi(2) * 500.0 * age_factor) as u64;
-    let wage = (market_value / 200).max(500) as u32;
+    // Wages retain their existing scale; market values use the shared model.
+    let wage = (((approx_ovr as f64).powi(2) * 500.0 * age_factor) as u64 / 200).max(500) as u32;
     let contract_years = if age <= 27 {
         rng.random_range(2..6)
     } else {
@@ -1051,7 +1054,6 @@ pub(super) fn generate_player_from_def(
         .as_ref()
         .map(|photo| photo.trim().to_string())
         .filter(|photo| !photo.is_empty());
-    player.market_value = market_value;
     player.wage = wage;
     player.contract_end = Some(contract_end);
     player.condition = rng.random_range(75..100);
@@ -1078,6 +1080,10 @@ pub(super) fn generate_player_from_def(
         .potential
         .unwrap_or_else(|| generate_potential(temp_ovr, age));
     refresh_player_derived(&mut player, current_year);
+    player.market_value = crate::player_value::calculate_market_value(
+        &player,
+        chrono::NaiveDate::from_ymd_opt(current_year as i32, 7, 1).unwrap(),
+    );
     player
 }
 

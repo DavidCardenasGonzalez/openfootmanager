@@ -728,6 +728,7 @@
     }
   },
   "tactics": {
+    "fieldRating": "Note sur le terrain (poste et rôle)",
     "formationStyle": "Formation & style",
     "formation": "Formation",
     "playStyle": "Style de jeu",

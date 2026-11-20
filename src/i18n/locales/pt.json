@@ -728,6 +728,7 @@
     }
   },
   "tactics": {
+    "fieldRating": "Avaliação em campo (posição e função)",
     "formationStyle": "Formação & Estilo",
     "formation": "Formação",
     "playStyle": "Estilo de Jogo",

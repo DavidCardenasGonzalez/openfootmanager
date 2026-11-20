@@ -728,6 +728,7 @@
     }
   },
   "tactics": {
+    "fieldRating": "Рейтинг на поле (позиция и роль)",
     "formationStyle": "Схема и стиль",
     "formation": "Схема",
     "playStyle": "Стиль игры",

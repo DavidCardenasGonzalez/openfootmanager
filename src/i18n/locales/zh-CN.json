@@ -728,6 +728,7 @@
     }
   },
   "tactics": {
+    "fieldRating": "场上评分（位置和角色）",
     "formationStyle": "阵型与风格",
     "formation": "阵型",
     "playStyle": "比赛风格",

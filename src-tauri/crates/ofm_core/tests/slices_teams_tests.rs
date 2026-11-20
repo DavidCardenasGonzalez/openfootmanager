@@ -92,7 +92,9 @@ fn make_game(teams: Vec<Team>, players: Vec<Player>, competitions: Vec<League>) 
         "1980-01-01".to_string(),
         "GB".to_string(),
     );
-    let mut game = Game::new(clock, manager, teams, players, vec![], vec![]);
+    let mut game = Game::new(clock, manager, teams, vec![], vec![], vec![]);
+    // Directory aggregation uses explicit fixture prices, after startup valuation.
+    game.players = players;
     game.competitions = competitions;
     game
 }

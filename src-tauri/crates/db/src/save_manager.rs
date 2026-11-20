@@ -571,6 +571,11 @@ impl SaveManager {
             needs_resave = true;
         }
 
+        needs_resave |= ofm_core::player_value::refresh_market_values(
+            &mut game.players,
+            game.clock.current_date.date_naive(),
+        );
+
         if league_repo::needs_cleanup(
             db.conn(),
             game.league.as_ref().map(|league| league.id.as_str()),
@@ -1525,6 +1530,26 @@ mod tests {
         assert_eq!(loaded.staff.len(), 1);
         assert_eq!(loaded.clock.start_date, game.clock.start_date);
         assert_eq!(loaded.clock.current_date, game.clock.current_date);
+    }
+
+    #[test]
+    fn loading_save_recalculates_and_persists_stale_market_values() {
+        let dir = tempfile::tempdir().unwrap();
+        let saves_dir = dir.path().join("saves");
+        let mut sm = SaveManager::init(&saves_dir).unwrap();
+        let mut game = sample_game();
+        game.players[0].market_value = 1;
+        game.players[0].team_id = None;
+        let expected = ofm_core::player_value::calculate_market_value(
+            &game.players[0],
+            game.clock.current_date.date_naive(),
+        );
+        let save_id = sm.create_save(&game, "Stale Values").unwrap();
+        let loaded = sm.load_game(&save_id).unwrap();
+        assert_eq!(loaded.players[0].market_value, expected);
+        let db = GameDatabase::open(&saves_dir.join(format!("{save_id}.db"))).unwrap();
+        let stored = crate::repositories::player_repo::load_all_players(db.conn()).unwrap();
+        assert_eq!(stored[0].market_value, expected);
     }
 
     #[test]

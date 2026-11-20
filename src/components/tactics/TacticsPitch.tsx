@@ -2,7 +2,6 @@ import type { DragEvent, JSX } from "react";
 import { Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { getPlayerOvr } from "../../lib/helpers";
 import type { PlayerData, TeamMatchRolesData } from "../../store/gameStore";
 import ContextMenu from "../ContextMenu";
 import { Badge, Card, PitchToken, Select } from "../ui";
@@ -17,6 +16,7 @@ import type { TacticsPitchSlot } from "./TacticsTab.helpers";
 import { buildTacticsPlayerContextMenuItems } from "./TacticsContextMenu.helpers";
 import type { PlayerRole, TacticsPhaseSettings } from "../../store/types";
 import { getRoleOptions } from "../../lib/playerRoles";
+import { getFieldRating } from "./fieldRating";
 
 interface TacticsPitchProps {
   benchPlayers?: PlayerData[];
@@ -498,7 +498,12 @@ export default function TacticsPitch({
                               name={getPitchDisplayName(player)}
                               positionAbbr={translatePositionAbbreviation(t, slot.position)}
                               position={slot.position}
-                              ovr={getPlayerOvr(player)}
+                              ovr={getFieldRating(
+                                player,
+                                slot.position,
+                                playerRoles?.[player.id] ?? "Standard",
+                              )}
+                              ovrLabel={t("tactics.fieldRating")}
                               condition={player.condition}
                               fitTone={fitTone}
                               hidePortrait
