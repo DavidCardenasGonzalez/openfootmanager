@@ -1,4 +1,17 @@
 {
+  "unityMatch": {
+    "subPending": "Substitution queued for the next stoppage.",
+    "subFailed": "Could not send the substitution.",
+    "tacticPending": "Sending tactic…",
+    "tacticApplied": "Tactic applied at {{minute}}′",
+    "tacticFailed": "Could not send the tactic.",
+    "playerFailed": "The Unity player could not start.",
+    "instructions": "In Unity, choose OpenFoot → Play manager match and select this file. Return here after the final whistle.",
+    "import": "Apply result",
+    "pending": "The final result is not ready.",
+    "invalid": "Check the lineup, formation and match file.",
+    "save": "Save failed. Save again from the dashboard."
+  },
   "app": {
     "name": "OpenFoot Manager",
     "publisher": "Sturdy Robot"

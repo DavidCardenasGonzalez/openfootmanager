@@ -1,4 +1,17 @@
 {
+  "unityMatch": {
+    "subPending": "Değişiklik bir sonraki oyun durduğunda yapılacak.",
+    "subFailed": "Oyuncu değişikliği gönderilemedi.",
+    "tacticPending": "Taktik gönderiliyor…",
+    "tacticApplied": "Taktik {{minute}}. dakikada uygulandı",
+    "tacticFailed": "Taktik gönderilemedi.",
+    "playerFailed": "Unity oynatıcısı başlatılamadı.",
+    "instructions": "Unity içinde OpenFoot → Play manager match seçip bu dosyayı açın. Son düdükten sonra buraya dönün.",
+    "import": "Sonucu uygula",
+    "pending": "Maç sonucu henüz hazır değil.",
+    "invalid": "Kadroyu, dizilişi ve maç dosyasını kontrol edin.",
+    "save": "Kaydedilemedi. Panodan tekrar kaydedin."
+  },
   "app": {
     "name": "OpenFoot Manager",
     "publisher": "Sturdy Robot"

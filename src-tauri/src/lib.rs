@@ -39,6 +39,7 @@ pub fn run() {
                 .build(),
         )
         .manage(state_manager.clone())
+        .manage(unity_player::UnityPlayer::default())
         .setup(move |app| {
             use tauri::Manager as TauriManager;
 
@@ -284,6 +285,13 @@ pub fn run() {
             advance_to_next_season,
             get_season_awards,
             resolve_message_action,
+            export_unity_match,
+            finish_unity_match,
+            start_unity_player,
+            set_unity_play_style,
+            substitute_unity_player,
+            update_unity_player,
+            stop_unity_player,
             start_live_match,
             get_player_match_history,
             get_player_stats_overview,

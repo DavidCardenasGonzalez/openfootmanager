@@ -425,6 +425,27 @@ impl LiveMatchState {
         self.current_minute
     }
 
+    /// Install a role already validated against the formation in the tactics UI.
+    pub fn set_prematch_role(&mut self, side: Side, player_id: &str, role: PlayerRole) {
+        if self.phase != MatchPhase::PreKickOff {
+            return;
+        }
+        let bench = match side {
+            Side::Home => &mut self.home_bench,
+            Side::Away => &mut self.away_bench,
+        };
+        if let Some(player) = bench.iter_mut().find(|player| player.id == player_id) {
+            player.role = role;
+        } else if let Some(player) = self
+            .team_mut(side)
+            .players
+            .iter_mut()
+            .find(|player| player.id == player_id)
+        {
+            player.role = role;
+        }
+    }
+
     /// Rolling window of the last ≤10 ball_zone values (oldest first).
     ///
     /// Crate-private and iterator-shaped: only the AI reads this, and only to

@@ -27,6 +27,14 @@ pub fn finish_live_match(state: &StateManager) -> Result<FinishLiveMatchResponse
         session.run_to_completion();
     }
 
+    finish_session(state, session, None)
+}
+
+pub(crate) fn finish_session(
+    state: &StateManager,
+    session: live_match_manager::LiveMatchSession,
+    external_report: Option<engine::MatchReport>,
+) -> Result<FinishLiveMatchResponse, String> {
     let fixture_index = session.fixture_index;
     let competition_id = session.competition_id.clone();
     let round_matchday = session.round_matchday;
@@ -34,7 +42,8 @@ pub fn finish_live_match(state: &StateManager) -> Result<FinishLiveMatchResponse
     let home_team_id = session.home_team_id.clone();
     let away_team_id = session.away_team_id.clone();
 
-    let report = session.match_state.into_report();
+    let external = external_report.is_some();
+    let report = external_report.unwrap_or_else(|| session.match_state.into_report());
     info!(
         "[cmd] finish_live_match: fixture_index={}, competition_id={}, home_team_id={}, away_team_id={}, events= {}",
         fixture_index,
@@ -57,6 +66,23 @@ pub fn finish_live_match(state: &StateManager) -> Result<FinishLiveMatchResponse
             // write the result onto an unrelated fixture of the wrong
             // competition (or panic on an out-of-range index). Swap the
             // session's competition back in first.
+            if external {
+                let competition = game
+                    .competitions
+                    .iter()
+                    .find(|c| c.id == competition_id)
+                    .or_else(|| game.league.as_ref().filter(|c| c.id == competition_id));
+                let current = competition.and_then(|c| c.fixtures.get(fixture_index));
+                if !current.is_some_and(|f| {
+                    f.status == domain::league::FixtureStatus::Scheduled
+                        && f.date == game.clock.current_date.format("%Y-%m-%d").to_string()
+                        && f.home_team_id == home_team_id
+                        && f.away_team_id == away_team_id
+                        && !competition.unwrap().is_knockout_fixture(&f.id)
+                }) {
+                    return Err("be.error.liveMatch.fixtureNotFound".into());
+                }
+            }
             if let Some(idx) = game
                 .competitions
                 .iter()

@@ -1,4 +1,17 @@
 {
+  "unityMatch": {
+    "subPending": "Der Wechsel erfolgt bei der nächsten Unterbrechung.",
+    "subFailed": "Der Wechsel konnte nicht angefordert werden.",
+    "tacticPending": "Taktik wird gesendet…",
+    "tacticApplied": "Taktik ab Minute {{minute}} aktiv",
+    "tacticFailed": "Die Taktik konnte nicht gesendet werden.",
+    "playerFailed": "Der Unity-Player konnte nicht gestartet werden.",
+    "instructions": "In Unity unter OpenFoot → Play manager match diese Datei öffnen. Nach Abpfiff hierher zurückkehren.",
+    "import": "Ergebnis übernehmen",
+    "pending": "Das Endergebnis liegt noch nicht vor.",
+    "invalid": "Aufstellung, Formation und Spieldatei prüfen.",
+    "save": "Speichern fehlgeschlagen. Im Dashboard erneut speichern."
+  },
   "app": {
     "name": "OpenFoot Manager",
     "publisher": "Sturdy Robot"

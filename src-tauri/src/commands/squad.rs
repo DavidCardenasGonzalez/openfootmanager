@@ -641,6 +641,9 @@ pub fn set_player_role_internal(
             }
         }
 
+        state.with_live_match(|live| {
+            live.sync_prematch_role(&team_id, &player_id, team.player_roles.get(&player_id));
+        });
         Ok(())
     })
 }

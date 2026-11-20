@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
@@ -9,8 +9,11 @@ import type {
   MatchEvent,
   MatchDayStage,
   RoundSummary,
+  SubstitutionRecord,
 } from "../components/match/types";
+import { PLAY_STYLES } from "../components/match/types";
 import { resolveMatchFixture } from "../components/match/helpers";
+import { applyExtraTranslations } from "../lib/extraTranslations";
 import PreMatchSetup from "../components/match/PreMatchSetup";
 import MatchLive from "../components/match/MatchLive";
 import HalfTimeBreak from "../components/match/HalfTimeBreak";
@@ -34,13 +37,32 @@ interface FinishLiveMatchResponse {
   round_summary?: RoundSummary | null;
 }
 
+type UnityPlayStyle = Exclude<(typeof PLAY_STYLES)[number], "Possession">;
+const unityPlayStyles = PLAY_STYLES.filter((style) => style !== "Possession");
+
+interface UnityTacticsStatus {
+  ready: boolean;
+  pending: boolean;
+  applied: { play_style: UnityPlayStyle; minute: number } | null;
+  pending_substitution?: boolean;
+  substitutions_ready?: boolean;
+  substitutions_panel?: boolean;
+  substitutions?: Omit<SubstitutionRecord, "side">[];
+}
+
+interface UnityPlayerUpdate {
+  finished: boolean;
+  tactics?: UnityTacticsStatus | null;
+}
+
 export default function MatchSimulation() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const routeState = (location.state as MatchRouteState | null) ?? null;
   const matchMode = routeState?.mode || "live";
-  const { gameState, setGameState } = useGameStore();
+  const { gameState, setGameState, setGameActive } = useGameStore();
+  const checkRecoveredResult = useRef(!gameState);
   const { settings } = useSettingsStore();
   const [snapshot, setSnapshot] = useState<MatchSnapshot | null>(routeState?.snapshot ?? null);
   const [stage, setStage] = useState<MatchDayStage>("prematch");
@@ -49,8 +71,37 @@ export default function MatchSimulation() {
   const [isSpectator, setIsSpectator] = useState(matchMode === "spectator");
   const [roundSummary, setRoundSummary] = useState<RoundSummary | null>(null);
   const [hasFinalizedMatch, setHasFinalizedMatch] = useState(false);
+  const [unityPath, setUnityPath] = useState("");
+  const [unityError, setUnityError] = useState("");
+  const [unityBusy, setUnityBusy] = useState(false);
+  const [unityEmbedded, setUnityEmbedded] = useState(false);
+  const [unityTactics, setUnityTactics] = useState<UnityTacticsStatus | null>(null);
+  const [unityOrderSending, setUnityOrderSending] = useState<"tactic" | "sub" | null>(null);
+  const [unityOrderError, setUnityOrderError] = useState<"tactic" | "sub" | null>(null);
+  const [unityOff, setUnityOff] = useState("");
+  const [unityOn, setUnityOn] = useState("");
+  const unityTacticRevision = useRef(0);
+  const unityViewport = useRef<HTMLDivElement>(null);
   const [preferredSpeed, setPreferredSpeed] = useState<"slow" | "normal" | "fast">("normal");
   const [hasUserOverriddenSpeed, setHasUserOverriddenSpeed] = useState(false);
+
+  useEffect(() => {
+    if (gameState) return;
+    let cancelled = false;
+    void invoke<GameStateData>("get_active_game")
+      .then((game) => {
+        if (cancelled) return;
+        applyExtraTranslations(game.extra_translations);
+        setGameActive(true, `${game.manager.first_name} ${game.manager.last_name}`);
+        setGameState(game);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.error("Failed to restore the active career:", error);
+        navigate("/", { replace: true });
+      });
+    return () => { cancelled = true; };
+  }, [gameState, navigate, setGameActive, setGameState]);
 
   useEffect(() => {
     console.info("[MatchSimulation] mount", {
@@ -124,6 +175,7 @@ export default function MatchSimulation() {
         }
         return;
       } catch (snapshotError) {
+        if (isCancelled) return;
         console.warn("[MatchSimulation] fetchSnapshot:failed", snapshotError);
         if (typeof routeState?.fixtureIndex !== "number") {
           console.error("Failed to get match snapshot:", snapshotError);
@@ -170,6 +222,7 @@ export default function MatchSimulation() {
             setSnapshot(restoredSnapshot);
           }
         } catch (restoreError) {
+          if (isCancelled) return;
           console.error("Failed to restore live match session:", restoreError);
           navigate("/dashboard");
         }
@@ -304,6 +357,142 @@ export default function MatchSimulation() {
     setPreferredSpeed(speed);
   }, []);
 
+  async function exportUnityMatch() {
+    if (unityBusy) return;
+    setUnityBusy(true);
+    ++unityTacticRevision.current;
+    setUnityTactics(null);
+    setUnityOrderSending(null);
+    setUnityOrderError(null);
+    setUnityOff("");
+    setUnityOn("");
+    try {
+      setUnityPath(await invoke<string>("export_unity_match"));
+      setUnityError("");
+      try {
+        setUnityEmbedded(await invoke<boolean>("start_unity_player"));
+      } catch (error) {
+        console.warn("Embedded Unity is unavailable:", error);
+      }
+    } catch {
+      setUnityError(t("unityMatch.invalid"));
+    } finally {
+      setUnityBusy(false);
+    }
+  }
+
+  async function sendUnityOrder(order: { playStyle: UnityPlayStyle } | { playerOffId: string; playerOnId: string }) {
+    const kind = "playStyle" in order ? "tactic" : "sub";
+    const revision = ++unityTacticRevision.current;
+    setUnityOrderSending(kind);
+    setUnityOrderError(null);
+    try {
+      const status = await invoke<UnityTacticsStatus>(
+        kind === "tactic" ? "set_unity_play_style" : "substitute_unity_player", order,
+      );
+      if (unityTacticRevision.current === revision) {
+        setUnityTactics(status);
+        if (kind === "sub") {
+          setUnityOff("");
+          setUnityOn("");
+        }
+      }
+    } catch {
+      if (unityTacticRevision.current === revision) setUnityOrderError(kind);
+    } finally {
+      if (unityTacticRevision.current === revision) {
+        ++unityTacticRevision.current;
+        setUnityOrderSending(null);
+      }
+    }
+  }
+
+  const finishUnityMatch = useCallback(async (quiet = false) => {
+    setUnityBusy(true);
+    try {
+      const response = await invoke<FinishLiveMatchResponse & { home_goals: number; away_goals: number }>(
+        "finish_unity_match",
+      );
+      setHasFinalizedMatch(true);
+      setSnapshot((previous) => previous && ({
+        ...previous,
+        current_minute: 90,
+        phase: "FullTime",
+        home_score: response.home_goals,
+        away_score: response.away_goals,
+      }));
+      setGameState(response.game);
+      setRoundSummary(response.round_summary ?? null);
+      setUnityEmbedded(false);
+      setStage("digest");
+      try {
+        await invoke("save_game");
+      } catch {
+        window.alert(t("unityMatch.save"));
+      }
+    } catch (error) {
+      if (!quiet) setUnityError(t(String(error), { defaultValue: t("unityMatch.invalid") }));
+    } finally {
+      setUnityBusy(false);
+    }
+  }, [setGameState, t]);
+
+  useEffect(() => {
+    if (!checkRecoveredResult.current || !gameState || !snapshot) return;
+    checkRecoveredResult.current = false;
+    if (snapshot.phase === "PreKickOff" && !snapshot.allows_extra_time) {
+      void finishUnityMatch(true);
+    }
+  }, [finishUnityMatch, gameState, snapshot]);
+
+  useEffect(() => {
+    if (!unityEmbedded) return;
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout>;
+
+    async function update() {
+      if (!unityViewport.current || cancelled) return;
+      const rect = unityViewport.current.getBoundingClientRect();
+      const pixels = (value: number) => Math.round(value * window.devicePixelRatio);
+      try {
+        const revision = unityTacticRevision.current;
+        const status = await invoke<UnityPlayerUpdate>("update_unity_player", {
+          bounds: {
+            x: pixels(rect.x),
+            y: pixels(rect.y),
+            width: pixels(rect.width),
+            height: pixels(rect.height),
+          },
+        });
+        if (cancelled) return;
+        if (status.finished) {
+          setUnityEmbedded(false);
+          await finishUnityMatch();
+          return;
+        }
+        if (unityTacticRevision.current === revision) setUnityTactics(status.tactics ?? null);
+        timer = setTimeout(update, 350);
+      } catch (error) {
+        if (cancelled) return;
+        setUnityError(t(String(error), { defaultValue: t("unityMatch.playerFailed") }));
+        setUnityEmbedded(false);
+      }
+    }
+
+    void update();
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [finishUnityMatch, t, unityEmbedded]);
+
+  useEffect(() => {
+    if (!unityEmbedded) return;
+    return () => {
+      void invoke("stop_unity_player").catch(console.error);
+    };
+  }, [unityEmbedded]);
+
   // Loading state
   if (!snapshot || !gameState) {
     return (
@@ -322,18 +511,136 @@ export default function MatchSimulation() {
 
   // Render the current stage
   switch (stage) {
-    case "prematch":
+    case "prematch": {
       if (!userSide) return null;
+      const team = userSide === "Home" ? snapshot.home_team : snapshot.away_team;
+      const bench = userSide === "Home" ? snapshot.home_bench : snapshot.away_bench;
+      const initialStyle = team.play_style;
+      const activeStyle = unityTactics?.applied?.play_style ??
+        (initialStyle === "Possession" ? "Balanced" : initialStyle);
+      const substitutions = unityTactics?.substitutions ?? [];
+      const activePlayers = new Map(team.players.map((player) => [player.id, player]));
+      for (const sub of substitutions) {
+        activePlayers.delete(sub.player_off_id);
+        const incoming = bench.find((player) => player.id === sub.player_on_id);
+        if (incoming) activePlayers.set(incoming.id, incoming);
+      }
+      const reservePlayers = bench.filter((player) =>
+        !substitutions.some((sub) => sub.player_on_id === player.id));
+      const selectedOff = activePlayers.get(unityOff);
+      const availableReserves = reservePlayers.filter((player) => selectedOff &&
+        (selectedOff.position === "Goalkeeper") === (player.position === "Goalkeeper"));
+      const lastSub = substitutions[substitutions.length - 1];
+      const busy = !unityTactics?.ready || unityTactics.pending || unityOrderSending !== null;
+      const subPending = unityTactics?.pending_substitution || unityOrderSending === "sub";
+      const selectClass = "rounded-md border border-navy-600 bg-navy-800 px-3 py-1.5 text-sm text-white disabled:opacity-50";
+      const playerName = (id: string) => [...team.players, ...bench].find((player) => player.id === id)?.name ?? id;
       return (
-        <PreMatchSetup
-          snapshot={snapshot}
-          gameState={gameState}
-          currentFixture={currentFixture}
-          userSide={userSide}
-          onStart={handleStartMatch}
-          onUpdateSnapshot={handleSnapshotUpdate}
-        />
+        <>
+          {unityEmbedded ? (
+            <div className="flex h-screen flex-col bg-navy-900">
+              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-2 text-white">
+                <span className="font-heading">Unity 3D</span>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  {!unityTactics?.substitutions_panel && (
+                    <>
+                      <select
+                        aria-label={t("tactics.playStyle")}
+                        className={selectClass}
+                        value={activeStyle}
+                        disabled={busy}
+                        onChange={(event) => {
+                          const style = unityPlayStyles.find((option) => option === event.target.value);
+                          if (style) void sendUnityOrder({ playStyle: style });
+                        }}
+                      >
+                        {unityPlayStyles.map((style) => (
+                          <option key={style} value={style}>{t(`common.playStyles.${style}`)}</option>
+                        ))}
+                      </select>
+                      <span role="status" className="text-sm">
+                        {unityOrderError === "tactic" ? t("unityMatch.tacticFailed")
+                          : unityOrderSending === "tactic" || (unityTactics?.pending && !subPending) ? t("unityMatch.tacticPending")
+                            : unityTactics?.applied ? t("unityMatch.tacticApplied", { minute: unityTactics.applied.minute })
+                              : null}
+                      </span>
+                    </>
+                  )}
+                </div>
+                <button onClick={() => setUnityEmbedded(false)}>{t("common.cancel")}</button>
+              </div>
+              {bench.length > 0 && unityTactics?.substitutions_ready && !unityTactics?.substitutions_panel && (
+                <div className="flex shrink-0 flex-wrap items-center gap-2 px-4 pb-2 text-white">
+                  <select
+                    className={selectClass}
+                    aria-label={t("match.selectPlayerOff")}
+                    value={unityOff}
+                    disabled={busy || substitutions.length >= snapshot.max_subs || !reservePlayers.length}
+                    onChange={(event) => { setUnityOff(event.target.value); setUnityOn(""); }}
+                  >
+                    <option value="">{t("match.selectPlayerOff")}</option>
+                    {[...activePlayers.values()].map((player) => (
+                      <option key={player.id} value={player.id}>{player.name}</option>
+                    ))}
+                  </select>
+                  <select
+                    className={selectClass}
+                    aria-label={t("match.selectReplacement")}
+                    value={unityOn}
+                    disabled={busy || !availableReserves.length}
+                    onChange={(event) => setUnityOn(event.target.value)}
+                  >
+                    <option value="">{t("match.selectReplacement")}</option>
+                    {availableReserves.map((player) => (
+                      <option key={player.id} value={player.id}>{player.name}</option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    className="rounded-md bg-primary-600 px-3 py-1.5 text-sm disabled:opacity-50"
+                    disabled={busy || !selectedOff || !availableReserves.some((player) => player.id === unityOn)}
+                    onClick={() => void sendUnityOrder({ playerOffId: unityOff, playerOnId: unityOn })}
+                  >
+                    {t("match.makeSubstitution")}
+                  </button>
+                  <span role="status" className="text-sm">
+                    {unityOrderError === "sub" ? t("unityMatch.subFailed")
+                      : subPending ? t("unityMatch.subPending")
+                        : lastSub ? `${lastSub.minute}′ ${playerName(lastSub.player_on_id)} ${t("match.subFor", { name: playerName(lastSub.player_off_id) })}`
+                          : t("match.subsUsed", { used: substitutions.length, max: snapshot.max_subs })}
+                  </span>
+                </div>
+              )}
+              <div ref={unityViewport} className="grid min-h-0 flex-1 place-items-center bg-black">
+                <span role="status" className="h-8 w-8 animate-spin rounded-full border-4 border-primary-500 border-t-transparent" />
+              </div>
+            </div>
+          ) : unityPath ? (
+            <div className="m-auto flex max-w-xl flex-col gap-4 p-6">
+              <p>{t("unityMatch.instructions")}</p>
+              <code className="break-all">{unityPath}</code>
+              <button disabled={unityBusy} onClick={() => void finishUnityMatch()}>
+                {t("unityMatch.import")}
+              </button>
+              <button disabled={unityBusy} onClick={() => { setUnityPath(""); setUnityError(""); }}>
+                {t("common.cancel")}
+              </button>
+            </div>
+          ) : (
+            <PreMatchSetup
+              snapshot={snapshot}
+              gameState={gameState}
+              currentFixture={currentFixture}
+              userSide={userSide}
+              onStart={handleStartMatch}
+              onUpdateSnapshot={handleSnapshotUpdate}
+              onUnityStart={exportUnityMatch}
+            />
+          )}
+          {unityError && <p role="alert" className="p-2 text-center">{unityError}</p>}
+        </>
       );
+    }
 
     case "first_half":
     case "second_half":

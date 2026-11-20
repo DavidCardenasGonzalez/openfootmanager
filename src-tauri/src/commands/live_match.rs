@@ -559,6 +559,202 @@ mod tests {
     }
 
     #[test]
+    fn unity_ticket_exports_only_the_managed_teams_prematch_style() {
+        let game = make_game_with_round();
+        for side in [engine::Side::Home, engine::Side::Away] {
+            let state = StateManager::new();
+            let mut live =
+                live_match_manager::create_live_match(&game, 0, MatchMode::Live, false).unwrap();
+            live.user_side = Some(side);
+            live.match_state
+                .apply_command(engine::MatchCommand::ChangePlayStyle {
+                    side,
+                    play_style: engine::PlayStyle::HighPress,
+                })
+                .unwrap();
+            state.set_live_match(live);
+            let path = super::super::unity_match::export_request(&state).unwrap();
+            let data = std::fs::read(&path).unwrap();
+            std::fs::remove_file(path).unwrap();
+            let request: serde_json::Value = serde_json::from_slice(&data).unwrap();
+            let (managed, opponent) = if side == engine::Side::Home {
+                ("home", "away")
+            } else {
+                ("away", "home")
+            };
+            assert_eq!(request[managed]["play_style"], "HighPress");
+            assert!(request[opponent].get("play_style").is_none());
+        }
+    }
+
+    #[test]
+    fn unity_ticket_uses_a_keeper_role_changed_after_opening_the_preview() {
+        let game = make_game_with_round();
+        let state = StateManager::new();
+        let live = live_match_manager::create_live_match(&game, 0, MatchMode::Live, false).unwrap();
+        let keeper = live.snapshot().home_team.players[0].id.clone();
+        state.set_game(game);
+        state.set_live_match(live);
+        for role in [Some("SweeperKeeper"), None] {
+            super::super::squad::set_player_role_internal(
+                &state,
+                keeper.clone(),
+                role.map(str::to_owned),
+            )
+            .unwrap();
+            let path = super::super::unity_match::export_request(&state).unwrap();
+            let request: serde_json::Value =
+                serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+            std::fs::remove_file(path).unwrap();
+            assert_eq!(
+                request["home"]["players"][0]["role"],
+                role.unwrap_or("Standard")
+            );
+        }
+    }
+
+    #[test]
+    fn unity_substitution_credits_a_bench_goal_after_entry() {
+        let mut game = make_game_with_round();
+        let home_id = game.league.as_ref().unwrap().fixtures[0].home_team_id.clone();
+        game.players.push(make_player("reserve", "Reserve", &home_id, Position::Forward));
+        let state = StateManager::new();
+        let live = live_match_manager::create_live_match(&game, 0, MatchMode::Live, false).unwrap();
+        let snap = live.snapshot();
+        let incoming = snap.home_bench.iter().find(|p| p.position == engine::Position::Forward).unwrap();
+        let outgoing = snap.home_team.players.iter().find(|p| p.position == engine::Position::Forward).unwrap();
+        let result = serde_json::json!({
+            "version": 1, "status": "finished", "request_id": live.external_match_id(None, &snap),
+            "home_id": snap.home_team.id, "away_id": snap.away_team.id,
+            "home_goals": 1, "away_goals": 0,
+            "goals": [{"minute": 70, "side": "Home", "player_id": incoming.id}],
+            "substitutions": [{"minute": 58, "player_on_id": incoming.id, "player_off_id": outgoing.id}],
+            "player_ids": snap.home_team.players.iter().chain(&snap.away_team.players)
+                .map(|p| &p.id).collect::<Vec<_>>()
+        });
+        state.set_live_match(live);
+        state.set_game(game);
+        let mut early = result.clone();
+        early["goals"][0]["minute"] = 57.into();
+        let apply = |value| super::super::unity_match::apply_result(
+            &state, serde_json::from_value(value).unwrap(),
+        );
+        assert!(apply(early).is_err());
+        let finished = apply(result).unwrap();
+        let directory = tempfile::tempdir().unwrap();
+        let mut saves = db::save_manager::SaveManager::init(directory.path()).unwrap();
+        let save_id = saves.create_save(&finished.game, "Unity substitution test").unwrap();
+        let saved = saves.load_game(&save_id).unwrap();
+        let score = saved.league.unwrap().fixtures[0].result.clone().unwrap();
+        assert_eq!(score.home_scorers[0].player_id, incoming.id);
+        assert_eq!(score.report.unwrap().events[0].event_type, "Substitution");
+    }
+
+    #[test]
+    fn unity_ticket_is_bound_to_the_session_and_can_only_finish_once() {
+        let game = make_game_with_round();
+        let state = StateManager::new();
+        let live = live_match_manager::create_live_match(&game, 0, MatchMode::Live, false).unwrap();
+        state.set_save_id("first-career".into());
+        let snap = live.snapshot();
+        let token = live.external_match_id(state.get_save_id().as_deref(), &snap);
+        let result = serde_json::json!({
+            "version": 1, "status": "finished", "request_id": token,
+            "home_id": snap.home_team.id, "away_id": snap.away_team.id,
+            "home_goals": 2, "away_goals": 1,
+            "goals": [
+                {"minute": 23, "side": "Home", "player_id": snap.home_team.players[1].id},
+                {"minute": 78, "side": "Away", "player_id": snap.away_team.players[1].id}
+            ],
+            "player_ids": snap.home_team.players.iter().chain(&snap.away_team.players)
+                .map(|p| &p.id).collect::<Vec<_>>()
+        });
+        state.set_live_match(live);
+        state.set_game(game);
+        let mut wrong = result.clone();
+        wrong["request_id"] = "another".into();
+        assert!(super::super::unity_match::apply_result(
+            &state,
+            serde_json::from_value(wrong).unwrap()
+        )
+        .is_err());
+        let apply = || {
+            super::super::unity_match::apply_result(
+                &state,
+                serde_json::from_value(result.clone()).unwrap(),
+            )
+        };
+        state.set_save_id("second-career".into());
+        assert!(apply().is_err(), "result must belong to the active save");
+        state.set_save_id("first-career".into());
+        let mut wrong_side = result.clone();
+        wrong_side["goals"][0]["player_id"] = result["goals"][1]["player_id"].clone();
+        assert!(super::super::unity_match::apply_result(
+            &state,
+            serde_json::from_value(wrong_side).unwrap()
+        )
+        .is_err());
+        let finished = apply().unwrap();
+        let score = finished.game.league.unwrap().fixtures[0]
+            .result
+            .clone()
+            .unwrap();
+        assert_eq!((score.home_goals, score.away_goals), (2, 1));
+        assert_eq!(score.home_scorers.len(), 1);
+        assert_eq!(score.home_scorers[0].minute, 23);
+        assert_eq!(
+            score.away_scorers[0].player_id,
+            snap.away_team.players[1].id
+        );
+        assert!(apply().is_err());
+    }
+    #[test]
+    #[ignore = "requires Football Simulator in Unity Editor"]
+    fn unity_editor_roundtrip() {
+        use super::super::unity_match::{export_request, import_result};
+        use std::time::{Duration, Instant};
+        let state = StateManager::new();
+        let mut game = make_game_with_round();
+        for number in 1..=2 {
+            game.players.push(make_player(
+                &format!("reserve{number}"), &format!("Reserve {number}"), "team1", Position::Forward,
+            ));
+        }
+        let directory = tempfile::tempdir().unwrap();
+        let mut saves = db::save_manager::SaveManager::init(directory.path()).unwrap();
+        let id = saves.create_save(&game, "Unity integration test").unwrap();
+        state.set_game(game);
+        state.set_save_id(id.clone());
+        crate::application::live_match::start_live_match(&state, 0, "live", false, None, None)
+            .unwrap();
+        let request = export_request(&state).unwrap();
+        eprintln!("UNITY_REQUEST={request}");
+        let until = Instant::now() + Duration::from_secs(900);
+        let finished = loop {
+            match import_result(&state) {
+                Ok(response) => break response.finished.game,
+                Err(error) if error == "unityMatch.pending" && Instant::now() < until => {
+                    std::thread::sleep(Duration::from_secs(1))
+                }
+                Err(error) => panic!("Unity roundtrip failed: {error}"),
+            }
+        };
+        saves.save_game(&finished, &id).unwrap();
+        let saved = saves.load_game(&id).unwrap();
+        let league = &saved.competitions[0];
+        for fixture in &league.fixtures[..2] {
+            assert_eq!(fixture.status, FixtureStatus::Completed);
+            let score = fixture.result.as_ref().unwrap();
+            eprintln!(
+                "{} {}-{} {}",
+                fixture.home_team_id, score.home_goals, score.away_goals, fixture.away_team_id
+            );
+        }
+        assert!(league.standings.iter().all(|row| row.played == 1));
+        assert!(import_result(&state).is_err());
+    }
+
+    #[test]
     fn praising_a_player_from_another_club_is_rejected() {
         // The player id used to be resolved against every player in the world, so a stale or
         // mistaken id could hand an opposition striker the morale boost meant for one of ours.

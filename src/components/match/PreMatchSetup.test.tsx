@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
+import { invoke } from "@tauri-apps/api/core";
 import { describe, expect, it, vi } from "vitest";
 
 import PreMatchSetup from "./PreMatchSetup";
@@ -128,6 +129,7 @@ function renderSetup() {
       gameState={gameState() as unknown as GameStateData}
       userSide="Home"
       onStart={vi.fn()}
+      onUnityStart={vi.fn()}
       onUpdateSnapshot={vi.fn()}
     />,
   );
@@ -140,10 +142,22 @@ describe("PreMatchSetup opponent scout panel", () => {
     // Default "Your Team" view: opponent players are not listed.
     expect(screen.queryByText("Away Fwd")).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: /Away FC/ }));
+    fireEvent.click(screen.getByRole("button", { name: /match\.opponent.*AWY/ }));
 
     // The opponent scout panel lists the opponent's players by name.
     expect(screen.getByText("Away GK")).toBeTruthy();
     expect(screen.getByText("Away Fwd")).toBeTruthy();
   });
+});
+
+it("waits for a role change to reach the match before enabling kickoff", async () => {
+  let complete = () => {};
+  vi.mocked(invoke).mockReturnValueOnce(new Promise<void>((resolve) => { complete = resolve; }));
+  renderSetup();
+  fireEvent.click(screen.getByRole("combobox", { name: /match\.playerRoles.*Home GK/ }));
+  fireEvent.click(screen.getByRole("option", { name: "SweeperKeeper" }));
+  const unity = screen.getByRole<HTMLButtonElement>("button", { name: /Unity 3D/ });
+  expect(unity.disabled).toBe(true);
+  await act(async () => complete());
+  expect(unity.disabled).toBe(false);
 });

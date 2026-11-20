@@ -1,4 +1,17 @@
 {
+  "unityMatch": {
+    "subPending": "Střídání proběhne při nejbližším přerušení.",
+    "subFailed": "Střídání se nepodařilo odeslat.",
+    "tacticPending": "Odesílá se taktika…",
+    "tacticApplied": "Taktika použita v {{minute}}. minutě",
+    "tacticFailed": "Taktiku se nepodařilo odeslat.",
+    "playerFailed": "Přehrávač Unity se nepodařilo spustit.",
+    "instructions": "V Unity vyberte OpenFoot → Play manager match a otevřete tento soubor. Po závěrečném hvizdu se vraťte.",
+    "import": "Použít výsledek",
+    "pending": "Výsledek ještě není k dispozici.",
+    "invalid": "Zkontrolujte sestavu, rozestavení a soubor zápasu.",
+    "save": "Uložení selhalo. Zkuste to znovu na přehledu."
+  },
   "app": {
     "name": "OpenFoot Manager",
     "publisher": "Sturdy Robot"

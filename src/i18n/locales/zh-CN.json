@@ -1,4 +1,17 @@
 {
+  "unityMatch": {
+    "subPending": "将在下次比赛中断时换人。",
+    "subFailed": "无法发送换人请求。",
+    "tacticPending": "正在发送战术…",
+    "tacticApplied": "战术已在第 {{minute}} 分钟生效",
+    "tacticFailed": "无法发送战术。",
+    "playerFailed": "无法启动 Unity 播放器。",
+    "instructions": "在 Unity 中选择 OpenFoot → Play manager match 并打开此文件。终场哨响后返回。",
+    "import": "应用赛果",
+    "pending": "最终赛果尚未生成。",
+    "invalid": "请检查首发阵容、阵型和比赛文件。",
+    "save": "保存失败，请返回主界面重新保存。"
+  },
   "app": {
     "name": "OpenFoot Manager",
     "publisher": "Sturdy Robot"

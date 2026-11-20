@@ -80,7 +80,6 @@ time = "=0.3.51"
 # byte-compatible with what we write.
 csv = "1"
 
-[dev-dependencies]
 tempfile = "3"
 
 # Dev builds (`tauri dev`) otherwise run the whole simulation unoptimized, which

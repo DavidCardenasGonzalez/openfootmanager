@@ -34,6 +34,7 @@ interface PreMatchSetupProps {
   currentFixture?: FixtureData | null;
   userSide: "Home" | "Away";
   onStart: () => void;
+  onUnityStart?: () => void;
   onUpdateSnapshot: (snap: MatchSnapshot) => void;
 }
 
@@ -43,12 +44,15 @@ export default function PreMatchSetup({
   currentFixture,
   userSide,
   onStart,
+  onUnityStart,
   onUpdateSnapshot,
 }: PreMatchSetupProps) {
   const displayTeamName = (teamId: string, name: string) =>
     gameState.teams.find((team) => team.id === teamId)?.short_name || name;
   const { t } = useTranslation();
   const [selectedStarterId, setSelectedStarterId] = useState<string | null>(null);
+  const [savingPlayStyle, setSavingPlayStyle] = useState(false);
+  const [savingPlayerRole, setSavingPlayerRole] = useState(false);
   const [isAutoSelecting, setIsAutoSelecting] = useState(false);
   const [activeTab, setActiveTab] = useState<"team" | "opponent">("team");
   const [phase, setPhase] = useState<TacticsPhaseSettings | undefined>(() => {
@@ -63,8 +67,7 @@ export default function PreMatchSetup({
     });
   };
 
-  // Player roles, editable from the pitch like on the tactics board; optimistic
-  // local state persisted fire-and-forget, same pattern as the phase blueprint.
+  // The match export must wait for a pending role edit to reach the session.
   const [playerRoles, setPlayerRoles] = useState<Record<string, PlayerRole>>(() => {
     const uid = userSide === "Home" ? snapshot.home_team.id : snapshot.away_team.id;
     return gameState.teams.find((tm) => tm.id === uid)?.player_roles ?? {};
@@ -72,6 +75,7 @@ export default function PreMatchSetup({
 
   const handlePlayerRoleChange = (playerId: string, role: PlayerRole) => {
     const previous = playerRoles[playerId] ?? "Standard";
+    setSavingPlayerRole(true);
     setPlayerRoles((prev) => ({ ...prev, [playerId]: role }));
     void setPlayerRole(playerId, role).catch((err: unknown) => {
       console.error("Failed to set player role:", err);
@@ -80,7 +84,7 @@ export default function PreMatchSetup({
       setPlayerRoles((prev) =>
         prev[playerId] === role ? { ...prev, [playerId]: previous } : prev,
       );
-    });
+    }).finally(() => setSavingPlayerRole(false));
   };
 
   const homeTeam = snapshot.home_team;
@@ -174,6 +178,8 @@ export default function PreMatchSetup({
               selectSize="sm"
               variant="ghost"
               fullWidth
+              aria-label={`${t("match.playerRoles")} · ${player.name}`}
+              disabled={savingPlayerRole}
               value={playerRoles[player.id] ?? "Standard"}
               onChange={(e) => {
                 handlePlayerRoleChange(player.id, e.target.value as PlayerRole);
@@ -241,6 +247,7 @@ export default function PreMatchSetup({
   };
 
   const handlePlayStyleChange = async (playStyle: string) => {
+    setSavingPlayStyle(true);
     try {
       const snap = await invoke<MatchSnapshot>("apply_match_command", {
         command: { ChangePlayStyle: { side: userSide, play_style: playStyle } },
@@ -248,6 +255,8 @@ export default function PreMatchSetup({
       onUpdateSnapshot(snap);
     } catch (err) {
       console.error("Play style change failed:", err);
+    } finally {
+      setSavingPlayStyle(false);
     }
   };
 
@@ -449,6 +458,7 @@ export default function PreMatchSetup({
               </Select>
               <Select
                 value={userTeam.play_style}
+                disabled={savingPlayStyle}
                 onChange={(e) => handlePlayStyleChange(e.target.value)}
                 selectSize="sm"
                 fullWidth
@@ -649,11 +659,17 @@ export default function PreMatchSetup({
             <button
               type="button"
               onClick={onStart}
+              disabled={savingPlayerRole}
               className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 px-8 py-3 font-heading font-bold uppercase tracking-wider text-sm text-white shadow-lg shadow-primary-500/20 transition-all hover:from-primary-600 hover:to-primary-700 hover:scale-[1.02] active:scale-[0.98]"
             >
               {t("match.startMatch")}
               <ChevronRight className="h-4 w-4" />
             </button>
+            {onUnityStart && !snapshot.allows_extra_time && (
+              <button type="button" onClick={onUnityStart} disabled={savingPlayStyle || savingPlayerRole} className="font-heading text-primary-600">
+                Unity 3D · {t(`common.playStyles.${userTeam.play_style === "Possession" ? "Balanced" : userTeam.play_style}`)}
+              </button>
+            )}
           </div>
 
           {/* Away team */}

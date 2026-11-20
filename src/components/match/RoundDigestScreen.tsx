@@ -59,14 +59,18 @@ export default function RoundDigestScreen({
   const getFixtureReport = (fixture: FixtureData | null | undefined) =>
     fixture?.result?.report || null;
 
-  const formatOtherMatchScorers = (fixture: FixtureData) => {
-    if (!fixture.result) return null;
+  const formatScorers = (fixture: FixtureData | null, limit?: number) => {
+    if (!fixture?.result) return null;
     const scorers = [...fixture.result.home_scorers, ...fixture.result.away_scorers]
       .sort((a, b) => a.minute - b.minute)
       .map((s) => `${getPlayerDisplayName(s.player_id)} ${s.minute}'`);
     if (scorers.length === 0) return null;
-    return scorers.slice(0, 3).join(" • ");
+    return scorers.slice(0, limit).join(" • ");
   };
+  const currentScorers = formatScorers(currentFixture);
+  const currentSubstitutions = getFixtureReport(currentFixture)?.events.filter(
+    (event) => event.event_type === "Substitution" && event.side === userSide,
+  ) ?? [];
 
   const formatOtherMatchStats = (fixture: FixtureData) => {
     const report = getFixtureReport(fixture);
@@ -79,7 +83,7 @@ export default function RoundDigestScreen({
     ].join(" • ");
   };
 
-  const formatOtherMatchEvent = (event: CompactMatchEventData) => {
+  const formatMatchEvent = (event: CompactMatchEventData) => {
     const primary = getPlayerDisplayName(event.player_id);
     switch (event.event_type) {
       case "Goal":
@@ -293,6 +297,25 @@ export default function RoundDigestScreen({
               </div>
             </div>
 
+            {currentScorers && (
+              <div className="mt-3 text-center text-sm text-gray-700 dark:text-gray-300">
+                <span className="sr-only">{t("match.scorers")}</span>
+                <p>{currentScorers}</p>
+              </div>
+            )}
+            {currentSubstitutions.length > 0 && (
+              <div className="mt-3 text-center text-sm text-gray-700 dark:text-gray-300">
+                <h2 className="font-heading font-semibold">{t("match.substitutions")}</h2>
+                <ul>
+                  {currentSubstitutions.map((event) => (
+                    <li key={`${event.minute}-${event.player_id}`}>
+                      {event.minute}′ {formatMatchEvent(event)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {/* Position context */}
             {isLeagueFixture && userStanding && (
               <div className="mt-4 flex items-center justify-center gap-2">
@@ -321,7 +344,7 @@ export default function RoundDigestScreen({
               {otherMatchEntries.length > 0 ? (
                 <div className="grid grid-cols-2 gap-3">
                   {otherMatchEntries.map((entry) => {
-                    const scorerSummary = formatOtherMatchScorers(entry.fixture);
+                    const scorerSummary = formatScorers(entry.fixture, 3);
                     const statSummary = formatOtherMatchStats(entry.fixture);
                     return (
                       <div
@@ -527,7 +550,7 @@ export default function RoundDigestScreen({
                           </span>
                           <span>{display.icon}</span>
                           <span className={`${display.color} flex-1 truncate font-medium`}>
-                            {formatOtherMatchEvent(event)}
+                          {formatMatchEvent(event)}
                           </span>
                           <Badge variant={event.side === "Home" ? "primary" : "accent"} size="sm">
                             {getTeamShortName(sideTeamId, sideFallbackName)}
@@ -584,9 +607,9 @@ export default function RoundDigestScreen({
                   <h4 className="mb-3 text-xs font-heading font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
                     {t("match.scorers")}
                   </h4>
-                  {formatOtherMatchScorers(selectedOtherFixture) ? (
+                  {formatScorers(selectedOtherFixture, 3) ? (
                     <p className="text-xs text-gray-700 dark:text-gray-300">
-                      {formatOtherMatchScorers(selectedOtherFixture)}
+                      {formatScorers(selectedOtherFixture, 3)}
                     </p>
                   ) : (
                     <p className="text-xs text-gray-500 dark:text-gray-400">{t("match.noGoals")}</p>

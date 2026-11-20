@@ -1,4 +1,17 @@
 {
+  "unityMatch": {
+    "subPending": "Pergantian menunggu jeda permainan berikutnya.",
+    "subFailed": "Pergantian gagal diajukan.",
+    "tacticPending": "Mengirim taktik…",
+    "tacticApplied": "Taktik diterapkan pada menit ke-{{minute}}",
+    "tacticFailed": "Taktik gagal dikirim.",
+    "playerFailed": "Pemutar Unity tidak dapat dimulai.",
+    "instructions": "Di Unity pilih OpenFoot → Play manager match dan buka berkas ini. Kembali setelah peluit akhir.",
+    "import": "Terapkan hasil",
+    "pending": "Hasil akhir belum tersedia.",
+    "invalid": "Periksa susunan pemain, formasi, dan berkas pertandingan.",
+    "save": "Gagal menyimpan. Simpan lagi dari dasbor."
+  },
   "app": {
     "name": "OpenFoot Manager",
     "publisher": "Sturdy Robot"

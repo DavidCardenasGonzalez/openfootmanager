@@ -377,15 +377,22 @@ fn populate_minutes_played(
         .cloned()
         .map(|player_id| (player_id, total_minutes))
         .collect();
+    let mut entered_at = HashMap::new();
 
     for event in events {
         match event.event_type {
             EventType::Substitution => {
                 if let Some(ref player_off_id) = event.secondary_player_id {
-                    minutes_by_player
-                        .insert(player_off_id.clone(), event.minute.min(total_minutes));
+                    minutes_by_player.insert(
+                        player_off_id.clone(),
+                        event
+                            .minute
+                            .min(total_minutes)
+                            .saturating_sub(entered_at.get(player_off_id).copied().unwrap_or(0)),
+                    );
                 }
                 if let Some(ref player_on_id) = event.player_id {
+                    entered_at.insert(player_on_id.clone(), event.minute);
                     minutes_by_player.insert(
                         player_on_id.clone(),
                         total_minutes.saturating_sub(event.minute),
@@ -394,11 +401,14 @@ fn populate_minutes_played(
             }
             EventType::RedCard | EventType::SecondYellow => {
                 if let Some(ref player_id) = event.player_id {
-                    let dismissed_at = event.minute.min(total_minutes);
+                    let played = event
+                        .minute
+                        .min(total_minutes)
+                        .saturating_sub(entered_at.get(player_id).copied().unwrap_or(0));
                     minutes_by_player
                         .entry(player_id.clone())
-                        .and_modify(|minutes| *minutes = (*minutes).min(dismissed_at))
-                        .or_insert(dismissed_at);
+                        .and_modify(|minutes| *minutes = (*minutes).min(played))
+                        .or_insert(played);
                 }
             }
             _ => {}
@@ -413,6 +423,26 @@ fn populate_minutes_played(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn substituted_reserve_only_gets_minutes_between_entry_and_exit() {
+        let sub = |minute, on: &str, off: &str| {
+            event(minute, EventType::Substitution, Side::Home, on).with_secondary(off)
+        };
+        let report = MatchReport::from_events_with_players(
+            vec![
+                sub(34, "first_reserve", "starter"),
+                sub(55, "second_reserve", "first_reserve"),
+            ],
+            0,
+            0,
+            90,
+            vec!["starter".into()],
+        );
+        assert_eq!(report.player_stats["starter"].minutes_played, 34);
+        assert_eq!(report.player_stats["first_reserve"].minutes_played, 21);
+        assert_eq!(report.player_stats["second_reserve"].minutes_played, 35);
+    }
 
     fn event(minute: u8, event_type: EventType, side: Side, player: &str) -> MatchEvent {
         MatchEvent::new(minute, event_type, side, Zone::attacking_box(side)).with_player(player)

@@ -135,6 +135,23 @@ pub struct LiveMatchSession {
 }
 
 impl LiveMatchSession {
+    /// Identifies an export while the same career, match and team selections are active.
+    pub fn external_match_id(
+        &self,
+        save_id: Option<&str>,
+        snapshot: &engine::MatchSnapshot,
+    ) -> String {
+        use std::hash::{DefaultHasher, Hash, Hasher};
+        let mut hash = DefaultHasher::new();
+        self.rng_seed.hash(&mut hash);
+        save_id.hash(&mut hash);
+        let teams = (&snapshot.home_team, &snapshot.away_team);
+        serde_json::to_vec(&teams)
+            .expect("engine teams serialize to JSON")
+            .hash(&mut hash);
+        format!("{:016x}", hash.finish())
+    }
+
     /// Step one minute and apply AI decisions for computer-controlled sides.
     pub fn step(&mut self) -> MinuteResult {
         let (result, ai_commands) = self.step_with_ai();
@@ -205,6 +222,33 @@ impl LiveMatchSession {
 
     pub fn snapshot(&self) -> MatchSnapshot {
         self.match_state.snapshot()
+    }
+
+    /// Update a role saved from the tactics board while the preview is open.
+    pub fn sync_prematch_role(
+        &mut self,
+        team_id: &str,
+        player_id: &str,
+        role: Option<&domain::team::PlayerRole>,
+    ) {
+        if self.match_state.phase() != MatchPhase::PreKickOff {
+            return;
+        }
+        let Some(side) = self.user_side else {
+            return;
+        };
+        let managed_id = match side {
+            Side::Home => &self.home_team_id,
+            Side::Away => &self.away_team_id,
+        };
+        if team_id == managed_id.as_str() {
+            // The tactics board validates against the deployed formation slot.
+            self.match_state.set_prematch_role(
+                side,
+                player_id,
+                role.map(domain_to_engine_role).unwrap_or_default(),
+            );
+        }
     }
 
     pub fn apply_command(&mut self, cmd: MatchCommand) -> Result<(), String> {

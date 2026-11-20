@@ -1,4 +1,17 @@
 {
+  "unityMatch": {
+    "subPending": "Changement prévu au prochain arrêt de jeu.",
+    "subFailed": "Impossible de demander le changement.",
+    "tacticPending": "Envoi de la tactique…",
+    "tacticApplied": "Tactique appliquée à la {{minute}}e minute",
+    "tacticFailed": "Impossible d’envoyer la tactique.",
+    "playerFailed": "Impossible de démarrer le lecteur Unity.",
+    "instructions": "Dans Unity, choisissez OpenFoot → Play manager match et ouvrez ce fichier. Revenez au coup de sifflet final.",
+    "import": "Appliquer le résultat",
+    "pending": "Le résultat final est indisponible.",
+    "invalid": "Vérifiez la composition, la formation et le fichier.",
+    "save": "Échec de sauvegarde. Réessayez depuis le tableau de bord."
+  },
   "app": {
     "name": "OpenFoot Manager",
     "publisher": "Sturdy Robot"

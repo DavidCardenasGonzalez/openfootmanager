@@ -161,6 +161,18 @@ impl StateManager {
         set_option(&self.live_match, session);
     }
 
+    pub fn take_live_match_if(
+        &self,
+        accepts: impl FnOnce(&LiveMatchSession) -> bool,
+    ) -> Option<LiveMatchSession> {
+        let mut guard = self.live_match.lock().unwrap();
+        if guard.as_ref().is_some_and(accepts) {
+            guard.take()
+        } else {
+            None
+        }
+    }
+
     pub fn take_live_match(&self) -> Option<LiveMatchSession> {
         take_option(&self.live_match)
     }
