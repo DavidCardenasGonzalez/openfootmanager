@@ -3,6 +3,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
 
 import type { GameStateData, PlayerData } from "../../store/gameStore";
+import { annualAmountToWeeklyCommitment } from "../../lib/finance";
 import { resolveBackendText } from "../../utils/backendI18n";
 import { resolveTranslatedErrorMessage } from "../../utils/errorMessage";
 import {
@@ -150,7 +151,8 @@ export function useContractRenewalFlow({
   const renewalStatusClassName = getRenewalStatusClassName(renewalStatus);
 
   function openRenewalModal(): void {
-    setRenewalWage(String(player.wage));
+    // Stored wages are annual; the negotiation and this input are weekly.
+    setRenewalWage(String(annualAmountToWeeklyCommitment(player.wage)));
     setRenewalLength("2");
     setRenewalSubmitting(false);
     setRenewalStatus("idle");

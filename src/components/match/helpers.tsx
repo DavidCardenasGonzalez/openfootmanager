@@ -206,7 +206,14 @@ export function resolveMatchFixture(
   gameState: GameStateData | null,
   snapshot: MatchSnapshot | null,
   fixtureIndex?: number,
+  fixtureId?: string,
 ): FixtureData | null {
+  if (fixtureId) {
+    return gameState?.competitions?.flatMap((competition) => competition.fixtures)
+      .find((fixture) => fixture.id === fixtureId)
+      ?? gameState?.league?.fixtures.find((fixture) => fixture.id === fixtureId)
+      ?? null;
+  }
   const fixtures = gameState?.league?.fixtures;
   if (!fixtures || !snapshot) return null;
 

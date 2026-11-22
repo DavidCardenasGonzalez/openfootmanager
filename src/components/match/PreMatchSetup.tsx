@@ -53,6 +53,7 @@ export default function PreMatchSetup({
   const [selectedStarterId, setSelectedStarterId] = useState<string | null>(null);
   const [savingPlayStyle, setSavingPlayStyle] = useState(false);
   const [savingPlayerRole, setSavingPlayerRole] = useState(false);
+  const [savingPhase, setSavingPhase] = useState(false);
   const [isAutoSelecting, setIsAutoSelecting] = useState(false);
   const [activeTab, setActiveTab] = useState<"team" | "opponent">("team");
   const [phase, setPhase] = useState<TacticsPhaseSettings | undefined>(() => {
@@ -60,11 +61,17 @@ export default function PreMatchSetup({
     return gameState.teams.find((tm) => tm.id === uid)?.tactics_phase;
   });
 
-  const handlePhaseChange = (patch: Partial<TacticsPhaseSettings>) => {
-    setPhase((prev) => (prev ? { ...prev, ...patch } : ({ ...patch } as TacticsPhaseSettings)));
-    void setTacticsPhase(patch).catch((err: unknown) => {
+  const handlePhaseChange = async (patch: Partial<TacticsPhaseSettings>) => {
+    setSavingPhase(true);
+    try {
+      const updated = await setTacticsPhase(patch);
+      const teamId = userSide === "Home" ? snapshot.home_team.id : snapshot.away_team.id;
+      setPhase(updated.teams.find((team) => team.id === teamId)?.tactics_phase);
+    } catch (err) {
       console.error("Failed to set tactics phase:", err);
-    });
+    } finally {
+      setSavingPhase(false);
+    }
   };
 
   // The match export must wait for a pending role edit to reach the session.
@@ -498,7 +505,7 @@ export default function PreMatchSetup({
               {t("tactics.phaseBlueprint")}
             </p>
           </div>
-          <PhaseBlueprintPanel tacticsPhase={phase} onTacticsPhaseChange={handlePhaseChange} />
+          <PhaseBlueprintPanel tacticsPhase={phase} onTacticsPhaseChange={handlePhaseChange} disabled={savingPhase} />
         </div>
       </div>
     </div>
@@ -658,8 +665,8 @@ export default function PreMatchSetup({
             </div>
             <button
               type="button"
-              onClick={onUnityStart && !snapshot.allows_extra_time ? onUnityStart : onStart}
-              disabled={savingPlayStyle || savingPlayerRole}
+              onClick={onUnityStart ?? onStart}
+              disabled={savingPlayStyle || savingPlayerRole || savingPhase}
               className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 px-8 py-3 font-heading font-bold uppercase tracking-wider text-sm text-white shadow-lg shadow-primary-500/20 transition-all hover:from-primary-600 hover:to-primary-700 hover:scale-[1.02] active:scale-[0.98]"
             >
               {t("match.startMatch")}

@@ -10,6 +10,8 @@ use serde::{Deserialize, Serialize};
 pub struct FinishLiveMatchResponse {
     pub game: Game,
     pub round_summary: Option<RoundSummaryDto>,
+    #[serde(default)]
+    pub fixture_id: String,
 }
 
 pub fn finish_live_match(state: &StateManager) -> Result<FinishLiveMatchResponse, String> {
@@ -30,10 +32,15 @@ pub fn finish_live_match(state: &StateManager) -> Result<FinishLiveMatchResponse
     finish_session(state, session, None)
 }
 
+pub(crate) struct ExternalMatchReport {
+    pub report: engine::MatchReport,
+    pub observed_stats: Option<domain::league::ObservedMatchStats>,
+}
+
 pub(crate) fn finish_session(
     state: &StateManager,
     session: live_match_manager::LiveMatchSession,
-    external_report: Option<engine::MatchReport>,
+    external_report: Option<ExternalMatchReport>,
 ) -> Result<FinishLiveMatchResponse, String> {
     let fixture_index = session.fixture_index;
     let competition_id = session.competition_id.clone();
@@ -43,7 +50,10 @@ pub(crate) fn finish_session(
     let away_team_id = session.away_team_id.clone();
 
     let external = external_report.is_some();
-    let report = external_report.unwrap_or_else(|| session.match_state.into_report());
+    let (report, observed_stats) = match external_report {
+        Some(external) => (external.report, external.observed_stats),
+        None => (session.match_state.into_report(), None),
+    };
     info!(
         "[cmd] finish_live_match: fixture_index={}, competition_id={}, home_team_id={}, away_team_id={}, events= {}",
         fixture_index,
@@ -57,8 +67,8 @@ pub(crate) fn finish_session(
     // GUI/MCP write is never clobbered by a stale whole-game clone. Stats
     // captures are appended after the lock is released.
     let mut captures = Vec::new();
-    let (game, round_summary) = state
-        .update_game(|game| -> Result<(Game, Option<RoundSummaryDto>), String> {
+    let finished = state
+        .update_game(|game| -> Result<FinishLiveMatchResponse, String> {
             // `fixture_index` indexes the fixtures of the competition the
             // session was created for (possibly a cup). `game.league` was
             // reset to the user's domestic league by sync_legacy_league when
@@ -78,7 +88,11 @@ pub(crate) fn finish_session(
                         && f.date == game.clock.current_date.format("%Y-%m-%d").to_string()
                         && f.home_team_id == home_team_id
                         && f.away_team_id == away_team_id
-                        && !competition.unwrap().is_knockout_fixture(&f.id)
+                        && if competition.unwrap().is_knockout_fixture(&f.id) {
+                            report.home_goals != report.away_goals || report.home_penalties.is_some()
+                        } else {
+                            report.total_minutes == 90 && report.home_penalties.is_none()
+                        }
                 }) {
                     return Err("be.error.liveMatch.fixtureNotFound".into());
                 }
@@ -97,10 +111,12 @@ pub(crate) fn finish_session(
             }
             // Legacy saves (no competitions) keep game.league, which the
             // session was created against.
-            let fixture_count = game.league.as_ref().map_or(0, |l| l.fixtures.len());
-            if fixture_index >= fixture_count {
-                return Err("be.error.liveMatch.fixtureNotFound".to_string());
-            }
+            let fixture_id = game
+                .league
+                .as_ref()
+                .and_then(|league| league.fixtures.get(fixture_index))
+                .map(|fixture| fixture.id.clone())
+                .ok_or("be.error.liveMatch.fixtureNotFound")?;
 
             ofm_core::turn::apply_match_report_with_capture(
                 game,
@@ -110,6 +126,13 @@ pub(crate) fn finish_session(
                 &report,
                 &mut |capture| captures.push(capture),
             );
+            if let Some(compact) = game.league.as_mut()
+                .and_then(|league| league.fixtures.get_mut(fixture_index))
+                .and_then(|fixture| fixture.result.as_mut())
+                .and_then(|result| result.report.as_mut())
+            {
+                compact.observed_stats = observed_stats;
+            }
 
             // apply_match_report_with_capture mutates the legacy `game.league`
             // mirror (fixture status, fixture.result, standings). The modern
@@ -133,17 +156,18 @@ pub(crate) fn finish_session(
 
             ofm_core::turn::finish_live_match_day(game);
 
-            Ok((game.clone(), round_summary))
+            Ok(FinishLiveMatchResponse {
+                game: game.clone(),
+                round_summary,
+                fixture_id,
+            })
         })
         .ok_or("be.error.noActiveGameSession")??;
     for capture in captures {
         state.append_stats_state(capture);
     }
 
-    Ok(FinishLiveMatchResponse {
-        game,
-        round_summary,
-    })
+    Ok(finished)
 }
 
 pub fn start_live_match(

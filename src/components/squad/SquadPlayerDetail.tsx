@@ -204,7 +204,7 @@ export default function SquadPlayerDetail({
           morale={player.morale}
           marketValue={player.market_value}
           wage={player.wage}
-          annualSuffix={t("finances.perYearSuffix")}
+          weeklySuffix={t("finances.perWeekSuffix", "/wk")}
           language={i18n.language}
           contractRiskLevel={contractRisk}
           contractRiskLabel={

@@ -18,8 +18,8 @@ type MockInvokePayload = {
   weeklyWage?: number;
 };
 
-function hasAnnualWage(text: string, amount: string): boolean {
-  return text.replace(/\s+/g, "").includes(`€${amount}/yr`);
+function hasWeeklyWage(text: string, amount: string): boolean {
+  return text.replace(/\s+/g, "").includes(`€${amount}/wk`);
 }
 
 vi.mock("@tauri-apps/api/core", () => ({
@@ -495,9 +495,9 @@ describe("PlayerProfile contract surfaces", () => {
     expect(screen.getByText("Years Remaining")).toBeInTheDocument();
     expect(screen.getByText("Contract Risk")).toBeInTheDocument();
     expect(screen.getByText("Critical")).toBeInTheDocument();
-    expect(screen.getByText("Annual Wage")).toBeInTheDocument();
+    expect(screen.getAllByText("Weekly Wage").length).toBeGreaterThan(0);
     expect(
-      screen.getAllByText((_, element) => hasAnnualWage(element?.textContent ?? "", "12K")).length,
+      screen.getAllByText((_, element) => hasWeeklyWage(element?.textContent ?? "", "230")).length,
     ).toBeGreaterThan(0);
   });
 
@@ -837,6 +837,15 @@ describe("PlayerProfile contract surfaces", () => {
     expect(screen.getByText("Loan until 2027-01-01")).toBeInTheDocument();
   });
 
+  it("prefills the renewal wage in weekly units", () => {
+    render(<RenewalHarness />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Renew Contract" }));
+
+    // The player earns €12,000 per year, so the weekly offer starts at €230.
+    expect(screen.getByLabelText("Offered Wage")).toHaveValue(230);
+  });
+
   it("validates renewal offers before submission", async () => {
     vi.mocked(invoke).mockImplementation(async (command: string, payload?: InvokeArgs) => {
       const args = payload as MockInvokePayload | undefined;
@@ -885,7 +894,7 @@ describe("PlayerProfile contract surfaces", () => {
   it("submits a renewal offer and refreshes contract data when accepted", async () => {
     const updatedPlayer = createPlayer({
       contract_end: "2029-08-01",
-      wage: 15000,
+      wage: 780000,
     });
     const updatedGame = createGameState(updatedPlayer);
 
@@ -927,7 +936,7 @@ describe("PlayerProfile contract surfaces", () => {
       expect(screen.getByText("Offer accepted")).toBeInTheDocument();
       expect(screen.getByText("Expires 2029-08-01")).toBeInTheDocument();
       expect(
-        screen.getAllByText((_, element) => hasAnnualWage(element?.textContent ?? "", "15K"))
+        screen.getAllByText((_, element) => hasWeeklyWage(element?.textContent ?? "", "15,000"))
           .length,
       ).toBeGreaterThan(0);
       expect(screen.getByText("Stable")).toBeInTheDocument();

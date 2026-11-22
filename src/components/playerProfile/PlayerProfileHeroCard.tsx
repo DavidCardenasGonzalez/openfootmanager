@@ -6,7 +6,7 @@ import type { PlayerData } from "../../store/gameStore";
 import ContextMenu from "../ContextMenu";
 import { buildViewTeamMenuItem } from "../playerActions/playerContextMenuItems";
 import { translatePositionLabel } from "../squad/SquadTab.helpers";
-import { formatPlayerAnnualWage, formatPlayerMarketValue } from "./PlayerProfile.helpers";
+import { formatPlayerMarketValue, formatPlayerWage } from "./PlayerProfile.helpers";
 import type { PlayerProfileScoutStatus, ScoutAvailability } from "./PlayerProfile.scouting";
 import PlayerProfileScoutAction from "./PlayerProfileScoutAction";
 import { TraitList } from "../TraitBadge";
@@ -23,7 +23,7 @@ interface PlayerProfileHeroCardProps {
   teamName: string;
   footednessLabel: string;
   weakFootValue: number;
-  annualSuffix: string;
+  weeklySuffix: string;
   language: string;
   isOwnClub: boolean;
   scoutAvailability: ScoutAvailability;
@@ -43,7 +43,7 @@ export default function PlayerProfileHeroCard({
   teamName,
   footednessLabel,
   weakFootValue,
-  annualSuffix,
+  weeklySuffix,
   language,
   isOwnClub,
   scoutAvailability,
@@ -170,8 +170,8 @@ export default function PlayerProfileHeroCard({
               color="text-white"
             />
             <QuickStat
-              label={t("common.wage")}
-              value={formatPlayerAnnualWage(player.wage, annualSuffix)}
+              label={t("playerProfile.weeklyWage")}
+              value={formatPlayerWage(player.wage, weeklySuffix)}
               color="text-white"
             />
           </div>
@@ -195,8 +195,8 @@ export default function PlayerProfileHeroCard({
           color="text-gray-700 dark:text-gray-200"
         />
         <MobileQuickStat
-          label={t("common.wage")}
-          value={formatPlayerAnnualWage(player.wage, annualSuffix)}
+          label={t("playerProfile.weeklyWage")}
+          value={formatPlayerWage(player.wage, weeklySuffix)}
           color="text-gray-700 dark:text-gray-200"
         />
       </div>

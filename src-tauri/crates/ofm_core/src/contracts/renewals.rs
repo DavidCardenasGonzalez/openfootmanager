@@ -43,7 +43,8 @@ pub fn evaluate_renewal_offer(
     let round = next_renewal_round(player, None);
     let expected_wage = expected_wage(player, team, current_date);
     let expected_years = expected_contract_years(player, current_date);
-    let minimum_wage = minimum_acceptable_wage(player.wage);
+    let reference_wage = reference_player_wage(player);
+    let minimum_wage = minimum_acceptable_wage(reference_wage);
 
     if offer.contract_years == 0 || offer.contract_years > MAX_CONTRACT_YEARS {
         let feedback = build_renewal_feedback(
@@ -66,7 +67,7 @@ pub fn evaluate_renewal_offer(
         );
     }
 
-    if is_insulting_wage_offer(player.wage, expected_wage, offer.weekly_wage) {
+    if is_insulting_wage_offer(reference_wage, expected_wage, offer.weekly_wage) {
         let feedback = build_renewal_feedback(
             player,
             current_date,
@@ -246,7 +247,7 @@ pub fn propose_renewal(
                 RenewalDecision::Accepted,
                 RenewalSessionStatus::Agreed,
                 round,
-                game.players[player_index].wage,
+                reference_player_wage(&game.players[player_index]),
                 false,
             )),
         ));
@@ -298,7 +299,7 @@ pub fn propose_renewal(
             .ok_or(ERR_UNABLE_TO_CALCULATE_CONTRACT_END_DATE.to_string())?;
 
         let player = &mut game.players[player_index];
-        player.wage = offer.weekly_wage;
+        player.wage = annual_wage_from_weekly(offer.weekly_wage);
         player.contract_end = Some(new_contract_end.format("%Y-%m-%d").to_string());
         let state = player
             .morale_core
@@ -498,7 +499,7 @@ pub(crate) fn build_renewal_feedback(
             "playerProfile.renewalFeedbackTenseHeadline",
             Some("playerProfile.renewalFeedbackTenseDetail"),
         )
-    } else if expected_wage > player.wage || round >= 2 {
+    } else if expected_wage > reference_player_wage(player) || round >= 2 {
         (
             NegotiationMood::Firm,
             "playerProfile.renewalFeedbackFirmHeadline",

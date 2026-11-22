@@ -33,6 +33,7 @@ interface MatchRouteState {
 }
 
 interface FinishLiveMatchResponse {
+  fixture_id?: string;
   game: GameStateData;
   round_summary?: RoundSummary | null;
 }
@@ -75,6 +76,7 @@ export default function MatchSimulation() {
   const [unityError, setUnityError] = useState("");
   const [unityBusy, setUnityBusy] = useState(false);
   const [unityEmbedded, setUnityEmbedded] = useState(false);
+  const [finishedUnityFixtureId, setFinishedUnityFixtureId] = useState<string>();
   const [unityTactics, setUnityTactics] = useState<UnityTacticsStatus | null>(null);
   const [unityOrderSending, setUnityOrderSending] = useState<"tactic" | "sub" | null>(null);
   const [unityOrderError, setUnityOrderError] = useState<"tactic" | "sub" | null>(null);
@@ -423,6 +425,7 @@ export default function MatchSimulation() {
       }));
       setGameState(response.game);
       setRoundSummary(response.round_summary ?? null);
+      setFinishedUnityFixtureId(response.fixture_id);
       setUnityEmbedded(false);
       setStage("digest");
       try {
@@ -440,7 +443,7 @@ export default function MatchSimulation() {
   useEffect(() => {
     if (!checkRecoveredResult.current || !gameState || !snapshot) return;
     checkRecoveredResult.current = false;
-    if (snapshot.phase === "PreKickOff" && !snapshot.allows_extra_time) {
+    if (snapshot.phase === "PreKickOff") {
       void finishUnityMatch(true);
     }
   }, [finishUnityMatch, gameState, snapshot]);
@@ -507,7 +510,7 @@ export default function MatchSimulation() {
     );
   }
 
-  const currentFixture = resolveMatchFixture(gameState, snapshot, routeState?.fixtureIndex);
+  const currentFixture = resolveMatchFixture(gameState, snapshot, routeState?.fixtureIndex, finishedUnityFixtureId);
 
   // Render the current stage
   switch (stage) {

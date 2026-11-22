@@ -1,5 +1,10 @@
 {
   "unityMatch": {
+    "ThrowIn": "Lançamento lateral",
+    "Offside": "Fora de jogo",
+    "playerStats": "Estatísticas dos jogadores",
+    "saves": "Defesas",
+    "minutes": "Minutos",
     "subPending": "Substituição agendada para a próxima interrupção.",
     "subFailed": "Não foi possível pedir a substituição.",
     "tacticPending": "A enviar a tática…",

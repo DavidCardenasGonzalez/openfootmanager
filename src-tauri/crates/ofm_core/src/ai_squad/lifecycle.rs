@@ -34,8 +34,10 @@ pub(super) fn review_club(game: &mut Game, id: &str, roster: &[usize]) {
             3
         };
         let renew = wanted && contract_end(player).is_none_or(|end| (end - date).num_days() <= 180);
-        let wage = crate::contracts::expected_wage(player, &team, date);
-        let allowed = wage_projection_allows(&team, wage_bill, player.wage, wage);
+        let annual_wage = crate::contracts::annual_wage_from_weekly(
+            crate::contracts::expected_wage(player, &team, date),
+        );
+        let allowed = wage_projection_allows(&team, wage_bill, player.wage, annual_wage);
         let promote = player.squad_role == SquadRole::Youth
             && (age(player, date) >= 21
                 || (age(player, date) >= 18 && player.ovr + 5 >= squad.quality));
@@ -48,11 +50,11 @@ pub(super) fn review_club(game: &mut Game, id: &str, roster: &[usize]) {
             game.squad_management.totals.promotions += 1;
         }
         if renew && allowed {
-            wage_bill += i64::from(wage) - i64::from(player.wage);
+            wage_bill += i64::from(annual_wage) - i64::from(player.wage);
             player.contract_end = date
                 .checked_add_months(Months::new(years * 12))
                 .map(|end| end.to_string());
-            player.wage = wage;
+            player.wage = annual_wage;
             player.morale_core.renewal_state = None;
             game.squad_management.totals.renewals += 1;
         }
@@ -106,13 +108,19 @@ pub(super) fn fill_vacancies(game: &mut Game, id: &str, mut roster: Vec<usize>) 
                     game,
                     &team,
                     0,
-                    crate::contracts::expected_wage(p, &team, date),
+                    crate::contracts::annual_wage_from_weekly(crate::contracts::expected_wage(
+                        p, &team, date,
+                    )),
                 )
             })
             .max_by_key(|(_, p)| retention_score(p, date))
             .map(|(i, _)| i);
         if let Some(index) = candidate {
-            let wage = crate::contracts::expected_wage(&game.players[index], &team, date);
+            let wage = crate::contracts::annual_wage_from_weekly(crate::contracts::expected_wage(
+                &game.players[index],
+                &team,
+                date,
+            ));
             let jersey = crate::roster::resolve_jersey_for(game, &game.players[index], &team);
             let player = &mut game.players[index];
             player.team_id = Some(id.into());

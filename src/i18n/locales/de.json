@@ -1,5 +1,10 @@
 {
   "unityMatch": {
+    "ThrowIn": "Einwurf",
+    "Offside": "Abseits",
+    "playerStats": "Spielerstatistik",
+    "saves": "Paraden",
+    "minutes": "Minuten",
     "subPending": "Der Wechsel erfolgt bei der nächsten Unterbrechung.",
     "subFailed": "Der Wechsel konnte nicht angefordert werden.",
     "tacticPending": "Taktik wird gesendet…",

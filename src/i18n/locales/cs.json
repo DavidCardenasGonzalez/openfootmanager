@@ -1,5 +1,10 @@
 {
   "unityMatch": {
+    "ThrowIn": "Vhazování",
+    "Offside": "Ofsajd",
+    "playerStats": "Statistiky hráčů",
+    "saves": "Zákroky",
+    "minutes": "Minuty",
     "subPending": "Střídání proběhne při nejbližším přerušení.",
     "subFailed": "Střídání se nepodařilo odeslat.",
     "tacticPending": "Odesílá se taktika…",

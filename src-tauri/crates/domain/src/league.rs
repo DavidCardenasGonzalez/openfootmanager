@@ -335,6 +335,59 @@ pub struct CompactMatchReport {
     pub home_stats: CompactTeamMatchStats,
     pub away_stats: CompactTeamMatchStats,
     pub events: Vec<CompactMatchEvent>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub observed_stats: Option<ObservedMatchStats>,
+}
+
+/// The counters measured by the 3D simulator, stored with the fixture result.
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(default)]
+pub struct ObservedMatchStats {
+    pub home: ObservedTeamStats,
+    pub away: ObservedTeamStats,
+    pub players: Vec<ObservedPlayerStats>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub incidents: Vec<ObservedMatchIncident>,
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub condition_tracked: bool,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(default)]
+pub struct ObservedMatchIncident {
+    pub minute: u8,
+    pub side: String,
+    pub player_id: String,
+    pub player_name: String,
+    pub kind: String,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(default)]
+pub struct ObservedTeamStats {
+    pub possession_pct: Option<u8>,
+    pub shots: u16,
+    pub shots_on_target: u16,
+    pub passes_attempted: u16,
+    pub passes_completed: u16,
+    pub corners: u16,
+    pub saves: u16,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(default)]
+pub struct ObservedPlayerStats {
+    pub player_id: String,
+    pub player_name: String,
+    pub side: String,
+    pub minutes_played: u8,
+    pub shots: u16,
+    pub shots_on_target: u16,
+    pub passes_attempted: u16,
+    pub passes_completed: u16,
+    pub saves: u16,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub condition_end: Option<u8>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]

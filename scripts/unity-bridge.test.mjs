@@ -16,6 +16,15 @@ test('maps the manager 4-2-3-1 formation to the simulator variant', () => {
   assert.equal(createRequest(match).home.formation, '_4_2_3_1_A');
 });
 
+test('exports match condition, fitness and stamina, including zero condition', () => {
+  const match = snapshot();
+  Object.assign(match.home_team.players[1], { condition: 0, fitness: 67, stamina: 81 });
+  const request = createRequest(match);
+  assert.equal(request.use_condition, true);
+  const { condition, fitness, stamina } = request.home.players[1];
+  assert.deepEqual({ condition, fitness, stamina }, { condition: 0, fitness: 67, stamina: 81 });
+});
+
 test('exports the selected style only for the managed side', () => {
   const match = snapshot();
   match.away_team.play_style = 'HighPress';
@@ -33,6 +42,17 @@ test('exports a player role alongside the player ID and position', () => {
   assert.equal(players[1].id, match.home_team.players[1].id);
 });
 
+test('exports the tactical blueprint only for the managed side', () => {
+  const match = snapshot();
+  match.home_team.tactics = { width: 'Narrow' };
+  match.away_team.tactics = { width: 'Wide', counter_press_duration: 'Long' };
+  match.away_team.play_style = 'Possession';
+  const request = createRequest(match, 'Away');
+  assert.deepEqual(request.away.tactics, match.away_team.tactics);
+  assert.equal(request.away.play_style, 'Possession');
+  assert.equal(request.home.tactics, undefined);
+});
+
 test('Unity role labels match the manager across its supported languages', () => {
   const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
   const { locales } = read('../integrations/unity/Resources/OpenFootRoleLabels.json');
@@ -42,5 +62,24 @@ test('Unity role labels match the manager across its supported languages', () =>
     assert.equal(locale.heading, source.match.playerRoles);
     assert.deepEqual(Object.fromEntries(locale.roles.map(({ id, text }) => [id, text])), source.tactics.playerRoles);
     assert.equal(locale.roles.length, 27);
+    assert.deepEqual(Object.fromEntries(locale.tactics.map(({ id, text }) => [id, text])), {
+      ...source.tactics.phaseSettings,
+      ...source.tactics.phaseLabels,
+      phaseBlueprint: source.tactics.phaseBlueprint,
+      Possession: source.common.playStyles.Possession,
+      selectForSwap: source.match.selectForSwap,
+      ThrowIn: source.unityMatch.ThrowIn,
+      Offside: source.unityMatch.Offside,
+      ExtraTimeFirstHalf: source.match.phases.ExtraTimeFirstHalf,
+      ExtraTimeSecondHalf: source.match.phases.ExtraTimeSecondHalf,
+      PenaltyShootout: source.match.penaltyShootout,
+      Foul: source.match.eventTypes.Foul,
+      YellowCard: source.match.eventTypes.YellowCard,
+      SecondYellow: source.match.eventTypes.SecondYellow,
+      RedCard: source.match.eventTypes.RedCard,
+      PenaltyAwarded: source.match.eventTypes.PenaltyAwarded,
+      PenaltyGoal: source.match.eventTypes.PenaltyGoal,
+      PenaltyMiss: source.match.eventTypes.PenaltyMiss,
+    });
   }
 });

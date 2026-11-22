@@ -161,7 +161,7 @@ pub fn offer_free_agent_contract(
         let player = &mut game.players[player_index];
         player.team_id = Some(team.id.clone());
         player.jersey_number = resolved_jersey_number;
-        player.wage = offer.weekly_wage;
+        player.wage = annual_wage_from_weekly(offer.weekly_wage);
         player.contract_end = Some(new_contract_end.format("%Y-%m-%d").to_string());
         player.transfer_listed = false;
         player.loan_listed = false;

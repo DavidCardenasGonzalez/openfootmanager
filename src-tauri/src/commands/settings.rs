@@ -185,7 +185,9 @@ mod tests {
     #[test]
     fn legacy_settings_enable_auto_save_after_match_by_default() {
         let mut json = serde_json::to_value(AppSettings::default()).unwrap();
-        json.as_object_mut().unwrap().remove("auto_save_after_match");
+        json.as_object_mut()
+            .unwrap()
+            .remove("auto_save_after_match");
 
         let loaded: AppSettings = serde_json::from_value(json).unwrap();
 

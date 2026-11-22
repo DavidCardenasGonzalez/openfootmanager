@@ -1,5 +1,10 @@
 {
   "unityMatch": {
+    "ThrowIn": "掷界外球",
+    "Offside": "越位",
+    "playerStats": "球员统计",
+    "saves": "扑救",
+    "minutes": "分钟",
     "subPending": "将在下次比赛中断时换人。",
     "subFailed": "无法发送换人请求。",
     "tacticPending": "正在发送战术…",

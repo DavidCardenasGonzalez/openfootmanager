@@ -45,6 +45,8 @@ impl TeamStats {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PlayerMatchStats {
     pub minutes_played: u8,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub condition_depletion: Option<u8>,
     pub goals: u8,
     pub assists: u8,
     pub shots: u8,

@@ -584,6 +584,41 @@ export interface CompactMatchReportData {
   home_stats: CompactTeamMatchStatsData;
   away_stats: CompactTeamMatchStatsData;
   events: CompactMatchEventData[];
+  observed_stats?: ObservedMatchStatsData | null;
+}
+
+interface ObservedPlayerCounters {
+  shots: number;
+  shots_on_target: number;
+  passes_attempted: number;
+  passes_completed: number;
+  saves: number;
+}
+
+interface ObservedTeamStatsData extends ObservedPlayerCounters {
+  possession_pct: number | null;
+  corners: number;
+}
+
+interface ObservedPlayerStatsData extends ObservedPlayerCounters {
+  player_id: string;
+  player_name: string;
+  side: "Home" | "Away";
+  minutes_played: number;
+}
+
+export interface ObservedMatchStatsData {
+  home: ObservedTeamStatsData;
+  away: ObservedTeamStatsData;
+  players: ObservedPlayerStatsData[];
+  incidents?: {
+    minute: number;
+    side: "Home" | "Away";
+    player_id: string;
+    player_name: string;
+    kind: "ThrowIn" | "Offside" | "Foul" | "YellowCard" | "RedCard" | "SecondYellow" |
+      "PenaltyAwarded" | "PenaltyGoal" | "PenaltyMiss";
+  }[];
 }
 
 export interface StandingData {

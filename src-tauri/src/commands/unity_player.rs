@@ -96,7 +96,7 @@ impl TacticsChannel {
                             .ok()
                             .filter(|ack| {
                                 ack.play_style == Some(*play_style)
-                                    && (1..=90).contains(&ack.minute)
+                                    && (1..=120).contains(&ack.minute)
                             })
                             .map(|ack| self.applied = Some(ack))
                     }
@@ -106,7 +106,7 @@ impl TacticsChannel {
                             .filter(|ack| {
                                 ack.player_off_id == change.player_off_id
                                     && ack.player_on_id == change.player_on_id
-                                    && (1..=90).contains(&ack.minute)
+                                    && (1..=120).contains(&ack.minute)
                             })
                             .map(|ack| self.substitutions.push(ack))
                     }

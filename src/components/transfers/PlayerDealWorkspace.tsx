@@ -7,12 +7,13 @@ import type { PlayerData, TeamData } from "../../store/gameStore";
 import { countryName } from "../../lib/countries";
 import {
   calcAge,
-  formatAnnualAmount,
   formatVal,
+  formatWeeklyAmount,
   getPlayerOvr,
   getTeamName,
   positionBadgeVariant,
 } from "../../lib/helpers";
+import { annualAmountToWeeklyCommitment } from "../../lib/finance";
 import { translatePositionAbbreviation } from "../squad/SquadTab.helpers";
 import { Badge, CountryFlag, PlayerAvatar } from "../ui";
 
@@ -22,15 +23,15 @@ interface PlayerDealWorkspaceProps {
   player: PlayerData;
   teams: TeamData[];
   myTeam: TeamData | null;
-  annualSuffix: string;
+  weeklySuffix: string;
   transferWindowBlocksRegistration: boolean;
   transferWindowSummary: string;
   loanNoticeDetail: string | null;
   selectedKind: DealKind;
   /**
-   * Live wage being offered in the active deal (same units as `player.wage`),
-   * or null when the route has no wage offer. Shown alongside the player's
-   * current wage so the two never read as one contradictory figure (#305).
+   * Live weekly wage being offered in the active deal, or null when the route
+   * has no wage offer. Shown alongside the player's current weekly wage so the
+   * two never read as one contradictory figure (#305).
    */
   offeredWage?: number | null;
   onSelectKind: (kind: DealKind) => void;
@@ -88,7 +89,7 @@ export default function PlayerDealWorkspace({
   player,
   teams,
   myTeam,
-  annualSuffix,
+  weeklySuffix,
   transferWindowBlocksRegistration,
   transferWindowSummary,
   loanNoticeDetail,
@@ -294,7 +295,10 @@ export default function PlayerDealWorkspace({
                 <div>
                   <p className={factLabelClass()}>{t("common.currentWage")}</p>
                   <p className={`${factValueClass()} tabular-nums`}>
-                    {formatAnnualAmount(formatVal(player.wage), annualSuffix)}
+                    {formatWeeklyAmount(
+                      formatVal(annualAmountToWeeklyCommitment(player.wage)),
+                      weeklySuffix,
+                    )}
                   </p>
                 </div>
               </div>
@@ -302,7 +306,7 @@ export default function PlayerDealWorkspace({
                 <div className="mt-3 border-t border-gray-100 pt-3 dark:border-navy-700">
                   <p className={factLabelClass()}>{t("playerProfile.renewalWage")}</p>
                   <p className={`${factValueClass()} tabular-nums`}>
-                    {formatAnnualAmount(formatVal(offeredWage), annualSuffix)}
+                    {formatWeeklyAmount(formatVal(offeredWage), weeklySuffix)}
                   </p>
                 </div>
               ) : null}
@@ -317,7 +321,10 @@ export default function PlayerDealWorkspace({
                 <div className="mt-4">
                   <p className={factLabelClass()}>{t("finances.wageBudget")}</p>
                   <p className={`${factValueClass()} tabular-nums`}>
-                    {formatAnnualAmount(formatVal(myTeam.wage_budget), annualSuffix)}
+                    {formatWeeklyAmount(
+                      formatVal(annualAmountToWeeklyCommitment(myTeam.wage_budget)),
+                      weeklySuffix,
+                    )}
                   </p>
                 </div>
               </div>

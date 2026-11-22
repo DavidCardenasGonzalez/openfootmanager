@@ -53,7 +53,8 @@ fn make_player() -> Player {
     );
     player.team_id = Some("team-1".to_string());
     player.contract_end = Some("2026-10-15".to_string());
-    player.wage = 12_000;
+    // Stored wages are annual; this is a player on €12k/week.
+    player.wage = 12_000 * 52;
     player.morale = 75;
     player.market_value = 350_000;
     player
@@ -64,7 +65,8 @@ fn make_player_with(id: &str, wage: u32, contract_end: &str) -> Player {
     player.id = id.to_string();
     player.match_name = id.to_string();
     player.full_name = format!("Player {}", id);
-    player.wage = wage;
+    // The helper takes a weekly figure, like every wage shown in the UI.
+    player.wage = wage.saturating_mul(52);
     player.contract_end = Some(contract_end.to_string());
     player
 }
@@ -88,7 +90,7 @@ fn make_team() -> Team {
     );
     team.manager_id = Some("manager-1".to_string());
     team.reputation = 50;
-    team.wage_budget = 50_000;
+    team.wage_budget = 2_000_000;
     team
 }
 
@@ -192,7 +194,7 @@ fn accepted_offer_updates_wage_and_term_correctly() {
     assert!(matches!(outcome.decision, RenewalDecision::Accepted));
     assert!(outcome.feedback.is_some());
     let player = game.players.iter().find(|p| p.id == "player-1").unwrap();
-    assert_eq!(player.wage, 15_000);
+    assert_eq!(player.wage, 15_000 * 52);
     assert_eq!(player.contract_end.as_deref(), Some("2029-08-01"));
 }
 
@@ -282,8 +284,8 @@ fn loaned_out_player_termination_is_blocked_until_loan_ends() {
 
     let projection = project_renewal_financial_impact(&game, "player-1", 15_000)
         .expect("parent club should still own renewal financial projections");
-    assert_eq!(projection.current_annual_wage_bill, 12_000);
-    assert_eq!(projection.projected_annual_wage_bill, 15_000);
+    assert_eq!(projection.current_annual_wage_bill, 12_000 * 52);
+    assert_eq!(projection.projected_annual_wage_bill, 15_000 * 52);
 
     let error = preview_contract_termination(&game, "player-1")
         .expect_err("active loans should block contract termination");
@@ -541,7 +543,7 @@ fn free_agent_offer_accepts_and_assigns_player_to_manager_team() {
         .find(|player| player.id == "free-agent-1")
         .unwrap();
     assert_eq!(player.team_id.as_deref(), Some("team-1"));
-    assert_eq!(player.wage, 4_000);
+    assert_eq!(player.wage, 4_000 * 52);
     assert_eq!(player.contract_end.as_deref(), Some("2029-08-01"));
     let message = game
         .messages
@@ -695,7 +697,7 @@ fn free_agent_projection_uses_manager_team_wage_context() {
         project_free_agent_contract_impact(&game, "free-agent-1", 4_000).expect("projection");
 
     assert_eq!(projection.current_annual_wage_bill, 0);
-    assert_eq!(projection.projected_annual_wage_bill, 4_000);
+    assert_eq!(projection.projected_annual_wage_bill, 4_000 * 52);
     assert!(projection.policy_allows);
 }
 
@@ -939,8 +941,8 @@ fn renewal_is_blocked_when_offer_pushes_healthy_club_far_over_soft_cap() {
 #[test]
 fn renewal_allows_small_increase_for_legacy_over_budget_saves() {
     let mut game = make_game();
-    game.teams[0].wage_budget = 50_000;
-    game.players[0].wage = 48_000;
+    game.teams[0].wage_budget = 1_000_000;
+    game.players[0].wage = 48_000 * 52;
     game.players
         .push(make_player_with("player-2", 40_000, "2027-06-30"));
 
@@ -948,7 +950,7 @@ fn renewal_allows_small_increase_for_legacy_over_budget_saves() {
         &mut game,
         "player-1",
         RenewalOffer {
-            weekly_wage: 70_000,
+            weekly_wage: 48_500,
             contract_years: 2,
         },
     );
@@ -962,8 +964,8 @@ fn renewal_allows_small_increase_for_legacy_over_budget_saves() {
 #[test]
 fn renewal_blocks_large_worsening_for_legacy_over_budget_saves() {
     let mut game = make_game();
-    game.teams[0].wage_budget = 50_000;
-    game.players[0].wage = 48_000;
+    game.teams[0].wage_budget = 1_000_000;
+    game.players[0].wage = 48_000 * 52;
     game.players
         .push(make_player_with("player-2", 40_000, "2027-06-30"));
 
@@ -977,5 +979,5 @@ fn renewal_blocks_large_worsening_for_legacy_over_budget_saves() {
     )
     .expect_err("large worsening should still be blocked");
 
-    assert_eq!(err, "be.error.contracts.boardWagePolicy?budget=50000");
+    assert_eq!(err, "be.error.contracts.boardWagePolicy?budget=1000000");
 }

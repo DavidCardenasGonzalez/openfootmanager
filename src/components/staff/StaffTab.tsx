@@ -14,6 +14,7 @@ import {
   Star,
 } from "lucide-react";
 import { getTeamName, calcAge, formatVal, formatWeeklyAmount } from "../../lib/helpers";
+import { annualAmountToWeeklyCommitment } from "../../lib/finance";
 import { countryName } from "../../lib/countries";
 import { useTranslation } from "react-i18next";
 import { hireStaff, releaseStaff } from "../../services/staffService";
@@ -345,7 +346,10 @@ export default function StaffTab({ gameState, onGameUpdate, onNavigate }: StaffT
                           )}
                           {staff.wage > 0 && (
                             <span className="text-[10px] bg-gray-100 dark:bg-navy-700 text-gray-500 dark:text-gray-400 px-1.5 py-0.5 rounded font-heading uppercase tracking-wider">
-                              {formatWeeklyAmount(formatVal(staff.wage), weeklySuffix)}
+                              {formatWeeklyAmount(
+                                formatVal(annualAmountToWeeklyCommitment(staff.wage)),
+                                weeklySuffix,
+                              )}
                             </span>
                           )}
                           {staff.role === "Scout" ? (

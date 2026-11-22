@@ -1,5 +1,10 @@
 {
   "unityMatch": {
+    "ThrowIn": "Rimessa laterale",
+    "Offside": "Fuorigioco",
+    "playerStats": "Statistiche dei giocatori",
+    "saves": "Parate",
+    "minutes": "Minuti",
     "subPending": "Cambio in attesa della prossima interruzione.",
     "subFailed": "Impossibile richiedere il cambio.",
     "tacticPending": "Invio della tattica…",

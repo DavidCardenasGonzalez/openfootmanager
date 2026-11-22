@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import type { PlayerData, TeamData } from "../../store/gameStore";
 import { formatExactMoney, formatVal, getTeamName, positionBadgeVariant } from "../../lib/helpers";
+import { annualAmountToWeeklyCommitment } from "../../lib/finance";
 import { formatDate } from "../../lib/dateFormatting";
 import { Badge } from "../ui";
 import { translatePositionAbbreviation } from "../squad/SquadTab.helpers";
@@ -207,7 +208,11 @@ export function LoanOfferForm({
       <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
         {t("transfers.loanWageSummary", {
           percent: wageContributionPct,
-          wage: formatExactMoney(Math.round((loanTarget.wage * wageContributionPct) / 100)),
+          wage: `${formatExactMoney(
+            Math.round(
+              (annualAmountToWeeklyCommitment(loanTarget.wage) * wageContributionPct) / 100,
+            ),
+          )}${t("finances.perWeekSuffix", "/wk")}`,
         })}
       </p>
 

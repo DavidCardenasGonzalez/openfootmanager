@@ -734,6 +734,7 @@ pub fn set_tactics_phase(
             };
         }
 
+        state.with_live_match(|live| live.sync_prematch_tactics(&team.id, &team.tactics_phase));
         Ok(())
     })
 }

@@ -1,5 +1,10 @@
 {
   "unityMatch": {
+    "ThrowIn": "Saque de banda",
+    "Offside": "Fuera de lugar",
+    "playerStats": "Estadísticas de jugadores",
+    "saves": "Atajadas",
+    "minutes": "Minutos",
     "subPending": "Cambio pendiente hasta la próxima interrupción.",
     "subFailed": "No se pudo solicitar el cambio.",
     "tacticPending": "Enviando táctica…",

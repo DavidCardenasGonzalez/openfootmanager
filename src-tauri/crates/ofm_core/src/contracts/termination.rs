@@ -152,7 +152,7 @@ pub(crate) fn termination_severance_cost(player: &Player, current_date: NaiveDat
         .max(0);
     let remaining_weeks = (remaining_days + 6) / 7;
 
-    remaining_weeks * i64::from(player.wage)
+    remaining_weeks * i64::from(weekly_wage_from_annual(player.wage))
 }
 
 pub(crate) fn contract_terminated_message(

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 /// overlay canvas so the vendor MatchUI prefab stays untouched, and drives the
 /// same validation/execution path as the standalone order queue.
 /// </summary>
-public sealed class OpenFootSubstitutionPanel : MonoBehaviour
+public sealed partial class OpenFootSubstitutionPanel : MonoBehaviour
 {
     private static OpenFootSubstitutionPanel installed;
 
@@ -43,10 +43,18 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
     private OpenFootBridge bridge;
     private OpenFootSubstitutionView view;
     private TMP_FontAsset font;
+    private TMP_Text refereeNotice;
+    private RectTransform refereeNoticeRoot;
     private readonly List<Row> onPitchRows = new List<Row>();
     private readonly List<Row> substituteRows = new List<Row>();
     private readonly List<Row> roleRows = new List<Row>();
     private bool roleMode;
+    private bool tacticsMode;
+    private TMP_Text tacticsModeLabel;
+    private readonly List<(Button button, TMP_Text label, OpenFootTacticsSettings.Dial dial)> tacticRows
+        = new List<(Button, TMP_Text, OpenFootTacticsSettings.Dial)>();
+    private readonly List<GameObject> tacticHeadings = new List<GameObject>();
+    private OpenFootTacticsSettings.Dial lastTactic;
     private readonly List<StyleButton> styleButtons = new List<StyleButton>();
 
     private string selectedOff;
@@ -118,8 +126,22 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
             if (!Bind(content)) throw new MissingComponentException("OpenFootSubstitutionView");
         }
         content.name = "OpenFootSubstitutionUI";
+        BuildTacticsControls();
+        BuildFormationControls();
         view.Panel.SetActive(false);
         OpenFootLabels.Apply(view, labels);
+        refereeNoticeRoot = NewRect("Referee Notice", canvasObject.transform);
+        refereeNoticeRoot.anchorMin = refereeNoticeRoot.anchorMax = new Vector2(0.5f, 0f);
+        refereeNoticeRoot.anchoredPosition = new Vector2(0f, 104f);
+        refereeNoticeRoot.sizeDelta = new Vector2(470f, 46f);
+        var noticeBackground = refereeNoticeRoot.gameObject.AddComponent<Image>();
+        noticeBackground.color = RowBackground;
+        noticeBackground.raycastTarget = false;
+        refereeNotice = NewText("Decision", refereeNoticeRoot, font, 23f, TextAlignmentOptions.Center, Color.white);
+        refereeNotice.richText = false;
+        refereeNotice.overflowMode = TextOverflowModes.Ellipsis;
+        Stretch(refereeNotice.rectTransform, 12f, 0f, 12f, 0f);
+        refereeNoticeRoot.gameObject.SetActive(false);
         Refresh();
     }
 
@@ -134,10 +156,10 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
         view.CloseButton.onClick.AddListener(Close);
         view.CancelButton.onClick.AddListener(ClearSelection);
         view.ConfirmButton.onClick.AddListener(Confirm);
-        view.Formation442.onClick.AddListener(() => OnFormationClicked("4-4-2"));
-        view.Formation433.onClick.AddListener(() => OnFormationClicked("4-3-3"));
         view.RolesButton.onClick.AddListener(() => {
-            roleMode = !roleMode;
+            roleMode = formationMode || tacticsMode || !roleMode;
+            formationMode = false;
+            tacticsMode = false;
             selectedOn = null;
             Refresh();
         });
@@ -175,6 +197,12 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
     private void Update()
     {
         if (bridge == null) return;
+        if (refereeNoticeRoot != null)
+        {
+            var notice = bridge.RefereeNotice;
+            refereeNoticeRoot.gameObject.SetActive(bridge.ResultJson == null && !panelOpen && notice != null);
+            refereeNotice.text = notice;
+        }
         if (panelOpen)
         {
             // The template can hide or lock the cursor during play; the panel
@@ -288,6 +316,12 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
 
     private void ClearSelection()
     {
+        if (formationMode)
+        {
+            CloseFormationDraft();
+            Refresh();
+            return;
+        }
         SelectOff(null, false);
         selectedOn = null;
         errorMessage = null;
@@ -298,6 +332,11 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
     private void Confirm()
     {
         if (OrderPending) return;
+        if (formationMode)
+        {
+            ConfirmFormation();
+            return;
+        }
         if (string.IsNullOrEmpty(selectedOff) || string.IsNullOrEmpty(selectedOn)) return;
         if (!bridge.CheckSubstitution(selectedOff, selectedOn, out string error))
         {
@@ -343,16 +382,6 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
 
     private bool OrderPending => pendingOff != null || pendingStyle != null || bridge.FormationPending;
 
-    private void OnFormationClicked(string formation)
-    {
-        if (OrderPending) return;
-        if (bridge.TryQueueFormation(formation))
-        {
-            SelectOff(null, false);
-            Refresh();
-        }
-    }
-
     private string StyleName(string style)
     {
         switch (style)
@@ -361,6 +390,7 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
             case "Defensive": return styleLabels.Defensive;
             case "Counter": return styleLabels.Counter;
             case "HighPress": return styleLabels.HighPress;
+            case "Possession": return OpenFootRoleLabels.Tactic("Possession");
             default: return styleLabels.Balanced;
         }
     }
@@ -619,6 +649,64 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
 
     // ------------------------------------------------------------------ refresh
 
+    private void BuildTacticsControls()
+    {
+        var header = view.CloseButton.transform.parent;
+        var toggle = NewButton("TeamTactics", header, font, 206f, StyleIdle, out tacticsModeLabel);
+        var rect = (RectTransform)toggle.transform;
+        rect.anchorMin = rect.anchorMax = new Vector2(1f, 0.5f);
+        rect.pivot = new Vector2(1f, 0.5f);
+        rect.anchoredPosition = new Vector2(-56f, 0f);
+        rect.sizeDelta = new Vector2(206f, 34f);
+        Stretch(view.Title.rectTransform, 0f, 8f, 275f, 8f);
+        toggle.onClick.AddListener(() =>
+        {
+            tacticsMode = !tacticsMode;
+            formationMode = false;
+            roleMode = false;
+            view.OnPitchScroll.verticalNormalizedPosition = 1f;
+            view.BenchScroll.verticalNormalizedPosition = 1f;
+            Refresh();
+        });
+        var styleRow = view.Panel.transform.Find("StyleRow");
+        var possession = NewButton("Possession", styleRow, font, 118f, StyleIdle, out var possessionLabel);
+        possessionLabel.fontSize = 16f;
+        possessionLabel.overflowMode = TextOverflowModes.Ellipsis;
+        possession.onClick.AddListener(() => OnStyleClicked("Possession"));
+        styleButtons.Add(new StyleButton { Button = possession, Image = possession.image, Label = possessionLabel, Style = "Possession" });
+
+        var dials = OpenFootTacticsSettings.Dials;
+        AddTacticsGroup("withBall", view.OnPitchContent, dials, 0, 3);
+        AddTacticsGroup("transitions", view.OnPitchContent, dials, 7, 2);
+        AddTacticsGroup("withoutBall", view.BenchContent, dials, 3, 4);
+    }
+
+    private void AddTacticsGroup(string key, Transform parent, OpenFootTacticsSettings.Dial[] dials, int start, int count)
+    {
+        var group = NewText(key, parent, font, 17f, TextAlignmentOptions.Left, MutedText);
+        group.text = OpenFootRoleLabels.Tactic(key);
+        group.gameObject.AddComponent<LayoutElement>().preferredHeight = 28f;
+        tacticHeadings.Add(group.gameObject);
+        for (int index = start; index < start + count; ++index)
+        {
+            var dial = dials[index];
+            var button = NewButton(dial.Label, parent, font, 200f, RowBackground, out var label);
+            button.gameObject.AddComponent<LayoutElement>().preferredHeight = 38f;
+            label.fontSize = 16f;
+            label.overflowMode = TextOverflowModes.Ellipsis;
+            button.onClick.AddListener(() =>
+            {
+                if (OrderPending || !bridge.TryCycleTactic(dial)) return;
+                lastTactic = dial;
+                Refresh();
+            });
+            tacticRows.Add((button, label, dial));
+        }
+    }
+
+    private string TacticValue(OpenFootTacticsSettings.Dial dial) =>
+        OpenFootRoleLabels.Tactic(dial.Label + "_" + dial.Read(bridge.TacticalSettings));
+
     private void Refresh()
     {
         if (view == null || bridge == null) return;
@@ -632,11 +720,20 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
 
         var team = bridge.Lineup;
         bool blocked = OrderPending;
+        tacticsModeLabel.text = tacticsMode ? labels.Title : OpenFootRoleLabels.Tactic("phaseBlueprint");
+        foreach (var heading in tacticHeadings) heading.SetActive(tacticsMode);
+        foreach (var item in tacticRows)
+        {
+            item.button.gameObject.SetActive(tacticsMode);
+            if (!tacticsMode) continue;
+            item.label.text = OpenFootRoleLabels.Tactic(item.dial.Label) + "   ·   " + TacticValue(item.dial) + "  ›";
+            item.button.interactable = bridge.CanChangeStyle && !blocked;
+        }
         EnsureRows(onPitchRows, team.Count, view.OnPitchContent);
         for (int index = 0; index < onPitchRows.Count; index++)
         {
             var row = onPitchRows[index];
-            if (index >= team.Count)
+            if (formationMode || tacticsMode || index >= team.Count)
             {
                 row.Root.SetActive(false);
                 continue;
@@ -654,7 +751,7 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
         for (int index = 0; index < substituteRows.Count; index++)
         {
             var row = substituteRows[index];
-            if (roleMode || index >= benchPlayers.Count)
+            if (formationMode || tacticsMode || roleMode || index >= benchPlayers.Count)
             {
                 row.Root.SetActive(false);
                 continue;
@@ -676,18 +773,32 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
         view.BenchHeader.text = labels.Bench + "  (" + benchPlayers.Count + ")";
         view.RolesLabel.text = roleMode ? labels.Bench : OpenFootRoleLabels.Heading;
         view.Remaining.text = string.Format(labels.RemainingFormat, bridge.SubstitutionsRemaining, bridge.SubstitutionLimit);
-        view.ConfirmButton.gameObject.SetActive(!roleMode);
-        view.CancelButton.gameObject.SetActive(!roleMode);
+        view.ConfirmButton.gameObject.SetActive(!roleMode && !tacticsMode);
+        view.CancelButton.gameObject.SetActive(!roleMode && !tacticsMode);
         view.ConfirmButton.interactable = !blocked && selectedOff != null && selectedOn != null
             && bridge.SubstitutionsRemaining > 0;
         view.CancelButton.interactable = selectedOff != null || selectedOn != null || pendingOff != null;
 
+        RefreshFormationEditor();
+        if (formationMode)
+        {
+            foreach (var row in roleRows) row.Root.SetActive(false);
+            return;
+        }
         if (roleMode)
         {
             RefreshRoleRows(blocked);
             return;
         }
         foreach (var row in roleRows) row.Root.SetActive(false);
+        if (tacticsMode)
+        {
+            view.OnPitchHeader.text = OpenFootRoleLabels.Tactic("phaseBlueprint");
+            view.BenchHeader.text = "";
+            SetStatus(MutedText, lastTactic == null ? "" :
+                OpenFootRoleLabels.Tactic(lastTactic.Label) + " · " + TacticValue(lastTactic) + " · " + bridge.TacticsMinute + "'");
+            return;
+        }
         if (pendingOff != null)
             SetStatus(Warning, string.Format(labels.PendingFormat, pendingOffName, pendingOnName));
         else if (!string.IsNullOrEmpty(errorMessage))
@@ -761,17 +872,9 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
             : bridge.FormationMinute > 0 ? string.Format(text.Applied, active, bridge.FormationMinute)
             : text.Label + " · " + active;
         view.FormationStatus.color = bridge.FormationPending || bridge.FormationFailed ? Warning : MutedText;
-        RefreshFormationButton(view.Formation442, "4-4-2", active, pending);
-        RefreshFormationButton(view.Formation433, "4-3-3", active, pending);
     }
 
-    private void RefreshFormationButton(Button button, string formation, string active, string pending)
-    {
-        button.image.color = formation == pending ? Warning : formation == active ? Accent : StyleIdle;
-        button.interactable = bridge.CanChangeStyle && !OrderPending && formation != active;
-    }
-
-    private void EnsureRows(List<Row> rows, int count, RectTransform parent)
+    private void EnsureRows(List<Row> rows, int count, RectTransform parent, Action<Row> onClick = null)
     {
         while (rows.Count < count)
         {
@@ -791,7 +894,7 @@ public sealed class OpenFootSubstitutionPanel : MonoBehaviour
             label.overflowMode = TextOverflowModes.Ellipsis;
 
             var row = new Row { Root = root, Background = image, Button = button, Label = label };
-            button.onClick.AddListener(() => OnRowClicked(row));
+            button.onClick.AddListener(() => (onClick ?? OnRowClicked)(row));
             rows.Add(row);
         }
     }

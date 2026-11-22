@@ -24,6 +24,7 @@ import { getErrorMessage, resolveTranslatedErrorMessage } from "../../utils/erro
 import ContextMenu, { type ContextMenuItem } from "../ContextMenu";
 import { Badge, Card, CardBody, Select } from "../ui";
 import ScheduleCalendarGrid from "./ScheduleCalendarGrid";
+import ObservedMatchReport from "../match/ObservedMatchReport";
 
 interface ScheduleTabProps {
   gameState: GameStateData;
@@ -491,6 +492,7 @@ function MatchdayGroupCard({
               const isUserMatch =
                 fixture.home_team_id === userTeamId || fixture.away_team_id === userTeamId;
               const completed = fixture.status === "Completed";
+              const observedStats = fixture.result?.observed_stats;
               const contextItems = [
                 buildTeamMenuItem(
                   `${t("common.viewTeam")}: ${fixture.home_team_name}`,
@@ -503,46 +505,65 @@ function MatchdayGroupCard({
               ];
 
               return (
-                <ContextMenu items={contextItems} key={fixture.id}>
-                  <div
-                    className={`flex items-center px-5 py-3 transition-colors ${
-                      isUserMatch ? "bg-primary-50/50 dark:bg-primary-500/5" : ""
-                    }`}
-                    data-testid={`schedule-fixture-${fixture.id}`}
-                  >
-                    <span
-                      onClick={() => onSelectTeam(fixture.home_team_id)}
-                      className={`flex-1 cursor-pointer text-right text-sm font-semibold hover:underline ${
-                        fixture.home_team_id === userTeamId
-                          ? "text-primary-600 dark:text-primary-400"
-                          : "text-gray-800 dark:text-gray-200"
+                <div key={fixture.id}>
+                  <ContextMenu items={contextItems}>
+                    <div
+                      className={`flex items-center px-5 py-3 transition-colors ${
+                        isUserMatch ? "bg-primary-50/50 dark:bg-primary-500/5" : ""
                       }`}
+                      data-testid={`schedule-fixture-${fixture.id}`}
                     >
-                      {fixture.home_team_name}
-                    </span>
-                    <div className="mx-3 w-24 text-center">
-                      {completed && fixture.result ? (
-                        <span className="font-heading text-lg font-bold text-gray-800 dark:text-gray-100">
-                          {fixture.result.home_goals} - {fixture.result.away_goals}
-                        </span>
-                      ) : (
-                        <Badge variant="neutral" size="sm">
-                          vs
-                        </Badge>
-                      )}
+                      <span
+                        onClick={() => onSelectTeam(fixture.home_team_id)}
+                        className={`flex-1 cursor-pointer text-right text-sm font-semibold hover:underline ${
+                          fixture.home_team_id === userTeamId
+                            ? "text-primary-600 dark:text-primary-400"
+                            : "text-gray-800 dark:text-gray-200"
+                        }`}
+                      >
+                        {fixture.home_team_name}
+                      </span>
+                      <div className="mx-3 w-24 text-center">
+                        {completed && fixture.result ? (
+                          <>
+                            <span className="font-heading text-lg font-bold text-gray-800 dark:text-gray-100">
+                              {fixture.result.home_goals} - {fixture.result.away_goals}
+                            </span>
+                            {fixture.result.home_penalties != null && fixture.result.away_penalties != null && (
+                              <span className="block text-xs tabular-nums text-gray-500 dark:text-gray-300">
+                                {t("match.shootout.shootoutScore", { h: fixture.result.home_penalties, a: fixture.result.away_penalties })}
+                              </span>
+                            )}
+                          </>
+                        ) : (
+                          <Badge variant="neutral" size="sm">
+                            vs
+                          </Badge>
+                        )}
+                      </div>
+                      <span
+                        onClick={() => onSelectTeam(fixture.away_team_id)}
+                        className={`flex-1 cursor-pointer text-left text-sm font-semibold hover:underline ${
+                          fixture.away_team_id === userTeamId
+                            ? "text-primary-600 dark:text-primary-400"
+                            : "text-gray-800 dark:text-gray-200"
+                        }`}
+                      >
+                        {fixture.away_team_name}
+                      </span>
                     </div>
-                    <span
-                      onClick={() => onSelectTeam(fixture.away_team_id)}
-                      className={`flex-1 cursor-pointer text-left text-sm font-semibold hover:underline ${
-                        fixture.away_team_id === userTeamId
-                          ? "text-primary-600 dark:text-primary-400"
-                          : "text-gray-800 dark:text-gray-200"
-                      }`}
-                    >
-                      {fixture.away_team_name}
-                    </span>
-                  </div>
-                </ContextMenu>
+                  </ContextMenu>
+                  {completed && observedStats && (
+                    <details className="px-5 pb-3">
+                      <summary className="cursor-pointer text-center text-sm font-semibold text-primary-700 dark:text-primary-400">
+                        {t("match.stats")}
+                      </summary>
+                      <div className="mx-auto mt-3 max-w-5xl">
+                        <ObservedMatchReport stats={observedStats} homeName={fixture.home_team_name} awayName={fixture.away_team_name} />
+                      </div>
+                    </details>
+                  )}
+                </div>
               );
             })}
           </div>

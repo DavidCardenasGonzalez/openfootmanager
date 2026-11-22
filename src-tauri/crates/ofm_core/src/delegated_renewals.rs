@@ -90,8 +90,7 @@ pub fn delegate_renewals(
         let expected_years = expected_contract_years(player, current_date);
         let agreed_years = expected_years.min(max_years);
         let max_wage = round_up_to_nearest_thousand(
-            player
-                .wage
+            crate::contracts::weekly_wage_from_annual(player.wage)
                 .saturating_mul(100 + options.max_wage_increase_pct)
                 / 100,
         );
@@ -173,7 +172,7 @@ pub fn delegate_renewals(
                 .checked_add_months(Months::new(agreed_years * 12))
                 .ok_or(ERR_UNABLE_TO_CALCULATE_CONTRACT_END_DATE.to_string())?;
             let player = &mut game.players[player_index];
-            player.wage = agreed_wage;
+            player.wage = crate::contracts::annual_wage_from_weekly(agreed_wage);
             player.contract_end = Some(new_contract_end.format("%Y-%m-%d").to_string());
             let state = player
                 .morale_core
@@ -188,7 +187,7 @@ pub fn delegate_renewals(
 
             report.success_count += 1;
             case.status = DelegatedRenewalResultStatus::Successful;
-            case.agreed_wage = Some(player.wage);
+            case.agreed_wage = Some(agreed_wage);
             case.agreed_years = Some(agreed_years);
             case.note = String::new();
             case.note_key = Some("be.msg.delegatedRenewals.notes.completed".to_string());

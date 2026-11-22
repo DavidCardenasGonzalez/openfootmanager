@@ -1,5 +1,5 @@
 use crate::game::Game;
-use domain::league::{Fixture, FixtureCompetition, FixtureStatus};
+use domain::league::{Fixture, FixtureCompetition, FixtureStatus, ObservedMatchStats};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -12,6 +12,12 @@ pub struct ScheduleQuery {
 pub struct FixtureResult {
     pub home_goals: u8,
     pub away_goals: u8,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub home_penalties: Option<u8>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub away_penalties: Option<u8>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub observed_stats: Option<ObservedMatchStats>,
 }
 
 #[derive(Debug, Serialize, PartialEq, Eq)]
@@ -201,6 +207,9 @@ fn project_fixture(fixture: &Fixture, team_name: &BTreeMap<&str, &str>) -> Fixtu
     let result = fixture.result.as_ref().map(|r| FixtureResult {
         home_goals: r.home_goals,
         away_goals: r.away_goals,
+        home_penalties: r.home_penalties,
+        away_penalties: r.away_penalties,
+        observed_stats: r.report.as_ref().and_then(|stats| stats.observed_stats.clone()),
     });
 
     FixtureSummary {

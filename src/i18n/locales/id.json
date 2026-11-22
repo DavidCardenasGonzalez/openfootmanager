@@ -1,5 +1,10 @@
 {
   "unityMatch": {
+    "ThrowIn": "Lemparan ke dalam",
+    "Offside": "Posisi offside",
+    "playerStats": "Statistik pemain",
+    "saves": "Penyelamatan",
+    "minutes": "Menit",
     "subPending": "Pergantian menunggu jeda permainan berikutnya.",
     "subFailed": "Pergantian gagal diajukan.",
     "tacticPending": "Mengirim taktik…",

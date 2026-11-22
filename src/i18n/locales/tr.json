@@ -1,5 +1,10 @@
 {
   "unityMatch": {
+    "ThrowIn": "Taç atışı",
+    "Offside": "Ofsayt",
+    "playerStats": "Oyuncu istatistikleri",
+    "saves": "Kurtarışlar",
+    "minutes": "Dakika",
     "subPending": "Değişiklik bir sonraki oyun durduğunda yapılacak.",
     "subFailed": "Oyuncu değişikliği gönderilemedi.",
     "tacticPending": "Taktik gönderiliyor…",

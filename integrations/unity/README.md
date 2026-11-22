@@ -19,13 +19,35 @@ The processes exchange version 1 JSON files in the system temporary directory un
 
 ## Scope
 
-The request supplies team identities, eleven starters per side, a supported formation and player attributes. The managed team also receives its bench and the match substitution limit. The keeper occupies slot zero. The adapter clones the template teams for kits and appearance. Player order determines formation slots. The result supplies the final score, starting rosters, attributed goals and completed substitutions. Older score-only results are accepted. Own goals count toward the final score. The template exposes no assist or card events. Knockout matches use the existing manager flow.
+The request supplies team identities, eleven starters per side, a supported formation and player attributes. The managed team also receives its bench and the match substitution limit. The keeper occupies slot zero. The adapter clones the template teams for kits and appearance. Player order determines formation slots. The result supplies the final score, starting rosters, attributed goals and completed substitutions. Older score-only results are accepted. Own goals count toward the final score.
 
-The managed side optionally carries `play_style`. Unity applies it before kickoff and leaves the opponent under simulator AI. Balanced, Attacking, Defensive, Counter and HighPress use the corresponding simulator presets. Possession uses Balanced because the simulator has no possession preset. Legacy requests omit the field and retain autonomous coaches on both sides. The Football Simulator 1.1a adapter installs its passive UserManager in the managed team’s private tacticManager field at initialization. Recheck this binding when updating the asset.
+For single-match knockout fixtures, a tie at 90 minutes starts two extra periods of 15 minutes. A tie at 120 starts an on-pitch shootout with alternating kicks, early decisions and sudden death. The player uses each team's assigned goal to preserve the simulator's keeper behaviour. The shootout is recorded separately from the score and the match statistics. OpenFoot uses its existing competition rules to advance the winner.
+
+The managed side optionally carries `play_style` and a `tactics` blueprint. Unity applies them before kickoff and leaves the opponent under simulator AI. Balanced, Attacking, Defensive, Counter and HighPress use the corresponding simulator presets. Possession adds nearby support and prefers short buildup when buildup is set to Mixed. The Football Simulator 1.1a adapter installs its passive UserManager in the managed team’s private tacticManager field at initialization. Recheck this binding when updating the asset.
 
 During an embedded Windows match, OpenFoot enables the style selector at kickoff. It sends one order at a time and shows the new style and minute after Unity confirms. The standalone player uses a fresh temporary directory for each launch, with numbered order and confirmation files. Rebuild the standalone player to enable this control.
 
 The substitution controls queue a change until a restart. The replacement takes the outgoing player's formation slot, with their own shirt number, name and attributes. Goalkeepers replace goalkeepers. The bridge validates goals against the minutes each player was eligible to play, and OpenFoot stores confirmed substitutions with the match report.
+
+## Full-time statistics in OpenFoot
+
+New Unity builds send the full-time counters for possession, shots, shots on target, passes, corners and saves. Player rows use OpenFoot IDs for starters and substitutes who entered. OpenFoot adds their club side, name and minutes played from the fixture lineup and confirmed substitutions.
+
+The round summary displays the observed stats for your match. Open **Stats** on the completed fixture in **Schedule** to see the saved report again. Passes are shown as completed over attempted. Statistics use the simulator's own counters. Older Unity results can still be imported without the optional statistics block.
+
+## Referee and restarts in observed matches
+
+Run `node scripts/install-unity-rules.mjs "<Unity project path>"` after installing Football Simulator 1.1a and the OpenFoot bridge. The script adds the rule hooks to the local asset and preserves the original scripts under `%LOCALAPPDATA%/OpenFootUnityBackups`. Sync the bridge scripts and the `OpenFootRoleLabels` resource before rebuilding the Windows player.
+
+The referee judges close slide tackles. Failed tackles and tackles from behind carry more risk. The position of the contact determines the restart. Offside is called when a flagged player actually touches the ball, with the simulator's exemption for a direct throw-in, goal kick or corner. Discipline removes a dismissed player from the active lineup and keeps their appearance in the report. A penalty uses the regular shot animation, keeper and ball physics. The match panel keeps the current formation after a dismissal, and substitutions can still replace players who remain on the pitch.
+
+The Unity HUD briefly shows referee decisions. The saved report lists fouls, cards, offsides, throw-ins and penalty outcomes under **Key Events**. Rust still resolves matches that are not observed.
+
+## Condition during 3D matches
+
+OpenFoot sends condition, fitness and stamina for starters and the managed bench. Only players on the field accumulate wear as the match clock advances. Movement increases that wear, while goalkeepers use a lower rate. Lower condition reduces native acceleration, speed, agility, passing, shooting and tackling. A player's ring appears below 75% condition and switches from yellow to red below 50%.
+
+Substitutes begin with their own condition. The Unity result carries the ending condition for each player who featured. OpenFoot uses the observed loss once, along with the existing fitness update. Older results still use the minutes-based calculation.
 
 ## Substitutions inside the match
 
@@ -39,9 +61,29 @@ The same panel carries the play-style selector: Balanced, Attacking, Defensive, 
 
 Labels ship in the twelve manager languages and follow the Unity system language, falling back to English. The prefab is generated from the same builder with **OpenFoot → Rebuild substitution prefab**; the runtime builds the hierarchy from code if the prefab is missing or its script references are broken.
 
-The in-match panel can also queue a change to **4-4-2** or **4-3-3**. At the next restart after Unity has loaded the formation's tactics, it reassigns the eleven players on the pitch to the closest available positions and keeps the goalkeeper in goal. The panel shows the confirmed minute and current positions. Players keep their identities, existing AI archetypes and accumulated stats. Formation changes affect the current Unity match, while the existing report continues to record the result, goals and substitutions.
+Open **Formation** in the match panel to choose from the twelve formations supported by the match bridge. The right column previews the closest assignment of the eleven current players and the effective role at each position. Select two outfield players in the preview to swap their assignments. This also works when rearranging players within the current formation.
+
+Confirm to queue that exact lineup for the next restart after its tactical data is ready. The goalkeeper stays in goal. Players keep their identities, AI archetypes and statistics. The tactical blueprint and play style carry across the change, and incompatible individual roles use Standard while the player occupies that slot. The panel shows the minute when the formation takes effect.
 
 Choose **Player Roles** in the match panel and select an active player to see the roles supported in their current formation slot. Changes on the manager's prematch screen reach the kickoff lineup. In-match orders apply to that player for the observed match. A player uses Standard while in an incompatible slot and resumes their selected role in a compatible slot. The [role matrix](../../docs/UNITY_PLAYER_INSTRUCTIONS.md) specifies the effects and how to verify them. Regenerate the localized resource with `node scripts/sync-unity-role-labels.mjs` when the manager's role labels change.
+
+## Team tactics
+
+**Phase blueprint** in the match panel shows all nine settings. Click a setting to cycle its values. The panel shows the confirmed value and minute. Live changes apply to this match. Edits on the manager's preview update the saved blueprint and reach Unity when the match starts.
+
+| Setting | Effect in Unity |
+| --- | --- |
+| Buildup style | Short prefers an open pass within 22 m. Long prefers an aerial ball that advances play. Mixed uses the style's default. |
+| Width | Spreads or narrows the attacking shape. |
+| Tempo | Patient keeps the attack closer and prefers short support passes. Direct uses the chosen preset's progression. |
+| Defensive line | Moves the defensive block higher or deeper. |
+| Pressing | Changes how many nearby players can challenge the opposing ball carrier. |
+| Defensive shape | Compresses or spreads the defensive block. |
+| Marking | Varies how strongly defenders follow the opponent assigned by the simulator. |
+| Counter-press | Adds pressure for five or ten simulation seconds after a confirmed turnover. |
+| Break speed | Varies how strongly players join the attack for five simulation seconds after a regain. Fast also looks for a viable forward pass. |
+
+Collective shape is applied to the formation preset before individual positioning rules. Individual ball decisions and set pieces keep priority, and the simulator checks passing lanes and offside. The values are initial calibration settings.
 
 ## Verification
 

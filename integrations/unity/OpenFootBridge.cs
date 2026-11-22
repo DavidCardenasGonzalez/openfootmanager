@@ -10,6 +10,8 @@ using FStudio.MatchEngine.FieldPositions;
 using FStudio.MatchEngine.Tactics;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using FStudio;
 using FStudio.Database;
 using FStudio.Data;
@@ -27,11 +29,11 @@ using Shared.Responses;
 // Install under Assets/OpenFootBridge. Independent from the vendor sources.
 public sealed class OpenFootBridge : MonoBehaviour
 {
-    [Serializable] public class Player { public string id, name, position, role; public int pace, passing, shooting, tackling, dribbling, strength, positioning, agility, reflexes; }
-    [Serializable] public class Team { public string id, name, formation, play_style; public Player[] players, bench; }
-    [Serializable] public class Request { public int version, max_subs; public string request_id; public Team home, away; }
-    [Serializable] public class Result { public int version=1; public string request_id, status="finished", home_id, away_id; public int home_goals, away_goals; public string[] player_ids; public Goal[] goals; public Substitution[] substitutions; }
-    [Serializable] public class Goal { public int minute; public string side, player_id; }
+    [Serializable] public class Player { public string id, name, position, role; public int pace, passing, shooting, tackling, dribbling, strength, positioning, agility, reflexes, condition, fitness, stamina; }
+    [Serializable] public class Team { public string id, name, formation, play_style; public OpenFootTacticsSettings tactics; public Player[] players, bench; }
+    [Serializable] public class Request { public int version, max_subs; public bool use_condition, allows_extra_time; public string request_id; public Team home, away; }
+    [Serializable] public class Result { public int version=1; public string request_id, status="finished", home_id, away_id; public int home_goals, away_goals, total_minutes, regulation_home_goals, regulation_away_goals; public string[] player_ids; public Goal[] goals; public Substitution[] substitutions; public OpenFootMatchStatistics statistics; public OpenFootKnockout.Kick[] shootout; }
+    [Serializable] public class Goal { public int minute; public string side, player_id; public bool penalty; }
     [Serializable] public class Substitution { public int minute; public string player_off_id, player_on_id; }
 
     // Read-only snapshot for the in-match panel. Both the Unity panel and the
@@ -57,9 +59,15 @@ public sealed class OpenFootBridge : MonoBehaviour
     private Request active;
     private GameTeam managedTeam;
     private bool kickedOff;
-    private Formations requestedFormation;
-    private Task<TeamTactics> formationTactics;
+    private OpenFootFormationDraft pendingFormation;
+    private readonly Dictionary<Formations, AsyncOperationHandle<TeamTactics>> formationAssets =
+        new Dictionary<Formations, AsyncOperationHandle<TeamTactics>>();
+    private OpenFootTeamTactics teamTactics;
+    private OpenFootMatchRules matchRules;
+    private OpenFootMatchCondition matchCondition;
+    private OpenFootMatchStatistics fullTimeStatistics;
     public string ResultJson { get; private set; }
+    internal string RefereeNotice => matchRules?.ActiveNotice;
     public bool Loading { get; private set; }
     public string LastError { get; private set; }
 
@@ -69,6 +77,7 @@ public sealed class OpenFootBridge : MonoBehaviour
         EventManager.Subscribe<FirstWhistleEvent>(OnFirstWhistle);
         EventManager.Subscribe<GoalScoredEvent>(OnGoal);
         EventManager.Subscribe<FinalWhistleEvent>(OnFinished);
+        EventManager.Subscribe<PlayerThrowInEvent>(OnThrowIn);
     }
 
     private void OnDisable()
@@ -77,6 +86,16 @@ public sealed class OpenFootBridge : MonoBehaviour
         EventManager.UnSubscribe<FirstWhistleEvent>(OnFirstWhistle);
         EventManager.UnSubscribe<GoalScoredEvent>(OnGoal);
         EventManager.UnSubscribe<FinalWhistleEvent>(OnFinished);
+        EventManager.UnSubscribe<PlayerThrowInEvent>(OnThrowIn);
+        if (OpenFootMatchRules.Current == matchRules) OpenFootMatchRules.Current = null;
+    }
+
+    private void OnDestroy()
+    {
+        matchCondition?.Dispose();
+        teamTactics?.Dispose();
+        foreach (var asset in formationAssets.Values)
+            if (asset.IsValid()) Addressables.Release(asset);
     }
 
     public async Task Begin(string json)
@@ -93,6 +112,12 @@ public sealed class OpenFootBridge : MonoBehaviour
         Loading=true; LastError=null; ResultJson=null;
         try {
             playerIds.Clear();
+            matchCondition?.Dispose();
+            matchCondition = new OpenFootMatchCondition();
+            fullTimeStatistics = null;
+            matchRules = new OpenFootMatchRules(playerIds, OnLineupChangedByReferee,
+                request.allows_extra_time, CaptureFullTimeStatistics);
+            OpenFootMatchRules.Current = matchRules;
             positions.Clear();
             playerRoles.Clear();
             goals.Clear();
@@ -108,8 +133,12 @@ public sealed class OpenFootBridge : MonoBehaviour
             awayTeam = match.awayTeam;
             for (int slot = 0; slot < 11; slot++)
             {
-                playerIds.Add(homeTeam.Players[slot], request.home.players[slot].id);
-                playerIds.Add(awayTeam.Players[slot], request.away.players[slot].id);
+                var home = request.home.players[slot];
+                var away = request.away.players[slot];
+                playerIds.Add(homeTeam.Players[slot], home.id);
+                playerIds.Add(awayTeam.Players[slot], away.id);
+                RegisterCondition(homeTeam.Players[slot], home, request.use_condition);
+                RegisterCondition(awayTeam.Players[slot], away, request.use_condition);
             }
             var managed = !string.IsNullOrEmpty(request.home.play_style) ? request.home : request.away;
             foreach (var starter in managed.players)
@@ -129,6 +158,7 @@ public sealed class OpenFootBridge : MonoBehaviour
                     entry.id = id++;
                     SetAttributes(entry, data);
                     bench.Add(data.id, (entry, index + 12, data.position == "Goalkeeper"));
+                    RegisterCondition(entry, data, request.use_condition);
                     positions[data.id] = data.position;
                 }
             }
@@ -136,6 +166,15 @@ public sealed class OpenFootBridge : MonoBehaviour
             await StartObservedMatch(match);
         } catch(Exception error) { active=null; LastError=error.ToString(); throw; }
         finally { Loading=false; }
+    }
+
+    private void RegisterCondition(PlayerEntry entry, Player data, bool useCondition)
+    {
+        if (useCondition && (data.condition < 0 || data.condition > 100 || data.fitness < 0 ||
+            data.fitness > 100 || data.stamina < 0 || data.stamina > 100))
+            throw new ArgumentException("Invalid match condition");
+        matchCondition.Register(entry, useCondition ? data.condition : 100,
+            useCondition ? data.fitness : 75, useCondition ? data.stamina : 50);
     }
 
     private static async Task StartObservedMatch(MatchCreateRequest match)
@@ -203,6 +242,7 @@ public sealed class OpenFootBridge : MonoBehaviour
     {
         if (active == null) return;
         var match = MatchManager.Current;
+        matchCondition.Update(match);
         bool managesHome = !string.IsNullOrEmpty(active.home.play_style);
         var input = managesHome ? active.home : active.away;
         if (string.IsNullOrEmpty(input.play_style)) return;
@@ -219,8 +259,9 @@ public sealed class OpenFootBridge : MonoBehaviour
             setter.Invoke(null, new object[] { new StatisticsManager(ids, Ball.Current) });
         }
         SetPreset(managedTeam, Preset(input.play_style));
-        OpenFootPlayerRoles.BindTeam(managedTeam.GamePlayers, RoleFor);
-        ActivePlayStyle = input.play_style == "Possession" ? "Balanced" : input.play_style;
+        teamTactics = new OpenFootTeamTactics(managedTeam, input.tactics, input.play_style);
+        OpenFootPlayerRoles.BindTeam(managedTeam.GamePlayers, RoleFor, teamTactics);
+        ActivePlayStyle = input.play_style;
         StyleMinute = 0;
         StyleVersion++;
         BuildLineup();
@@ -264,7 +305,19 @@ public sealed class OpenFootBridge : MonoBehaviour
         if (active != null) kickedOff = true;
     }
 
-    public bool CanChangeStyle => kickedOff && managedTeam != null && ResultJson == null;
+    public bool CanChangeStyle => kickedOff && managedTeam != null && ResultJson == null && !matchRules.ShootoutActive;
+    internal OpenFootTacticsSettings TacticalSettings => teamTactics.Settings;
+    public int TacticsMinute { get; private set; }
+
+    internal bool TryCycleTactic(OpenFootTacticsSettings.Dial dial)
+    {
+        if (!CanChangeStyle || FormationPending) return false;
+        int index = Array.IndexOf(dial.Options, dial.Read(TacticalSettings));
+        dial.Write(TacticalSettings, dial.Options[(index + 1) % dial.Options.Length]);
+        teamTactics.Apply(ActivePlayStyle);
+        TacticsMinute = OpenFootMatchRules.Minute;
+        return true;
+    }
     public bool HasSubstitutes => bench.Count > 0;
 
     /// <summary>True once the in-match substitution panel finished installing.</summary>
@@ -308,81 +361,133 @@ public sealed class OpenFootBridge : MonoBehaviour
     }
 
     public string ActiveFormation => managedTeam == null ? "" : FormationName(managedTeam.Team.Formation);
-    public bool FormationPending => formationTactics != null;
-    public string PendingFormation => FormationPending ? FormationName(requestedFormation) : "";
+    internal Formations ActiveFormationId => managedTeam.Team.Formation;
+    public bool FormationPending => pendingFormation != null;
+    public string PendingFormation => FormationPending ? FormationName(pendingFormation.Formation) : "";
+    internal OpenFootFormationDraft QueuedFormation => pendingFormation;
     public int FormationMinute { get; private set; }
     public int FormationVersion { get; private set; }
     public bool FormationFailed { get; private set; }
 
-    private static string FormationName(Formations formation) =>
-        formation.ToString().TrimStart('_').Replace('_', '-');
-
-    public bool TryQueueFormation(string formation)
+    // The manager uses variant A when exporting 4-2-3-1.
+    private static readonly Formations[] SupportedFormations =
     {
-        if (!CanChangeStyle || FormationPending) return false;
-        Formations target;
-        switch (formation)
+        Formations._4_4_2, Formations._4_3_3, Formations._4_2_3_1_A, Formations._4_1_4_1,
+        Formations._4_1_3_2, Formations._4_3_2_1, Formations._3_5_2, Formations._3_4_3,
+        Formations._5_3_2, Formations._5_4_1, Formations._5_2_3, Formations._2_3_5,
+    };
+
+    internal static string FormationName(Formations formation) =>
+        formation == Formations._4_2_3_1_A ? "4-2-3-1" : formation.ToString().TrimStart('_').Replace('_', '-');
+
+    private static AssetReferenceT<TeamTactics> FormationAsset(Formations formation) =>
+        PlayableFormations.Current.Formations.Entries
+            .FirstOrDefault(entry => entry.Id == formation && entry.Val != null && entry.Val.RuntimeKeyIsValid())?.Val;
+
+    internal IEnumerable<Formations> FormationOptions =>
+        SupportedFormations.Where(formation => FormationAsset(formation) != null);
+
+    internal OpenFootFormationDraft DraftFormation(Formations formation)
+    {
+        if (!CanChangeStyle || FormationPending || lineup.Count != 11 || !FormationOptions.Contains(formation))
+            return null;
+        var slots = FormationRules.GetTeamFormation(formation).Positions;
+        var order = AssignFormation(lineup.Select(player => player.Slot).ToArray(), slots);
+        return new OpenFootFormationDraft(formation, LineupVersion, slots, order.Select(index => lineup[index]));
+    }
+
+    internal string ProjectedRole(string playerId, Positions slot) =>
+        playerRoles.TryGetValue(playerId, out var role)
+            ? OpenFootPlayerRoles.Effective(slot, role)
+            : OpenFootPlayerRoles.Standard;
+
+    internal bool CanQueueFormation(OpenFootFormationDraft draft) =>
+        CanChangeStyle && !FormationPending && draft != null && draft.LineupVersion == LineupVersion &&
+        (draft.Formation != managedTeam.Team.Formation ||
+            !draft.Players.Select(player => player.Id).SequenceEqual(lineup.Select(player => player.Id)));
+
+    internal bool TryQueueFormation(OpenFootFormationDraft draft)
+    {
+        if (!CanQueueFormation(draft)) return false;
+        if (!formationAssets.ContainsKey(draft.Formation))
         {
-            case "4-4-2": target = Formations._4_4_2; break;
-            case "4-3-3": target = Formations._4_3_3; break;
-            default: return false;
+            var asset = FormationAsset(draft.Formation);
+            if (asset == null) return false;
+            formationAssets.Add(draft.Formation, Addressables.LoadAssetAsync<TeamTactics>(asset));
         }
-        if (target == managedTeam.Team.Formation) return false;
-        requestedFormation = target;
+        pendingFormation = draft.Copy();
         FormationFailed = false;
-        formationTactics = PlayableFormations.Current.Formations.FindAsync(target);
         FormationVersion++;
         return true;
     }
 
     private void Update()
     {
-        if (formationTactics == null || !formationTactics.IsCompleted) return;
+        if (ResultJson == null) matchRules?.Tick();
+        if (CanChangeStyle && Ball.Current != null && MatchManager.Current != null)
+            teamTactics.Tick(Ball.Current.HolderTeam, MatchManager.Current.MatchFlags == MatchStatus.Playing, Time.time);
+        if (!FormationPending) return;
         if (ResultJson != null)
         {
-            formationTactics = null;
+            pendingFormation = null;
             return;
         }
-        if (!CanSubstitute) return;
+        var asset = formationAssets[pendingFormation.Formation];
+        if (!asset.IsDone) return;
+        if (asset.Status == AsyncOperationStatus.Succeeded && !CanSubstitute) return;
         try
         {
-            var tactics = formationTactics.GetAwaiter().GetResult();
-            if (tactics == null) throw new InvalidOperationException("Formation has no tactical data");
-            ApplyFormation(requestedFormation, tactics);
-            FormationMinute = Mathf.Clamp(Mathf.CeilToInt(MatchManager.Current.minutes), 1, 90);
+            if (asset.Status != AsyncOperationStatus.Succeeded || asset.Result == null)
+                throw new InvalidOperationException("Formation has no tactical data", asset.OperationException);
+            if (pendingFormation.LineupVersion != LineupVersion)
+                throw new InvalidOperationException("Lineup changed after the formation was confirmed");
+            ApplyFormation(pendingFormation, asset.Result);
+            FormationMinute = OpenFootMatchRules.Minute;
         }
         catch (Exception error)
         {
             FormationFailed = true;
+            if (asset.Status != AsyncOperationStatus.Succeeded || asset.Result == null)
+            {
+                formationAssets.Remove(pendingFormation.Formation);
+                Addressables.Release(asset);
+            }
             Debug.LogException(error);
         }
         finally
         {
-            formationTactics = null;
+            pendingFormation = null;
             FormationVersion++;
         }
     }
 
-    private void ApplyFormation(Formations formation, TeamTactics tactics)
+    private void LateUpdate()
+    {
+        if (kickedOff && ResultJson == null && MatchManager.Current != null)
+            matchCondition.Update(MatchManager.Current);
+    }
+
+    private void ApplyFormation(OpenFootFormationDraft draft, TeamTactics tactics)
     {
         var players = managedTeam.GamePlayers;
-        var slots = FormationRules.GetTeamFormation(formation).Positions;
-        var order = AssignFormation(players.Select(p => p.MatchPlayer.Position).ToArray(), slots);
-        var reordered = order.Select(index => players[index]).ToArray();
+        var byId = players.ToDictionary(player => playerIds[player.MatchPlayer.Player]);
+        var reordered = draft.Players.Select(player => byId[player.Id]).ToArray();
+        teamTactics.SetFormation(tactics);
 
         // Keep the objects, shirts and identities alive so the current restart,
         // replay, statistics and references held by the ball all remain valid.
-        for (int slot = 0; slot < slots.Length; slot++)
+        for (int slot = 0; slot < draft.Slots.Count; slot++)
         {
             var player = reordered[slot];
-            player.MatchPlayer.Position = slots[slot];
+            if (player.MatchPlayer.Position != draft.Slots[slot] && player.ActiveBehaviour?.ForceBehaviour != true)
+                player.NextBehaviour = 0f;
+            player.MatchPlayer.Position = draft.Slots[slot];
             players[slot] = player;
             managedTeam.Team.Players[slot] = player.MatchPlayer;
             managedTeam.Team.Team.Players[slot] = player.MatchPlayer.Player;
         }
-        managedTeam.Team.Formation = formation;
-        managedTeam.Team.Team.Formation = formation;
-        managedTeam.Team.TeamTactics = tactics;
+        managedTeam.Team.Formation = draft.Formation;
+        managedTeam.Team.Team.Formation = draft.Formation;
         BuildLineup();
     }
 
@@ -457,7 +562,7 @@ public sealed class OpenFootBridge : MonoBehaviour
     {
         minute = 0;
         error = null;
-        if (!CanChangeStyle || string.IsNullOrEmpty(style) || style == "Possession")
+        if (!CanChangeStyle || string.IsNullOrEmpty(style))
         {
             error = "closed";
             return false;
@@ -468,7 +573,8 @@ public sealed class OpenFootBridge : MonoBehaviour
             return false;
         }
         SetPreset(managedTeam, Preset(style));
-        minute = Mathf.Clamp(Mathf.CeilToInt(MatchManager.Current.minutes), 1, 90);
+        teamTactics.Apply(style);
+        minute = OpenFootMatchRules.Minute;
         ActivePlayStyle = style;
         StyleMinute = minute;
         StyleVersion++;
@@ -536,20 +642,26 @@ public sealed class OpenFootBridge : MonoBehaviour
         if (kit == null || shadow == null) throw new MissingFieldException("Football Simulator player visuals");
 
         var matchPlayer = new MatchPlayer(incoming.number, incoming.entry, player.MatchPlayer.Position);
+        matchCondition.Hide(player.MatchPlayer.Player);
         bool physics = controller.IsPhysicsEnabled;
         (shadow.GetValue(controller) as Transform)?.gameObject.SetActive(false);
+        int rosterSlot = Array.IndexOf(managedTeam.Team.Players, player.MatchPlayer);
         player.MatchPlayer = matchPlayer;
-        managedTeam.Team.Players[slot] = matchPlayer;
-        managedTeam.Team.Team.Players[slot] = incoming.entry;
+        if (rosterSlot >= 0)
+        {
+            managedTeam.Team.Players[rosterSlot] = matchPlayer;
+            managedTeam.Team.Team.Players[rosterSlot] = incoming.entry;
+        }
         controller.SetPlayer(matchPlayer.Number, player, kit);
         controller.IsPhysicsEnabled = physics;
         controller.UI.SetName(incoming.entry.Name);
+        matchCondition.ApplyTo(player);
         playerIds.Add(incoming.entry, on);
         bench.Remove(on);
         MatchManager.Statistics.ResetPositions();
         BuildLineup();
 
-        int minute = Mathf.Clamp(Mathf.CeilToInt(MatchManager.Current.minutes), 1, 90);
+        int minute = OpenFootMatchRules.Minute;
         substitutions.Add(new Substitution { minute = minute, player_off_id = off, player_on_id = on });
         return minute;
     }
@@ -590,28 +702,60 @@ public sealed class OpenFootBridge : MonoBehaviour
 
     private void OnGoal(GoalScoredEvent goal)
     {
-        if (active == null || ResultJson != null || goal.Scorer == null)
+        if (active == null || ResultJson != null)
             return;
         // The side in the event gets the goal. The scorer can belong to
         // the other team for an own goal, which the scoreboard still counts.
-        if (goal.Scorer.team != (goal.Side ? awayTeam : homeTeam) ||
-            !playerIds.TryGetValue(goal.Scorer, out string playerId))
+        var penaltyTaker = matchRules.ConsumePenaltyGoal(goal.Side);
+        var scorer = penaltyTaker ?? goal.Scorer;
+        if (scorer == null || scorer.team != (goal.Side ? awayTeam : homeTeam) ||
+            !playerIds.TryGetValue(scorer, out string playerId))
             return;
-        goals.Add(new Goal { minute = goal.Minute, side = goal.Side ? "Away" : "Home", player_id = playerId });
+        goals.Add(new Goal {
+            minute = goal.Minute, side = goal.Side ? "Away" : "Home", player_id = playerId,
+            penalty = penaltyTaker != null
+        });
+    }
+
+    private void OnThrowIn(PlayerThrowInEvent incident)
+    {
+        if (active != null && ResultJson == null) matchRules.ThrowIn(incident.Player);
+    }
+
+    private void OnLineupChangedByReferee(GameTeam team)
+    {
+        if (team == managedTeam) BuildLineup();
+    }
+
+    private void CaptureFullTimeStatistics()
+    {
+        var match = MatchManager.Current;
+        matchCondition.Update(match);
+        fullTimeStatistics = OpenFootMatchStatistics.Capture(match, playerIds, matchRules.Finish(),
+            matchCondition.Remaining, active.use_condition);
     }
 
     private void OnFinished(FinalWhistleEvent evt) {
         if(active==null || evt==null || ResultJson!=null) return;
         var match=MatchManager.Current;
+        if (fullTimeStatistics == null) CaptureFullTimeStatistics();
         ResultJson = JsonUtility.ToJson(new Result {
             request_id = active.request_id,
             home_id = active.home.id,
             away_id = active.away.id,
             home_goals = match.homeTeamScore,
             away_goals = match.awayTeamScore,
+            total_minutes = matchRules.TotalMinutes,
+            regulation_home_goals = matchRules.RegulationHome,
+            regulation_away_goals = matchRules.RegulationAway,
             player_ids = active.home.players.Concat(active.away.players).Select(p=>p.id).ToArray(),
             goals = goals.ToArray(),
-            substitutions = substitutions.ToArray()
+            substitutions = substitutions.ToArray(),
+            statistics = fullTimeStatistics,
+            shootout = matchRules.ShootoutKicks
         }, true);
+        matchCondition.Dispose();
+        matchCondition = null;
+        if (OpenFootMatchRules.Current == matchRules) OpenFootMatchRules.Current = null;
     }
 }

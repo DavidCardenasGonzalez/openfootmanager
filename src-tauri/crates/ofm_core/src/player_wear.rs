@@ -22,6 +22,15 @@ pub const MATCH_INJURY_NAMES: [&str; 5] = [
 ///
 /// A no-op for players who did not feature (`minutes == 0`).
 pub fn apply_match_wear(player: &mut Player, minutes: u8, rng: &mut impl Rng) {
+    apply_match_wear_with_depletion(player, minutes, None, rng);
+}
+
+pub(crate) fn apply_match_wear_with_depletion(
+    player: &mut Player,
+    minutes: u8,
+    observed_depletion: Option<u8>,
+    rng: &mut impl Rng,
+) {
     if minutes == 0 {
         return; // Did not play, no wear.
     }
@@ -34,7 +43,7 @@ pub fn apply_match_wear(player: &mut Player, minutes: u8, rng: &mut impl Rng) {
         1.0
     };
     let base_depletion = 40.0 * (1.0 - stamina_factor * 0.4) * position_factor;
-    let depletion = (base_depletion * minutes_factor) as u8;
+    let depletion = observed_depletion.unwrap_or((base_depletion * minutes_factor) as u8);
     player.condition = player.condition.saturating_sub(depletion);
 
     // 60+ minutes builds sharpness; probabilistic to keep changes gradual.

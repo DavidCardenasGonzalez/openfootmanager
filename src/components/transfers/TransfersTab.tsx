@@ -29,10 +29,11 @@ import {
   getTeamName,
   calcAge,
   formatVal,
-  formatAnnualAmount,
+  formatWeeklyAmount,
   getPlayerOvr,
   positionBadgeVariant,
 } from "../../lib/helpers";
+import { annualAmountToWeeklyCommitment } from "../../lib/finance";
 import { useTranslation } from "react-i18next";
 import { countryName } from "../../lib/countries";
 import { translatePositionAbbreviation, translatePositionLabel } from "../squad/SquadTab.helpers";
@@ -148,7 +149,7 @@ export default function TransfersTab({
   onGameUpdate,
 }: TransfersTabProps) {
   const { t, i18n } = useTranslation();
-  const annualSuffix = t("finances.perYearSuffix", "/yr");
+  const weeklySuffix = t("finances.perWeekSuffix", "/wk");
   const userTeamId = gameState.manager.team_id;
   const seasonContext = resolveSeasonContext(gameState);
   const transferWindow = seasonContext.transfer_window;
@@ -972,7 +973,10 @@ export default function TransfersTab({
                   {t("finances.wageBudget")}
                 </p>
                 <p className="font-heading font-bold text-lg text-white">
-                  {formatAnnualAmount(formatVal(annualWageBudget), annualSuffix)}
+                  {formatWeeklyAmount(
+                    formatVal(annualAmountToWeeklyCommitment(annualWageBudget)),
+                    weeklySuffix,
+                  )}
                 </p>
               </div>
               <div className="bg-white/5 rounded-xl px-4 py-2 text-center">
@@ -1216,7 +1220,7 @@ export default function TransfersTab({
                       {t("common.value")}
                     </th>
                     <th className="py-3 px-4 font-heading font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                      {t("common.wage")}
+                      {t("finances.wagePerWeek")}
                     </th>
                     <th
                       aria-sort={
@@ -1376,7 +1380,10 @@ export default function TransfersTab({
                           {formatVal(player.market_value)}
                         </td>
                         <td className="py-2.5 px-4 text-sm text-gray-600 dark:text-gray-400 tabular-nums">
-                          {formatAnnualAmount(formatVal(player.wage), annualSuffix)}
+                          {formatWeeklyAmount(
+                            formatVal(annualAmountToWeeklyCommitment(player.wage)),
+                            weeklySuffix,
+                          )}
                         </td>
                         <td className="py-2.5 px-4">
                           <span
@@ -1658,7 +1665,7 @@ export default function TransfersTab({
           player={dealWorkspaceTarget}
           teams={gameState.teams}
           myTeam={myTeam ?? null}
-          annualSuffix={annualSuffix}
+          weeklySuffix={weeklySuffix}
           transferWindowBlocksRegistration={transferWindowBlocksRegistration}
           transferWindowSummary={transferWindowSummary}
           loanNoticeDetail={loanWindowNoticeDetail}

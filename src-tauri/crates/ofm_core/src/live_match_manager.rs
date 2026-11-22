@@ -224,6 +224,20 @@ impl LiveMatchSession {
         self.match_state.snapshot()
     }
 
+    pub fn sync_prematch_tactics(
+        &mut self,
+        team_id: &str,
+        tactics: &domain::team::TacticsPhaseSettings,
+    ) {
+        let side = match self.user_side {
+            Some(Side::Home) if team_id == self.home_team_id => Side::Home,
+            Some(Side::Away) if team_id == self.away_team_id => Side::Away,
+            _ => return,
+        };
+        self.match_state
+            .set_prematch_tactics(side, domain_to_engine_tactics(tactics));
+    }
+
     /// Update a role saved from the tactics board while the preview is open.
     pub fn sync_prematch_role(
         &mut self,

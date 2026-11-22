@@ -49,13 +49,14 @@ public static partial class OpenFootPlayerRoles
     public static string Effective(Positions position, string requested) =>
         requested != Standard && ForPosition(position).Contains(requested) ? requested : Standard;
 
-    internal static void BindTeam(IEnumerable<PlayerBase> players, Func<PlayerBase, string> resolve)
+    internal static void BindTeam(IEnumerable<PlayerBase> players, Func<PlayerBase, string> resolve, OpenFootTeamTactics tactics)
     {
         var movement = new ForwardMovement(resolve);
-        foreach (var player in players) Bind(player, resolve, movement);
+        foreach (var player in players) Bind(player, resolve, movement, tactics);
     }
 
-    private static void Bind(PlayerBase player, Func<PlayerBase, string> resolve, ForwardMovement movement)
+    private static void Bind(PlayerBase player, Func<PlayerBase, string> resolve, ForwardMovement movement,
+        OpenFootTeamTactics tactics)
     {
         // The vendor caches this list. Keep its original objects, forced actions
         // and ordering. Insert our decisions after set-piece and offside actions.
@@ -74,6 +75,7 @@ public static partial class OpenFootPlayerRoles
         behaviours.Insert(behaviours.FindIndex(b => b is OurGKDegageBehaviour), new OfferKeeperOutlet(resolve));
         int ball = behaviours.FindIndex(b => b is RunForwardWithBallBehaviour);
         behaviours.Insert(ball < 0 ? behaviours.Count : ball, new BallDecision(resolve));
+        behaviours.Insert(ball < 0 ? behaviours.Count : ball + 1, new OpenFootTeamTactics.PassDecision(tactics));
         int shape = behaviours.FindIndex(b => b is JoinTheAttackBehaviour || b is BecomeAPassOptionBehaviour
             || b is RunBehindDefenseLineBehaviour || b is AbstractTacticalPositioning);
         behaviours.Insert(shape < 0 ? behaviours.Count : shape, new ShapeDecision(resolve, movement));
@@ -266,7 +268,7 @@ public static partial class OpenFootPlayerRoles
 internal static class OpenFootRoleLabels
 {
     [Serializable] private sealed class Catalog { public Locale[] locales; }
-    [Serializable] private sealed class Locale { public string code, heading; public Entry[] roles; }
+    [Serializable] private sealed class Locale { public string code, heading; public Entry[] roles, tactics; }
     [Serializable] private sealed class Entry { public string id, text; }
 
     private static Catalog catalog;
@@ -285,4 +287,6 @@ internal static class OpenFootRoleLabels
     internal static string Heading => Current()?.heading ?? "Player Roles";
     internal static string Name(string id) =>
         Current()?.roles?.FirstOrDefault(role => role.id == id)?.text ?? id;
+    internal static string Tactic(string id) =>
+        Current()?.tactics?.FirstOrDefault(entry => entry.id == id)?.text ?? id;
 }

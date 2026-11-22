@@ -34,6 +34,8 @@ fn compact_match_report(report: &engine::MatchReport) -> CompactMatchReport {
                 engine::EventType::Goal
                     | engine::EventType::PenaltyGoal
                     | engine::EventType::PenaltyMiss
+                    | engine::EventType::ShootoutGoal
+                    | engine::EventType::ShootoutMiss
                     | engine::EventType::YellowCard
                     | engine::EventType::RedCard
                     | engine::EventType::SecondYellow
@@ -55,6 +57,7 @@ fn compact_match_report(report: &engine::MatchReport) -> CompactMatchReport {
         home_stats: compact_team_stats(&report.home_stats, home_possession_pct),
         away_stats: compact_team_stats(&report.away_stats, away_possession_pct),
         events,
+        observed_stats: None,
     }
 }
 
@@ -656,14 +659,16 @@ fn update_team_form(
 fn deplete_match_stamina(game: &mut Game, team_id: &str, report: &engine::MatchReport) {
     for player in game.players.iter_mut() {
         if player.team_id.as_deref() == Some(team_id) {
-            let minutes = report
-                .player_stats
-                .get(&player.id)
-                .map(|ps| ps.minutes_played)
-                .unwrap_or(0);
             // Shared with national-team friendlies so call-ups wear players
             // identically to club fixtures.
-            crate::player_wear::apply_match_wear(player, minutes, &mut rand::rng());
+            if let Some(stats) = report.player_stats.get(&player.id) {
+                crate::player_wear::apply_match_wear_with_depletion(
+                    player,
+                    stats.minutes_played,
+                    stats.condition_depletion,
+                    &mut rand::rng(),
+                );
+            }
         }
     }
 }

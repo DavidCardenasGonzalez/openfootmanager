@@ -22,7 +22,10 @@ pub mod transfers;
 pub mod unity_match;
 pub use unity_match::{export_unity_match, finish_unity_match};
 pub mod unity_player;
-pub use unity_player::{set_unity_play_style, start_unity_player, stop_unity_player, substitute_unity_player, update_unity_player};
+pub use unity_player::{
+    set_unity_play_style, start_unity_player, stop_unity_player, substitute_unity_player,
+    update_unity_player,
+};
 pub mod util;
 pub mod world;
 

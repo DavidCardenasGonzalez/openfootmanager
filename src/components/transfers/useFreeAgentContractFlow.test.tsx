@@ -226,6 +226,17 @@ describe("useFreeAgentContractFlow", () => {
     });
   });
 
+  it("prefills the offer from the stored annual wage in weekly units", () => {
+    const target = createPlayer({ wage: 520_000 });
+    const gameState = createGameState([target]);
+
+    render(<HookHarness gameState={gameState} target={target} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Open" }));
+
+    expect(screen.getByLabelText("Wage")).toHaveValue("10000");
+  });
+
   it("does not submit when the computed wage is invalid", async () => {
     const target = createPlayer();
     const gameState = createGameState([target]);

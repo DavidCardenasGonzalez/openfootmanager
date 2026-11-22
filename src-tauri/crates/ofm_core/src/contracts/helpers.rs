@@ -91,9 +91,25 @@ pub(crate) fn expected_wage(player: &Player, team: &Team, current_date: NaiveDat
     rounded.max(reference_player_wage(player))
 }
 
+/// Stored wages are annual; negotiation offers are weekly. Convert at the
+/// boundary so nothing downstream has to guess which scale it is holding.
+pub(crate) const WEEKS_PER_YEAR: u32 = 52;
+
+pub(crate) fn annual_wage_from_weekly(weekly_wage: u32) -> u32 {
+    weekly_wage.saturating_mul(WEEKS_PER_YEAR)
+}
+
+pub(crate) fn weekly_wage_from_annual(annual_wage: u32) -> u32 {
+    if annual_wage == 0 {
+        return 0;
+    }
+
+    (annual_wage / WEEKS_PER_YEAR).max(1)
+}
+
 pub(crate) fn reference_player_wage(player: &Player) -> u32 {
     if player.wage > 0 {
-        return player.wage;
+        return weekly_wage_from_annual(player.wage);
     }
 
     let derived_wage = (player.market_value / MARKET_VALUE_TO_WAGE_RATIO).max(MINIMUM_DEFAULT_WAGE);

@@ -162,10 +162,25 @@ it("waits for a role change to reach the match before enabling kickoff", async (
   expect(unity.disabled).toBe(false);
 });
 
-it("starts supported matches in Unity from the main kickoff button", () => {
+it("waits for a team tactic to reach the match before enabling kickoff", async () => {
+  let complete = () => {};
+  vi.mocked(invoke).mockReturnValueOnce(new Promise<Record<string, unknown>>((resolve) => {
+    complete = () => resolve(gameState());
+  }));
+  renderSetup();
+  fireEvent.click(screen.getByRole("combobox", { name: "tactics.phaseSettings.width" }));
+  fireEvent.click(screen.getByRole("option", { name: "Wide" }));
+  expect(invoke).toHaveBeenCalledWith("set_tactics_phase", expect.objectContaining({ width: "Wide" }));
+  const kickoff = screen.getByRole<HTMLButtonElement>("button", { name: /match\.startMatch/ });
+  expect(kickoff.disabled).toBe(true);
+  await act(async () => complete());
+  expect(kickoff.disabled).toBe(false);
+});
+
+it.each([false, true])("starts in Unity from kickoff when extra time is %s", (extraTime) => {
   const start = vi.fn();
   const unityStart = vi.fn();
-  render(<PreMatchSetup snapshot={snapshot() as unknown as MatchSnapshot} gameState={gameState() as unknown as GameStateData} userSide="Home" onStart={start} onUnityStart={unityStart} onUpdateSnapshot={vi.fn()} />);
+  render(<PreMatchSetup snapshot={{ ...snapshot(), allows_extra_time: extraTime } as unknown as MatchSnapshot} gameState={gameState() as unknown as GameStateData} userSide="Home" onStart={start} onUnityStart={unityStart} onUpdateSnapshot={vi.fn()} />);
   fireEvent.click(screen.getByRole("button", { name: /match\.startMatch/ }));
   expect(unityStart).toHaveBeenCalledOnce();
   expect(start).not.toHaveBeenCalled();

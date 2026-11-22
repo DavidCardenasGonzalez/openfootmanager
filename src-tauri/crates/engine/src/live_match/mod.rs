@@ -425,6 +425,12 @@ impl LiveMatchState {
         self.current_minute
     }
 
+    pub fn set_prematch_tactics(&mut self, side: Side, tactics: crate::TacticsConfig) {
+        if self.phase == MatchPhase::PreKickOff {
+            self.team_mut(side).tactics = tactics;
+        }
+    }
+
     /// Install a role already validated against the formation in the tactics UI.
     pub fn set_prematch_role(&mut self, side: Side, player_id: &str, role: PlayerRole) {
         if self.phase != MatchPhase::PreKickOff {

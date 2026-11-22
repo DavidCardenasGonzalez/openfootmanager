@@ -13,6 +13,7 @@ import {
   type FreeAgentContractProjection,
   type FreeAgentContractResponseData,
 } from "../../services/freeAgentService";
+import { annualAmountToWeeklyCommitment } from "../../lib/finance";
 import { calcAgeOnDate } from "../../lib/valueFormatting";
 import { resolveBackendError } from "../../utils/backendI18n";
 
@@ -56,14 +57,15 @@ function defaultContractYears(dateOfBirth: string, asOfDate: string): string {
 }
 
 function defaultContractWage(player: PlayerData): string {
+  // Stored wages are annual, but the contract form talks in weekly wages.
   const baseline =
     player.wage > 0
-      ? player.wage
+      ? annualAmountToWeeklyCommitment(player.wage)
       : Math.max(
           Math.round(player.market_value / MARKET_VALUE_TO_WAGE_RATIO),
           MINIMUM_DEFAULT_WAGE,
         );
-  return String(Math.ceil(baseline / 1000) * 1000);
+  return String(Math.max(MINIMUM_DEFAULT_WAGE, Math.ceil(baseline / 1000) * 1000));
 }
 
 export function useFreeAgentContractFlow({

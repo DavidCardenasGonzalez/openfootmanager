@@ -48,21 +48,28 @@ fn annual_team_wage_bill(game: &Game, team_id: &str) -> i64 {
 fn projected_annual_wage_bill(
     game: &Game,
     team_id: &str,
-    current_player_wage: u32,
-    offered_wage: u32,
+    current_player_annual_wage: u32,
+    offered_weekly_wage: u32,
 ) -> i64 {
-    annual_team_wage_bill(game, team_id) - current_player_wage as i64 + offered_wage as i64
+    annual_team_wage_bill(game, team_id) - i64::from(current_player_annual_wage)
+        + i64::from(crate::contracts::annual_wage_from_weekly(
+            offered_weekly_wage,
+        ))
 }
 
 pub fn project_contract_offer_financial_impact(
     game: &Game,
     team: &Team,
-    current_player_wage: u32,
-    offered_wage: u32,
+    current_player_annual_wage: u32,
+    offered_weekly_wage: u32,
 ) -> RenewalFinancialProjection {
     let current_bill = annual_team_wage_bill(game, &team.id);
-    let projected_bill =
-        projected_annual_wage_bill(game, &team.id, current_player_wage, offered_wage);
+    let projected_bill = projected_annual_wage_bill(
+        game,
+        &team.id,
+        current_player_annual_wage,
+        offered_weekly_wage,
+    );
     let annual_wage_budget = team.wage_budget;
     let annual_soft_cap = (annual_wage_budget * WAGE_SOFT_CAP_PCT) / 100;
     let current_weekly_wage_spend = current_bill / 52;
@@ -83,7 +90,12 @@ pub fn project_contract_offer_financial_impact(
         current_cash_runway_weeks,
         projected_cash_runway_weeks,
         currently_over_budget: current_bill > annual_wage_budget,
-        policy_allows: renewal_wage_policy_allows(game, team, current_player_wage, offered_wage),
+        policy_allows: renewal_wage_policy_allows(
+            game,
+            team,
+            current_player_annual_wage,
+            offered_weekly_wage,
+        ),
     }
 }
 
@@ -109,12 +121,16 @@ pub fn wage_policy_allows_projection(team: &Team, current_bill: i64, projected_b
 pub fn renewal_wage_policy_allows(
     game: &Game,
     team: &Team,
-    current_player_wage: u32,
-    offered_wage: u32,
+    current_player_annual_wage: u32,
+    offered_weekly_wage: u32,
 ) -> bool {
     let current_bill = annual_team_wage_bill(game, &team.id);
-    let projected_bill =
-        projected_annual_wage_bill(game, &team.id, current_player_wage, offered_wage);
+    let projected_bill = projected_annual_wage_bill(
+        game,
+        &team.id,
+        current_player_annual_wage,
+        offered_weekly_wage,
+    );
 
     wage_policy_allows_projection(team, current_bill, projected_bill)
 }

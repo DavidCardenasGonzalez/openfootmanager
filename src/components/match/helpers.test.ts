@@ -184,6 +184,20 @@ describe("resolveMatchFixture", () => {
     expect(resolveMatchFixture(gameState, makeSnapshot(), 0)?.id).toBe("fixture-1");
   });
 
+  it("resolves the completed fixture in its competition after the domestic league is restored", () => {
+    const domesticLeague = gameState.league!;
+    const cupFixture = { ...domesticLeague.fixtures[0], id: "cup-fixture", competition: "Cup" as const };
+    const state = {
+      ...gameState,
+      competitions: [
+        domesticLeague,
+        { ...domesticLeague, id: "cup", name: "Cup", fixtures: [cupFixture] },
+      ],
+    };
+
+    expect(resolveMatchFixture(state, makeSnapshot(), 0, "cup-fixture")).toEqual(cupFixture);
+  });
+
   it("falls back to matching the snapshot teams", () => {
     expect(resolveMatchFixture(gameState, makeSnapshot())?.id).toBe("fixture-1");
   });

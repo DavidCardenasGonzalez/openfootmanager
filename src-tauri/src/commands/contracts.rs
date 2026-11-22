@@ -461,7 +461,8 @@ mod tests {
         );
         player.team_id = Some("team-1".to_string());
         player.contract_end = Some("2026-10-15".to_string());
-        player.wage = 12_000;
+        // Stored wages are annual; this is a player on €12k/week.
+        player.wage = 12_000 * 52;
         player.morale = 75;
         player.market_value = 350_000;
         player
@@ -507,7 +508,7 @@ mod tests {
         );
         team.manager_id = Some("manager-1".to_string());
         team.reputation = 50;
-        team.wage_budget = 50_000;
+        team.wage_budget = 2_000_000;
         team
     }
 
@@ -583,7 +584,7 @@ mod tests {
             .iter()
             .find(|player| player.id == "player-1")
             .expect("player should exist");
-        assert_eq!(player.wage, 15_000);
+        assert_eq!(player.wage, 15_000 * 52);
         assert_eq!(player.contract_end.as_deref(), Some("2029-08-01"));
 
         let stored_game = state.get_game(|game| game.clone()).expect("stored game");
@@ -592,7 +593,7 @@ mod tests {
             .iter()
             .find(|player| player.id == "player-1")
             .expect("stored player should exist");
-        assert_eq!(stored_player.wage, 15_000);
+        assert_eq!(stored_player.wage, 15_000 * 52);
         assert_eq!(stored_player.contract_end.as_deref(), Some("2029-08-01"));
     }
 
@@ -658,7 +659,7 @@ mod tests {
             .iter()
             .find(|player| player.id == "player-1")
             .expect("persisted player should exist");
-        assert_eq!(persisted_player.wage, 12_000);
+        assert_eq!(persisted_player.wage, 12_000 * 52);
         assert_eq!(persisted_player.contract_end.as_deref(), Some("2026-10-15"));
 
         let updated_game = state
@@ -676,7 +677,7 @@ mod tests {
             .iter()
             .find(|player| player.id == "player-1")
             .expect("saved player should exist");
-        assert_eq!(saved_player.wage, 15_000);
+        assert_eq!(saved_player.wage, 15_000 * 52);
         assert_eq!(saved_player.contract_end.as_deref(), Some("2029-08-01"));
     }
 
@@ -746,9 +747,9 @@ mod tests {
         let response = preview_renewal_financial_impact_internal(&state, "player-1", 15_000)
             .expect("response");
 
-        assert_eq!(response.projection.annual_wage_budget, 50_000);
-        assert_eq!(response.projection.current_annual_wage_bill, 12_000);
-        assert_eq!(response.projection.projected_annual_wage_bill, 15_000);
+        assert_eq!(response.projection.annual_wage_budget, 2_000_000);
+        assert_eq!(response.projection.current_annual_wage_bill, 12_000 * 52);
+        assert_eq!(response.projection.projected_annual_wage_bill, 15_000 * 52);
         assert!(response.projection.policy_allows);
     }
 
@@ -792,7 +793,7 @@ mod tests {
             .expect("response");
 
         assert_eq!(response.projection.current_annual_wage_bill, 0);
-        assert_eq!(response.projection.projected_annual_wage_bill, 4_000);
+        assert_eq!(response.projection.projected_annual_wage_bill, 4_000 * 52);
         assert!(response.projection.policy_allows);
     }
 

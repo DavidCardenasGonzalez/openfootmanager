@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
+import type { ObservedMatchStatsData } from "../store/types";
 
 export interface ScheduleQuery {
   competition_id: string;
@@ -7,6 +8,9 @@ export interface ScheduleQuery {
 export interface FixtureResult {
   home_goals: number;
   away_goals: number;
+  home_penalties?: number | null;
+  away_penalties?: number | null;
+  observed_stats?: ObservedMatchStatsData | null;
 }
 
 export interface FixtureSummary {

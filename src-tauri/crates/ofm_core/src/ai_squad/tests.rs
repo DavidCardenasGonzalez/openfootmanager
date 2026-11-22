@@ -14,7 +14,7 @@ fn game() -> Game {
         10_000,
     );
     team.finance = 5_000_000;
-    team.wage_budget = 1_000_000;
+    team.wage_budget = 10_000_000;
     let mut players = Vec::new();
     for (group, count) in [2, 8, 8, 6].into_iter().enumerate() {
         for _ in 0..count {
@@ -29,7 +29,8 @@ fn game() -> Game {
                 generator::generate_youth_academy_recruit(&team, Some(&position), 2026);
             player.date_of_birth = "2000-01-01".into();
             player.contract_end = Some("2026-08-15".into());
-            player.wage = 1_000;
+            // Stored wages are annual: €1k/week.
+            player.wage = 52_000;
             player_rating::refresh_player_derived(&mut player, 2026);
             players.push(player);
         }

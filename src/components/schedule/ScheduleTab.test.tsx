@@ -366,8 +366,52 @@ describe("ScheduleTab", () => {
     await waitFor(() => {
       expect(screen.getByTestId("schedule-standings-row-team-2")).toBeInTheDocument();
     });
-    fireEvent.click(screen.getByText("Beta FC"));
+    fireEvent.click(screen.getByText("BET"));
     expect(onSelectTeam).toHaveBeenCalledWith("team-2");
+  });
+
+  it("opens the saved 3D match statistics from a completed fixture", async () => {
+    const group = makeGroup();
+    const home = { possession_pct: 62, shots: 9, shots_on_target: 4, passes_attempted: 73, passes_completed: 60, corners: 3, saves: 2 };
+    mockedInvoke.mockResolvedValue(makeSlice({
+      upcoming_groups: [],
+      past_groups: [{
+        ...group,
+        date: "2026-08-01",
+        fixtures: [{
+          ...group.fixtures[0],
+          date: "2026-08-01",
+          status: "Completed",
+          result: {
+            home_goals: 2,
+            away_goals: 2,
+            home_penalties: 3,
+            away_penalties: 5,
+            observed_stats: {
+              home,
+              away: { ...home, possession_pct: 38 },
+              incidents: [{ minute: 18, kind: "Offside", player_id: "starter", player_name: "Test Starter", side: "Home" }],
+              players: [{
+                ...home,
+                player_id: "reserve",
+                player_name: "Test Reserve",
+                side: "Home",
+                minutes_played: 32,
+              }],
+            },
+          },
+        }],
+      }],
+    }));
+    render(<ScheduleTab gameState={makeGameState(true)} onSelectTeam={vi.fn()} />);
+    expect(await screen.findByText("match.shootout.shootoutScore")).toBeVisible();
+    fireEvent.click(await screen.findByText("match.stats", { selector: "summary" }));
+    expect(screen.getByText("62%")).toBeVisible();
+    fireEvent.click(screen.getByText("match.keyEvents"));
+    expect(screen.getByText("unityMatch.Offside")).toBeVisible();
+    fireEvent.click(screen.getByText("unityMatch.playerStats"));
+    expect(screen.getByText("Test Reserve")).toBeVisible();
+    expect(screen.getByText("32′")).toBeVisible();
   });
 
   it("marks promotion and relegation zones in standings", async () => {

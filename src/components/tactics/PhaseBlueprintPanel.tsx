@@ -29,12 +29,14 @@ const SECTIONS = [
 
 function PhaseButtonGroup({
   field,
+  disabled,
   labelKey,
   onTacticsPhaseChange,
   options,
   tacticsPhase,
 }: {
   field: keyof TacticsPhaseSettings;
+  disabled?: boolean;
   labelKey: string;
   onTacticsPhaseChange: (patch: Partial<TacticsPhaseSettings>) => void;
   options: readonly string[];
@@ -48,6 +50,8 @@ function PhaseButtonGroup({
         {t(`tactics.phaseSettings.${labelKey}`)}
       </span>
       <Select
+        aria-label={t(`tactics.phaseSettings.${labelKey}`)}
+        disabled={disabled}
         selectSize="sm"
         variant="subtle"
         fullWidth
@@ -73,9 +77,11 @@ function PhaseButtonGroup({
  * the caller provides the surrounding card/header.
  */
 export function PhaseBlueprintPanel({
+  disabled,
   tacticsPhase,
   onTacticsPhaseChange,
 }: {
+  disabled?: boolean;
   tacticsPhase?: TacticsPhaseSettings;
   onTacticsPhaseChange: (patch: Partial<TacticsPhaseSettings>) => void;
 }): JSX.Element {
@@ -91,6 +97,7 @@ export function PhaseBlueprintPanel({
             <PhaseButtonGroup
               key={field}
               field={field}
+              disabled={disabled}
               labelKey={fieldLabelKey}
               onTacticsPhaseChange={onTacticsPhaseChange}
               options={options}

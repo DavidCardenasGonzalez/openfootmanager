@@ -5,6 +5,7 @@ import type { CompactMatchEventData } from "../../store/types";
 import type { MatchSnapshot, MatchEvent, RoundSummary } from "./types";
 import { getEventDisplay, makeTeamFallback } from "./helpers";
 import { QuickStat } from "./PostMatchHelpers";
+import ObservedMatchReport from "./ObservedMatchReport";
 import { Badge, TeamLogo } from "../ui";
 import { Trophy, TrendingDown, Minus, ChevronRight, ArrowUp, ArrowDown, Flame } from "lucide-react";
 
@@ -68,6 +69,7 @@ export default function RoundDigestScreen({
     return scorers.slice(0, limit).join(" • ");
   };
   const currentScorers = formatScorers(currentFixture);
+  const observedStats = getFixtureReport(currentFixture)?.observed_stats;
   const currentSubstitutions = getFixtureReport(currentFixture)?.events.filter(
     (event) => event.event_type === "Substitution" && event.side === userSide,
   ) ?? [];
@@ -148,17 +150,21 @@ export default function RoundDigestScreen({
   const homeTeamColor = homeFullTeam?.colors?.primary || "#10b981";
   const awayTeamColor = awayFullTeam?.colors?.primary || "#6366f1";
 
+  const homePenalties = currentFixture?.result?.home_penalties;
+  const awayPenalties = currentFixture?.result?.away_penalties;
+  const hasShootout = homePenalties != null && awayPenalties != null;
+  const decision = snapshot.home_score - snapshot.away_score || (hasShootout ? homePenalties - awayPenalties : 0);
   const resultType =
     userSide === "Home"
-      ? snapshot.home_score > snapshot.away_score
+      ? decision > 0
         ? "win"
-        : snapshot.home_score < snapshot.away_score
+        : decision < 0
           ? "loss"
           : "draw"
       : userSide === "Away"
-        ? snapshot.away_score > snapshot.home_score
+        ? decision < 0
           ? "win"
-          : snapshot.away_score < snapshot.home_score
+          : decision > 0
             ? "loss"
             : "draw"
         : "neutral";
@@ -297,6 +303,15 @@ export default function RoundDigestScreen({
               </div>
             </div>
 
+            {hasShootout ? (
+              <p className="mt-2 text-center font-semibold tabular-nums text-gray-700 dark:text-gray-300">
+                {t("match.shootout.shootoutScore", { h: homePenalties, a: awayPenalties })}
+              </p>
+            ) : getFixtureReport(currentFixture)?.total_minutes === 120 && (
+              <p className="mt-2 text-center text-gray-700 dark:text-gray-300">
+                {t("match.phases.ExtraTimeEnd")}
+              </p>
+            )}
             {currentScorers && (
               <div className="mt-3 text-center text-sm text-gray-700 dark:text-gray-300">
                 <span className="sr-only">{t("match.scorers")}</span>
@@ -313,6 +328,16 @@ export default function RoundDigestScreen({
                     </li>
                   ))}
                 </ul>
+              </div>
+            )}
+
+            {observedStats && (
+              <div className="mx-auto mt-6 max-w-5xl border-t border-gray-200 pt-4 dark:border-navy-600">
+                <ObservedMatchReport
+                  stats={observedStats}
+                  homeName={homeFullTeam?.short_name || snapshot.home_team.name}
+                  awayName={awayFullTeam?.short_name || snapshot.away_team.name}
+                />
               </div>
             )}
 

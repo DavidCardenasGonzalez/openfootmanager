@@ -1,5 +1,10 @@
 {
   "unityMatch": {
+    "ThrowIn": "Rentrée de touche",
+    "Offside": "Hors-jeu",
+    "playerStats": "Statistiques des joueurs",
+    "saves": "Arrêts",
+    "minutes": "Temps de jeu",
     "subPending": "Changement prévu au prochain arrêt de jeu.",
     "subFailed": "Impossible de demander le changement.",
     "tacticPending": "Envoi de la tactique…",

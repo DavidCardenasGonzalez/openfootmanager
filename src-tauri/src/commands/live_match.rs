@@ -588,6 +588,35 @@ mod tests {
     }
 
     #[test]
+    fn unity_ticket_exports_the_tactical_blueprint_for_the_managed_side() {
+        let mut game = make_game_with_round();
+        game.teams[0].tactics_phase.width = domain::team::PitchWidth::Wide;
+        game.teams[0].tactics_phase.counter_press_duration =
+            domain::team::CounterPressDuration::Long;
+        let state = StateManager::new();
+        let live = live_match_manager::create_live_match(&game, 0, MatchMode::Live, false).unwrap();
+        state.set_live_match(live);
+        let path = super::super::unity_match::export_request(&state).unwrap();
+        let request: serde_json::Value =
+            serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+        std::fs::remove_file(path).unwrap();
+        assert_eq!(request["home"]["tactics"]["width"], "Wide");
+        assert_eq!(request["home"]["tactics"]["counter_press_duration"], "Long");
+        assert!(request["away"].get("tactics").is_none());
+
+        game.teams[0].tactics_phase.width = domain::team::PitchWidth::Narrow;
+        state.with_live_match(|live| {
+            live.sync_prematch_tactics(&game.teams[0].id, &game.teams[0].tactics_phase);
+        });
+        let updated_path = super::super::unity_match::export_request(&state).unwrap();
+        let updated: serde_json::Value =
+            serde_json::from_slice(&std::fs::read(&updated_path).unwrap()).unwrap();
+        std::fs::remove_file(updated_path).unwrap();
+        assert_eq!(updated["home"]["tactics"]["width"], "Narrow");
+        assert_ne!(request["request_id"], updated["request_id"]);
+    }
+
+    #[test]
     fn unity_ticket_uses_a_keeper_role_changed_after_opening_the_preview() {
         let game = make_game_with_round();
         let state = StateManager::new();
@@ -616,19 +645,44 @@ mod tests {
     #[test]
     fn unity_substitution_credits_a_bench_goal_after_entry() {
         let mut game = make_game_with_round();
-        let home_id = game.league.as_ref().unwrap().fixtures[0].home_team_id.clone();
-        game.players.push(make_player("reserve", "Reserve", &home_id, Position::Forward));
+        let home_id = game.league.as_ref().unwrap().fixtures[0]
+            .home_team_id
+            .clone();
+        game.players.push(make_player(
+            "reserve",
+            "Reserve",
+            &home_id,
+            Position::Forward,
+        ));
         let state = StateManager::new();
         let live = live_match_manager::create_live_match(&game, 0, MatchMode::Live, false).unwrap();
         let snap = live.snapshot();
-        let incoming = snap.home_bench.iter().find(|p| p.position == engine::Position::Forward).unwrap();
-        let outgoing = snap.home_team.players.iter().find(|p| p.position == engine::Position::Forward).unwrap();
+        let incoming = snap
+            .home_bench
+            .iter()
+            .find(|p| p.position == engine::Position::Forward)
+            .unwrap();
+        let outgoing = snap
+            .home_team
+            .players
+            .iter()
+            .find(|p| p.position == engine::Position::Forward)
+            .unwrap();
+        let condition_end = incoming.condition.saturating_sub(17);
         let result = serde_json::json!({
             "version": 1, "status": "finished", "request_id": live.external_match_id(None, &snap),
             "home_id": snap.home_team.id, "away_id": snap.away_team.id,
             "home_goals": 1, "away_goals": 0,
             "goals": [{"minute": 70, "side": "Home", "player_id": incoming.id}],
             "substitutions": [{"minute": 58, "player_on_id": incoming.id, "player_off_id": outgoing.id}],
+            "statistics": {
+                "condition_tracked": true,
+                "home": { "possession_pct": 62, "shots": 9, "shots_on_target": 4, "passes_attempted": 73, "passes_completed": 60, "corners": 3, "saves": 2 },
+                "away": { "possession_pct": 38, "shots": 5, "shots_on_target": 2, "passes_attempted": 49, "passes_completed": 35, "corners": 1, "saves": 3 },
+                "players": [
+                    { "player_id": incoming.id, "shots": 3, "shots_on_target": 2, "passes_attempted": 16, "passes_completed": 13, "saves": 0, "condition_end": condition_end }
+                ]
+            },
             "player_ids": snap.home_team.players.iter().chain(&snap.away_team.players)
                 .map(|p| &p.id).collect::<Vec<_>>()
         });
@@ -636,18 +690,97 @@ mod tests {
         state.set_game(game);
         let mut early = result.clone();
         early["goals"][0]["minute"] = 57.into();
-        let apply = |value| super::super::unity_match::apply_result(
-            &state, serde_json::from_value(value).unwrap(),
-        );
+        let apply = |value| {
+            super::super::unity_match::apply_result(&state, serde_json::from_value(value).unwrap())
+        };
         assert!(apply(early).is_err());
+        let mut unrelated = result.clone();
+        unrelated["statistics"]["players"][0]["player_id"] = "unknown-player".into();
+        assert!(
+            apply(unrelated).is_err(),
+            "do not consume the result with invalid statistics"
+        );
+        let mut invalid_condition = result.clone();
+        invalid_condition["statistics"]["players"][0]["condition_end"] = 101.into();
+        assert!(apply(invalid_condition).is_err());
         let finished = apply(result).unwrap();
         let directory = tempfile::tempdir().unwrap();
         let mut saves = db::save_manager::SaveManager::init(directory.path()).unwrap();
-        let save_id = saves.create_save(&finished.game, "Unity substitution test").unwrap();
+        let save_id = saves
+            .create_save(&finished.game, "Unity substitution test")
+            .unwrap();
         let saved = saves.load_game(&save_id).unwrap();
+        let saved_reserve = saved.players.iter().find(|player| player.id == incoming.id).unwrap();
+        assert_eq!(saved_reserve.condition, condition_end);
         let score = saved.league.unwrap().fixtures[0].result.clone().unwrap();
         assert_eq!(score.home_scorers[0].player_id, incoming.id);
-        assert_eq!(score.report.unwrap().events[0].event_type, "Substitution");
+        let report = score.report.unwrap();
+        assert_eq!(report.events[0].event_type, "Substitution");
+        assert_eq!(report.home_stats.shots, 9);
+        assert_eq!(report.home_stats.possession_pct, 62);
+        let serialized = serde_json::to_value(&report).unwrap();
+        assert_eq!(serialized["observed_stats"]["home"]["passes_completed"], 60);
+        assert_eq!(
+            serialized["observed_stats"]["players"][0]["minutes_played"],
+            32
+        );
+        state
+            .get_stats_state(|stats| {
+                let record = stats.player_matches.iter()
+                    .find(|record| record.player_id == incoming.id)
+                    .unwrap();
+                assert_eq!(record.shots, 3);
+                assert_eq!(record.passes_completed, 13);
+            })
+            .unwrap();
+    }
+
+    #[test]
+    fn unity_referee_events_apply_discipline_and_store_restarts() {
+        let game = make_game_with_round();
+        let state = StateManager::new();
+        let live = live_match_manager::create_live_match(&game, 0, MatchMode::Live, false).unwrap();
+        let snap = live.snapshot();
+        let defender = &snap.home_team.players[1].id;
+        let taker = &snap.away_team.players[1].id;
+        let result = serde_json::json!({
+            "version": 1, "status": "finished", "request_id": live.external_match_id(None, &snap),
+            "home_id": snap.home_team.id, "away_id": snap.away_team.id,
+            "home_goals": 0, "away_goals": 1,
+            "goals": [{"minute": 36, "side": "Away", "player_id": taker, "penalty": true}],
+            "statistics": { "incidents": [
+                {"minute": 10, "side": "Away", "player_id": taker, "kind": "ThrowIn"},
+                {"minute": 12, "side": "Away", "player_id": taker, "kind": "Offside"},
+                {"minute": 15, "side": "Home", "player_id": defender, "kind": "Foul"},
+                {"minute": 15, "side": "Home", "player_id": defender, "kind": "YellowCard"},
+                {"minute": 36, "side": "Home", "player_id": defender, "kind": "Foul"},
+                {"minute": 36, "side": "Home", "player_id": defender, "kind": "SecondYellow"},
+                {"minute": 36, "side": "Away", "player_id": taker, "kind": "PenaltyAwarded"}
+            ]},
+            "player_ids": snap.home_team.players.iter().chain(&snap.away_team.players)
+                .map(|p| &p.id).collect::<Vec<_>>()
+        });
+        state.set_live_match(live);
+        state.set_game(game);
+        let apply = |value| {
+            super::super::unity_match::apply_result(&state, serde_json::from_value(value).unwrap())
+        };
+        let mut invalid = result.clone();
+        invalid["statistics"]["incidents"][6]["side"] = "Home".into();
+        assert!(apply(invalid).is_err());
+        let finished = apply(result).unwrap();
+        let league = finished.game.league.unwrap();
+        let report = league.fixtures[0].result.as_ref().unwrap().report.as_ref().unwrap();
+        assert_eq!(report.home_stats.fouls, 2);
+        assert!(report.events.iter().any(|event| event.event_type == "SecondYellow"));
+        assert!(report.events.iter().any(|event| event.event_type == "PenaltyGoal"));
+        let report_json = serde_json::to_value(report).unwrap();
+        assert_eq!(report_json["observed_stats"]["incidents"][0]["kind"], "ThrowIn");
+        assert_eq!(report_json["observed_stats"]["incidents"][1]["kind"], "Offside");
+        state.get_stats_state(|stats| {
+            let record = stats.player_matches.iter().find(|row| row.player_id == *defender).unwrap();
+            assert_eq!(record.minutes_played, 36);
+        }).unwrap();
     }
 
     #[test]
@@ -717,7 +850,10 @@ mod tests {
         let mut game = make_game_with_round();
         for number in 1..=2 {
             game.players.push(make_player(
-                &format!("reserve{number}"), &format!("Reserve {number}"), "team1", Position::Forward,
+                &format!("reserve{number}"),
+                &format!("Reserve {number}"),
+                "team1",
+                Position::Forward,
             ));
         }
         let directory = tempfile::tempdir().unwrap();
@@ -742,6 +878,23 @@ mod tests {
         saves.save_game(&finished, &id).unwrap();
         let saved = saves.load_game(&id).unwrap();
         let league = &saved.competitions[0];
+        let observed = league.fixtures[0]
+            .result
+            .as_ref()
+            .and_then(|result| result.report.as_ref())
+            .and_then(|report| report.observed_stats.as_ref())
+            .expect("Unity full-time statistics");
+        assert_eq!(observed.players.len(), 22);
+        assert!(observed.home.passes_attempted > 0 && observed.away.passes_attempted > 0);
+        assert_eq!(
+            observed.home.possession_pct.unwrap() + observed.away.possession_pct.unwrap(),
+            100
+        );
+        eprintln!(
+            "Unity statistics reloaded: shots {}–{}, completed passes {}–{}",
+            observed.home.shots, observed.away.shots,
+            observed.home.passes_completed, observed.away.passes_completed
+        );
         for fixture in &league.fixtures[..2] {
             assert_eq!(fixture.status, FixtureStatus::Completed);
             let score = fixture.result.as_ref().unwrap();
@@ -1097,6 +1250,61 @@ mod tests {
             }],
             ..League::default()
         }
+    }
+
+    #[test]
+    fn unity_knockout_shootout_advances_the_correct_cup_and_survives_reload() {
+        let state = StateManager::new();
+        let mut game = make_game_with_round();
+        let date = game.clock.current_date.format("%Y-%m-%d").to_string();
+        let cup = make_knockout_cup(&date);
+        game.competitions.push(cup.clone());
+        game.league = Some(cup);
+        let live = live_match_manager::create_live_match(&game, 0, MatchMode::Live, true).unwrap();
+        let snap = live.snapshot();
+        let mut kicks = Vec::new();
+        for index in 1..=3 {
+            kicks.push(serde_json::json!({ "side": "Away", "player_id": snap.away_team.players[index].id, "scored": true }));
+            kicks.push(serde_json::json!({ "side": "Home", "player_id": snap.home_team.players[index].id, "scored": false }));
+        }
+        let result = serde_json::json!({
+            "version": 1, "status": "finished", "request_id": live.external_match_id(None, &snap),
+            "home_id": snap.home_team.id, "away_id": snap.away_team.id,
+            "home_goals": 1, "away_goals": 1, "total_minutes": 120,
+            "regulation_home_goals": 0, "regulation_away_goals": 0,
+            "goals": [
+                {"minute": 103, "side": "Home", "player_id": snap.home_team.players[1].id},
+                {"minute": 118, "side": "Away", "player_id": snap.away_team.players[1].id}
+            ],
+            "shootout": kicks,
+            "player_ids": snap.home_team.players.iter().chain(&snap.away_team.players)
+                .map(|p| &p.id).collect::<Vec<_>>()
+        });
+        game.sync_legacy_league();
+        state.set_game(game);
+        state.set_live_match(live);
+        let apply = |value| super::super::unity_match::apply_result(&state, serde_json::from_value(value).unwrap());
+        let mut unfinished = result.clone();
+        unfinished["shootout"].as_array_mut().unwrap().pop();
+        assert!(apply(unfinished).is_err());
+        let mut repeated = result.clone();
+        repeated["shootout"][2]["player_id"] = repeated["shootout"][0]["player_id"].clone();
+        assert!(apply(repeated).is_err());
+        let finished = apply(result).unwrap();
+        assert_eq!(finished.fixture_id, "cupfix1");
+        let dir = tempfile::tempdir().unwrap();
+        let mut saves = db::save_manager::SaveManager::init(dir.path()).unwrap();
+        let id = saves.create_save(&finished.game, "Unity cup").unwrap();
+        let saved = saves.load_game(&id).unwrap();
+        let cup = saved.competitions.iter().find(|league| league.id == "cup1").unwrap();
+        let fixture = &cup.fixtures[0];
+        let result = fixture.result.as_ref().unwrap();
+        assert_eq!((result.home_goals, result.away_goals), (1, 1));
+        assert_eq!((result.home_penalties, result.away_penalties), (Some(0), Some(3)));
+        assert_eq!(fixture.advancing_team_id(), Some("team3"));
+        assert!(cup.knockout_rounds[0].completed);
+        assert_eq!(result.report.as_ref().unwrap().total_minutes, 120);
+        assert!(saved.league.unwrap().fixtures[0].result.is_none());
     }
 
     // Regression: finishing a live CUP match applied the report by raw index
