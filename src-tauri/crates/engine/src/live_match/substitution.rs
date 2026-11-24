@@ -1,7 +1,8 @@
 use crate::event::{EventType, MatchEvent};
-use crate::types::{PlayerRole, Position, Side, Zone};
+use crate::types::{PlayerData, PlayerRole, Position, Side, Zone};
+use std::collections::HashMap;
 
-use super::{LiveMatchState, SubstitutionRecord, is_role_valid_for_position};
+use super::{LiveMatchState, MatchPhase, SubstitutionRecord, is_role_valid_for_position};
 
 // ---------------------------------------------------------------------------
 // Substitution mechanics
@@ -147,6 +148,59 @@ impl LiveMatchState {
             Side::Away => self.away_bench.push(player_off),
         }
 
+        Ok(())
+    }
+
+    pub(super) fn set_pre_match_lineup(
+        &mut self,
+        side: Side,
+        starters: Vec<(String, Position)>,
+        bench: Vec<(String, Position)>,
+    ) -> Result<(), String> {
+        if self.phase != MatchPhase::PreKickOff {
+            return Err("be.error.liveMatch.preMatchSwapTooLate".into());
+        }
+        if starters.is_empty() {
+            return Err("be.error.liveMatch.emptySquad".into());
+        }
+        let mut roster: HashMap<_, _> = self
+            .team_ref(side)
+            .players
+            .iter()
+            .chain(self.bench(side))
+            .map(|player| (player.id.as_str(), player))
+            .collect();
+        if starters.len() > 11 || starters.len() + bench.len() != roster.len() {
+            return Err("be.error.liveMatch.playerNotInStartingXi".into());
+        }
+
+        // Validate the entire permutation before changing the live match.
+        let mut place = |assignments: Vec<(String, Position)>| {
+            assignments
+                .into_iter()
+                .map(|(id, position)| {
+                    let mut player = roster
+                        .remove(id.as_str())
+                        .cloned()
+                        .ok_or("be.error.liveMatch.playerNotOnPitch")?;
+                    player.position = position;
+                    Ok(player)
+                })
+                .collect::<Result<Vec<PlayerData>, &str>>()
+        };
+        let starters = place(starters)?;
+        let bench = place(bench)?;
+
+        for player in &starters {
+            self.player_conditions
+                .entry(player.id.clone())
+                .or_insert(f64::from(player.condition));
+        }
+        self.team_mut(side).players = starters;
+        match side {
+            Side::Home => self.home_bench = bench,
+            Side::Away => self.away_bench = bench,
+        }
         Ok(())
     }
 

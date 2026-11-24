@@ -2,8 +2,8 @@ use rand::Rng;
 
 use crate::event::{DangerBand, FoulSeverity, GoalContext, SaveQuality};
 use crate::shared::{
-    PlayStylePhase, PlayerSnap, home_mod, play_style_modifier, tactics_pressing_fatigue,
-    tactics_pressing_press,
+    PlayStylePhase, PlayerSnap, home_mod, leadership_modifier, play_style_modifier, pressing_skill,
+    tactics_pressing_fatigue, tactics_pressing_press,
 };
 use crate::types::{PlayerData, Position, Side, TeamData};
 
@@ -140,14 +140,18 @@ impl LiveMatchState {
             PlayStylePhase::Midfield,
             true,
         );
-        base * modifier * home_mod(side, &self.config)
+        base * modifier
+            * home_mod(side, &self.config)
+            * leadership_modifier(
+                &self.team_ref(side).players,
+                &self.sent_off,
+                self.set_pieces_ref(side).captain.as_deref(),
+            )
     }
 
     pub(super) fn effective_press(&self, pressing_side: Side) -> f64 {
         let team = self.team_ref(pressing_side);
-        let base = team.position_attr_avg(Position::Midfielder, |p| {
-            ((p.stamina as u16 + p.tackling as u16 + p.pace as u16) / 3) as u8
-        });
+        let base = team.position_attr_avg(Position::Midfielder, pressing_skill);
         let modifier = play_style_modifier(team.play_style, PlayStylePhase::Press, true);
         base * modifier
             * tactics_pressing_press(&team.tactics)

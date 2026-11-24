@@ -1,3 +1,4 @@
+mod attributes;
 mod builder;
 mod html;
 mod stats;
@@ -8,9 +9,9 @@ use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
 use clap::{Parser, ValueEnum};
 use colored::Colorize;
-use engine::{simulate_with_rng, MatchConfig, PlayStyle};
-use rand::rngs::StdRng;
+use engine::{MatchConfig, PlayStyle, simulate_with_rng};
 use rand::SeedableRng;
+use rand::rngs::StdRng;
 
 use builder::{build_team, build_team_with_tactics};
 use stats::BenchStats;
@@ -75,6 +76,10 @@ struct Cli {
     #[arg(long)]
     phase_sweep: bool,
 
+    /// Compare individual attributes on otherwise identical teams, with no home bonus.
+    #[arg(long)]
+    attribute_sweep: bool,
+
     // ── MatchConfig overrides ────────────────────────────────────────────────
     #[arg(long, help = "Home advantage multiplier (default 1.08)")]
     home_advantage: Option<f64>,
@@ -138,6 +143,11 @@ impl StyleArg {
 
 fn main() {
     let cli = Cli::parse();
+
+    if cli.attribute_sweep {
+        attributes::run(cli.games, cli.seed.unwrap_or(42));
+        return;
+    }
 
     let mut config = MatchConfig::default();
     if let Some(v) = cli.home_advantage {

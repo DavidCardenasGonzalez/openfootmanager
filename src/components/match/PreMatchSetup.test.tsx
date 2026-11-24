@@ -177,6 +177,33 @@ it("waits for a team tactic to reach the match before enabling kickoff", async (
   expect(kickoff.disabled).toBe(false);
 });
 
+it("applies the ordered auto-selected lineup in one request before kickoff", async () => {
+  let complete = () => {};
+  const updated = snapshot() as unknown as MatchSnapshot;
+  const onUpdateSnapshot = vi.fn();
+  vi.mocked(invoke).mockClear().mockReturnValueOnce(new Promise<MatchSnapshot>((resolve) => {
+    complete = () => resolve(updated);
+  }));
+  render(
+    <PreMatchSetup
+      snapshot={snapshot() as unknown as MatchSnapshot}
+      gameState={gameState() as unknown as GameStateData}
+      userSide="Away"
+      onStart={vi.fn()}
+      onUpdateSnapshot={onUpdateSnapshot}
+    />,
+  );
+
+  fireEvent.click(screen.getByRole("button", { name: "match.autoSelectXI" }));
+  expect(invoke).toHaveBeenCalledExactlyOnceWith("auto_select_pre_match_lineup", { side: "Away" });
+  const kickoff = screen.getByRole<HTMLButtonElement>("button", { name: /match\.startMatch/ });
+  expect(kickoff.disabled).toBe(true);
+
+  await act(async () => complete());
+  expect(onUpdateSnapshot).toHaveBeenCalledExactlyOnceWith(updated);
+  expect(kickoff.disabled).toBe(false);
+});
+
 it.each([false, true])("starts in Unity from kickoff when extra time is %s", (extraTime) => {
   const start = vi.fn();
   const unityStart = vi.fn();

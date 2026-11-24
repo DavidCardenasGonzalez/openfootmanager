@@ -525,6 +525,13 @@ impl SaveManager {
             needs_resave = true;
         }
 
+        // Legacy saves can carry the lopsided national-pool market the old
+        // backfill produced. Fill its missing positions on load; the pass is
+        // idempotent, so a healthy market is left alone.
+        if ofm_core::free_agents::ensure_balanced_free_agent_market(&mut game) > 0 {
+            needs_resave = true;
+        }
+
         if player_identity::upgrade_game_player_identities(&mut game) {
             needs_resave = true;
         }

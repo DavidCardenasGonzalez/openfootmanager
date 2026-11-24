@@ -346,6 +346,7 @@ fn report_with_scorer(home_goals: u8, away_goals: u8, scorer_id: &str, side: Sid
         scorer_id.to_string(),
         PlayerMatchStats {
             minutes_played: 90,
+            condition_depletion: None,
             goals: if side == Side::Home {
                 home_goals
             } else {

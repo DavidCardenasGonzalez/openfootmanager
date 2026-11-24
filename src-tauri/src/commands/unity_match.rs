@@ -1,5 +1,6 @@
 use crate::application::live_match::{finish_session, ExternalMatchReport, FinishLiveMatchResponse};
 use domain::league::{ObservedMatchIncident, ObservedMatchStats, ObservedTeamStats};
+use domain::team::TeamKit;
 use engine::{
     EventType, MatchEvent, MatchReport, MatchSnapshot, PlayerData, Position, Side, TeamData, Zone,
 };
@@ -39,7 +40,7 @@ pub fn export_unity_match(state: State<'_, Arc<StateManager>>) -> Result<String,
 
 pub(super) fn export_request(state: &StateManager) -> Result<String, String> {
     let save_id = state.get_save_id();
-    let request = state
+    let mut request = state
         .with_live_match(|live| -> Result<Value, String> {
             let snapshot = live.snapshot();
             if snapshot.current_minute != 0 {
@@ -48,6 +49,7 @@ pub(super) fn export_request(state: &StateManager) -> Result<String, String> {
             Ok(json!({
                 "version": 1,
                 "use_condition": true,
+                "use_balanced_attributes": true,
                 "allows_extra_time": snapshot.allows_extra_time,
                 "request_id": live.external_match_id(save_id.as_deref(), &snapshot),
                 "home": team(&snapshot.home_team, (live.user_side == Some(Side::Home)).then_some(snapshot.home_bench.as_slice()))?,
@@ -56,6 +58,41 @@ pub(super) fn export_request(state: &StateManager) -> Result<String, String> {
             }))
         })
         .ok_or("be.error.noActiveLiveMatch")??;
+    state.get_game(|game| {
+        let numbers: HashMap<&str, u8> = game
+            .players
+            .iter()
+            .filter_map(|player| player.jersey_number.map(|number| (player.id.as_str(), number)))
+            .collect();
+        for side in ["home", "away"] {
+            if let Some(club) = game
+                .teams
+                .iter()
+                .find(|club| request[side]["id"].as_str() == Some(club.id.as_str()))
+            {
+                let mut kits = club.kits.clone();
+                if kits.home.is_none() && !club.colors.primary.is_empty() {
+                    kits.home = Some(TeamKit {
+                        pattern: club.kit_pattern.clone(),
+                        colors: club.colors.clone(),
+                        unity_mask: None,
+                    });
+                }
+                if kits.home.is_some() || kits.away.is_some() {
+                    request[side]["kits"] = json!(kits);
+                }
+            }
+            for group in ["players", "bench"] {
+                if let Some(players) = request[side][group].as_array_mut() {
+                    for player in players {
+                        if let Some(number) = player["id"].as_str().and_then(|id| numbers.get(id)) {
+                            player["number"] = json!(number);
+                        }
+                    }
+                }
+            }
+        }
+    });
     let directory = bridge_dir();
     std::fs::create_dir_all(&directory).map_err(|_| INVALID)?;
     let path = directory.join(format!(
@@ -335,7 +372,7 @@ impl UnityResult {
             120 if snapshot.allows_extra_time => {
                 let regulation = self.regulation_home_goals?;
                 if self.regulation_away_goals? != regulation || regulation > home.min(away)
-                    || ((home == away) != !self.shootout.is_empty()) {
+                    || (home == away) == self.shootout.is_empty() {
                     return None;
                 }
             }

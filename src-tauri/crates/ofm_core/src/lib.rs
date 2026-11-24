@@ -16,6 +16,7 @@ pub mod end_of_season;
 pub mod finances;
 pub mod firing;
 pub mod football_identity;
+pub mod free_agents;
 pub mod game;
 pub mod generator;
 pub mod group_stage;

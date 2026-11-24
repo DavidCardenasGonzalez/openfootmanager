@@ -9,6 +9,7 @@ public static class OpenFootPlayerBuild
     [MenuItem("OpenFoot/Build Windows player")]
     public static void Build()
     {
+        OpenFootKitCatalog.PrepareForBuild();
         string directory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "com.sturdyrobot.openfootmanager", "unity-player");

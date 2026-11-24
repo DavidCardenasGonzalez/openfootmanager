@@ -1,4 +1,5 @@
 use rand::{Rng, RngExt};
+use std::collections::HashSet;
 
 use crate::types::{
     BreakSpeed, CounterPressDuration, DefensiveLine, DefensiveShape, MarkingStyle, MatchConfig,
@@ -102,6 +103,97 @@ impl PlayerSnap {
     pub fn has_trait(&self, name: &str) -> bool {
         self.traits.iter().any(|t| t == name)
     }
+
+    pub fn buildup_skill(&self) -> f64 {
+        f64::from(self.passing) * 0.40
+            + f64::from(self.composure) * 0.27
+            + f64::from(self.vision) * 0.18
+            + f64::from(self.teamwork) * 0.15
+    }
+
+    pub fn midfield_progression(&self) -> f64 {
+        f64::from(self.dribbling) * 0.25
+            + f64::from(self.passing) * 0.30
+            + f64::from(self.vision) * 0.30
+            + f64::from(self.teamwork) * 0.15
+    }
+
+    pub fn cross_delivery_modifier(&self) -> f64 {
+        let delivery = f64::from(self.vision) * 0.70 + f64::from(self.passing) * 0.30;
+        1.0 + (delivery - 70.0) * 0.003
+    }
+
+    pub fn dribble_skill(&self) -> f64 {
+        f64::from(self.dribbling) * 0.38
+            + f64::from(self.agility) * 0.15
+            + f64::from(self.pace) * 0.12
+            + f64::from(self.composure) * 0.12
+            + f64::from(self.decisions) * 0.13
+            + f64::from(self.positioning) * 0.10
+    }
+
+    pub fn ground_defense_skill(&self) -> f64 {
+        f64::from(self.defending) * 0.30
+            + f64::from(self.tackling) * 0.27
+            + f64::from(self.positioning) * 0.22
+            + f64::from(self.strength) * 0.15
+            + f64::from(self.aggression) * 0.06
+    }
+
+    pub fn aerial_skill(&self) -> f64 {
+        f64::from(self.aerial) * 0.65
+            + f64::from(self.strength) * 0.20
+            + f64::from(self.positioning) * 0.15
+    }
+
+    pub fn shot_skill(&self) -> f64 {
+        f64::from(self.shooting) * 0.48
+            + f64::from(self.composure) * 0.22
+            + f64::from(self.decisions) * 0.17
+            + f64::from(self.positioning) * 0.13
+    }
+
+    pub fn save_skill(&self) -> f64 {
+        f64::from(self.handling) * 0.35
+            + f64::from(self.reflexes) * 0.35
+            + f64::from(self.positioning) * 0.20
+            + f64::from(self.agility) * 0.10
+    }
+
+    pub fn parry_chance(&self) -> f64 {
+        0.40 + (70.0 - f64::from(self.handling)) / 250.0
+    }
+}
+
+pub(crate) fn penalty_conversion(taker: &PlayerSnap, keeper: &PlayerSnap, fatigue: f64) -> f64 {
+    let finishing = f64::from(taker.shooting) * 0.50
+        + f64::from(taker.composure) * 0.35
+        + f64::from(taker.decisions) * 0.15;
+    ((0.75 + (finishing - keeper.save_skill()) / 300.0) * fatigue).clamp(0.55, 0.92)
+}
+
+pub(crate) fn pressing_skill(player: &PlayerData) -> u8 {
+    ((u16::from(player.tackling) * 30
+        + u16::from(player.stamina) * 25
+        + u16::from(player.teamwork) * 20
+        + u16::from(player.decisions) * 15
+        + u16::from(player.pace) * 10
+        + 50)
+        / 100) as u8
+}
+
+pub(crate) fn leadership_modifier(
+    players: &[PlayerData],
+    sent_off: &HashSet<String>,
+    captain: Option<&str>,
+) -> f64 {
+    let active = players.iter().filter(|p| !sent_off.contains(&p.id));
+    let leader = active
+        .clone()
+        .find(|p| Some(p.id.as_str()) == captain)
+        .or_else(|| active.max_by_key(|p| p.leadership));
+    let leadership = leader.map_or(70, |p| p.leadership.min(100));
+    1.0 + (f64::from(leadership) - 70.0) * 0.001
 }
 
 // ---------------------------------------------------------------------------
@@ -176,10 +268,10 @@ pub(crate) fn trait_bonus(snap: &PlayerSnap, context: TraitContext) -> f64 {
                 bonus *= 1.08;
             }
             if snap.has_trait("Speedster") {
-                bonus *= 1.04;
+                bonus *= 1.02;
             }
             if snap.has_trait("Agile") {
-                bonus *= 1.04;
+                bonus *= 1.015;
             }
         }
         TraitContext::Passing => {
@@ -480,6 +572,58 @@ pub(crate) fn home_mod(side: Side, config: &MatchConfig) -> f64 {
 #[cfg(test)]
 mod phase_modifier_tests {
     use super::*;
+
+    #[test]
+    fn balance_traits_cannot_stack_into_an_outsized_dribbling_bonus() {
+        let mut player = PlayerSnap::nobody();
+        player.traits = vec!["Speedster".into(), "Dribbler".into(), "Agile".into()];
+        assert!(trait_bonus(&player, TraitContext::Dribbling) <= 1.12);
+    }
+
+    #[test]
+    fn dribbling_baseline_rewards_technique_more_than_pace() {
+        let mut baseline = PlayerSnap::nobody();
+        baseline.dribbling = 70;
+        baseline.pace = 70;
+        baseline.agility = 70;
+        baseline.composure = 70;
+        baseline.decisions = 70;
+        baseline.positioning = 70;
+        let mut fast = baseline.clone();
+        fast.pace = 99;
+        fast.traits.push("Speedster".into());
+        let mut technical = baseline.clone();
+        technical.dribbling = 90;
+
+        let effectiveness =
+            |p: &PlayerSnap| p.dribble_skill() * trait_bonus(p, TraitContext::Dribbling);
+        assert!(effectiveness(&technical) > effectiveness(&fast));
+        assert!(effectiveness(&fast) > effectiveness(&baseline));
+    }
+
+    #[test]
+    fn keeper_handling_affects_penalties_and_rebounds() {
+        let taker = PlayerSnap::nobody();
+        let mut keeper = PlayerSnap::nobody();
+        keeper.handling = 50;
+        let conversion = penalty_conversion(&taker, &keeper, 1.0);
+        let parry = keeper.parry_chance();
+        keeper.handling = 90;
+        assert!(penalty_conversion(&taker, &keeper, 1.0) < conversion);
+        assert!(keeper.parry_chance() < parry);
+    }
+
+    #[test]
+    fn vision_sees_the_cross_while_passing_matters_more_in_build_up() {
+        let mut passer = PlayerSnap::nobody();
+        passer.passing = 90;
+        passer.vision = 70;
+        let mut creator = passer.clone();
+        creator.passing = 70;
+        creator.vision = 90;
+        assert!(passer.buildup_skill() > creator.buildup_skill());
+        assert!(creator.cross_delivery_modifier() > passer.cross_delivery_modifier());
+    }
 
     fn cfg(f: impl FnOnce(&mut TacticsConfig)) -> TacticsConfig {
         let mut c = TacticsConfig::default();

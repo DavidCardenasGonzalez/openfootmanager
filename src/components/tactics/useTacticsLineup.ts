@@ -16,6 +16,8 @@ import {
   buildPitchRows,
   buildPitchSlotRows,
   buildPromoteToStartingXi,
+  comparePlayersForSlot,
+  isPlayerOutOfPosition,
   type DragState,
   type PitchSlotRow,
   type SquadSection,
@@ -178,6 +180,36 @@ export function useTacticsLineup({ gameState, onGameUpdate }: UseTacticsLineupAr
       setPendingStartingXiIds(null);
       console.error("Failed to set starting XI:", error);
     }
+  }
+
+  async function handleAutoSelectXI(): Promise<void> {
+    const positions = pitchRows.flatMap((row) => row.positions);
+    if (positions.length > 11) return;
+    const candidates = available;
+    const nextXiIds: string[] = [];
+    const remaining = new Set(candidates.map((player) => player.id));
+
+    // Fill scarce positions first and prefer natural or alternate positions.
+    const scarcity = positions.map((position, slotIndex) => ({
+      position,
+      slotIndex,
+      options: candidates.filter((player) =>
+        !isPlayerOutOfPosition(player, position),
+      ).length,
+    })).sort((left, right) => left.options - right.options || left.slotIndex - right.slotIndex);
+
+    for (const slot of scarcity) {
+      const best = candidates
+        .filter((player) => remaining.has(player.id))
+        .sort((left, right) => comparePlayersForSlot(left, right, slot.position))[0];
+      if (!best) break;
+      nextXiIds[slot.slotIndex] = best.id;
+      remaining.delete(best.id);
+    }
+
+    const compactIds = positions.map((_, index) => nextXiIds[index]).filter(Boolean);
+    await persistStartingXI(compactIds);
+    clearLineupSelection();
   }
 
   async function handleFormationChange(nextFormation: string): Promise<boolean> {
@@ -451,6 +483,7 @@ export function useTacticsLineup({ gameState, onGameUpdate }: UseTacticsLineupAr
     handleFormationChange,
     handlePlayStyleChange,
     handleAssignBestFit,
+    handleAutoSelectXI,
     handlePromoteBenchPlayer,
     handleDemoteStarter,
     clearLineupSelection,

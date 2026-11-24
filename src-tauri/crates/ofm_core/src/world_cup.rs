@@ -56,6 +56,19 @@ pub const FORMAT_16: WorldCupFormat = WorldCupFormat {
 
 /// Squads synthesised or topped up reach this size.
 const TOPPED_UP_POOL: usize = 18;
+/// Position-balanced slot order for national-pool backfill.
+///
+/// The backfill walks `depth` from 0 to [`TOPPED_UP_POOL`], but the global
+/// free-agent cap can stop it long before the last depth. Slots used to be
+/// taken from the nation's current pool count, which meant an empty nation
+/// generated 0, 1, 2, … in order: goalkeepers, then defenders, then midfield,
+/// and forwards only at slot 16. With a tight cap the pool never reached a
+/// forward. This order spreads the four position groups across the first ten
+/// slots: two goalkeepers, three defenders, three midfielders and two
+/// forwards.
+const NATIONAL_BACKFILL_SLOTS: [usize; TOPPED_UP_POOL] = [
+    0, 2, 9, 16, 1, 3, 10, 17, 4, 11, 18, 5, 12, 19, 6, 13, 7, 14,
+];
 /// Days between group matchdays — the tournament must fit the summer break.
 const GROUP_MATCHDAY_GAP_DAYS: i64 = 2;
 /// Days between knockout rounds, kept tight so the finals fit a real ~5-week
@@ -434,8 +447,11 @@ fn prepare_national_squads(game: &mut Game, field: &[String]) {
             if *count > depth || active >= cap {
                 continue;
             }
-            let player =
-                crate::generator::generate_national_team_player(code, *count, current_year);
+            let player = crate::generator::generate_national_team_player(
+                code,
+                NATIONAL_BACKFILL_SLOTS[depth],
+                current_year,
+            );
             game.squad_management.inactive_since.insert(
                 player.id.clone(),
                 game.clock.current_date.date_naive().to_string(),
@@ -487,6 +503,12 @@ fn prepare_national_squads(game: &mut Game, field: &[String]) {
             game.national_teams.push(team);
         }
     }
+
+    // National squads are built, so a thin pool no longer needs every generated
+    // player to fill a matchday XI. Top up the club market separately: the
+    // backfill above is capped by club population and can leave a group with
+    // no cover at all.
+    crate::free_agents::ensure_balanced_free_agent_market(game);
 }
 
 /// Schedule a World Cup for the summer beginning at `kickoff` when the year is
@@ -2139,6 +2161,41 @@ mod tests {
         assert!(
             berths["uefa"] >= 16,
             "slack goes to the biggest quota first"
+        );
+    }
+
+    #[test]
+    fn national_backfill_slots_cover_every_position_group_when_truncated() {
+        use domain::player::Position;
+
+        let first_ten: Vec<Position> = NATIONAL_BACKFILL_SLOTS[..10]
+            .iter()
+            .map(|&slot| {
+                crate::generator::generate_national_team_player("ZZ", slot, 2026)
+                    .position
+                    .to_group_position()
+            })
+            .collect();
+
+        for group in [
+            Position::Goalkeeper,
+            Position::Defender,
+            Position::Midfielder,
+            Position::Forward,
+        ] {
+            assert!(
+                first_ten.contains(&group),
+                "ten-player backfill must include a {group:?}, got {first_ten:?}"
+            );
+        }
+
+        assert_eq!(
+            first_ten
+                .iter()
+                .filter(|group| **group == Position::Forward)
+                .count(),
+            2,
+            "the first ten backfill slots must include two forwards, got {first_ten:?}"
         );
     }
 

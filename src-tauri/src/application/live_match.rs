@@ -364,3 +364,16 @@ pub fn get_match_snapshot(state: &StateManager) -> Result<engine::MatchSnapshot,
 
     Ok(snapshot)
 }
+
+pub fn auto_select_pre_match_lineup(
+    state: &StateManager,
+    side: engine::Side,
+) -> Result<engine::MatchSnapshot, String> {
+    state
+        .get_game(|game| {
+            state
+                .with_live_match(|session| session.auto_select_pre_match_lineup(game, side))
+                .ok_or_else(|| "be.error.noActiveLiveMatch".to_string())?
+        })
+        .ok_or_else(|| "be.error.noActiveGameSession".to_string())?
+}

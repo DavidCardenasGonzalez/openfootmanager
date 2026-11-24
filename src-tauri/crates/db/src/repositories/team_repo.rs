@@ -386,17 +386,19 @@ mod tests {
         let world: serde_json::Value =
             serde_json::from_str(include_str!("../../../../../data/open-manager/world.json"))
                 .unwrap();
-        let team: Team = serde_json::from_value(world["teams"][0].clone()).unwrap();
+        let mut source = world["teams"][0].clone();
+        source["kits"]["away"]["unity_mask"] = 6.into();
+        let team: Team = serde_json::from_value(source.clone()).unwrap();
         upsert_team(db.conn(), &team).unwrap();
         let loaded = load_team(db.conn(), &team.id).unwrap().unwrap();
         assert_eq!(
             serde_json::to_value(&loaded).unwrap()["kits"],
-            world["teams"][0]["kits"]
+            source["kits"]
         );
         let all = load_all_teams(db.conn()).unwrap();
         assert_eq!(
             serde_json::to_value(&all[0]).unwrap()["kits"],
-            world["teams"][0]["kits"]
+            source["kits"]
         );
     }
 

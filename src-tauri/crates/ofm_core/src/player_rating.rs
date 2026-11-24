@@ -98,6 +98,9 @@ fn player_age(date_of_birth: &str, current_year: u32) -> u32 {
     current_year.saturating_sub(birth_year)
 }
 
+/// Formation slots are shared with the Unity bridge. Keep this order in sync
+/// with `FormationRules.cs` in the Football Simulator project and with
+/// `buildPitchRows` in `src/components/squad/SquadTab.helpers.ts`.
 fn formation_slot_rows(formation: &str) -> Vec<Vec<Position>> {
     let parts: Vec<usize> = formation
         .split('-')
@@ -231,6 +234,11 @@ fn deep_midfield_line(count: usize) -> Vec<Position> {
     match count {
         1 => vec![Position::DefensiveMidfielder],
         2 => vec![Position::DefensiveMidfielder, Position::CentralMidfielder],
+        3 => vec![
+            Position::DefensiveMidfielder,
+            Position::CentralMidfielder,
+            Position::CentralMidfielder,
+        ],
         _ => vec![Position::DefensiveMidfielder; count],
     }
 }
@@ -244,6 +252,12 @@ fn attacking_midfield_line(count: usize) -> Vec<Position> {
             Position::AttackingMidfielder,
             Position::RightMidfielder,
         ],
+        4 => vec![
+            Position::LeftMidfielder,
+            Position::CentralMidfielder,
+            Position::CentralMidfielder,
+            Position::RightMidfielder,
+        ],
         _ => vec![Position::AttackingMidfielder; count],
     }
 }
@@ -254,6 +268,13 @@ fn forward_line(count: usize) -> Vec<Position> {
         2 => vec![Position::Striker, Position::Striker],
         3 => vec![
             Position::LeftWinger,
+            Position::Striker,
+            Position::RightWinger,
+        ],
+        5 => vec![
+            Position::LeftWinger,
+            Position::Striker,
+            Position::Striker,
             Position::Striker,
             Position::RightWinger,
         ],
@@ -282,23 +303,40 @@ fn canonical_position(position: &Position) -> Position {
 }
 
 fn compatibility_penalty(player: &Player, slot_position: &Position) -> f64 {
+    match assignment_familiarity(player, slot_position) {
+        AssignmentFamiliarity::Natural => 0.0,
+        AssignmentFamiliarity::Alternate => 4.0,
+        AssignmentFamiliarity::SameGroup => 8.0,
+        AssignmentFamiliarity::OutOfPosition => 14.0,
+    }
+}
+
+pub(crate) enum AssignmentFamiliarity {
+    Natural,
+    Alternate,
+    SameGroup,
+    OutOfPosition,
+}
+
+pub(crate) fn assignment_familiarity(
+    player: &Player,
+    slot_position: &Position,
+) -> AssignmentFamiliarity {
     let primary = primary_position(player);
     if &primary == slot_position {
-        return 0.0;
+        return AssignmentFamiliarity::Natural;
     }
 
-    let alternates = player
+    if player
         .alternate_positions
         .iter()
-        .map(canonical_position)
-        .collect::<Vec<_>>();
-
-    if alternates.iter().any(|position| position == slot_position) {
-        4.0
+        .any(|position| canonical_position(position) == *slot_position)
+    {
+        AssignmentFamiliarity::Alternate
     } else if primary.to_group_position() == slot_position.to_group_position() {
-        8.0
+        AssignmentFamiliarity::SameGroup
     } else {
-        14.0
+        AssignmentFamiliarity::OutOfPosition
     }
 }
 
@@ -326,45 +364,48 @@ fn weighted_score(attrs: &PlayerAttributes, position: &Position) -> f64 {
             (attrs.strength, 2),
         ]),
         Position::RightBack | Position::LeftBack => weighted_average(&[
-            (attrs.pace, 18),
-            (attrs.stamina, 16),
+            (attrs.pace, 13),
+            (attrs.stamina, 15),
             (attrs.tackling, 17),
             (attrs.defending, 16),
-            (attrs.positioning, 12),
-            (attrs.passing, 10),
+            (attrs.positioning, 13),
+            (attrs.passing, 11),
             (attrs.dribbling, 6),
             (attrs.decisions, 5),
+            (attrs.agility, 4),
         ]),
         Position::CenterBack => weighted_average(&[
-            (attrs.defending, 20),
+            (attrs.defending, 22),
             (attrs.tackling, 18),
             (attrs.strength, 13),
             (attrs.aerial, 12),
-            (attrs.pace, 12),
-            (attrs.positioning, 10),
+            (attrs.pace, 8),
+            (attrs.positioning, 9),
             (attrs.decisions, 7),
             (attrs.composure, 5),
-            (attrs.aggression, 3),
+            (attrs.leadership, 6),
         ]),
         Position::RightWingBack | Position::LeftWingBack => weighted_average(&[
-            (attrs.pace, 18),
-            (attrs.stamina, 18),
+            (attrs.pace, 13),
+            (attrs.stamina, 16),
             (attrs.tackling, 14),
             (attrs.defending, 12),
-            (attrs.passing, 13),
-            (attrs.dribbling, 11),
-            (attrs.vision, 7),
-            (attrs.decisions, 7),
+            (attrs.passing, 15),
+            (attrs.dribbling, 13),
+            (attrs.vision, 6),
+            (attrs.decisions, 6),
+            (attrs.agility, 5),
         ]),
         Position::DefensiveMidfielder => weighted_average(&[
-            (attrs.tackling, 18),
+            (attrs.tackling, 17),
             (attrs.positioning, 18),
-            (attrs.decisions, 16),
+            (attrs.decisions, 15),
             (attrs.passing, 14),
             (attrs.defending, 12),
             (attrs.stamina, 10),
             (attrs.vision, 7),
             (attrs.strength, 5),
+            (attrs.leadership, 2),
         ]),
         Position::CentralMidfielder => weighted_average(&[
             (attrs.passing, 20),
@@ -387,24 +428,26 @@ fn weighted_score(attrs: &PlayerAttributes, position: &Position) -> f64 {
             (attrs.pace, 6),
         ]),
         Position::RightMidfielder | Position::LeftMidfielder => weighted_average(&[
-            (attrs.pace, 17),
-            (attrs.stamina, 16),
-            (attrs.passing, 15),
-            (attrs.dribbling, 14),
-            (attrs.vision, 10),
-            (attrs.decisions, 10),
-            (attrs.positioning, 10),
-            (attrs.tackling, 8),
+            (attrs.pace, 13),
+            (attrs.stamina, 15),
+            (attrs.passing, 17),
+            (attrs.dribbling, 17),
+            (attrs.vision, 9),
+            (attrs.decisions, 9),
+            (attrs.positioning, 8),
+            (attrs.tackling, 7),
+            (attrs.agility, 5),
         ]),
         Position::RightWinger | Position::LeftWinger => weighted_average(&[
-            (attrs.pace, 22),
-            (attrs.dribbling, 22),
-            (attrs.passing, 14),
-            (attrs.shooting, 12),
-            (attrs.vision, 10),
-            (attrs.decisions, 8),
-            (attrs.positioning, 6),
-            (attrs.stamina, 6),
+            (attrs.pace, 14),
+            (attrs.dribbling, 24),
+            (attrs.passing, 16),
+            (attrs.shooting, 11),
+            (attrs.vision, 9),
+            (attrs.decisions, 7),
+            (attrs.positioning, 5),
+            (attrs.stamina, 5),
+            (attrs.agility, 9),
         ]),
         Position::Striker => weighted_average(&[
             (attrs.shooting, 26),
@@ -428,16 +471,16 @@ fn critical_penalty(attrs: &PlayerAttributes, position: &Position) -> f64 {
         }
         Position::CenterBack => attrs.defending.min(attrs.tackling).min(attrs.positioning),
         Position::RightWingBack | Position::LeftWingBack => {
-            attrs.pace.min(attrs.stamina).min(attrs.tackling)
+            attrs.defending.min(attrs.stamina).min(attrs.tackling)
         }
         Position::DefensiveMidfielder => attrs.tackling.min(attrs.positioning).min(attrs.passing),
         Position::CentralMidfielder => attrs.passing.min(attrs.vision).min(attrs.decisions),
         Position::AttackingMidfielder => attrs.vision.min(attrs.passing).min(attrs.dribbling),
         Position::RightMidfielder | Position::LeftMidfielder => {
-            attrs.pace.min(attrs.passing).min(attrs.stamina)
+            attrs.dribbling.min(attrs.passing).min(attrs.stamina)
         }
         Position::RightWinger | Position::LeftWinger => {
-            attrs.pace.min(attrs.dribbling).min(attrs.passing)
+            attrs.decisions.min(attrs.dribbling).min(attrs.passing)
         }
         Position::Striker => attrs.shooting.min(attrs.positioning).min(attrs.decisions),
         Position::Defender | Position::Midfielder | Position::Forward => 50,
@@ -481,6 +524,47 @@ fn slot_side(position: &Position) -> Option<Side> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn wide_roles_value_ball_skills_more_than_pace() {
+        let base = make_player(Position::RightWinger).attributes;
+        let mut fast = base.clone();
+        fast.pace = 99;
+        let mut technical = base.clone();
+        technical.dribbling = 90;
+        technical.passing = 82;
+        for role in [
+            Position::RightWinger,
+            Position::RightMidfielder,
+            Position::RightWingBack,
+        ] {
+            assert!(
+                ovr_from_attributes(&technical, &role) > ovr_from_attributes(&fast, &role),
+                "{role:?}"
+            );
+            assert!(ovr_from_attributes(&fast, &role) > ovr_from_attributes(&base, &role));
+            let mut slow = base.clone();
+            slow.pace = 20;
+            assert!(ovr_from_attributes(&base, &role) - ovr_from_attributes(&slow, &role) <= 8.0);
+        }
+    }
+
+    #[test]
+    fn agility_and_leadership_improve_their_relevant_roles() {
+        let base = make_player(Position::RightWinger).attributes;
+        let mut agile = base.clone();
+        agile.agility = 99;
+        let mut leader = base.clone();
+        leader.leadership = 99;
+        assert!(
+            ovr_from_attributes(&agile, &Position::RightWinger)
+                > ovr_from_attributes(&base, &Position::RightWinger)
+        );
+        assert!(
+            ovr_from_attributes(&leader, &Position::CenterBack)
+                > ovr_from_attributes(&base, &Position::CenterBack)
+        );
+    }
 
     /// A specialist keeper: elite at keeping, poor at everything an outfielder
     /// does. The flat attribute average buries him; the weighted OVR does not.
@@ -784,18 +868,60 @@ mod tests {
         );
         // 1 deep midfielder
         assert_eq!(slots[5], Position::DefensiveMidfielder);
-        // 4 attacking midfielders (attacking_midfield_line wildcard arm: all AM)
+        // 4 midfielders across the second line
         assert_eq!(
             &slots[6..10],
             &[
-                Position::AttackingMidfielder,
-                Position::AttackingMidfielder,
-                Position::AttackingMidfielder,
-                Position::AttackingMidfielder,
+                Position::LeftMidfielder,
+                Position::CentralMidfielder,
+                Position::CentralMidfielder,
+                Position::RightMidfielder,
             ]
         );
         // 1 forward
         assert_eq!(slots[10], Position::Striker);
+    }
+
+    #[test]
+    fn formation_slots_4321_uses_one_holder_and_two_central_midfielders() {
+        let slots = formation_slots("4-3-2-1");
+        assert_eq!(slots[5], Position::DefensiveMidfielder);
+        assert_eq!(
+            &slots[6..8],
+            &[Position::CentralMidfielder, Position::CentralMidfielder]
+        );
+        assert_eq!(
+            &slots[8..10],
+            &[
+                Position::AttackingMidfielder,
+                Position::AttackingMidfielder
+            ]
+        );
+        assert_eq!(slots[10], Position::Striker);
+    }
+
+    #[test]
+    fn formation_slots_235_spreads_five_forwards_across_the_front_line() {
+        let slots = formation_slots("2-3-5");
+        assert_eq!(&slots[1..3], &[Position::CenterBack, Position::CenterBack]);
+        assert_eq!(
+            &slots[3..6],
+            &[
+                Position::DefensiveMidfielder,
+                Position::CentralMidfielder,
+                Position::AttackingMidfielder,
+            ]
+        );
+        assert_eq!(
+            &slots[6..11],
+            &[
+                Position::LeftWinger,
+                Position::Striker,
+                Position::Striker,
+                Position::Striker,
+                Position::RightWinger,
+            ]
+        );
     }
 
     #[test]

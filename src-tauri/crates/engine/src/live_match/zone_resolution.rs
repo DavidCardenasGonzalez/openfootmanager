@@ -41,14 +41,8 @@ impl LiveMatchState {
     ) -> Vec<MatchEvent> {
         let mut events = Vec::new();
         let passer = self.snap_player(att_side, Position::Defender, rng);
-        let pass_skill = self.condition_adjusted_skill(
-            &passer.id,
-            (passer.passing as f64
-                + passer.vision as f64
-                + passer.composure as f64
-                + passer.teamwork as f64)
-                / 4.0,
-        ) * trait_bonus(&passer, TraitContext::Passing);
+        let pass_skill = self.condition_adjusted_skill(&passer.id, passer.buildup_skill())
+            * trait_bonus(&passer, TraitContext::Passing);
         let press = self.effective_press(def_side);
         let ball_zone = self.ball_zone;
 
@@ -87,17 +81,13 @@ impl LiveMatchState {
         let attacker = self.snap_player(att_side, Position::Midfielder, rng);
         let defender = self.snap_player(def_side, Position::Midfielder, rng);
 
-        let att_raw = (attacker.dribbling as f64
-            + attacker.passing as f64
-            + attacker.vision as f64
-            + attacker.teamwork as f64)
-            / 4.0;
         let def_raw = (defender.tackling as f64
             + defender.positioning as f64
             + defender.decisions as f64
             + defender.teamwork as f64)
             / 4.0;
-        let att_rating = self.condition_adjusted_skill(&attacker.id, att_raw)
+        let att_rating = self
+            .condition_adjusted_skill(&attacker.id, attacker.midfield_progression())
             * trait_bonus(&attacker, TraitContext::Midfield);
         let def_rating = self.condition_adjusted_skill(&defender.id, def_raw)
             * trait_bonus(&defender, TraitContext::Tackling);
@@ -173,19 +163,10 @@ impl LiveMatchState {
         let attacker = self.snap_player(att_side, Position::Forward, rng);
         let defender = self.snap_player(def_side, Position::Defender, rng);
 
-        let att_raw = (attacker.dribbling as f64
-            + attacker.pace as f64
-            + attacker.agility as f64
-            + attacker.composure as f64)
-            / 4.0;
-        let def_raw = (defender.defending as f64
-            + defender.tackling as f64
-            + defender.positioning as f64
-            + defender.aerial as f64)
-            / 4.0;
-        let att_rating = self.condition_adjusted_skill(&attacker.id, att_raw)
+        let att_rating = self.condition_adjusted_skill(&attacker.id, attacker.dribble_skill())
             * trait_bonus(&attacker, TraitContext::Dribbling);
-        let def_rating = self.condition_adjusted_skill(&defender.id, def_raw)
+        let def_rating = self
+            .condition_adjusted_skill(&defender.id, defender.ground_defense_skill())
             * trait_bonus(&defender, TraitContext::Tackling);
 
         let att_mod = play_style_modifier(
@@ -220,9 +201,11 @@ impl LiveMatchState {
                 events.push(cross_evt);
                 let header = self.snap_player(att_side, Position::Forward, rng);
                 let def_header = self.snap_player(def_side, Position::Defender, rng);
-                let aerial_att = header.aerial as f64;
-                let aerial_def = def_header.aerial as f64;
-                let aerial_win = aerial_att / (aerial_att + aerial_def);
+                let aerial_att = self.condition_adjusted_skill(&header.id, header.aerial_skill())
+                    * attacker.cross_delivery_modifier();
+                let aerial_def =
+                    self.condition_adjusted_skill(&def_header.id, def_header.aerial_skill());
+                let aerial_win = aerial_att / (aerial_att + aerial_def).max(1.0);
                 if rng.random_range(0.0..1.0f64) < aerial_win {
                     self.ball_zone = Zone::attacking_box(att_side);
                     let shot_events = self.resolve_shot(minute, att_side, rng);
@@ -323,19 +306,13 @@ impl LiveMatchState {
         let assister = self.snap_player(att_side, Position::Midfielder, rng);
         let goalkeeper = self.snap_player(def_side, Position::Goalkeeper, rng);
 
-        let shoot_raw =
-            (shooter.shooting as f64 + shooter.composure as f64 + shooter.decisions as f64) / 3.0;
-        let shoot_rating = self.condition_adjusted_skill(&shooter.id, shoot_raw)
+        let shoot_rating = self.condition_adjusted_skill(&shooter.id, shooter.shot_skill())
             * trait_bonus(&shooter, TraitContext::Shooting);
-        let gk_raw = (goalkeeper.handling as f64
-            + goalkeeper.reflexes as f64
-            + goalkeeper.positioning as f64)
-            / 3.0;
-        let gk_rating = self.condition_adjusted_skill(&goalkeeper.id, gk_raw)
+        let gk_rating = self.condition_adjusted_skill(&goalkeeper.id, goalkeeper.save_skill())
             * trait_bonus(&goalkeeper, TraitContext::Goalkeeping);
 
         let accuracy =
-            (self.config.shot_accuracy_base + (shoot_rating - 50.0) / 200.0).clamp(0.15, 0.85);
+            (self.config.shot_accuracy_base + (shoot_rating - 50.0) / 225.0).clamp(0.15, 0.85);
 
         if rng.random_range(0.0..1.0f64) > accuracy {
             let detail = EventDetail::Shot {
@@ -366,7 +343,7 @@ impl LiveMatchState {
 
         let def_line_mod = tactics_defensive_conversion_mod(&self.team_ref(def_side).tactics);
         let conversion = (self.config.goal_conversion_base * def_line_mod
-            + (shoot_rating - gk_rating) / 150.0)
+            + (shoot_rating - gk_rating) / 215.0)
             .clamp(0.10, 0.70);
 
         if rng.random_range(0.0..1.0f64) < conversion {
@@ -389,7 +366,7 @@ impl LiveMatchState {
             self.events.push(evt.clone());
             events.push(evt);
             // 40% of saves → corner (keeper parries wide), 60% → goal kick (keeper catches)
-            if rng.random_range(0.0..1.0f64) < 0.40 {
+            if rng.random_range(0.0..1.0f64) < goalkeeper.parry_chance() {
                 let corner_evt = MatchEvent::new(minute, EventType::Corner, att_side, zone);
                 self.events.push(corner_evt.clone());
                 events.push(corner_evt);

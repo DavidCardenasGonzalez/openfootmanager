@@ -10,22 +10,6 @@ vi.mock("react-i18next", () => ({ useTranslation: () => ({ t: (key: string) => k
 vi.mock("../../store/settingsStore", () => ({
   useSettingsStore: () => ({ settings: { match_speed: "normal" } }),
 }));
-vi.mock("./LiveMatchView", () => ({
-  LiveMatchView: ({
-    paused,
-    onPlaybackComplete,
-  }: {
-    paused: boolean;
-    onPlaybackComplete: () => void;
-  }) => (
-    <>
-      <div role="img" aria-label="live pitch" data-paused={paused} />
-      <button type="button" onClick={onPlaybackComplete}>
-        Finish playback
-      </button>
-    </>
-  ),
-}));
 vi.mock("../ui", () => ({
   Badge: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
   Select: ({
@@ -260,7 +244,7 @@ describe("MatchLive presentation", () => {
     vi.mocked(invoke).mockReset();
   });
 
-  it("opens the pitch by default and keeps events and other panels accessible without replacing the viewer", () => {
+  it("opens the event feed by default and keeps statistics and lineups accessible", () => {
     render(
       <MatchLive
         snapshot={createSnapshot()}
@@ -274,29 +258,17 @@ describe("MatchLive presentation", () => {
         onFullTime={vi.fn()}
       />,
     );
-    const pitch = screen.getByRole("img", { name: "live pitch" });
-    expect(pitch).toBeVisible();
-    expect(screen.getByRole("button", { name: "match.matchView" })).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    );
-    fireEvent.click(screen.getByRole("button", { name: "match.events" }));
-    expect(pitch).not.toBeVisible();
+    expect(screen.queryByRole("button", { name: "match.matchView" })).toBeNull();
     expect(screen.getByRole("button", { name: "match.events" })).toHaveAttribute(
       "aria-pressed",
       "true",
     );
-    const match = screen.getByRole("button", { name: "match.matchView" });
-    match.focus();
-    expect(match).toHaveFocus();
-    fireEvent.click(match);
-    expect(pitch).toBeVisible();
     expect(screen.getByRole("button", { name: "match.stats" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "match.lineups" })).toBeInTheDocument();
   });
 });
 
-it("waits for the last clip before finishing and cancels automatic steps while paused", async () => {
+it("pauses automatic steps and finishes immediately on the final snapshot", async () => {
   vi.useFakeTimers();
   const finished = vi.fn();
   const props = {
@@ -320,22 +292,17 @@ it("waits for the last clip before finishing and cancels automatic steps while p
   fireEvent.click(screen.getByRole("button", { name: "match.normal" }));
   await act(() => vi.advanceTimersByTimeAsync(4000));
   expect(invoke).toHaveBeenCalledWith("step_live_match", { minutes: 1 });
-  expect(finished).not.toHaveBeenCalled();
-  await act(() => vi.advanceTimersByTimeAsync(3999));
-  expect(finished).not.toHaveBeenCalled();
-  await act(() => vi.advanceTimersByTimeAsync(1));
-  expect(finished).not.toHaveBeenCalled();
-  fireEvent.click(screen.getByRole("button", { name: "Finish playback" }));
   expect(finished).toHaveBeenCalledOnce();
   unmount();
   vi.useRealTimers();
 });
 
-it("finishes after the final clip without asking to acknowledge incidents", async () => {
+it("delivers the goal and final whistle in the same step", async () => {
   vi.useFakeTimers();
   vi.mocked(invoke).mockReset();
   const finished = vi.fn();
   const snapshot = createSnapshot();
+  const important = vi.fn();
   const events = ["Foul", "YellowCard", "Goal"].map((event_type) => ({
     minute: 90,
     event_type,
@@ -355,17 +322,14 @@ it("finishes after the final clip without asking to acknowledge incidents", asyn
       isSpectator
       importantEvents={[]}
       onSnapshotUpdate={vi.fn()}
-      onImportantEvent={vi.fn()}
+      onImportantEvent={important}
       onHalfTime={vi.fn()}
       onFullTime={finished}
     />,
   );
   await act(() => vi.advanceTimersByTimeAsync(4000));
-  expect(finished).not.toHaveBeenCalled();
-  await act(() => vi.advanceTimersByTimeAsync(4000));
-  expect(finished).not.toHaveBeenCalled();
-  fireEvent.click(screen.getByRole("button", { name: "Finish playback" }));
   expect(finished).toHaveBeenCalledOnce();
+  expect(important).toHaveBeenCalledWith(events[2]);
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   unmount();
   vi.useRealTimers();
@@ -414,13 +378,7 @@ it.each(["normal", "fast", "instant"] as const)(
     );
     const interval = speed === "normal" ? 4000 : speed === "fast" ? 1000 : 100;
     await act(() => vi.advanceTimersByTimeAsync(interval));
-    expect(screen.getByRole("img", { name: "live pitch" })).toHaveAttribute("data-paused", "false");
-    await act(() => vi.advanceTimersByTimeAsync(interval + 2200));
-    expect(
-      vi.mocked(invoke).mock.calls.filter(([name]) => name === "step_live_match"),
-    ).toHaveLength(1);
-    fireEvent.click(screen.getByRole("button", { name: "Finish playback" }));
-    await act(() => vi.advanceTimersByTimeAsync(1));
+    await act(() => vi.advanceTimersByTimeAsync(interval));
     expect(
       vi.mocked(invoke).mock.calls.filter(([name]) => name === "step_live_match"),
     ).toHaveLength(2);
@@ -429,7 +387,6 @@ it.each(["normal", "fast", "instant"] as const)(
     expect(
       vi.mocked(invoke).mock.calls.filter(([name]) => name === "step_live_match"),
     ).toHaveLength(2);
-    expect(screen.getByRole("img", { name: "live pitch" })).toHaveAttribute("data-paused", "true");
     unmount();
     vi.useRealTimers();
   },

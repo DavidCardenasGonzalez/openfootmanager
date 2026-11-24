@@ -1,7 +1,7 @@
 use rand::{Rng, RngExt};
 
 use crate::event::{EventType, MatchEvent};
-use crate::shared::{PlayerSnap, TraitContext, trait_bonus};
+use crate::shared::{PlayerSnap, TraitContext, penalty_conversion, trait_bonus};
 use crate::types::{Position, Side, Zone};
 
 use super::MatchContext;
@@ -113,9 +113,7 @@ pub(super) fn resolve_penalty<R: Rng>(
     let taker = snap_player(ctx, att_side, Position::Forward, rng);
     let gk = snap_player(ctx, att_side.opposite(), Position::Goalkeeper, rng);
 
-    let shoot_skill = (taker.shooting as f64 + taker.decisions as f64) / 2.0;
-    let gk_skill = (gk.positioning as f64 + gk.decisions as f64) / 2.0;
-    let conversion = (0.75 + (shoot_skill - gk_skill) / 300.0).clamp(0.55, 0.92);
+    let conversion = penalty_conversion(&taker, &gk, 1.0);
     let zone = Zone::attacking_box(att_side);
 
     if rng.random_range(0.0..1.0f64) < conversion {

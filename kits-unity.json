@@ -1,0 +1,1857 @@
+{
+  "teams": [
+    {
+      "id": "top5-club-243-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#FEBE10"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#006B3C",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-21-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#0057B8",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-73-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#00205B",
+            "secondary": "#FFCD00"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#00205B"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-44-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#0057B8"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#FF6900"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-9-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#DC052D"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-10-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#6CABDD",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FF6900"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-240-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#FFFFFF"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FF6900"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-11-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#111111"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-448-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#DC052D"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-47-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#DC052D"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#DC052D"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-13-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#6CABDD",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-22-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFCD00",
+            "secondary": "#111111"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFCD00"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#F2E8CF",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-241-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#00205B",
+            "secondary": "#DC052D"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFCD00",
+            "secondary": "#00205B"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-48-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#6CABDD",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#6CABDD"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-45-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#0057B8",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-32-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#DC052D"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-5-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#0057B8",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#0057B8"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-18-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#00205B"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#00205B",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-2-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#7A263A",
+            "secondary": "#6CABDD"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#6CABDD"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-52-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#7A263A",
+            "secondary": "#FFCD00"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#F2E8CF",
+            "secondary": "#7A263A"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-449-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#006B3C",
+            "secondary": "#FFFFFF"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-453-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FF6900",
+            "secondary": "#111111"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FF6900"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-66-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#00205B"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#6CABDD",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1808-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#6CABDD",
+            "secondary": "#FFFFFF"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FF6900"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-14-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#DC052D"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-483-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFCD00",
+            "secondary": "#0057B8"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#0057B8",
+            "secondary": "#FFCD00"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-46-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#6CABDD",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#6CABDD"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-19-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#7A263A",
+            "secondary": "#6CABDD"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#7A263A"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1860-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#0057B8",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FF6900",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-219-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#6CABDD"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#00205B",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-450-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#6CABDD",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#6CABDD"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-189-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#00205B",
+            "secondary": "#DC052D"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#00205B"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-457-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#0057B8"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-39-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#6CABDD"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-175-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#006B3C",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#006B3C"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1831-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#DC052D"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-110374-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#5F259F",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#5F259F"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-112172-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#FF6900"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FF6900"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-110556-0",
+      "kits": {
+        "home": {
+          "pattern": "HalfAndHalf",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#00205B"
+          },
+          "unity_mask": 5
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#DC052D"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-54-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#7A263A",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#7A263A"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-106-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#FFFFFF"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FF6900"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-38-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#006B3C",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#006B3C"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-72-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FF6900"
+          }
+        },
+        "away": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#FF6900"
+          },
+          "unity_mask": 9
+        }
+      }
+    },
+    {
+      "id": "top5-club-1796-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#7A263A",
+            "secondary": "#6CABDD"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-169-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#DC052D"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-461-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#FF6900"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FF6900",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1925-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#FF6900"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1799-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#0057B8"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1842-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#00205B"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#DC052D"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1943-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#111111"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-69-0",
+      "kits": {
+        "home": {
+          "pattern": "HalfAndHalf",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#FFFFFF"
+          },
+          "unity_mask": 5
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#DC052D"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1824-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FF6900",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-110062-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#DC052D"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-65-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#111111"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#0057B8"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-100409-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FF6900",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FF6900"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1745-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#6CABDD",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-36-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#F2E8CF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#DC052D"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-481-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#DC052D"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#DC052D"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-110738-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-7-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#0057B8",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FF6900",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-74-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#111111"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-31-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#FF6900"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-480-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#FF6900"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-110827-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#0057B8",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFCD00",
+            "secondary": "#00205B"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-144-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#111111"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-8-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#00205B"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#6CABDD",
+            "secondary": "#00205B"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-64-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#FFCD00",
+            "secondary": "#DC052D"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-23-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#111111"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#F2E8CF",
+            "secondary": "#006B3C"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-10029-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#0057B8",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#0057B8"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-111817-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#0057B8",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-111974-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#006B3C",
+            "secondary": "#111111"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#006B3C"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-50-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFCD00",
+            "secondary": "#00205B"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#00205B"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-110-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFCD00",
+            "secondary": "#111111"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFCD00"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-206-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFCD00",
+            "secondary": "#00205B"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#00205B"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-452-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#6B3A2A"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#6B3A2A",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-111235-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#00205B",
+            "secondary": "#FFCD00"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#00205B"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-76-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#0057B8",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#0057B8"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-110329-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#6B3A2A",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#6B3A2A"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-378-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FF6900",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#FF6900"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-28-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#0057B8",
+            "secondary": "#FFFFFF"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-55-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFCD00",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-25-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#F2E8CF",
+            "secondary": "#DC052D"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1853-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#00205B",
+            "secondary": "#DC052D"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFCD00",
+            "secondary": "#00205B"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1530-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#111111"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1809-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#6B3A2A",
+            "secondary": "#F2E8CF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#F2E8CF",
+            "secondary": "#6B3A2A"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-479-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#00205B"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-71-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFCD00",
+            "secondary": "#006B3C"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#006B3C",
+            "secondary": "#FFCD00"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-468-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#006B3C"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-68-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#7A263A",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#7A263A"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-111434-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#DC052D",
+            "secondary": "#FFFFFF"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#DC052D"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-347-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#FFCD00",
+            "secondary": "#DC052D"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-1738-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#00205B",
+            "secondary": "#6CABDD"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#F2E8CF",
+            "secondary": "#00205B"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-463-0",
+      "kits": {
+        "home": {
+          "pattern": "Stripes",
+          "colors": {
+            "primary": "#0057B8",
+            "secondary": "#FFFFFF"
+          },
+          "unity_mask": 9
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-217-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FF6900",
+            "secondary": "#111111"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#111111",
+            "secondary": "#FF6900"
+          }
+        }
+      }
+    },
+    {
+      "id": "top5-club-57-0",
+      "kits": {
+        "home": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#FFFFFF",
+            "secondary": "#00205B"
+          }
+        },
+        "away": {
+          "pattern": "Solid",
+          "colors": {
+            "primary": "#00205B",
+            "secondary": "#FFFFFF"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -213,14 +213,42 @@ mod tests {
         let json = std::fs::read_to_string(path).unwrap();
         let world: ofm_core::generator::WorldData = serde_json::from_str(&json)
             .expect("imported world must deserialize into the actual runtime types");
-        assert_eq!(world.teams.len(), 96);
-        assert_eq!(world.players.len(), 2679);
+        assert_eq!(world.teams.len(), 162);
+        assert_eq!(world.players.len(), 4537);
+        // Added after the Top 5 import, outside the source leagues.
+        let tigres = world
+            .teams
+            .iter()
+            .find(|team| team.id == "sofifa-club-1970")
+            .expect("the authored SofIFA club must survive loading");
+        assert_eq!(tigres.name, "Tigres UANL");
+        assert_eq!(
+            world
+                .players
+                .iter()
+                .filter(|player| player.team_id.as_deref() == Some("sofifa-club-1970"))
+                .count(),
+            32
+        );
         let loaded = load_world_data(
             Some("open-manager"),
             &ofm_core::generator::DefinitionSources::embedded_only(),
         )
         .unwrap();
         assert_eq!(loaded.teams.len(), world.teams.len());
+        let mut tigres_ovrs: Vec<u8> = loaded
+            .players
+            .iter()
+            .filter(|player| player.team_id.as_deref() == Some("sofifa-club-1970"))
+            .map(|player| player.ovr)
+            .collect();
+        assert_eq!(tigres_ovrs.len(), 32);
+        // The ratings are derived from the mapped SofIFA sub-attributes, so a
+        // mapping regression shows up as an implausible squad rather than a
+        // missing field.
+        assert!(tigres_ovrs.iter().all(|ovr| (40..=90).contains(ovr)));
+        tigres_ovrs.sort_unstable_by(|a, b| b.cmp(a));
+        assert!(tigres_ovrs[0] >= 75, "best Tigres player is {}", tigres_ovrs[0]);
         for (id, minimum) in [("top5-player-212831", 85), ("top5-player-203376", 85)] {
             let raw = world.players.iter().find(|player| player.id == id).unwrap();
             let player = loaded
@@ -257,7 +285,7 @@ mod tests {
             .iter()
             .filter(|c| c.id.starts_with("open-manager-division-"))
             .collect::<Vec<_>>();
-        assert_eq!(divisions.len(), 5);
+        assert_eq!(divisions.len(), 9);
         let team_id = game
             .teams
             .iter()

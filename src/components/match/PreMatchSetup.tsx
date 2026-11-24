@@ -23,6 +23,7 @@ import {
 } from "../squad/SquadTab.helpers";
 import { PhaseBlueprintPanel } from "../tactics/PhaseBlueprintPanel";
 import { setPlayerRole, setTacticsPhase } from "../../services/squadService";
+import { autoSelectPreMatchLineup } from "../../services/liveMatchService";
 import { getRoleOptions } from "../../lib/playerRoles";
 import type { PlayerRole, TacticsPhaseSettings } from "../../store/types";
 import { PitchToken, Select, TeamLogo, ThemeToggle, type PitchFitTone } from "../ui";
@@ -186,7 +187,7 @@ export default function PreMatchSetup({
               variant="ghost"
               fullWidth
               aria-label={`${t("match.playerRoles")} · ${player.name}`}
-              disabled={savingPlayerRole}
+              disabled={savingPlayerRole || isAutoSelecting}
               value={playerRoles[player.id] ?? "Standard"}
               onChange={(e) => {
                 handlePlayerRoleChange(player.id, e.target.value as PlayerRole);
@@ -307,52 +308,14 @@ export default function PreMatchSetup({
 
   const handleAutoSelect = async () => {
     setIsAutoSelecting(true);
+    setSelectedStarterId(null);
     try {
-      const pool = [...userTeam.players, ...userBench];
-      const idealIds = new Set<string>();
-
-      for (const pos of ["Goalkeeper", "Defender", "Midfielder", "Forward"]) {
-        const candidates = pool
-          .filter((p) => p.position === pos)
-          .sort((a, b) => b.ovr * (b.condition / 100) - a.ovr * (a.condition / 100));
-        const needed = formationNeeds[pos] ?? 0;
-        for (let i = 0; i < Math.min(needed, candidates.length); i++) {
-          idealIds.add(candidates[i].id);
-        }
-      }
-
-      if (idealIds.size < 11) {
-        const rest = pool
-          .filter((p) => !idealIds.has(p.id))
-          .sort((a, b) => b.ovr * (b.condition / 100) - a.ovr * (a.condition / 100));
-        for (const p of rest) {
-          if (idealIds.size >= 11) break;
-          idealIds.add(p.id);
-        }
-      }
-
-      const currentIds = new Set(userTeam.players.map((p) => p.id));
-      const toAdd = [...idealIds].filter((id) => !currentIds.has(id));
-      const toRemove = [...currentIds].filter((id) => !idealIds.has(id));
-
-      let snap: MatchSnapshot | null = null;
-      for (let i = 0; i < Math.min(toAdd.length, toRemove.length); i++) {
-        snap = await invoke<MatchSnapshot>("apply_match_command", {
-          command: {
-            PreMatchSwap: {
-              side: userSide,
-              player_off_id: toRemove[i],
-              player_on_id: toAdd[i],
-            },
-          },
-        });
-      }
-      if (snap) onUpdateSnapshot(snap);
+      const snap = await autoSelectPreMatchLineup(userSide);
+      onUpdateSnapshot(snap);
     } catch (err) {
       console.error("Auto-select failed:", err);
     } finally {
       setIsAutoSelecting(false);
-      setSelectedStarterId(null);
     }
   };
 
@@ -398,7 +361,8 @@ export default function PreMatchSetup({
         <button
           type="button"
           onClick={handleAutoSelectSetPieces}
-          className="flex items-center gap-1.5 rounded-lg border border-accent-200 dark:border-accent-500/20 bg-accent-50 hover:bg-accent-100 dark:bg-accent-500/10 dark:hover:bg-accent-500/20 px-3 py-1.5 font-heading font-bold text-[10px] uppercase tracking-wider text-accent-700 dark:text-accent-400 transition-colors"
+          disabled={isAutoSelecting}
+          className="flex items-center gap-1.5 rounded-lg border border-accent-200 dark:border-accent-500/20 bg-accent-50 hover:bg-accent-100 dark:bg-accent-500/10 dark:hover:bg-accent-500/20 px-3 py-1.5 font-heading font-bold text-[10px] uppercase tracking-wider text-accent-700 dark:text-accent-400 transition-colors disabled:opacity-50"
         >
           <Wand2 className="h-3 w-3" />
           {t("match.autoSelectTakers")}
@@ -413,6 +377,7 @@ export default function PreMatchSetup({
             </label>
             <Select
               value={current ?? ""}
+              disabled={isAutoSelecting}
               onChange={(e) => handleSetPieceTaker(role, e.target.value)}
               selectSize="xs"
               fullWidth
@@ -452,6 +417,7 @@ export default function PreMatchSetup({
             <div className="flex gap-2">
               <Select
                 value={FORMATIONS.includes(userTeam.formation) ? userTeam.formation : FORMATIONS[0]}
+                disabled={isAutoSelecting}
                 onChange={(e) => handleFormationChange(e.target.value)}
                 selectSize="sm"
                 fullWidth
@@ -465,7 +431,7 @@ export default function PreMatchSetup({
               </Select>
               <Select
                 value={userTeam.play_style}
-                disabled={savingPlayStyle}
+                disabled={savingPlayStyle || isAutoSelecting}
                 onChange={(e) => handlePlayStyleChange(e.target.value)}
                 selectSize="sm"
                 fullWidth
@@ -489,7 +455,9 @@ export default function PreMatchSetup({
           formation={userTeam.formation}
           players={userTeam.players}
           selectedId={selectedStarterId}
-          onPlayerClick={(id) => setSelectedStarterId(id === selectedStarterId ? null : id)}
+          onPlayerClick={
+            isAutoSelecting ? undefined : (id) => setSelectedStarterId(id === selectedStarterId ? null : id)
+          }
           renderToken={(p, { isSelected, slotPosition }) =>
             renderUserToken(p, isSelected, slotPosition)
           }
@@ -666,7 +634,7 @@ export default function PreMatchSetup({
             <button
               type="button"
               onClick={onUnityStart ?? onStart}
-              disabled={savingPlayStyle || savingPlayerRole || savingPhase}
+              disabled={isAutoSelecting || savingPlayStyle || savingPlayerRole || savingPhase}
               className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 px-8 py-3 font-heading font-bold uppercase tracking-wider text-sm text-white shadow-lg shadow-primary-500/20 transition-all hover:from-primary-600 hover:to-primary-700 hover:scale-[1.02] active:scale-[0.98]"
             >
               {t("match.startMatch")}

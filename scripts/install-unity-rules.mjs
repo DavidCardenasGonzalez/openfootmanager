@@ -57,10 +57,25 @@ const hooks = {
         }
 
         #region GET FUNCTIONS with MODIFIERS, for in game match.`],
+    ['ModifySkill(Player.positioning, PlayerSkillCurves.Current.ReactionCurve)', 'ModifySkill(global::OpenFootMatchRules.ReactionSkill(Player), PlayerSkillCurves.Current.ReactionCurve)'],
+    ['ActualShootPower = ModifySkill(Player.shooting,', 'ActualShootPower = ModifySkill(global::OpenFootMatchRules.ShotPowerSkill(Player),'],
   ],
   'Players/PlayerBase.cs': [
     ['Ball.Current.Pass(targetBallHitVector, this, targetBallHitSpeed, IsThrowHolder);', 'Ball.Current.Pass(targetBallHitVector, this, targetBallHitSpeed, IsThrowHolder || IsCornerHolder || IsGoalKickHolder);'],
     ['Ball.Current.Cross (targetBallHitVector, this, IsThrowHolder);', 'Ball.Current.Cross (targetBallHitVector, this, IsThrowHolder || IsCornerHolder || IsGoalKickHolder);'],
+    ['            // Try chip shot if GK is away.', '            new global::OpenFootBreakawayBehaviour(),\n\n            // Try chip shot if GK is away.'],
+  ],
+  'Players/Behaviours/AbstractShootingBehaviour.cs': [
+    ['            var goalToMe = Player.Position - targetGoalNet.Position;', '            var goalToMe = Player.Position - targetGoalNet.Position;\n            goalToMe.y = 0;\n            if (goalToMe.sqrMagnitude >= global::OpenFootShotSelection.MaximumShotDistance *\n                global::OpenFootShotSelection.MaximumShotDistance) return false;'],
+  ],
+  'Players/Behaviours/ShootingBehaviour.cs': [
+    ['                var toGoal = targetGoalNet.Position - Player.Position;', '                var toGoal = targetGoalNet.Position - Player.Position;\n                toGoal.y = 0;\n                float distance = toGoal.magnitude;'],
+    ['                float tolerance = adminMulti * (toleranceMod + (oneOnOne ? ONEONEONE_TOLERANCE_BONUS : 0));', '                float tolerance = adminMulti * (toleranceMod + (oneOnOne ? ONEONEONE_TOLERANCE_BONUS : 0))\n                    * global::OpenFootShotSelection.DistanceMultiplier(distance);'],
+    ['                    toGoal.magnitude, ', '                    distance,'],
+    ['var gkTol = keepingToleranceCurve.Evaluate(keeping / 100);', 'var gkTol = keepingToleranceCurve.Evaluate(\n                    global::OpenFootMatchRules.GoalkeepingSkill(opponentGK.MatchPlayer, keeping) / 100);'],
+  ],
+  'Players/Behaviours/ChipShootingBehaviour.cs': [
+    ['            var lastOpponent = opponents.OrderBy(x => x.XPower(fieldEndX, x.Position)).FirstOrDefault();\n\n            var lastOpponentPosition = lastOpponent.Position;', '            var keeper = opponents.FirstOrDefault(x => x.IsGK && x.PlayerController.IsPhysicsEnabled);\n            if (keeper == null) return false;\n\n            var lastOpponentPosition = keeper.Position;\n            if (Mathf.Abs(lastOpponentPosition.x - goalNetPosition.x) <\n                global::OpenFootShotSelection.ChipKeeperAdvance) return false;'],
   ],
   'Players/Behaviours/KickOffBehaviour.cs': [
     ['            if (!isAlreadyActive) {', '            if (global::OpenFootMatchRules.TakePenalty(Player, deltaTime)) return true;\n\n            if (!isAlreadyActive) {'],
@@ -83,12 +98,13 @@ const edits = Object.entries(hooks).map(([file, replacements]) => {
   if (existsSync(original)) {
     const pristine = readFileSync(original, 'utf8');
     const expected = patch(pristine, replacements, file);
-    const previousCount = { 'Players/Systems/TacklingSystem.cs': 2, 'MatchManager.cs': 2, 'Ball/BallActionDetector.cs': 3 }[file];
+    const previousCount = { 'Players/Systems/TacklingSystem.cs': 2, 'MatchManager.cs': 2, 'Ball/BallActionDetector.cs': 3, 'Players/PlayerBase.cs': 2, 'MatchPlayer.cs': 1, 'Players/Behaviours/ShootingBehaviour.cs': 3 }[file];
     const previous = previousCount && patch(pristine, replacements.slice(0, previousCount), file);
     if (contents !== pristine && contents !== expected && contents !== previous) throw new Error(`Local changes in ${source}`);
     return { source, original, contents: pristine, patched: expected };
   }
   const hasExistingHooks = contents.includes('OpenFootMatchRules') ||
+    contents.includes('global::OpenFootShotSelection.') ||
     (file === 'MatchPlayer.cs' && contents.includes('void ApplyOpenFootCondition(')) ||
     (file === 'GameTeam.cs' && contents.includes('i < GamePlayers.Length')) ||
     (file === 'Players/PlayerBase.cs' && contents.includes('IsThrowHolder || IsCornerHolder || IsGoalKickHolder')) ||
@@ -99,6 +115,9 @@ const edits = Object.entries(hooks).map(([file, replacements]) => {
     'Players/Systems/TacklingSystem.cs': ['var challengedPlayer', 2],
     'MatchManager.cs': ['OpenFootMatchRules.PeriodEnd', 2],
     'Ball/BallActionDetector.cs': ['if (global::OpenFootMatchRules.BallCrossedGoalLine', 3],
+    'Players/PlayerBase.cs': ['new global::OpenFootBreakawayBehaviour()', 2],
+    'MatchPlayer.cs': ['OpenFootMatchRules.ReactionSkill', 1],
+    'Players/Behaviours/ShootingBehaviour.cs': ['OpenFootMatchRules.GoalkeepingSkill', 3],
   }[file];
   const installedHooks = previousCount && !contents.includes(previousCount[0])
     ? replacements.slice(0, previousCount[1]) : replacements;
@@ -122,7 +141,7 @@ function patch(contents, replacements, file) {
 }
 
 const destination = join(assets, 'OpenFootBridge');
-for (const name of ['OpenFootMatchRules.cs', 'OpenFootMatchCondition.cs', 'OpenFootKnockout.cs']) {
+for (const name of ['OpenFootMatchRules.cs', 'OpenFootMatchCondition.cs', 'OpenFootKnockout.cs', 'OpenFootShotSelection.cs']) {
   const adapter = join(bridge, name);
   const installedAdapter = join(destination, name);
   if (!existsSync(installedAdapter) || readFileSync(adapter, 'utf8') !== readFileSync(installedAdapter, 'utf8')) {

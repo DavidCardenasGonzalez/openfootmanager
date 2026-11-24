@@ -19,7 +19,19 @@ The processes exchange version 1 JSON files in the system temporary directory un
 
 ## Scope
 
-The request supplies team identities, eleven starters per side, a supported formation and player attributes. The managed team also receives its bench and the match substitution limit. The keeper occupies slot zero. The adapter clones the template teams for kits and appearance. Player order determines formation slots. The result supplies the final score, starting rosters, attributed goals and completed substitutions. Older score-only results are accepted. Own goals count toward the final score.
+The request supplies team identities, eleven starters per side, a supported formation and player attributes. The managed team also receives its bench and the match substitution limit. The keeper occupies slot zero. Player order determines formation slots. The result supplies the final score, starting rosters, attributed goals and completed substitutions. Older score-only results are accepted. Own goals count toward the final score.
+
+Each request player also carries `number` (the career jersey number, `0` when unassigned) and `ovr` (the career overall). Unity renders the jersey number on the 3D shirt and uses `ovr` in the squad presentation instead of recomputing its own rating from the converted attributes.
+
+The bridge relies on both sides sharing the same formation slot table. The supported `4-4-2`, `3-5-2`, `4-1-4-1`, `4-2-3-1`, `4-3-2-1`, `4-3-3`, `4-1-3-2`, `5-3-2`, `5-4-1`, `3-4-3`, `5-2-3` and `2-3-5` layouts in `FormationRules.cs` mirror `formation_slots` in `player_rating.rs`. Keep them aligned when either side changes, otherwise a player can appear in a different role on the pitch.
+
+The integration needs three small hooks in the licensed sources: `PlayerEntry.cs` exposes `Number` and `OpenFootOverall` (and copies them in `Clone`), `MatchManager.cs` prefers `PlayerEntry.Number` over the `1..11` template default, and `FormationRules.cs` carries the shared slot table. Reapply them after updating the Football Simulator asset, then rebuild the Windows player: the embedded player runs its own compiled copy of these files.
+
+## Club kits
+
+Each team can send `kits.home` and `kits.away` from the career. The home side starts in its home kit and the away side in its away kit. A kit contains `pattern`, `colors.primary` and `colors.secondary` in `#RRGGBB`, and an optional integer `unity_mask` from 1 through 10. Without an explicit mask, Unity maps Stripes to 9, Hoops to 2, HalfAndHalf to 5, Diagonal to 6 and Solid to a single primary color. Missing or invalid slots use the simulator's template kit. The adapter keeps the template goalkeeper settings and referee materials.
+
+**OpenFoot → Build Windows player** includes all ten 3D masks and their preview counterparts from the local Football Simulator project. Unity applies both textures and colors before match initialization. For the data collection prompt and the world merge command, see the [kit research workflow](../../docs/PROMPT_UNIFORMES_UNITY.md).
 
 For single-match knockout fixtures, a tie at 90 minutes starts two extra periods of 15 minutes. A tie at 120 starts an on-pitch shootout with alternating kicks, early decisions and sudden death. The player uses each team's assigned goal to preserve the simulator's keeper behaviour. The shootout is recorded separately from the score and the match statistics. OpenFoot uses its existing competition rules to advance the winner.
 
@@ -37,7 +49,7 @@ The round summary displays the observed stats for your match. Open **Stats** on 
 
 ## Referee and restarts in observed matches
 
-Run `node scripts/install-unity-rules.mjs "<Unity project path>"` after installing Football Simulator 1.1a and the OpenFoot bridge. The script adds the rule hooks to the local asset and preserves the original scripts under `%LOCALAPPDATA%/OpenFootUnityBackups`. Sync the bridge scripts and the `OpenFootRoleLabels` resource before rebuilding the Windows player.
+Run `node scripts/install-unity-rules.mjs "<Unity project path>"` after installing Football Simulator 1.1a and the OpenFoot bridge. The script installs the referee and AI shot selection hooks and preserves the original scripts under `%LOCALAPPDATA%/OpenFootUnityBackups`. Sync the bridge scripts and the `OpenFootRoleLabels` resource before rebuilding the Windows player.
 
 The referee judges close slide tackles. Failed tackles and tackles from behind carry more risk. The position of the contact determines the restart. Offside is called when a flagged player actually touches the ball, with the simulator's exemption for a direct throw-in, goal kick or corner. Discipline removes a dismissed player from the active lineup and keeps their appearance in the report. A penalty uses the regular shot animation, keeper and ball physics. The match panel keeps the current formation after a dismissal, and substitutions can still replace players who remain on the pitch.
 

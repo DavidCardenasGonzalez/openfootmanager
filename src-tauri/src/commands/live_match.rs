@@ -101,6 +101,14 @@ pub fn apply_match_command(
     apply_match_command_service(&state, command)
 }
 
+#[tauri::command]
+pub fn auto_select_pre_match_lineup(
+    state: State<'_, Arc<StateManager>>,
+    side: engine::Side,
+) -> Result<engine::MatchSnapshot, String> {
+    crate::application::live_match::auto_select_pre_match_lineup(&state, side)
+}
+
 /// Get current match snapshot without advancing time.
 #[tauri::command]
 pub fn get_match_snapshot(
@@ -588,6 +596,33 @@ mod tests {
     }
 
     #[test]
+    fn unity_ticket_exports_career_jersey_numbers_and_overall() {
+        let game = make_game_with_round();
+        let expected: HashMap<String, Option<u8>> = game
+            .players
+            .iter()
+            .map(|player| (player.id.clone(), player.jersey_number))
+            .collect();
+        let state = StateManager::new();
+        let live = live_match_manager::create_live_match(&game, 0, MatchMode::Live, false).unwrap();
+        state.set_game(game);
+        state.set_live_match(live);
+        let path = super::super::unity_match::export_request(&state).unwrap();
+        let request: serde_json::Value =
+            serde_json::from_slice(&std::fs::read(&path).unwrap()).unwrap();
+        std::fs::remove_file(path).unwrap();
+        for side in ["home", "away"] {
+            for player in request[side]["players"].as_array().unwrap() {
+                let id = player["id"].as_str().unwrap();
+                assert!(player["ovr"].as_u64().is_some());
+                if let Some(number) = expected[id] {
+                    assert_eq!(player["number"].as_u64(), Some(u64::from(number)));
+                }
+            }
+        }
+    }
+
+    #[test]
     fn unity_ticket_exports_the_tactical_blueprint_for_the_managed_side() {
         let mut game = make_game_with_round();
         game.teams[0].tactics_phase.width = domain::team::PitchWidth::Wide;
@@ -841,6 +876,32 @@ mod tests {
         );
         assert!(apply().is_err());
     }
+    #[test]
+    fn unity_request_exports_both_club_kits_and_legacy_home_colors() {
+        let mut game = make_game_with_round();
+        let kits = serde_json::json!({
+            "home": {"pattern": "Hoops", "colors": {"primary": "#112233", "secondary": "#EEEEEE"}},
+            "away": {"pattern": "Stripes", "colors": {"primary": "#AABBCC", "secondary": "#445566"}, "unity_mask": 3}
+        });
+        game.teams[0].kits = serde_json::from_value(kits.clone()).unwrap();
+        game.teams[1].colors.primary = "#123456".into();
+        game.teams[1].colors.secondary = "#FEDCBA".into();
+        let state = StateManager::new();
+        let live = live_match_manager::create_live_match(&game, 0, MatchMode::Live, false).unwrap();
+        state.set_live_match(live);
+        state.set_game(game);
+        let directory = tempfile::tempdir().unwrap();
+        state.set_save_id(directory.path().display().to_string());
+
+        let path = super::super::unity_match::export_request(&state).unwrap();
+        let contents = std::fs::read_to_string(&path).unwrap();
+        std::fs::remove_file(path).unwrap();
+        let request: serde_json::Value = serde_json::from_str(&contents).unwrap();
+        assert_eq!(request["home"]["kits"], kits);
+        assert_eq!(request["away"]["kits"]["home"]["colors"]["primary"], "#123456");
+        assert!(request["away"]["kits"]["away"].is_null());
+    }
+
     #[test]
     #[ignore = "requires Football Simulator in Unity Editor"]
     fn unity_editor_roundtrip() {

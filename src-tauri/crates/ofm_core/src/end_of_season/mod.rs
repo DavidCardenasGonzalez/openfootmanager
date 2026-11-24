@@ -1220,6 +1220,7 @@ pub fn process_end_of_season(game: &mut Game) -> EndOfSeasonSummary {
     crate::season_context::refresh_game_context(game);
     crate::ai_squad::process_ai_squads(game);
     crate::ai_squad::repair_squads(game);
+    crate::free_agents::ensure_balanced_free_agent_market(game);
 
     summary
 }

@@ -2,10 +2,10 @@ use rand::{Rng, RngExt};
 
 use crate::event::{EventType, MatchEvent};
 use crate::shared::{
-    PlayStylePhase, TraitContext, home_mod, play_style_modifier, role_attribute_modifier,
-    tactics_buildup_mod, tactics_cross_probability, tactics_defensive_conversion_mod,
-    tactics_foul_modifier, tactics_pressing_press, tactics_shape_modifier,
-    tactics_tempo_progression, trait_bonus,
+    PlayStylePhase, TraitContext, home_mod, leadership_modifier, play_style_modifier,
+    pressing_skill, role_attribute_modifier, tactics_buildup_mod, tactics_cross_probability,
+    tactics_defensive_conversion_mod, tactics_foul_modifier, tactics_pressing_press,
+    tactics_shape_modifier, tactics_tempo_progression, trait_bonus,
 };
 use crate::types::{Position, Side, Zone};
 
@@ -46,12 +46,7 @@ fn resolve_buildup<R: Rng>(
     rng: &mut R,
 ) {
     let passer = snap_player(ctx, att_side, Position::Defender, rng);
-    let pass_skill = (passer.passing as f64
-        + passer.vision as f64
-        + passer.composure as f64
-        + passer.teamwork as f64)
-        / 4.0
-        * trait_bonus(&passer, TraitContext::Passing);
+    let pass_skill = passer.buildup_skill() * trait_bonus(&passer, TraitContext::Passing);
     let press = effective_press(ctx, def_side);
     let ball_zone = ctx.ball_zone;
 
@@ -88,12 +83,8 @@ fn resolve_midfield<R: Rng>(
     let attacker = snap_player(ctx, att_side, Position::Midfielder, rng);
     let defender = snap_player(ctx, def_side, Position::Midfielder, rng);
 
-    let att_rating = (attacker.dribbling as f64
-        + attacker.passing as f64
-        + attacker.vision as f64
-        + attacker.teamwork as f64)
-        / 4.0
-        * trait_bonus(&attacker, TraitContext::Midfield);
+    let att_rating =
+        attacker.midfield_progression() * trait_bonus(&attacker, TraitContext::Midfield);
     let def_rating = (defender.tackling as f64
         + defender.positioning as f64
         + defender.decisions as f64
@@ -168,18 +159,9 @@ fn resolve_attacking_third<R: Rng>(
     let attacker = snap_player(ctx, att_side, Position::Forward, rng);
     let defender = snap_player(ctx, def_side, Position::Defender, rng);
 
-    let att_rating = (attacker.dribbling as f64
-        + attacker.pace as f64
-        + attacker.agility as f64
-        + attacker.composure as f64)
-        / 4.0
-        * trait_bonus(&attacker, TraitContext::Dribbling);
-    let def_rating = (defender.defending as f64
-        + defender.tackling as f64
-        + defender.positioning as f64
-        + defender.aerial as f64)
-        / 4.0
-        * trait_bonus(&defender, TraitContext::Tackling);
+    let att_rating = attacker.dribble_skill() * trait_bonus(&attacker, TraitContext::Dribbling);
+    let def_rating =
+        defender.ground_defense_skill() * trait_bonus(&defender, TraitContext::Tackling);
 
     let att_mod = play_style_modifier(ctx.team(att_side).play_style, PlayStylePhase::Attack, true)
         * role_attribute_modifier(attacker.role, PlayStylePhase::Attack);
@@ -207,9 +189,9 @@ fn resolve_attacking_third<R: Rng>(
             );
             let header = snap_player(ctx, att_side, Position::Forward, rng);
             let def_header = snap_player(ctx, def_side, Position::Defender, rng);
-            let aerial_att = header.aerial as f64;
-            let aerial_def = def_header.aerial as f64;
-            let aerial_win = aerial_att / (aerial_att + aerial_def);
+            let aerial_att = header.aerial_skill() * attacker.cross_delivery_modifier();
+            let aerial_def = def_header.aerial_skill();
+            let aerial_win = aerial_att / (aerial_att + aerial_def).max(1.0);
             if rng.random_range(0.0..1.0f64) < aerial_win {
                 ctx.ball_zone = Zone::attacking_box(att_side);
                 resolve_shot(ctx, minute, att_side, rng);
@@ -317,17 +299,12 @@ fn resolve_shot<R: Rng>(ctx: &mut MatchContext, minute: u8, att_side: Side, rng:
     };
 
     let shoot_rating =
-        (shooter.shooting as f64 + shooter.composure as f64 + shooter.decisions as f64) / 3.0
-            * trait_bonus(&shooter, TraitContext::Shooting)
-            * att_cond;
+        shooter.shot_skill() * trait_bonus(&shooter, TraitContext::Shooting) * att_cond;
     let gk_rating =
-        (goalkeeper.handling as f64 + goalkeeper.reflexes as f64 + goalkeeper.positioning as f64)
-            / 3.0
-            * trait_bonus(&goalkeeper, TraitContext::Goalkeeping)
-            * def_cond;
+        goalkeeper.save_skill() * trait_bonus(&goalkeeper, TraitContext::Goalkeeping) * def_cond;
 
     let accuracy =
-        (ctx.config.shot_accuracy_base + (shoot_rating - 50.0) / 200.0).clamp(0.15, 0.85);
+        (ctx.config.shot_accuracy_base + (shoot_rating - 50.0) / 225.0).clamp(0.15, 0.85);
 
     if rng.random_range(0.0..1.0f64) > accuracy {
         if rng.random_range(0.0..1.0f64) < 0.4 {
@@ -352,7 +329,7 @@ fn resolve_shot<R: Rng>(ctx: &mut MatchContext, minute: u8, att_side: Side, rng:
 
     let def_line_mod = tactics_defensive_conversion_mod(&ctx.team(def_side).tactics);
     let conversion = (ctx.config.goal_conversion_base * def_line_mod
-        + (shoot_rating - gk_rating) / 150.0)
+        + (shoot_rating - gk_rating) / 215.0)
         .clamp(0.10, 0.70);
 
     if rng.random_range(0.0..1.0f64) < conversion {
@@ -368,8 +345,7 @@ fn resolve_shot<R: Rng>(ctx: &mut MatchContext, minute: u8, att_side: Side, rng:
         ctx.emit(
             MatchEvent::new(minute, EventType::ShotSaved, att_side, zone).with_player(&shooter.id),
         );
-        // 40% of saves → corner (keeper parries wide), 60% → goal kick (keeper catches)
-        if rng.random_range(0.0..1.0f64) < 0.40 {
+        if rng.random_range(0.0..1.0f64) < goalkeeper.parry_chance() {
             ctx.emit(MatchEvent::new(minute, EventType::Corner, att_side, zone));
             ctx.possession = att_side;
             ctx.ball_zone = Zone::attacking_box(att_side);
@@ -388,14 +364,14 @@ fn resolve_shot<R: Rng>(ctx: &mut MatchContext, minute: u8, att_side: Side, rng:
 pub(super) fn effective_midfield(ctx: &MatchContext, side: Side) -> f64 {
     let base = ctx.team(side).midfield_rating();
     let modifier = play_style_modifier(ctx.team(side).play_style, PlayStylePhase::Midfield, true);
-    base * modifier * home_mod(side, ctx.config)
+    base * modifier
+        * home_mod(side, ctx.config)
+        * leadership_modifier(&ctx.team(side).players, &ctx.sent_off, None)
 }
 
 fn effective_press(ctx: &MatchContext, pressing_side: Side) -> f64 {
     let team = ctx.team(pressing_side);
-    let base = team.position_attr_avg(Position::Midfielder, |p| {
-        ((p.stamina as u16 + p.tackling as u16 + p.pace as u16) / 3) as u8
-    });
+    let base = team.position_attr_avg(Position::Midfielder, pressing_skill);
     let modifier = play_style_modifier(team.play_style, PlayStylePhase::Press, true);
     base * modifier * tactics_pressing_press(&team.tactics) * home_mod(pressing_side, ctx.config)
 }

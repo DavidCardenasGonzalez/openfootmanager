@@ -19,8 +19,10 @@ export function createRequest(snapshot, userSide = snapshot.user_side) {
       const condition = p.condition ?? 100;
       const fitness = p.fitness ?? 75;
       const stamina = p.stamina ?? 50;
+      const number = p.number ?? p.jersey_number ?? 0;
+      const ovr = p.ovr ?? 0;
       for (const value of [condition, fitness, stamina]) requireValue(Number.isInteger(value) && value >= 0 && value <= 100, 'Invalid match condition');
-      return { ...Object.fromEntries(['id','name','position','role',...fields].map(key=>[key,p[key]])), condition, fitness, stamina };
+      return { ...Object.fromEntries(['id','name','position','role',...fields].map(key=>[key,p[key]])), condition, fitness, stamina, number, ovr };
     })};
   }
   const home=convert(snapshot.home_team), away=convert(snapshot.away_team);

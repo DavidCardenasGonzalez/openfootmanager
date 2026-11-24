@@ -29,9 +29,17 @@ using Shared.Responses;
 // Install under Assets/OpenFootBridge. Independent from the vendor sources.
 public sealed class OpenFootBridge : MonoBehaviour
 {
-    [Serializable] public class Player { public string id, name, position, role; public int pace, passing, shooting, tackling, dribbling, strength, positioning, agility, reflexes, condition, fitness, stamina; }
-    [Serializable] public class Team { public string id, name, formation, play_style; public OpenFootTacticsSettings tactics; public Player[] players, bench; }
-    [Serializable] public class Request { public int version, max_subs; public bool use_condition, allows_extra_time; public string request_id; public Team home, away; }
+    [Serializable] public class Player
+    {
+        public string id, name, position, role;
+        public int number;
+        public int pace, stamina, strength, agility, aerial;
+        public int passing, shooting, tackling, dribbling, defending;
+        public int positioning, vision, decisions, composure, aggression, teamwork, leadership;
+        public int handling, reflexes, condition, fitness, ovr;
+    }
+    [Serializable] public class Team { public string id, name, formation, play_style; public OpenFootTacticsSettings tactics; public Player[] players, bench; public OpenFootKitCatalog.Kits kits; }
+    [Serializable] public class Request { public int version, max_subs; public bool use_condition, allows_extra_time, use_balanced_attributes; public string request_id; public Team home, away; }
     [Serializable] public class Result { public int version=1; public string request_id, status="finished", home_id, away_id; public int home_goals, away_goals, total_minutes, regulation_home_goals, regulation_away_goals; public string[] player_ids; public Goal[] goals; public Substitution[] substitutions; public OpenFootMatchStatistics statistics; public OpenFootKnockout.Kick[] shootout; }
     [Serializable] public class Goal { public int minute; public string side, player_id; public bool penalty; }
     [Serializable] public class Substitution { public int minute; public string player_off_id, player_on_id; }
@@ -44,11 +52,15 @@ public sealed class OpenFootBridge : MonoBehaviour
         public Positions Slot;
         public int Number;
         public bool Keeper;
+        public int Overall, Condition;
+        public float Rating;
+        internal PlayerEntry Entry;
     }
 
     private readonly Dictionary<PlayerEntry, string> playerIds = new Dictionary<PlayerEntry, string>();
     private readonly Dictionary<string, string> positions = new Dictionary<string, string>();
     private readonly Dictionary<string, string> playerRoles = new Dictionary<string, string>();
+    private readonly Dictionary<PlayerEntry, int> overalls = new Dictionary<PlayerEntry, int>();
     private readonly List<Goal> goals = new List<Goal>();
     private readonly List<Substitution> substitutions = new List<Substitution>();
     private readonly List<LineupPlayer> lineup = new List<LineupPlayer>();
@@ -56,6 +68,7 @@ public sealed class OpenFootBridge : MonoBehaviour
     private readonly Dictionary<string, (PlayerEntry entry, int number, bool keeper)> bench =
         new Dictionary<string, (PlayerEntry, int, bool)>();
     private TeamEntry homeTeam, awayTeam;
+    private readonly List<KitEntry> matchKits = new List<KitEntry>();
     private Request active;
     private GameTeam managedTeam;
     private bool kickedOff;
@@ -92,6 +105,7 @@ public sealed class OpenFootBridge : MonoBehaviour
 
     private void OnDestroy()
     {
+        ReleaseMatchKits();
         matchCondition?.Dispose();
         teamTactics?.Dispose();
         foreach (var asset in formationAssets.Values)
@@ -103,7 +117,7 @@ public sealed class OpenFootBridge : MonoBehaviour
         if(active!=null || Loading) throw new InvalidOperationException("Bridge already has a match");
         var request=JsonUtility.FromJson<Request>(json);
         if(request==null || request.version!=1 || string.IsNullOrEmpty(request.request_id)) throw new ArgumentException("Invalid bridge request");
-        Validate(request.home); Validate(request.away);
+        Validate(request.home, request.use_balanced_attributes); Validate(request.away, request.use_balanced_attributes);
         if (!string.IsNullOrEmpty(request.home.play_style) && !string.IsNullOrEmpty(request.away.play_style))
             throw new ArgumentException("Only one team can be controlled by OpenFoot");
         if(request.home.id==request.away.id || request.home.players.Concat(request.away.players).Select(p=>p.id).Distinct().Count()!=22) throw new ArgumentException("Duplicate identities");
@@ -112,6 +126,7 @@ public sealed class OpenFootBridge : MonoBehaviour
         Loading=true; LastError=null; ResultJson=null;
         try {
             playerIds.Clear();
+            overalls.Clear();
             matchCondition?.Dispose();
             matchCondition = new OpenFootMatchCondition();
             fullTimeStatistics = null;
@@ -126,8 +141,8 @@ public sealed class OpenFootBridge : MonoBehaviour
             substitutes.Clear();
             bench.Clear();
             var match = new MatchCreateRequest(
-                ConvertTeam(request.home, templates[0]),
-                ConvertTeam(request.away, templates[1]));
+                ConvertTeam(request.home, templates[0], request.use_balanced_attributes),
+                ConvertTeam(request.away, templates[1], request.use_balanced_attributes));
             // MatchCreateRequest clones each team and its players.
             homeTeam = match.homeTeam;
             awayTeam = match.awayTeam;
@@ -139,6 +154,11 @@ public sealed class OpenFootBridge : MonoBehaviour
                 playerIds.Add(awayTeam.Players[slot], away.id);
                 RegisterCondition(homeTeam.Players[slot], home, request.use_condition);
                 RegisterCondition(awayTeam.Players[slot], away, request.use_condition);
+                if (request.use_balanced_attributes)
+                {
+                    matchRules.RegisterAttributes(homeTeam.Players[slot], home);
+                    matchRules.RegisterAttributes(awayTeam.Players[slot], away);
+                }
             }
             var managed = !string.IsNullOrEmpty(request.home.play_style) ? request.home : request.away;
             foreach (var starter in managed.players)
@@ -151,20 +171,21 @@ public sealed class OpenFootBridge : MonoBehaviour
                 for (int index = 0; index < reserves.Length; index++)
                 {
                     var data = reserves[index];
-                    ValidatePlayer(data);
+                    ValidatePlayer(data, request.use_balanced_attributes);
                     if (playerIds.ContainsValue(data.id) || bench.ContainsKey(data.id))
                         throw new ArgumentException("Duplicate reserve identity");
                     var entry = reserveTeam.Players[index % 11].Clone(reserveTeam);
                     entry.id = id++;
-                    SetAttributes(entry, data);
-                    bench.Add(data.id, (entry, index + 12, data.position == "Goalkeeper"));
+                    SetAttributes(entry, data, request.use_balanced_attributes);
+                    if (request.use_balanced_attributes) matchRules.RegisterAttributes(entry, data);
+                    bench.Add(data.id, (entry, data.number > 0 ? data.number : index + 12, data.position == "Goalkeeper"));
                     RegisterCondition(entry, data, request.use_condition);
                     positions[data.id] = data.position;
                 }
             }
             active=request;
             await StartObservedMatch(match);
-        } catch(Exception error) { active=null; LastError=error.ToString(); throw; }
+        } catch(Exception error) { active=null; ReleaseMatchKits(); LastError=error.ToString(); throw; }
         finally { Loading=false; }
     }
 
@@ -175,6 +196,7 @@ public sealed class OpenFootBridge : MonoBehaviour
             throw new ArgumentException("Invalid match condition");
         matchCondition.Register(entry, useCondition ? data.condition : 100,
             useCondition ? data.fitness : 75, useCondition ? data.stamina : 50);
+        overalls.Add(entry, data.ovr);
     }
 
     private static async Task StartObservedMatch(MatchCreateRequest match)
@@ -196,32 +218,78 @@ public sealed class OpenFootBridge : MonoBehaviour
         EventManager.Trigger(upcoming);
         await MatchEngineLoader.Current.StartMatchEngine(upcoming, false, true);
     }
-    private static void Validate(Team team) {
+    private static void Validate(Team team, bool balancedAttributes) {
         Formations formation;
         if(team==null || string.IsNullOrEmpty(team.id) || team.players==null || team.players.Length!=11 || !Enum.TryParse(team.formation,out formation) || formation==Formations.ParametersCount) throw new ArgumentException("Invalid team");
-        foreach (var player in team.players) ValidatePlayer(player);
+        foreach (var player in team.players) ValidatePlayer(player, balancedAttributes);
     }
-    private static void ValidatePlayer(Player p)
+    private static void ValidatePlayer(Player p, bool balancedAttributes)
     {
         if (p == null || string.IsNullOrEmpty(p.id)) throw new ArgumentException("Missing player");
         foreach (var n in new[] { p.pace, p.passing, p.shooting, p.tackling, p.dribbling, p.strength, p.positioning, p.agility, p.reflexes })
             if (n < 0 || n > 100) throw new ArgumentException("Invalid attribute");
+        if (balancedAttributes)
+            foreach (var n in new[] { p.aerial, p.defending, p.vision, p.decisions, p.composure, p.aggression, p.teamwork, p.leadership, p.handling })
+                if (n < 0 || n > 100) throw new ArgumentException("Invalid attribute");
     }
 
-    private static TeamEntry ConvertTeam(Team input,TeamEntry template) {
+    private TeamEntry ConvertTeam(Team input, TeamEntry template, bool balancedAttributes) {
         var team=(TeamEntry)template.Clone(); team.TeamName=input.name; team.Formation=(Formations)Enum.Parse(typeof(Formations),input.formation);
-        for (int i = 0; i < 11; i++) SetAttributes(team.Players[i], input.players[i]);
+        team.HomeKit = ApplyKit(team.HomeKit, input.kits?.home);
+        team.AwayKit = ApplyKit(team.AwayKit, input.kits?.away);
+        for (int i = 0; i < 11; i++) SetAttributes(team.Players[i], input.players[i], balancedAttributes);
         return team;
     }
 
-    private static void SetAttributes(PlayerEntry to, Player from)
+    private KitEntry ApplyKit(KitEntry template, OpenFootKitCatalog.Kit kit)
     {
-            to.Name = to.name = from.name;
-            to.topSpeed=to.acceleration=from.pace; to.passing=to.longBall=from.passing;
-            to.shooting=to.shootPower=from.shooting; to.tackling=from.tackling;
-            to.ballControl=to.ballKeeping=to.dribbleSpeed=from.dribbling;
-            to.strength=from.strength; to.positioning=from.positioning;
-            to.agility=from.agility; to.reaction=from.reflexes;
+        var applied = OpenFootKitCatalog.CreateKit(template, kit);
+        if (applied == null) return template;
+        matchKits.Add(applied);
+        return applied;
+    }
+
+    private void ReleaseMatchKits()
+    {
+        foreach (var kit in matchKits) Destroy(kit);
+        matchKits.Clear();
+    }
+
+    internal static void SetAttributes(PlayerEntry to, Player from, bool balancedAttributes)
+    {
+        to.Name = to.name = from.name;
+        to.Number = from.number;
+        to.OpenFootOverall = from.ovr;
+        to.strength = from.strength;
+        to.agility = from.agility;
+        if (!balancedAttributes)
+        {
+            to.topSpeed = to.acceleration = from.pace;
+            to.passing = to.longBall = from.passing;
+            to.shooting = to.shootPower = from.shooting;
+            to.tackling = from.tackling;
+            to.ballControl = to.ballKeeping = to.dribbleSpeed = from.dribbling;
+            to.positioning = from.positioning;
+            to.reaction = from.reflexes;
+            return;
+        }
+
+        int Round(float value) => Mathf.RoundToInt(value);
+        bool keeper = from.position == "Goalkeeper";
+        // The simulator multiplies acceleration and top speed when ranking races for the ball.
+        to.topSpeed = Round(Mathf.Lerp(70f, from.pace, 0.55f));
+        to.acceleration = Round(17.5f + from.pace * 0.35f + from.agility * 0.40f);
+        to.dribbleSpeed = Round(from.dribbling * 0.75f + from.agility * 0.25f);
+        to.passing = Round(from.passing * 0.72f + from.vision * 0.18f + from.teamwork * 0.10f);
+        to.longBall = Round(from.passing * 0.68f + from.vision * 0.26f + from.decisions * 0.06f);
+        to.shooting = Round(from.shooting * 0.72f + from.composure * 0.18f + from.decisions * 0.10f);
+        to.shootPower = from.shooting;
+        to.tackling = Round(from.tackling * 0.72f + from.defending * 0.24f + from.aggression * 0.04f);
+        to.ballControl = keeper ? from.handling : Round(from.dribbling * 0.80f + from.composure * 0.20f);
+        to.ballKeeping = Round(from.dribbling * 0.70f + from.strength * 0.20f + from.composure * 0.10f);
+        to.positioning = keeper ? from.positioning : Round(from.positioning * 0.60f + from.defending * 0.25f + from.decisions * 0.15f);
+        to.reaction = keeper ? from.reflexes : from.decisions;
+        to.jump = Round(from.aerial * 0.80f + from.strength * 0.20f);
     }
 
     private static TacticPresetTypes Preset(string style)
@@ -328,6 +396,26 @@ public sealed class OpenFootBridge : MonoBehaviour
     public int SubstitutionLimit => active == null ? 0 : active.max_subs;
     public int SubstitutionsRemaining => Mathf.Max(0, SubstitutionLimit - substitutions.Count);
     public int LineupVersion { get; private set; }
+    public string HomeTeamName => active?.home.name ?? "";
+    public string AwayTeamName => active?.away.name ?? "";
+    public bool ManagedIsHome => !string.IsNullOrEmpty(active?.home.play_style);
+    public int HomeGoals => MatchManager.Current?.homeTeamScore ?? 0;
+    public int AwayGoals => MatchManager.Current?.awayTeamScore ?? 0;
+    public int MatchMinute => (int)(MatchManager.Current?.minutes ?? 0f);
+
+    public void RefreshVitals()
+    {
+        if (matchCondition == null) return;
+        var stats = MatchManager.Statistics;
+        foreach (var player in lineup)
+        {
+            player.Condition = matchCondition.Remaining(player.Entry);
+            if (MatchMinute > 0 && stats != null && stats.runningDistance.PlayerDistances.ContainsKey(player.Entry.id))
+                player.Rating = Mathf.Clamp(stats.PlayerRating(player.Entry.id), 0f, 10f);
+        }
+        foreach (var player in substitutes)
+            player.Condition = matchCondition.Remaining(player.Entry);
+    }
 
     /// <summary>Effective style applied to the managed side and the minute it changed.</summary>
     public string ActivePlayStyle { get; private set; }
@@ -685,6 +773,8 @@ public sealed class OpenFootBridge : MonoBehaviour
                 Role = RoleFor(gamePlayer),
                 Number = gamePlayer.MatchPlayer.Number,
                 Keeper = gamePlayer.IsGK,
+                Entry = gamePlayer.MatchPlayer.Player,
+                Overall = overalls[gamePlayer.MatchPlayer.Player],
             });
         }
         foreach (var pair in bench)
@@ -695,8 +785,11 @@ public sealed class OpenFootBridge : MonoBehaviour
                 Position = positions.TryGetValue(pair.Key, out var position) ? position : "",
                 Number = pair.Value.number,
                 Keeper = pair.Value.keeper,
+                Entry = pair.Value.entry,
+                Overall = overalls[pair.Value.entry],
             });
         substitutes.Sort((left, right) => left.Number.CompareTo(right.Number));
+        RefreshVitals();
         LineupVersion++;
     }
 

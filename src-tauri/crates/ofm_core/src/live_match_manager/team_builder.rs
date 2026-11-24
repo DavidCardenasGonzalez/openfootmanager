@@ -1,12 +1,13 @@
 use crate::game::Game;
 use crate::player_rating::{
-    effective_rating_for_assignment, formation_slots, natural_ovr, positional_fit_for_assignment,
+    AssignmentFamiliarity, assignment_familiarity, effective_rating_for_assignment,
+    formation_slots, natural_ovr, positional_fit_for_assignment, primary_position,
 };
-use domain::player::Position as DomainPosition;
+use domain::player::{Player, Position as DomainPosition};
 use engine::{
-    BreakSpeed, CounterPressDuration, DefensiveLine, DefensiveShape, MarkingStyle, PlayStyle,
-    PlayerData, PlayerRole as EnginePlayerRole, Position, PressingIntensity, TacticsBuildUpStyle,
-    TacticsConfig, TacticsPitchWidth, TeamData, Tempo,
+    BreakSpeed, CounterPressDuration, DefensiveLine, DefensiveShape, MarkingStyle, MatchCommand,
+    PlayStyle, PlayerData, PlayerRole as EnginePlayerRole, Position, PressingIntensity, Side,
+    TacticsBuildUpStyle, TacticsConfig, TacticsPitchWidth, TeamData, Tempo,
 };
 use std::collections::{HashMap, HashSet};
 
@@ -210,6 +211,124 @@ fn auto_select_starting_xi<'a>(
     }
 
     starting_xi
+}
+
+pub(super) fn ranked_pre_match_lineup(
+    game: &Game,
+    side: Side,
+    team: &TeamData,
+    bench: &[PlayerData],
+) -> MatchCommand {
+    let squad: HashMap<_, _> = game
+        .players
+        .iter()
+        .filter(|p| p.team_id.as_deref() == Some(team.id.as_str()))
+        .map(|p| (p.id.as_str(), p))
+        .collect();
+    let match_squad = || team.players.iter().chain(bench);
+    let available = match_squad()
+        .filter_map(|p| squad.get(p.id.as_str()).copied())
+        .filter(|p| p.injury.is_none())
+        .collect();
+    let slots = formation_slots(&team.formation);
+    let chosen = rank_starting_xi(available, &slots);
+    let chosen_ids: HashSet<_> = chosen.iter().map(|p| p.id.as_str()).collect();
+
+    MatchCommand::SetPreMatchLineup {
+        side,
+        starters: chosen
+            .iter()
+            .zip(&slots)
+            .map(|(p, slot)| (p.id.clone(), engine_position(slot)))
+            .collect(),
+        bench: match_squad()
+            .filter(|p| !chosen_ids.contains(p.id.as_str()))
+            .map(|p| {
+                let position = squad.get(p.id.as_str()).map_or(p.position, |player| {
+                    engine_position(&primary_position(player))
+                });
+                (p.id.clone(), position)
+            })
+            .collect(),
+    }
+}
+
+#[derive(Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord)]
+struct LineupScore {
+    keeper_fit: u8,
+    preferred: u8,
+    same_group: u8,
+    rating: u32,
+}
+
+#[derive(Clone, Copy, Default)]
+struct RankedLineup {
+    score: LineupScore,
+    players: [usize; 11],
+}
+
+fn rank_starting_xi<'a>(mut players: Vec<&'a Player>, slots: &[DomainPosition]) -> Vec<&'a Player> {
+    let slots = &slots[..slots.len().min(players.len()).min(11)];
+    players.sort_unstable_by(|left, right| left.id.cmp(&right.id));
+    let mut best = vec![None; 1 << slots.len()];
+    best[0] = Some(RankedLineup::default());
+
+    // Each mask represents a set of occupied slots. Walk it backwards for each
+    // player so adding them to one slot can't also add them to a second slot.
+    for (index, player) in players.iter().enumerate() {
+        let keeper = primary_position(player) == DomainPosition::Goalkeeper;
+        // Half of the rating is sensitive to condition, so moderate fatigue
+        // can break a close contest without outweighing a large quality gap.
+        let readiness = 0.5 + f64::from(player.condition.min(100)) / 200.0;
+        let scores: Vec<_> = slots
+            .iter()
+            .map(|slot| {
+                let familiarity = assignment_familiarity(player, slot);
+                LineupScore {
+                    keeper_fit: u8::from(keeper == (*slot == DomainPosition::Goalkeeper)),
+                    preferred: u8::from(matches!(
+                        familiarity,
+                        AssignmentFamiliarity::Natural | AssignmentFamiliarity::Alternate
+                    )),
+                    same_group: u8::from(matches!(familiarity, AssignmentFamiliarity::SameGroup)),
+                    rating: (positional_fit_for_assignment(player, slot) * readiness * 100.0)
+                        .round() as u32,
+                }
+            })
+            .collect();
+
+        for mask in (0..best.len() - 1).rev() {
+            let Some(partial) = best[mask] else { continue };
+            for (slot, score) in scores.iter().enumerate() {
+                let bit = 1 << slot;
+                if mask & bit != 0 {
+                    continue;
+                }
+                let score = LineupScore {
+                    keeper_fit: partial.score.keeper_fit + score.keeper_fit,
+                    preferred: partial.score.preferred + score.preferred,
+                    same_group: partial.score.same_group + score.same_group,
+                    rating: partial.score.rating + score.rating,
+                };
+                let target = &mut best[mask | bit];
+                if target.is_none_or(|current| current.score < score) {
+                    let mut lineup = RankedLineup { score, ..partial };
+                    lineup.players[slot] = index;
+                    *target = Some(lineup);
+                }
+            }
+        }
+    }
+
+    let lineup = best
+        .last()
+        .copied()
+        .flatten()
+        .expect("one candidate per slot");
+    lineup.players[..slots.len()]
+        .iter()
+        .map(|&index| players[index])
+        .collect()
 }
 
 /// Maps a club's reputation to a 0.0–1.0 management-quality score. Generated club
@@ -421,22 +540,10 @@ fn to_engine_player(
     // Fall back to the player's natural position (not `p.position`, which on
     // legacy saves can still hold a stale coarse bucket written by the old
     // set_formation stat-ranking).
-    let group = deployed
-        .cloned()
-        .unwrap_or_else(|| p.natural_position.clone())
-        .to_group_position();
-    let pos = match group {
-        DomainPosition::Goalkeeper => Position::Goalkeeper,
-        DomainPosition::Defender => Position::Defender,
-        DomainPosition::Midfielder => Position::Midfielder,
-        DomainPosition::Forward => Position::Forward,
-        _ => Position::Midfielder,
-    };
-
     PlayerData {
         id: p.id.clone(),
         name: p.match_name.clone(),
-        position: pos,
+        position: engine_position(deployed.unwrap_or(&p.natural_position)),
         // Recompute on the live-match boundary so legacy/imported saves with a
         // stale derived OVR do not show an incorrect GEN in the substitution UI.
         ovr: natural_ovr(p).round() as u8,
@@ -463,6 +570,15 @@ fn to_engine_player(
         aerial: p.attributes.aerial,
         traits: p.traits.iter().map(|t| format!("{:?}", t)).collect(),
         role,
+    }
+}
+
+fn engine_position(position: &DomainPosition) -> Position {
+    match position.to_group_position() {
+        DomainPosition::Goalkeeper => Position::Goalkeeper,
+        DomainPosition::Defender => Position::Defender,
+        DomainPosition::Forward => Position::Forward,
+        _ => Position::Midfielder,
     }
 }
 
@@ -577,6 +693,157 @@ mod tests {
         );
         p.condition = condition;
         p
+    }
+
+    #[test]
+    fn ranked_xi_reserves_versatile_players_for_slots_without_cover() {
+        use DomainPos::*;
+        let slots = [Goalkeeper, LeftBack, CenterBack, CenterBack, RightBack];
+        let mut versatile = mk_pos("versatile", LeftBack, 90, 100);
+        versatile.alternate_positions = vec![CenterBack];
+        let squad = [
+            mk_pos("keeper", Goalkeeper, 50, 55),
+            versatile,
+            mk_pos("left", LeftBack, 65, 100),
+            mk_pos("center", CenterBack, 70, 100),
+            mk_pos("right", RightBack, 68, 100),
+            mk_pos("striker", Striker, 95, 100),
+        ];
+        let xi = rank_starting_xi(squad.iter().collect(), &slots);
+
+        assert_eq!(xi[0].id, "keeper");
+        assert_eq!(xi[1].id, "left");
+        assert_eq!(xi[4].id, "right");
+        assert!(xi[2..4].iter().any(|p| p.id == "versatile"));
+        assert!(xi[2..4].iter().any(|p| p.id == "center"));
+    }
+
+    #[test]
+    fn ranked_xi_rotates_for_condition_when_quality_is_close() {
+        let slots = [DomainPos::Striker];
+        let comparable = mk_pos("comparable", DomainPos::Striker, 76, 100);
+        let weak = mk_pos("weak", DomainPos::Striker, 55, 100);
+        let mut starter = mk_pos("starter", DomainPos::Striker, 86, 70);
+
+        assert_eq!(
+            rank_starting_xi(vec![&starter, &weak], &slots)[0].id,
+            "starter"
+        );
+        assert_eq!(
+            rank_starting_xi(vec![&starter, &comparable], &slots)[0].id,
+            "comparable"
+        );
+        starter.condition = 90;
+        assert_eq!(
+            rank_starting_xi(vec![&starter, &comparable], &slots)[0].id,
+            "starter"
+        );
+    }
+
+    #[test]
+    fn auto_select_reorders_the_live_xi_using_the_current_formation() {
+        use crate::clock::GameClock;
+        use crate::live_match_manager::{MatchMode, create_live_match};
+        use domain::league::{Fixture, League};
+        use domain::manager::Manager;
+        use domain::team::Team;
+        use engine::{MatchCommand, Side};
+
+        let mut manager = Manager::new(
+            "mgr".into(),
+            "Test".into(),
+            "Manager".into(),
+            "1980-01-01".into(),
+            "England".into(),
+        );
+        manager.hire("user".into());
+        let mut user = Team::new(
+            "user".into(),
+            "User FC".into(),
+            "USR".into(),
+            "England".into(),
+            "London".into(),
+            "Ground".into(),
+            25_000,
+        );
+        user.formation = "4-4-2".into();
+        let slots = formation_slots("4-3-3");
+        let mut players: Vec<_> = slots
+            .iter()
+            .enumerate()
+            .map(|(index, slot)| mk_pos(&format!("slot-{index:02}"), slot.clone(), 75, 100))
+            .collect();
+        user.starting_xi_ids = players.iter().map(|p| p.id.clone()).collect();
+        user.starting_xi_ids.swap(0, 9);
+        user.starting_xi_ids.swap(8, 10);
+        user.player_roles
+            .insert("slot-08".into(), domain::team::PlayerRole::InsideForward);
+        players[9].condition = 60;
+        players.push(mk_pos("fresh-striker", DomainPos::Striker, 72, 100));
+        for player in &mut players {
+            player.team_id = Some("user".into());
+        }
+        let mut opponent = mk_pos("opp-keeper", DomainPos::Goalkeeper, 75, 100);
+        opponent.team_id = Some("opponent".into());
+        players.push(opponent);
+        let mut game = Game::new(
+            GameClock::new("2026-08-01T12:00:00Z".parse().unwrap()),
+            manager,
+            vec![user],
+            players,
+            vec![],
+            vec![],
+        );
+        game.league = Some(League {
+            fixtures: vec![Fixture {
+                home_team_id: "opponent".into(),
+                away_team_id: "user".into(),
+                ..Default::default()
+            }],
+            ..Default::default()
+        });
+
+        let mut session = create_live_match(&game, 0, MatchMode::Live, false).unwrap();
+        session
+            .apply_command(MatchCommand::ChangeFormation {
+                side: Side::Away,
+                formation: "4-3-3".into(),
+            })
+            .unwrap();
+        session
+            .auto_select_pre_match_lineup(&game, Side::Away)
+            .unwrap();
+        let snapshot = session.snapshot();
+        let starters = &snapshot.away_team.players;
+        let ids: Vec<_> = starters.iter().map(|p| p.id.as_str()).collect();
+        assert_eq!(snapshot.away_team.formation, "4-3-3");
+        assert_eq!(ids.len(), 11);
+        assert_eq!(ids[0], "slot-00");
+        assert_eq!(&ids[8..], &["slot-08", "fresh-striker", "slot-10"]);
+        assert_eq!(starters[8].role, EnginePlayerRole::InsideForward);
+        assert_eq!(snapshot.away_bench[0].id, "slot-09");
+        assert_eq!(snapshot.away_bench[0].position, Position::Forward);
+        assert_eq!(snapshot.away_subs_made, 0);
+        assert_eq!(snapshot.home_team.players[0].id, "opp-keeper");
+
+        session
+            .auto_select_pre_match_lineup(&game, Side::Away)
+            .unwrap();
+        assert!(
+            session
+                .snapshot()
+                .away_team
+                .players
+                .iter()
+                .map(|p| p.id.as_str())
+                .eq(ids)
+        );
+        session.step();
+        assert!(
+            session
+                .auto_select_pre_match_lineup(&game, Side::Away)
+                .is_err()
+        );
     }
 
     #[test]

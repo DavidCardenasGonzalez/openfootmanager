@@ -42,6 +42,14 @@ test('exports a player role alongside the player ID and position', () => {
   assert.equal(players[1].id, match.home_team.players[1].id);
 });
 
+test('exports the career jersey number and overall', () => {
+  const match = snapshot();
+  Object.assign(match.home_team.players[1], { number: 14, ovr: 82 });
+  const player = createRequest(match).home.players[1];
+  assert.equal(player.number, 14);
+  assert.equal(player.ovr, 82);
+});
+
 test('exports the tactical blueprint only for the managed side', () => {
   const match = snapshot();
   match.home_team.tactics = { width: 'Narrow' };

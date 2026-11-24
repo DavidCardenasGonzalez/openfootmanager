@@ -257,6 +257,9 @@ export function getPreferredPositions(player: PlayerData): string[] {
   ];
 }
 
+// The Unity bridge assigns request players to Football Simulator formation
+// slots by index. Keep this order in sync with `formation_slot_rows` in
+// src-tauri/crates/ofm_core/src/player_rating.rs and `FormationRules.cs`.
 export function buildPitchRows(formation: string): PitchRow[] {
   const parts = formation
     .split("-")
@@ -303,6 +306,8 @@ export function buildPitchRows(formation: string): PitchRow[] {
         return ["DefensiveMidfielder"];
       case 2:
         return ["DefensiveMidfielder", "CentralMidfielder"];
+      case 3:
+        return ["DefensiveMidfielder", "CentralMidfielder", "CentralMidfielder"];
       default:
         return Array(count).fill("DefensiveMidfielder");
     }
@@ -316,6 +321,13 @@ export function buildPitchRows(formation: string): PitchRow[] {
         return ["AttackingMidfielder", "AttackingMidfielder"];
       case 3:
         return ["LeftMidfielder", "AttackingMidfielder", "RightMidfielder"];
+      case 4:
+        return [
+          "LeftMidfielder",
+          "CentralMidfielder",
+          "CentralMidfielder",
+          "RightMidfielder",
+        ];
       default:
         return Array(count).fill("AttackingMidfielder");
     }
@@ -329,6 +341,8 @@ export function buildPitchRows(formation: string): PitchRow[] {
         return ["Striker", "Striker"];
       case 3:
         return ["LeftWinger", "Striker", "RightWinger"];
+      case 5:
+        return ["LeftWinger", "Striker", "Striker", "Striker", "RightWinger"];
       default:
         return Array(count).fill("Striker");
     }

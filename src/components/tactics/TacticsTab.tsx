@@ -48,6 +48,7 @@ export default function TacticsTab({
     handleFormationChange,
     handlePlayStyleChange,
     handleAssignBestFit,
+    handleAutoSelectXI,
     handlePromoteBenchPlayer,
     handleDemoteStarter,
     clearLineupSelection,
@@ -124,6 +125,15 @@ export default function TacticsTab({
         }}
         tacticLibrary={tacticLibrary}
       />
+
+      <button
+        type="button"
+        onClick={() => void handleAutoSelectXI()}
+        disabled={!roster.some((player) => !player.injury)}
+        className="flex w-fit items-center gap-2 rounded-lg border border-accent-200 bg-accent-50 px-3 py-2 text-xs font-heading font-bold uppercase tracking-wider text-accent-700 transition-colors hover:bg-accent-100 focus:outline-none focus:ring-2 focus:ring-accent-400 focus:ring-offset-2 dark:border-accent-500/20 dark:bg-accent-500/10 dark:text-accent-400 dark:hover:bg-accent-500/20 dark:focus:ring-offset-navy-900 disabled:opacity-50"
+      >
+        {t("match.autoSelectXI")}
+      </button>
 
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-[260px_1fr_270px] xl:items-start">
         {/* Left: player list */}

@@ -211,6 +211,7 @@ where
     crate::ai_squad::process_ai_squads(game);
     crate::contracts::process_contract_expiries(game);
     crate::ai_squad::repair_squads(game);
+    crate::free_agents::ensure_balanced_free_agent_market(game);
 
     // Weekly financial processing (wages, matchday income, warnings)
     crate::finances::process_weekly_finances(game);
@@ -262,6 +263,7 @@ pub fn finish_live_match_day(game: &mut Game) {
     crate::ai_squad::process_ai_squads(game);
     crate::contracts::process_contract_expiries(game);
     crate::ai_squad::repair_squads(game);
+    crate::free_agents::ensure_balanced_free_agent_market(game);
     crate::finances::process_weekly_finances(game);
 
     board_objectives::generate_objectives(game);

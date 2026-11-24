@@ -337,6 +337,9 @@ pub struct TeamKit {
     pub pattern: KitPattern,
     #[serde(default)]
     pub colors: TeamColors,
+    /// Optional Football Simulator texture index for the Unity bridge.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub unity_mask: Option<u8>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

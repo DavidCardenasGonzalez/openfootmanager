@@ -11,7 +11,9 @@ use std::collections::{HashMap, HashSet, VecDeque};
 
 use crate::event::MatchEvent;
 use crate::report::MatchReport;
-use crate::types::{MatchConfig, PlayStyle, PlayerData, PlayerRole, Side, TeamData, Zone};
+use crate::types::{
+    MatchConfig, PlayStyle, PlayerData, PlayerRole, Position, Side, TeamData, Zone,
+};
 
 // ---------------------------------------------------------------------------
 // MatchPhase — tracks where we are in the match lifecycle
@@ -71,6 +73,13 @@ pub enum MatchCommand {
         side: Side,
         player_off_id: String,
         player_on_id: String,
+    },
+    SetPreMatchLineup {
+        side: Side,
+        #[serde(default)]
+        starters: Vec<(String, Position)>,
+        #[serde(default)]
+        bench: Vec<(String, Position)>,
     },
     ChangePlayerRole {
         side: Side,
@@ -365,6 +374,11 @@ impl LiveMatchState {
                 }
                 self.do_pre_match_swap(side, &player_off_id, &player_on_id)
             }
+            MatchCommand::SetPreMatchLineup {
+                side,
+                starters,
+                bench,
+            } => self.set_pre_match_lineup(side, starters, bench),
             MatchCommand::ChangePlayerRole {
                 side,
                 player_id,

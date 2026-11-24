@@ -57,6 +57,11 @@ pub struct SquadManagementTotals {
     pub emergency_recruits: u64,
     #[serde(default)]
     pub international_recruits: u64,
+    /// Free agents created by the market-balancing pass, not by national-team
+    /// backfill. Kept separate so a save can explain where its unattached
+    /// players came from.
+    #[serde(default)]
+    pub free_agent_recruits: u64,
     #[serde(default)]
     pub promotions: u64,
     #[serde(default)]

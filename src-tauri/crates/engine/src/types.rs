@@ -138,8 +138,11 @@ fn default_fitness() -> u8 {
 }
 
 impl PlayerData {
-    /// Overall rating (simple mean of core 11 attributes).
+    /// The positional overall supplied by the caller, with a fallback for old snapshots.
     pub fn overall(&self) -> f64 {
+        if self.ovr > 0 {
+            return f64::from(self.ovr);
+        }
         (self.pace as f64
             + self.stamina as f64
             + self.strength as f64
@@ -157,6 +160,26 @@ impl PlayerData {
     /// Effective rating accounting for current condition (0-100).
     pub fn effective_overall(&self) -> f64 {
         self.overall() * (self.condition as f64 / 100.0)
+    }
+}
+
+#[cfg(test)]
+mod player_data_tests {
+    use super::*;
+
+    #[test]
+    fn bench_rating_uses_position_weighted_overall_with_legacy_fallback() {
+        let mut keeper: PlayerData = serde_json::from_value(serde_json::json!({
+            "id": "gk", "name": "GK", "position": "Goalkeeper", "condition": 80,
+            "pace": 50, "stamina": 50, "strength": 50, "passing": 50, "shooting": 50,
+            "tackling": 50, "dribbling": 50, "defending": 50, "positioning": 50,
+            "vision": 50, "decisions": 50
+        }))
+        .unwrap();
+        assert_eq!(keeper.overall(), 50.0);
+        keeper.ovr = 85;
+        assert_eq!(keeper.overall(), 85.0);
+        assert_eq!(keeper.effective_overall(), 68.0);
     }
 }
 

@@ -31,6 +31,7 @@ public sealed class OpenFootMatchRules
     internal OpenFootKnockout.Kick[] ShootoutKicks => shootout.Kicks;
 
     private readonly Dictionary<PlayerEntry, string> identities;
+    private readonly Dictionary<PlayerEntry, OpenFootBridge.Player> attributes = new Dictionary<PlayerEntry, OpenFootBridge.Player>();
     private readonly HashSet<PlayerEntry> cautioned = new HashSet<PlayerEntry>();
     private readonly List<Incident> incidents = new List<Incident>();
     private readonly Action<GameTeam> lineupChanged;
@@ -58,6 +59,34 @@ public sealed class OpenFootMatchRules
         this.lineupChanged = lineupChanged;
         this.knockout = knockout;
         this.captureFullTime = captureFullTime;
+    }
+
+    internal void RegisterAttributes(PlayerEntry entry, OpenFootBridge.Player player) => attributes.Add(entry, player);
+
+    internal static int ReactionSkill(PlayerEntry player) =>
+        Current?.attributes.ContainsKey(player) == true ? player.reaction : player.positioning;
+
+    internal static int ShotPowerSkill(PlayerEntry player) =>
+        Current?.attributes.ContainsKey(player) == true ? player.shootPower : player.shooting;
+
+    internal static float GoalkeepingSkill(MatchPlayer keeper, float legacySkill)
+    {
+        if (Current?.attributes.ContainsKey(keeper.Player) != true) return legacySkill;
+        return keeper.ActualReaction * 0.35f + keeper.ActualBallControl * 0.30f +
+            keeper.ActualPositioning * 0.25f + keeper.ActualAgility * 0.10f;
+    }
+
+    private float TackleRisk(PlayerBase defender, float risk)
+    {
+        if (!attributes.TryGetValue(defender.MatchPlayer.Player, out var player)) return risk;
+        int leadership = 0;
+        foreach (var teammate in defender.GameTeam.GamePlayers)
+            if (attributes.TryGetValue(teammate.MatchPlayer.Player, out var profile))
+                leadership = Mathf.Max(leadership, profile.leadership);
+
+        float aggressionFactor = 1f + (player.aggression - 70) * 0.004f;
+        float leadershipFactor = 1f - (leadership - 70) * 0.003f;
+        return Mathf.Clamp01(risk * aggressionFactor * leadershipFactor);
     }
 
     internal static bool ShouldFinish(MatchManager match, bool naturalWhistle)
@@ -162,7 +191,7 @@ public sealed class OpenFootMatchRules
         bool fromBehind = Vector3.Dot(attackerForward, fromAttacker.normalized) < -0.4f;
         float risk = late ? 0.48f : wonBall ? 0.025f : 0.28f;
         if (fromBehind) risk += wonBall ? 0.12f : 0.20f;
-        if (Random.value >= risk) return false;
+        if (Random.value >= Current.TackleRisk(defender, risk)) return false;
 
         Current.Record("Foul", defender);
         float sanction = Random.value;

@@ -15,8 +15,6 @@ import { getEventDisplay, getPlayerName, makeTeamFallback, phaseLabel } from "./
 import { Badge, TeamLogo } from "../ui";
 import { useSettingsStore } from "../../store/settingsStore";
 import { EventFeed, MatchStats, Lineups } from "./MatchPanels";
-import { LiveMatchView } from "./LiveMatchView";
-import { LIVE_SPEED_MS } from "./livePresentation";
 import MatchScreenLayout from "./MatchScreenLayout";
 import { SubPanel, type PendingSubstitution } from "./SubPanel";
 import type { PlayerRole } from "../../store/types";
@@ -38,7 +36,9 @@ import {
   Flag,
 } from "lucide-react";
 
-type ActivePanel = "match" | "events" | "stats" | "lineups";
+const LIVE_SPEED_MS = { slow: 8000, normal: 4000, fast: 1000, instant: 100 };
+
+type ActivePanel = "events" | "stats" | "lineups";
 
 interface MatchLiveProps {
   snapshot: MatchSnapshot;
@@ -77,27 +77,9 @@ export default function MatchLive({
       ? settings.match_speed
       : "normal");
   const [speed, setSpeed] = useState<SimSpeed>(initialSpeed);
-  const [activePanel, setActivePanel] = useState<ActivePanel>("match");
+  const [activePanel, setActivePanel] = useState<ActivePanel>("events");
   const [isRunning, setIsRunning] = useState(true);
   const [showSubPanel, setShowSubPanel] = useState(false);
-  const [presentationPending, setPresentationPending] = useState(false);
-  const [presentedScore, setPresentedScore] = useState({
-    home: snapshot.home_score,
-    away: snapshot.away_score,
-  });
-  const pendingFinish = useRef<(() => void) | null>(null);
-  const handlePlaybackComplete = useCallback(() => {
-    setPresentationPending(false);
-    const finish = pendingFinish.current;
-    pendingFinish.current = null;
-    finish?.();
-  }, []);
-  const handlePresentedScore = useCallback((score: { home: number; away: number }) => {
-    setPresentedScore((previous) =>
-      previous.home === score.home && previous.away === score.away ? previous : score,
-    );
-  }, []);
-  const hasStepped = useRef(false);
   const stepInFlight = useRef(false);
   const mounted = useRef(true);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -105,7 +87,6 @@ export default function MatchLive({
     mounted.current = true;
     return () => {
       mounted.current = false;
-      pendingFinish.current = null;
     };
   }, []);
   const eventFeedRef = useRef<HTMLDivElement>(null);
@@ -145,7 +126,7 @@ export default function MatchLive({
           for (const r of results) {
             for (const evt of r.events) {
               const display = getEventDisplay(evt);
-              if (display.important && !["Goal", "PenaltyGoal"].includes(evt.event_type)) {
+              if (display.important) {
                 onImportantEvent(evt);
               }
             }
@@ -154,8 +135,6 @@ export default function MatchLive({
           // Fetch full snapshot
           const snap = await invoke<MatchSnapshot>("get_match_snapshot");
           if (!mounted.current) return;
-          hasStepped.current = true;
-          setPresentationPending(true);
           onSnapshotUpdate(snap);
 
           const phase = lastResult.phase;
@@ -170,9 +149,8 @@ export default function MatchLive({
             signaledRef.current.add(phase);
             setIsRunning(false);
             setSpeed("paused");
+            finish();
           }
-          // The playback clock includes celebrations and follows pause/speed changes.
-          pendingFinish.current = finish;
         }
       } catch (err) {
         console.error("Failed to step match:", err);
@@ -181,7 +159,7 @@ export default function MatchLive({
         stepInFlight.current = false;
       }
     },
-    [onSnapshotUpdate, onImportantEvent, onHalfTime, onFullTime, onPenaltyShootout, speed],
+    [onSnapshotUpdate, onImportantEvent, onHalfTime, onFullTime, onPenaltyShootout],
   );
 
   // Auto-step timer
@@ -191,13 +169,10 @@ export default function MatchLive({
       timerRef.current = null;
     }
 
-    if (isRunning && speed !== "paused" && !isFinished && !showSubPanel && !presentationPending) {
-      timerRef.current = setTimeout(
-        async () => {
-          await stepMatch(MINUTES_PER_TICK[speed]);
-        },
-        hasStepped.current ? 0 : LIVE_SPEED_MS[speed],
-      );
+    if (isRunning && speed !== "paused" && !isFinished && !showSubPanel) {
+      timerRef.current = setTimeout(async () => {
+        await stepMatch(MINUTES_PER_TICK[speed]);
+      }, LIVE_SPEED_MS[speed]);
     }
 
     return () => {
@@ -211,7 +186,6 @@ export default function MatchLive({
     stepMatch,
     isFinished,
     showSubPanel,
-    presentationPending,
   ]);
 
   // Auto-scroll event feed
@@ -340,7 +314,7 @@ export default function MatchLive({
 
               <div className="flex items-center gap-3">
                 <span className="text-4xl font-heading font-bold text-gray-900 dark:text-white tabular-nums">
-                  {presentedScore.home}
+                  {snapshot.home_score}
                 </span>
                 <div className="flex flex-col items-center">
                   <span className="text-xs font-heading uppercase tracking-widest text-accent-700 dark:text-accent-400">
@@ -351,7 +325,7 @@ export default function MatchLive({
                   </span>
                 </div>
                 <span className="text-4xl font-heading font-bold text-gray-900 dark:text-white tabular-nums">
-                  {presentedScore.away}
+                  {snapshot.away_score}
                 </span>
               </div>
 
@@ -416,11 +390,6 @@ export default function MatchLive({
           <div className="flex bg-white dark:bg-navy-800 border-b border-gray-200 dark:border-navy-700 transition-colors duration-300">
             {[
               {
-                id: "match" as ActivePanel,
-                label: t("match.matchView"),
-                icon: <Play className="w-4 h-4" />,
-              },
-              {
                 id: "events" as ActivePanel,
                 label: t("match.events"),
                 icon: <MessageSquare className="w-4 h-4" />,
@@ -454,23 +423,6 @@ export default function MatchLive({
           </div>
 
           <div className="flex-1 overflow-auto p-4">
-            <div hidden={activePanel !== "match"}>
-              <LiveMatchView
-                snapshot={snapshot}
-                numbers={playerJerseyMap}
-                onPlaybackComplete={handlePlaybackComplete}
-                onPresentedScore={handlePresentedScore}
-                onGoalConfirmed={onImportantEvent}
-                speed={speed}
-                paused={
-                  (speed === "paused" &&
-                    !["HalfTime", "ExtraTimeHalfTime", "PenaltyShootout", "Finished"].includes(
-                      snapshot.phase,
-                    )) ||
-                  showSubPanel
-                }
-              />
-            </div>
             {activePanel === "events" && (
               <EventFeed
                 events={importantEvents}

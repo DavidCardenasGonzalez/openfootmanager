@@ -1,8 +1,8 @@
 mod team_builder;
 pub use team_builder::auto_select_set_pieces;
-use team_builder::build_team_with_bench;
 pub(crate) use team_builder::domain_to_engine_role;
 pub(crate) use team_builder::domain_to_engine_tactics;
+use team_builder::{build_team_with_bench, ranked_pre_match_lineup};
 
 use rand::rngs::StdRng;
 use rand::{RngExt, SeedableRng};
@@ -263,6 +263,26 @@ impl LiveMatchSession {
                 role.map(domain_to_engine_role).unwrap_or_default(),
             );
         }
+    }
+
+    pub fn auto_select_pre_match_lineup(
+        &mut self,
+        game: &Game,
+        side: Side,
+    ) -> Result<MatchSnapshot, String> {
+        if self.match_state.phase() != MatchPhase::PreKickOff {
+            return Err("be.error.liveMatch.preMatchSwapTooLate".into());
+        }
+        if self.user_side != Some(side) {
+            return Err("be.error.noTeamAssigned".into());
+        }
+        let snapshot = self.snapshot();
+        let (team, bench) = match side {
+            Side::Home => (&snapshot.home_team, &snapshot.home_bench),
+            Side::Away => (&snapshot.away_team, &snapshot.away_bench),
+        };
+        self.apply_command(ranked_pre_match_lineup(game, side, team, bench))?;
+        Ok(self.snapshot())
     }
 
     pub fn apply_command(&mut self, cmd: MatchCommand) -> Result<(), String> {

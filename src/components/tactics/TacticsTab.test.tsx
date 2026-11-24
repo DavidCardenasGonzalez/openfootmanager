@@ -255,6 +255,32 @@ describe("TacticsTab", () => {
     expect(screen.getByTestId("pitch-bench-player-d5")).toBeInTheDocument();
   });
 
+  it("auto-selects a lineup by preferred position and condition", async () => {
+    const gameState = makeGameState();
+    const freshLeftBack = gameState.players.find((player) => player.id === "d5");
+    const tiredLeftBack = gameState.players.find((player) => player.id === "d1");
+    if (!freshLeftBack || !tiredLeftBack) throw new Error("Expected test defenders");
+    freshLeftBack.natural_position = "LeftBack";
+    freshLeftBack.ovr = 82;
+    tiredLeftBack.condition = 55;
+    tiredLeftBack.ovr = 80;
+    const onGameUpdate = vi.fn();
+    mockedInvoke.mockImplementation(async (command: string) => {
+      if (command === "get_squad") return gameState.players.filter((player) => player.team_id === "team1");
+      return gameState;
+    });
+    render(<TacticsTab gameState={gameState} onSelectPlayer={vi.fn()} onGameUpdate={onGameUpdate} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "match.autoSelectXI" }));
+
+    await waitFor(() => {
+      expect(mockedInvoke).toHaveBeenCalledWith("set_starting_xi", {
+        playerIds: ["gk1", "d5", "d2", "d3", "d4", "m1", "m2", "m3", "m4", "f1", "f2"],
+      });
+    });
+    expect(onGameUpdate).toHaveBeenCalledWith(gameState);
+  });
+
   it("shows the assigned slot and tactical role rating on the pitch", () => {
     const gameState = makeGameState();
     const centerBack = gameState.players.find((player) => player.id === "d1");

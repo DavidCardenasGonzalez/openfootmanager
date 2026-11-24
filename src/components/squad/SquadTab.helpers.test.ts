@@ -642,6 +642,48 @@ describe("SquadTab helpers", () => {
       "Striker",
       "Striker",
     ]);
+
+    expect(slots("4-1-4-1")).toEqual([
+      "Goalkeeper",
+      "LeftBack",
+      "CenterBack",
+      "CenterBack",
+      "RightBack",
+      "DefensiveMidfielder",
+      "LeftMidfielder",
+      "CentralMidfielder",
+      "CentralMidfielder",
+      "RightMidfielder",
+      "Striker",
+    ]);
+
+    expect(slots("4-3-2-1")).toEqual([
+      "Goalkeeper",
+      "LeftBack",
+      "CenterBack",
+      "CenterBack",
+      "RightBack",
+      "DefensiveMidfielder",
+      "CentralMidfielder",
+      "CentralMidfielder",
+      "AttackingMidfielder",
+      "AttackingMidfielder",
+      "Striker",
+    ]);
+
+    expect(slots("2-3-5")).toEqual([
+      "Goalkeeper",
+      "CenterBack",
+      "CenterBack",
+      "DefensiveMidfielder",
+      "CentralMidfielder",
+      "AttackingMidfielder",
+      "LeftWinger",
+      "Striker",
+      "Striker",
+      "Striker",
+      "RightWinger",
+    ]);
   });
 
   it("summarises role coverage for the active shape", () => {

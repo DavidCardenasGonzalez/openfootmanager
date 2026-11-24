@@ -37,3 +37,27 @@ source checkout or raw exports, rerun the adapter if needed, then rerun the impo
 stable source IDs keep existing mappings reconcilable. Adding another real-world
 league later means extending the adapter's target competition mapping and rerunning
 the same pipeline, not changing the gameplay model.
+
+## Clubs outside the Top 5
+
+The importer only emits the five source leagues. A club from anywhere else is
+authored as a runtime-shaped patch and appended after the import:
+
+```sh
+npm run world:add-team -- data/open-manager/world.json data/sofifa-source/sofifa-club-1970.json data/open-manager/world.next.json
+mv data/open-manager/world.next.json data/open-manager/world.json
+```
+
+`world:add-team` validates the patch (unique ids, valid positions, complete
+attributes) and appends it without renumbering the imported clubs. It refuses to
+overwrite an existing file, hence the intermediate name. The patch is the source
+of truth for that club: rerunning `import:top5` overwrites `world.json`, so the
+append must be repeated afterwards. `data/sofifa-source/` holds the SofIFA
+snapshots, including the scrape date and the raw sub-attributes each runtime
+attribute was mapped from.
+
+`sofifa-club-1970.json` (SofIFA team 1970, FC27 update 2026-11-18) uses the same
+attribute aliases as `scripts/import-eafc26-top5.py`. Its reputation (3) uses
+the importer's rule — rank by total squad market value — so it opens in the
+bottom division; SofIFA prices Liga MX squads below the European clubs in this
+unified pyramid, which is also where its ~68 average overall belongs.
